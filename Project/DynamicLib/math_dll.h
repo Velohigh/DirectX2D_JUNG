@@ -1,4 +1,15 @@
 #pragma once
 
+#ifdef DYNAMICLIB_EXPORTS
+#define DLL extern "C" __declspec(dllexport) 
+#else
+#define DLL extern "C" __declspec(dllimport) 
+#endif
 
-extern "C" __declspec(dllexport) int Mul(int a, int b);
+
+
+
+DLL int Mul(int a, int b);
+
+
+

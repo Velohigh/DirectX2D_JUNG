@@ -4,12 +4,31 @@
 #include "framework.h"
 #include "Client.h"
 
+
 #include <StaticLib/math.h>
 #pragma comment(lib, "StaticLib//StaticLib_d.lib")
 
 // dll 암시적 링크
 #include <DynamicLib/math_dll.h>
 #pragma comment(lib, "DynamicLib//DynamicLib_d.lib")
+
+
+
+
+
+// Engine Library
+#include <Engine/global.h>
+#include <Engine/CEngine.h>
+
+#ifdef _DEBUG
+#pragma comment(lib, "Engine//Engine_d.lib")
+#else
+#pragma comment(lib, "Engine//Engine.lib")
+#endif
+
+
+
+typedef int (*FUNC_TYPE)(int, int); // typedef 를 사용한 함수 포인터 자료형을 만든다고 생각하면 쉽다.
 
 #define MAX_LOADSTRING 100
 
@@ -33,6 +52,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     int a = Add(10, 20); // 정적 lib 를 이용한 함수 사용
     int b = Mul(10, 20); // 동적 dll 을 이용한 함수 사용
 
+    // Dll 명시적인 링크
+    //HMODULE hModule = LoadLibrary(L"..//bin_d//DynamicLib_d.dll");
+
+    //FUNC_TYPE MulFunc = (FUNC_TYPE)GetProcAddress(hModule, "Mul");
+    //int c = MulFunc(100, 2);
+
+    //if (nullptr != hModule)
+    //    FreeLibrary(hModule);
+
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
@@ -43,6 +71,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return FALSE;
     }
+
+
+    // CEngine 초기화
+    CEngine::GetInst()->Init(g_hWnd, 1600, 900);
+
+
+
 
     
 
@@ -67,9 +102,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		else
 		{
-
+            CEngine::GetInst()->progress();
 		}
 	}
+
 
 	return (int)msg.wParam;
 }
@@ -114,7 +150,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   ShowWindow(g_hWnd, nCmdShow);
+   ShowWindow(g_hWnd, false);
    UpdateWindow(g_hWnd);
 
    return TRUE;
