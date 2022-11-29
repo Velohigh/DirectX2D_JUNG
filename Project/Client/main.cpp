@@ -51,12 +51,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
     // CEngine 초기화
-    CEngine::GetInst()->Init(g_hWnd, 1600, 900);
-
-
-
-
-    
+    if (FAILED(CEngine::GetInst()->Init(g_hWnd, 1600, 900)))
+    {
+        return 0;
+    }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 

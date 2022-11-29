@@ -6,8 +6,12 @@ class CEngine
 private:
 	HWND	m_hWnd;
 
+	// 윈도우 해상도
+	UINT	m_iWidth;
+	UINT	m_iHeight;
+
 public:
-	void Init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
+	int Init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void progress();
 
 public:
