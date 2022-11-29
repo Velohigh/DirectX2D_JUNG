@@ -26,5 +26,7 @@ void CEngine::Init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
 void CEngine::progress()
 {
+
+
 }
 
