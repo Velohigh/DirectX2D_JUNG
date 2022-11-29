@@ -25,6 +25,9 @@
     <ClInclude Include="CEngine.h">
       <Filter>Source\01. Engine</Filter>
     </ClInclude>
+    <ClInclude Include="CDevice.h">
+      <Filter>Source\02. Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="CEngine.cpp">
       <Filter>Source\01. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CDevice.cpp">
+      <Filter>Source\02. Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
