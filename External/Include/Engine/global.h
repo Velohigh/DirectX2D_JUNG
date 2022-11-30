@@ -1,5 +1,8 @@
 #pragma once
 
+#include <wrl.h>
+using namespace Microsoft::WRL;
+
 #include <d3d11.h>					// DirectX11
 #include <d3dcompiler.h>			// Shader ÄÄÆÄÀÏ
 #include <DirectXMath.h>			// DX Math
@@ -13,5 +16,5 @@ using namespace DirectX::PackedVector;
 
 
 
-
+#include "struct.h"
 #include "CSingleton.h"

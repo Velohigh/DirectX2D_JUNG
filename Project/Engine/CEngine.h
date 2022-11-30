@@ -7,12 +7,19 @@ private:
 	HWND	m_hWnd;
 
 	// 윈도우 해상도
-	UINT	m_iWidth;
-	UINT	m_iHeight;
+	Vec2	m_vResolution;
+
+public:
+	Vec2 GetWindowResolution() { return m_vResolution; }
+
 
 public:
 	int Init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void progress();
+
+private:
+	void tick();
+	void render();
 
 public:
 	CEngine();

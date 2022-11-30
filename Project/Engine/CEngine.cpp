@@ -3,6 +3,7 @@
 
 #include "CDevice.h"
 
+
 CEngine::CEngine()
 	: m_hWnd(nullptr)
 {
@@ -17,6 +18,7 @@ int CEngine::Init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 {
 	// 메인 윈도우 핸들
 	m_hWnd = _hWnd;
+	m_vResolution = Vec2((float)_iWidth, (float)_iHeight);
 
 	// 해상도에 맞는 작업영역 크기 조정
 	RECT rt = { 0, 0, (int)_iWidth, (int)_iHeight};
@@ -35,7 +37,25 @@ int CEngine::Init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
 void CEngine::progress()
 {
-
+	tick();
+	render();
 
 }
 
+void CEngine::tick()
+{
+}
+
+void CEngine::render()
+{
+	// 여기서 물체들을 다 그리고, 스왑체인에 프레젠트를 요청한다.
+	// 렌더링 시작
+	float arrColor[4] = { 0.4f, 0.4f, 0.4f, 1.f };
+	CDevice::GetInst()->ClearTarget(arrColor);  // 렌더 타겟 색상 지정
+
+
+
+
+	// 렌더 종료
+	CDevice::GetInst()->Present();
+}
