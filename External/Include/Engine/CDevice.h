@@ -25,11 +25,16 @@ private:
 
 public:
 	int Init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
+	void ClearTarget(float(&_color)[4]);
 	void Present() { m_SwapChain->Present(0, 0); }
 
 private:
 	int CreateSwapChain();
 	int CreateView();
+
+public:
+	ID3D11Device* GetDevice() { return m_Device.Get(); }
+	ID3D11DeviceContext* GetDeviceContext() { return m_Context.Get(); }
 
 public:
 	CDevice();

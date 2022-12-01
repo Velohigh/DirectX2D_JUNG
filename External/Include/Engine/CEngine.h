@@ -14,7 +14,7 @@ public:
 
 
 public:
-	int Init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
+	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void progress();
 
 private:

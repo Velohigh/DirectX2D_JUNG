@@ -28,6 +28,10 @@
     <ClInclude Include="CDevice.h">
       <Filter>Source\02. Device</Filter>
     </ClInclude>
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Source\08. Module\SimpleMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -42,6 +46,7 @@
     <ClCompile Include="CDevice.cpp">
       <Filter>Source\02. Device</Filter>
     </ClCompile>
+    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -77,5 +82,18 @@
     <Filter Include="Source\08. Module">
       <UniqueIdentifier>{598899f5-f017-4ca4-a0c1-033aa0b5102f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\08. Module\SimpleMath">
+      <UniqueIdentifier>{c5a6d763-353e-4ab9-87c0-cb13b5413432}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Source\08. Module\SimpleMath</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="test.fx">
+      <Filter>Source\07. ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

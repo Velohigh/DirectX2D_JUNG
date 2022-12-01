@@ -3,6 +3,7 @@
 
 #include "CDevice.h"
 
+#include "Test.h"
 
 CEngine::CEngine()
 	: m_hWnd(nullptr)
@@ -14,12 +15,12 @@ CEngine::~CEngine()
 }
 
 
-int CEngine::Init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
+int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 {
 	// 메인 윈도우 핸들
 	m_hWnd = _hWnd;
 	m_vResolution = Vec2((float)_iWidth, (float)_iHeight);
-
+	
 	// 해상도에 맞는 작업영역 크기 조정
 	RECT rt = { 0, 0, (int)_iWidth, (int)_iHeight};
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
@@ -33,6 +34,11 @@ int CEngine::Init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 		return E_FAIL;
 	}
 
+	// 물체하나를 그리기위한 테스트 함수들 호출
+	Init();
+
+	return S_OK;
+
 }
 
 void CEngine::progress()
@@ -44,6 +50,7 @@ void CEngine::progress()
 
 void CEngine::tick()
 {
+	Tick();
 }
 
 void CEngine::render()
@@ -54,7 +61,7 @@ void CEngine::render()
 	CDevice::GetInst()->ClearTarget(arrColor);  // 렌더 타겟 색상 지정
 
 
-
+	Render();
 
 	// 렌더 종료
 	CDevice::GetInst()->Present();
