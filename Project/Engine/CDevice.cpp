@@ -171,4 +171,5 @@ int CDevice::CreateView()
 void CDevice::ClearTarget(float(&_color)[4])
 {
 	m_Context->ClearRenderTargetView(m_RTV.Get(), _color); // 뷰가 가리키는 렌더타겟 텍스쳐의 색상 지정
+	m_Context->ClearDepthStencilView(m_DSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0); // 
 }

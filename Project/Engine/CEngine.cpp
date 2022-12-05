@@ -2,6 +2,7 @@
 #include "CEngine.h"
 
 #include "CDevice.h"
+#include "CPathMgr.h"
 
 #include "Test.h"
 
@@ -33,6 +34,10 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 		MessageBox(nullptr, L"Device 초기화 실패", L"에러", MB_OK);
 		return E_FAIL;
 	}
+
+	// Manager 초기화
+	CPathMgr::GetInst()->init();
+
 
 	// 물체하나를 그리기위한 테스트 함수들 호출
 	Init();
