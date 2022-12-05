@@ -2,11 +2,15 @@
 #include "Test.h"
 
 #include "CDevice.h" // 디바이스를 가져오는 이유 : GPU에 명령하기위한 Device, Context를 사용하기 위해
-
 #include "CPathMgr.h"
+#include "CTimeMgr.h"
+#include "CKeyMgr.h"
+
 
 // 정점 버퍼, 정점 정보를 저장할 버퍼
 ComPtr<ID3D11Buffer> g_VB;
+ComPtr<ID3D11Buffer> g_IB;	// 인덱스 버퍼
+ComPtr<ID3D11Buffer> g_CB;	// 상수 버퍼
 
 // 쉐이더
 ComPtr<ID3DBlob>	g_VSBlob;
@@ -20,19 +24,28 @@ ComPtr<ID3D11PixelShader>	g_PS;
 ComPtr<ID3D11InputLayout>	g_Layout;
 
 
+// Vertex
+Vtx		g_arrVtx[4] = {};
+UINT	g_arrIdx[6] = {};
+
 
 void Init()
 {
-	Vtx arrVtx[3] = {};
+	// 0 --- 1
+	// |	 |
+	// 3 --- 2
+	// 
+	g_arrVtx[0].vPos = Vec3(-0.5f, 0.5f, 0.5f);
+	g_arrVtx[0].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 
-	arrVtx[0].vPos = Vec3(0.f, 1.f, 0.5f);
-	arrVtx[0].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	g_arrVtx[1].vPos = Vec3(0.5f, 0.5f, 0.5f);
+	g_arrVtx[1].vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 
-	arrVtx[1].vPos = Vec3(1.f, -1.f, 0.5f);
-	arrVtx[1].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	g_arrVtx[2].vPos = Vec3(0.5f, -0.5f, 0.5f);
+	g_arrVtx[2].vColor = Vec4(0.f, 0.f, 1.f, 1.f);
 
-	arrVtx[2].vPos = Vec3(-1.f, -1.f, 0.5f);
-	arrVtx[2].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	g_arrVtx[3].vPos = Vec3(-0.5f, -0.5f, 0.5f);
+	g_arrVtx[3].vColor = Vec4(0.f, 0.f, 0.f, 1.f);
 
 
 	// 버퍼 Desc 를 채워서, VertexBuffer 를 만들어낸다.
@@ -46,15 +59,43 @@ void Init()
 	tBufferDesc.Usage = D3D11_USAGE_DYNAMIC; // CPU에서 접근할때 어떤식으로 접근할지 용도
 
 	// 버퍼 크기
-	tBufferDesc.ByteWidth = sizeof(Vtx) * 3; // GPU 메모리에 할당
+	tBufferDesc.ByteWidth = sizeof(Vtx) * 4; // GPU 메모리에 할당할 크기
 
 	// Buffer 생성
 	D3D11_SUBRESOURCE_DATA tSub = {};
-	tSub.pSysMem = arrVtx;
+	tSub.pSysMem = g_arrVtx;
 	if (FAILED(DEVICE->CreateBuffer(&tBufferDesc, &tSub, g_VB.GetAddressOf())))
 	{
 		assert(nullptr);
 	}
+
+
+	// 인덱스
+	g_arrIdx[0] = 0;
+	g_arrIdx[1] = 2;
+	g_arrIdx[2] = 3;
+
+	g_arrIdx[3] = 0;
+	g_arrIdx[4] = 1;
+	g_arrIdx[5] = 2;
+
+	// 인덱스 저장용도
+	tBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+	// SystemMemory 에서 수정 불가능
+	tBufferDesc.CPUAccessFlags = 0;			// 수정 X
+	tBufferDesc.Usage = D3D11_USAGE_DEFAULT; // CPU에서 접근할때 어떤식으로 접근할지 용도
+
+	// 인덱스 버퍼 크기
+	tBufferDesc.ByteWidth = sizeof(UINT) * 6; // GPU 메모리에 할당할 크기
+
+	// 인덱스 버퍼 생성
+	tSub.pSysMem = g_arrIdx;
+	if (FAILED(DEVICE->CreateBuffer(&tBufferDesc, &tSub, g_IB.GetAddressOf()))) // 인덱스 버퍼에 결과값 얻어오기
+	{
+		assert(nullptr);
+	}
+
 
 	// Shader 파일 경로
 	wstring strShaderFile = CPathMgr::GetInst()->GetContentPath();
@@ -114,6 +155,48 @@ void Init()
 
 void Tick()
 {
+	if (KEY_PRESSED(KEY::UP))
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			g_arrVtx[i].vPos.y += 1.f * DT;
+		}
+	}
+
+	if (KEY_PRESSED(KEY::DOWN))
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			g_arrVtx[i].vPos.y -= 1.f * DT;
+		}
+	}
+
+	if (KEY_PRESSED(KEY::LEFT))
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			g_arrVtx[i].vPos.x -= 1.f * DT;
+		}
+	}
+
+	if (KEY_PRESSED(KEY::RIGHT))
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			g_arrVtx[i].vPos.x += 1.f * DT;
+		}
+	}
+
+	// g_arrVtx ==> g_VB
+	D3D11_MAPPED_SUBRESOURCE tSubRes = {};
+	CONTEXT->Map(g_VB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSubRes);
+
+	// 수정한 정점 정보들을 , 맵핑으로 동적할당하여 복사한곳에 복사한다.
+	memcpy(tSubRes.pData, g_arrVtx, sizeof(Vtx) * 4);
+	//tSubRes.pData; // 맵핑으로 가져온, 동적할당된 곳의 주소
+
+	CONTEXT->Unmap(g_VB.Get(), 0);	// 동적할당하여 가져온 곳의 수정한 정보들을 GPU로 다시 보낸다.
+
 
 }
 
@@ -123,6 +206,7 @@ void Render()
 	UINT iStride = sizeof(Vtx);
 	UINT iOffset = 0;	// 정점에서 특정 정점부터 렌더링하고 싶을떄 사용, 지금 X
 	CONTEXT->IASetVertexBuffers(0, 1, g_VB.GetAddressOf(), &iStride, &iOffset);
+	CONTEXT->IASetIndexBuffer(g_IB.Get(), DXGI_FORMAT_R32_UINT, 0);  // 인덱스 버퍼 세팅
 	CONTEXT->IASetInputLayout(g_Layout.Get());	// IA에서 사용될 레이아웃을 세팅
 	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 3개씩 끊어서 면으로 보겠다는 세팅
 
@@ -130,7 +214,7 @@ void Render()
 	CONTEXT->PSSetShader(g_PS.Get(), nullptr, 0); // 픽셀 셰이더 세팅
 
 	// 실제 렌더링 파이프라인 실행 함수.
-	CONTEXT->Draw(3, 0);
+	CONTEXT->DrawIndexed(6, 0, 0);
 }
 
 void Release()

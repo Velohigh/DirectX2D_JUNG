@@ -3,6 +3,8 @@
 
 #include "CDevice.h"
 #include "CPathMgr.h"
+#include "CKeyMgr.h"
+#include "CTimeMgr.h"
 
 #include "Test.h"
 
@@ -29,7 +31,7 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	ShowWindow(m_hWnd, true);
 
 	// Device 초기화
-	if (FAILED(CDevice::GetInst()->Init(m_hWnd, _iWidth, _iHeight)))
+	if (FAILED(CDevice::GetInst()->init(m_hWnd, _iWidth, _iHeight)))
 	{
 		MessageBox(nullptr, L"Device 초기화 실패", L"에러", MB_OK);
 		return E_FAIL;
@@ -37,6 +39,8 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
 	// Manager 초기화
 	CPathMgr::GetInst()->init();
+	CKeyMgr::GetInst()->init();
+	CTimeMgr::GetInst()->init();
 
 
 	// 물체하나를 그리기위한 테스트 함수들 호출
@@ -49,17 +53,24 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 void CEngine::progress()
 {
 	tick();
-	render();
 
+	render();
 }
 
 void CEngine::tick()
 {
+	// Manager Tick
+	CTimeMgr::GetInst()->tick();
+	CKeyMgr::GetInst()->tick();
+
+
 	Tick();
 }
 
 void CEngine::render()
 {
+	CTimeMgr::GetInst()->render();
+
 	// 여기서 물체들을 다 그리고, 스왑체인에 프레젠트를 요청한다.
 	// 렌더링 시작
 	float arrColor[4] = { 0.4f, 0.4f, 0.4f, 1.f };

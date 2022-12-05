@@ -16,7 +16,6 @@
 #include <vector>
 #include <list>
 #include <map>
-
 #include <string>
 
 using std::vector;

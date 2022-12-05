@@ -24,7 +24,7 @@ private:
 
 
 public:
-	int Init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
+	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void ClearTarget(float(&_color)[4]);
 	void Present() { m_SwapChain->Present(0, 0); }
 

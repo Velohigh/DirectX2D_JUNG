@@ -21,7 +21,7 @@ CDevice::~CDevice()
 {
 }
 
-int CDevice::Init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
+int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 {
 	m_hWnd = _hWnd;
 	m_vRenderResolution = Vec2((float)_iWidth, (float)_iHeight);

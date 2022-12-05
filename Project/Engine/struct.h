@@ -1,5 +1,6 @@
 #pragma once
 
+
 // 정점 구조체
 struct tVertex
 {

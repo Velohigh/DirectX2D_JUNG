@@ -12,14 +12,17 @@ struct VS_IN
 struct VS_OUT
 {
     float4 vPosition : SV_Position;
+    float4 vOutColor : COLOR;
 };
 
 // vertex shader
+// LocalSpace 물체를 -> 월드 스페이스 -> 카메라 -> NDC 좌표계로 이동
 VS_OUT VS_Test(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
     output.vPosition = float4(_in.vPos, 1.f);
+    output.vOutColor = _in.vColor;
     
     return output;
 }
@@ -29,7 +32,7 @@ float4 PS_Test(VS_OUT _in) : SV_Target
 {
     float4 vColor = (float4) 0.f;
     
-    vColor = float4(1.f, 0.f, 0.f, 1.f);
+    vColor = _in.vOutColor;
     
     return vColor;
 }
