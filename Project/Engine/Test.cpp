@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Test.h"
 
+#include "CGameObject.h"
+#include "CTransform.h"
+#include "CMeshRender.h"
+
 #include "CDevice.h" // 디바이스를 가져오는 이유 : GPU에 명령하기위한 Device, Context를 사용하기 위해
 #include "CPathMgr.h"
 #include "CTimeMgr.h"
@@ -28,13 +32,35 @@ ComPtr<ID3D11InputLayout>	g_Layout;
 Vtx		g_arrVtx[4] = {};
 UINT	g_arrIdx[6] = {};
 
+Vec4	g_PlayerPos;
+
+CGameObject* g_Obj = nullptr;
+
 
 void Init()
 {
+	// 오브젝트 생성
+	g_Obj = new CGameObject;
+	g_Obj->AddComponent(new CTransform);
+	g_Obj->AddComponent(new CMeshRender);
+
+
+
+	// 상수 버퍼
+	// 16바이트 단위 메모리 정렬
+	D3D11_BUFFER_DESC tBufferDesc = {};
+
+	tBufferDesc.ByteWidth = sizeof(Vec4);
+	tBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	tBufferDesc.Usage = D3D11_USAGE_DYNAMIC;	// 상수버퍼는 수정할것이기때문에 다이나믹
+	tBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	DEVICE->CreateBuffer(&tBufferDesc, nullptr, g_CB.GetAddressOf());
+
+
 	// 0 --- 1
 	// |	 |
 	// 3 --- 2
-	// 
 	g_arrVtx[0].vPos = Vec3(-0.5f, 0.5f, 0.5f);
 	g_arrVtx[0].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 
@@ -49,14 +75,13 @@ void Init()
 
 
 	// 버퍼 Desc 를 채워서, VertexBuffer 를 만들어낸다.
-	D3D11_BUFFER_DESC tBufferDesc = {};
 
 	// 정점 저장용도
 	tBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 	// SystemMemory 에서 수정 가능한 버퍼
-	tBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	tBufferDesc.Usage = D3D11_USAGE_DYNAMIC; // CPU에서 접근할때 어떤식으로 접근할지 용도
+	tBufferDesc.CPUAccessFlags = 0;
+	tBufferDesc.Usage = D3D11_USAGE_DEFAULT; // CPU에서 접근할때 어떤식으로 접근할지 용도
 
 	// 버퍼 크기
 	tBufferDesc.ByteWidth = sizeof(Vtx) * 4; // GPU 메모리에 할당할 크기
@@ -159,7 +184,7 @@ void Tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			g_arrVtx[i].vPos.y += 1.f * DT;
+			g_PlayerPos.y += (float)DT * 1.f;
 		}
 	}
 
@@ -167,7 +192,8 @@ void Tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			g_arrVtx[i].vPos.y -= 1.f * DT;
+			g_PlayerPos.y -= (float)DT * 1.f;
+
 		}
 	}
 
@@ -175,7 +201,7 @@ void Tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			g_arrVtx[i].vPos.x -= 1.f * DT;
+			g_PlayerPos.x -= (float)DT * 1.f;
 		}
 	}
 
@@ -183,19 +209,23 @@ void Tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			g_arrVtx[i].vPos.x += 1.f * DT;
+			g_PlayerPos.x += (float)DT * 1.f;
 		}
 	}
 
-	// g_arrVtx ==> g_VB
+	// g_PlayerPos ==> g_CB
 	D3D11_MAPPED_SUBRESOURCE tSubRes = {};
-	CONTEXT->Map(g_VB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSubRes);
+	if (!FAILED(CONTEXT->Map(g_CB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
+	{
+	// 맵핑으로 시스템메모리에 동적할당하여 복사한다.
+	memcpy(tSubRes.pData, g_PlayerPos, sizeof(Vec4));  // tSubRes.pData 맵핑으로 가져온, 동적할당된 곳의 주소
+	CONTEXT->Unmap(g_CB.Get(), 0);	// 동적할당하여 가져온 곳의 수정한 정보들을 GPU로 다시 보낸다.
+	}
 
-	// 수정한 정점 정보들을 , 맵핑으로 동적할당하여 복사한곳에 복사한다.
-	memcpy(tSubRes.pData, g_arrVtx, sizeof(Vtx) * 4);
-	//tSubRes.pData; // 맵핑으로 가져온, 동적할당된 곳의 주소
 
-	CONTEXT->Unmap(g_VB.Get(), 0);	// 동적할당하여 가져온 곳의 수정한 정보들을 GPU로 다시 보낸다.
+
+	
+
 
 
 }
@@ -210,6 +240,12 @@ void Render()
 	CONTEXT->IASetInputLayout(g_Layout.Get());	// IA에서 사용될 레이아웃을 세팅
 	CONTEXT->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 3개씩 끊어서 면으로 보겠다는 세팅
 
+	// 상수 버퍼 레지스터 세팅
+	// #1 : slot 레지스터 번호, b0 으로 지정해두었다.
+	// #2 : 버퍼 개수 1
+	// #3 : 상수 버퍼 주소
+	CONTEXT->VSSetConstantBuffers(0, 1, g_CB.GetAddressOf());
+
 	CONTEXT->VSSetShader(g_VS.Get(), nullptr, 0); // 버텍스 셰이더 세팅
 	CONTEXT->PSSetShader(g_PS.Get(), nullptr, 0); // 픽셀 셰이더 세팅
 
@@ -219,4 +255,5 @@ void Render()
 
 void Release()
 {
+	delete g_Obj;
 }

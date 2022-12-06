@@ -1,5 +1,7 @@
 #pragma once
 
+#include <assert.h>
+
 #include <wrl.h>
 using namespace Microsoft::WRL;
 

@@ -41,6 +41,20 @@
     <ClInclude Include="CTimeMgr.h">
       <Filter>Source\03. Manager\02. TimeMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CEntity.h" />
+    <ClInclude Include="CGameObject.h">
+      <Filter>Source\05. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>Source\06. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>Source\06. Component\01. Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshRender.h">
+      <Filter>Source\06. Component\02. MeshRender</Filter>
+    </ClInclude>
+    <ClInclude Include="CRes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -65,6 +79,20 @@
     <ClCompile Include="CTimeMgr.cpp">
       <Filter>Source\03. Manager\02. TimeMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CEntity.cpp" />
+    <ClCompile Include="CGameObject.cpp">
+      <Filter>Source\05. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponent.cpp">
+      <Filter>Source\06. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
+      <Filter>Source\06. Component\01. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshRender.cpp">
+      <Filter>Source\06. Component\02. MeshRender</Filter>
+    </ClCompile>
+    <ClCompile Include="CRes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -111,6 +139,15 @@
     </Filter>
     <Filter Include="Source\03. Manager\03. KeyMgr">
       <UniqueIdentifier>{3aa2a9a8-ed7f-4dff-bc0d-d5513dafa19f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\01. Transform">
+      <UniqueIdentifier>{938fc155-eaed-475c-b00a-4c94ea3f41ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\02. MeshRender">
+      <UniqueIdentifier>{12b169e8-0ee3-4798-95b5-337c0010ea11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04. Resource\01. Mesh">
+      <UniqueIdentifier>{9d6e74a5-4f26-4aea-bebc-76dc38304c8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
