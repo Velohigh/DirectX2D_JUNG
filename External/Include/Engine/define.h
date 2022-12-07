@@ -36,3 +36,19 @@ enum class COMPONENT_TYPE
 	
 	END,
 };
+
+enum class RES_TYPE
+{
+	MESHDATA,	// 나중에 3D때..
+	MATERIAL,	// 재질
+	PREFAB,		// 나중에
+
+	MESH,		// 형태, 버텍스 버퍼와 인덱스 버퍼를 묶어서 메쉬
+	TEXTURE,	// 이미지
+	SOUND,
+
+	GRAPHICS_SHADER,
+	COMPUTE_SHADER,		// 일반적인 목적으로 쓸때, ex) 비트코인
+
+	END,
+};

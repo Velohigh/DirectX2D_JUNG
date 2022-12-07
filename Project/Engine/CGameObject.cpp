@@ -2,6 +2,7 @@
 #include "CGameObject.h"
 
 #include "CComponent.h"
+#include "CMeshRender.h"
 
 CGameObject::CGameObject()
 	: m_arrCom{}
@@ -19,6 +20,14 @@ CGameObject::~CGameObject()
 	Safe_Del_Array(m_arrCom);
 }
 
+
+void CGameObject::render()
+{
+	if (nullptr == MeshRender())
+		return;
+
+	MeshRender()->render();
+}
 
 void CGameObject::AddComponent(CComponent* _Component)
 {

@@ -54,7 +54,18 @@
     <ClInclude Include="CMeshRender.h">
       <Filter>Source\06. Component\02. MeshRender</Filter>
     </ClInclude>
-    <ClInclude Include="CRes.h" />
+    <ClInclude Include="CRes.h">
+      <Filter>Source\04. Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CMesh.h">
+      <Filter>Source\04. Resource\01. Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="CShader.h">
+      <Filter>Source\04. Resource\04. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphicsShader.h">
+      <Filter>Source\04. Resource\04. Shader\GraphicsShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -92,7 +103,18 @@
     <ClCompile Include="CMeshRender.cpp">
       <Filter>Source\06. Component\02. MeshRender</Filter>
     </ClCompile>
-    <ClCompile Include="CRes.cpp" />
+    <ClCompile Include="CRes.cpp">
+      <Filter>Source\04. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CMesh.cpp">
+      <Filter>Source\04. Resource\01. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="CShader.cpp">
+      <Filter>Source\04. Resource\04. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphicsShader.cpp">
+      <Filter>Source\04. Resource\04. Shader\GraphicsShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -148,6 +170,21 @@
     </Filter>
     <Filter Include="Source\04. Resource\01. Mesh">
       <UniqueIdentifier>{9d6e74a5-4f26-4aea-bebc-76dc38304c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04. Resource\02. Texture">
+      <UniqueIdentifier>{38aa5a87-d978-4a8e-b2f4-50074fcf14d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04. Resource\03. Material">
+      <UniqueIdentifier>{67d379d2-48da-4aa0-87f7-70ce6943ecad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04. Resource\04. Shader">
+      <UniqueIdentifier>{67ca1423-4e64-4cf2-8f8b-1b089abcf425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04. Resource\04. Shader\GraphicsShader">
+      <UniqueIdentifier>{2c43d04c-0b87-422c-b41e-42191cf3e22c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04. Resource\04. Shader\ComputeShader">
+      <UniqueIdentifier>{0d516d4b-c0c8-4a8b-bfbd-6d7901354c7e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

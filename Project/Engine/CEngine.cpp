@@ -15,6 +15,7 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
+	Release();
 }
 
 
