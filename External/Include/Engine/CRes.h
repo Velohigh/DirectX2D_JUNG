@@ -33,6 +33,6 @@ public:
     CRes(RES_TYPE _type);
     virtual ~CRes();
 
-    friend class CResMgr;
+    friend class CResMgr;   // 리소스는 리소스 매니저를 통해서만 관리할 수 있다.
 };
 

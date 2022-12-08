@@ -12,6 +12,9 @@ private:
     CComponent*         m_arrCom[(UINT)COMPONENT_TYPE::END];
 
 public:
+    void tick();
+    void finaltick();   // 틱이 다 끝나고 계산같은 걸 마무리하는 단계
+
     void render();
 
 public:

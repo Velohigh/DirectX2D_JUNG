@@ -2,6 +2,7 @@
 #include "CDevice.h"
 
 #include "CEngine.h"
+#include "CConstBuffer.h"
 
 CDevice::CDevice()
 	: m_hWnd(nullptr)
@@ -13,12 +14,14 @@ CDevice::CDevice()
 	, m_DSTex(nullptr)
 	, m_DSV(nullptr)
 	, m_ViewPort{}
+	, m_arrConstBuffer{}
 
 {
 }
 
 CDevice::~CDevice()
 {
+	Safe_Del_Array(m_arrConstBuffer);
 }
 
 int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
@@ -78,7 +81,12 @@ int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
 	m_Context->RSSetViewports(1, &m_ViewPort);
 
+	
+	// 상수 버퍼 생성
+	CreateConstBuffer();
+	
 	return S_OK; // E_FAIL;
+
 }
 
 int CDevice::CreateSwapChain()
@@ -166,6 +174,12 @@ int CDevice::CreateView()
 
 
 	return S_OK;
+}
+
+void CDevice::CreateConstBuffer()
+{
+	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM] = new CConstBuffer((UINT)CB_TYPE::TRANSFORM);
+	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(Vec4), 1);
 }
 
 void CDevice::ClearTarget(float(&_color)[4])

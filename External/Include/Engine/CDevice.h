@@ -1,5 +1,7 @@
 #pragma once
 
+class CConstBuffer;
+
 class CDevice
 	: public CSingleton<CDevice>
 {
@@ -22,6 +24,7 @@ private:
 	// 렌더타겟 해상도
 	Vec2							m_vRenderResolution;
 
+	CConstBuffer*					m_arrConstBuffer[(UINT)CB_TYPE::END];		// 상수 버퍼 관리
 
 public:
 	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
@@ -31,10 +34,12 @@ public:
 private:
 	int CreateSwapChain();
 	int CreateView();
+	void CreateConstBuffer();
 
 public:
 	ID3D11Device* GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetDeviceContext() { return m_Context.Get(); }
+	CConstBuffer* GetConstBuffer(CB_TYPE _Type) { return m_arrConstBuffer[(UINT)_Type]; }
 
 public:
 	CDevice();

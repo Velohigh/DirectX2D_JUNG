@@ -41,7 +41,6 @@
     <ClInclude Include="CTimeMgr.h">
       <Filter>Source\03. Manager\02. TimeMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CEntity.h" />
     <ClInclude Include="CGameObject.h">
       <Filter>Source\05. GameObject</Filter>
     </ClInclude>
@@ -65,6 +64,25 @@
     </ClInclude>
     <ClInclude Include="CGraphicsShader.h">
       <Filter>Source\04. Resource\04. Shader\GraphicsShader</Filter>
+    </ClInclude>
+    <ClInclude Include="CScript.h">
+      <Filter>Source\06. Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Source\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntity.h" />
+    <ClInclude Include="CConstBuffer.h">
+      <Filter>Source\02. Device\ConstBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelMgr.h">
+      <Filter>Source\03. Manager\04. LevelMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CResMgr.h">
+      <Filter>Source\03. Manager\05. ResMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="ptr.h">
+      <Filter>Source\03. Manager\05. ResMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +108,6 @@
     <ClCompile Include="CTimeMgr.cpp">
       <Filter>Source\03. Manager\02. TimeMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CGameObject.cpp">
       <Filter>Source\05. GameObject</Filter>
     </ClCompile>
@@ -114,6 +131,22 @@
     </ClCompile>
     <ClCompile Include="CGraphicsShader.cpp">
       <Filter>Source\04. Resource\04. Shader\GraphicsShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CScript.cpp">
+      <Filter>Source\06. Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Source\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntity.cpp" />
+    <ClCompile Include="CConstBuffer.cpp">
+      <Filter>Source\02. Device\ConstBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelMgr.cpp">
+      <Filter>Source\03. Manager\04. LevelMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CResMgr.cpp">
+      <Filter>Source\03. Manager\05. ResMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +218,21 @@
     </Filter>
     <Filter Include="Source\04. Resource\04. Shader\ComputeShader">
       <UniqueIdentifier>{0d516d4b-c0c8-4a8b-bfbd-6d7901354c7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\Script">
+      <UniqueIdentifier>{f4bf8910-242f-47e6-9860-4d9cc556d264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scripts">
+      <UniqueIdentifier>{6c53908b-727a-40c3-ae38-39f10d867000}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\02. Device\ConstBuffer">
+      <UniqueIdentifier>{c7ce211d-15e1-4387-a68f-dda9aa65848c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03. Manager\04. LevelMgr">
+      <UniqueIdentifier>{bf43122e-8790-4a59-9a35-39d721eca663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03. Manager\05. ResMgr">
+      <UniqueIdentifier>{86dc608e-1a6c-4563-a6d2-904aba3097aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
