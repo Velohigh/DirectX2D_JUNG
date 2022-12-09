@@ -1,6 +1,7 @@
 #pragma once
 #include "CEntity.h"
 
+
 class CComponent;
 class CTransform;
 class CMeshRender;

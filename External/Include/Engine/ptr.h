@@ -8,7 +8,7 @@ private:
 	T*	m_Res;
 
 public:
-	T* Get() { return m_Res; }
+	T* Get() const { return m_Res; }
 
 	T* operator -> ()
 	{
@@ -31,10 +31,30 @@ public:
 		if (nullptr != m_Res)
 			m_Res->Release();
 
-		m_Res = _Res;
+		m_Res = _Res.m_Res;
 
 		if (nullptr != m_Res)
 			m_Res->AddRef();
+	}
+
+	bool operator == (T* _Other)
+	{
+		return m_Res == _Other;
+	}
+
+	bool operator != (T* _Other)
+	{
+		return m_Res != _Other;
+	}
+
+	bool operator == (const Ptr<T>& _Other)
+	{
+		return m_Res == _Other.m_Res;
+	}
+
+	bool operator != (const Ptr<T>& _Other)
+	{
+		return m_Res != _Other.m_Res;
 	}
 
 
@@ -62,7 +82,6 @@ public:
 	
 	~Ptr()
 	{
-		// == 이라고 되있는 부분 != 이렇게 고쳐야하지 않을까? 싶어서 고침
 		if (nullptr != m_Res)
 		{
 			m_Res->Release();
@@ -71,3 +90,18 @@ public:
 
 
 };
+
+// 상수 == Ptr<T> 비교 가능하도록 템플릿 전역 operator 오버로딩 추가. (ex. nullptr == Ptr<CMesh> )
+template <typename T>
+bool operator == (void* _Res, const Ptr<T>& _Ptr)
+{
+	return _Res == _Ptr.Get();
+}
+
+
+
+template <typename T>
+bool operator != (void* _Res, const Ptr<T>& _Ptr)
+{
+	return _Res != _Ptr.Get();
+}

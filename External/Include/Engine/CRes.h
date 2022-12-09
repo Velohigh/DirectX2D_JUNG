@@ -34,5 +34,12 @@ public:
     virtual ~CRes();
 
     friend class CResMgr;   // 리소스는 리소스 매니저를 통해서만 관리할 수 있다.
+
+    // 자기를 가리키는 스마트 포인터쪽에서도 레퍼런스해제를 호출해줄 수 있도록 friend 설정
+    // 하지만 Ptr이 템플릿이기 때문에 이런 문법으로 해야
+    // Ptr 템플릿으로 파생되는 모든 애들에게 friend 선언해줄 수 있다.
+    template <typename T>
+    friend class Ptr;
+    
 };
 

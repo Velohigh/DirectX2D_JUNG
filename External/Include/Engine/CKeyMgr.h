@@ -64,6 +64,9 @@ struct tKeyInfo
 class CKeyMgr 
 	: public CSingleton<CKeyMgr>
 {
+	SINGLE(CKeyMgr)
+
+
 private:
 	vector<tKeyInfo>	m_vecKey;
 	Vec2				m_vMousePos;
@@ -77,8 +80,5 @@ public:
 	KEY_STATE GetKeyState(KEY _key) { return m_vecKey[(UINT)_key].state; }
 	Vec2 GetMousePos() { return m_vMousePos; }
 
-public:
-	CKeyMgr();
-	~CKeyMgr();
 };
 

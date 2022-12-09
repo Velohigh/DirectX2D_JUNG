@@ -6,8 +6,7 @@
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
 #include "CResMgr.h"
-
-#include "Test.h"
+#include "CLevelMgr.h"
 
 CEngine::CEngine()
 	: m_hWnd(nullptr)
@@ -16,7 +15,6 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-	Release();
 }
 
 
@@ -44,14 +42,9 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	CKeyMgr::GetInst()->init();
 	CTimeMgr::GetInst()->init();
 	CResMgr::GetInst()->init();
-
-
-
-	// 물체하나를 그리기위한 테스트 함수들 호출
-	Init();
+	CLevelMgr::GetInst()->init();
 
 	return S_OK;
-
 }
 
 void CEngine::progress()
@@ -67,8 +60,7 @@ void CEngine::tick()
 	CTimeMgr::GetInst()->tick();
 	CKeyMgr::GetInst()->tick();
 
-
-	Tick();
+	CLevelMgr::GetInst()->tick();
 }
 
 void CEngine::render()
@@ -81,7 +73,8 @@ void CEngine::render()
 	CDevice::GetInst()->ClearTarget(arrColor);  // 렌더 타겟 색상 지정
 
 
-	Render();
+	CLevelMgr::GetInst()->render();
+
 
 	// 렌더 종료
 	CDevice::GetInst()->Present();

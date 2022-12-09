@@ -3,6 +3,7 @@
 #define DEVICE	CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetDeviceContext()
 
+// return new(*this) 는 복사 생성자를 호출한다.
 #define CLONE(type) public: virtual type* Clone() { return new type(*this); }
 #define CLONE_DISABLE(type) public: virtual type* Clone() { return nullptr; assert(nullptr); }
 
@@ -11,6 +12,10 @@
 #define KEY_PRESSED(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::PRESSED
 
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
+
+#define MAX_LAYER 32
+
+#define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
 
 
 enum class COMPONENT_TYPE

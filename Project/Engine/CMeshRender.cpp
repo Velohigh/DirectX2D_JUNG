@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "CMeshRender.h"
 
-#include "CGraphicsShader.h"
-#include "CMesh.h"
-
+#include "CTransform.h"
 
 CMeshRender::CMeshRender()
 	: CComponent(COMPONENT_TYPE::MESHRENDER)
@@ -27,8 +25,11 @@ void CMeshRender::render()
 		return;
 
 	// Transform 에 UpdateData 요청 (위치값 레지스터b0에 세팅하라고 요청)
+	Transform()->UpdateData();
 
 
 	m_pShader->UpdateData();	// 원하는 셰이더 선택
 	m_pMesh->render();			// 그것을 출력할 메쉬정하고 출력
+
+
 }

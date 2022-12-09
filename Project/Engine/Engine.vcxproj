@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -51,6 +52,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -125,8 +127,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <MinFilesInUnityFile>10</MinFilesInUnityFile>
+      <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
+      <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -147,8 +152,11 @@ call EngineCopy.bat
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <MinFilesInUnityFile>10</MinFilesInUnityFile>
+      <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
+      <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -172,6 +180,8 @@ call EngineCopy.bat
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CGraphicsShader.h" />
     <ClInclude Include="CKeyMgr.h" />
+    <ClInclude Include="CLayer.h" />
+    <ClInclude Include="CLevel.h" />
     <ClInclude Include="CLevelMgr.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
@@ -203,6 +213,8 @@ call EngineCopy.bat
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGraphicsShader.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
+    <ClCompile Include="CLayer.cpp" />
+    <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelMgr.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
@@ -216,10 +228,10 @@ call EngineCopy.bat
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Test.cpp" />
   </ItemGroup>

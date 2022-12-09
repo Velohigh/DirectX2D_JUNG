@@ -4,6 +4,8 @@
 class CTimeMgr
 	: public CSingleton<CTimeMgr>
 {	
+	SINGLE(CTimeMgr)
+
 private:
 	LARGE_INTEGER	m_llPrevCount;
 	LARGE_INTEGER	m_llCurCount;
@@ -21,8 +23,5 @@ public:
 public:
 	float GetDeltaTime() { return m_fDeltaTime; }
 
-public:
-	CTimeMgr();
-	~CTimeMgr();
 };
 
