@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CTexture.h"
 
+#include "CDevice.h"
+
+
 CTexture::CTexture()
 	: CRes(RES_TYPE::TEXTURE)
 	, m_Desc{}
