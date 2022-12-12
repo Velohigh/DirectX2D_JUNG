@@ -92,6 +92,9 @@
     <ClInclude Include="CLayer.h">
       <Filter>Source\04. Level</Filter>
     </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>Source\07. Resource\02. Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="CLayer.cpp">
       <Filter>Source\04. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>Source\07. Resource\02. Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

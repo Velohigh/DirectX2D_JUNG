@@ -20,6 +20,13 @@ private:
 
 public:
     void Create(void* _VtxSysmem, UINT _iVtxCount, void* _IdxSysmem, UINT _IdxCount);
+
+private:
+    // 나중에 추가할 예정임, 당장은 쓸대가 없음
+    virtual int Load(const wstring& _strFilePath) { return S_OK; }
+public:
+    virtual int Save(const wstring& _strRelativePath) { return S_OK; }
+
     void render();
 
 private:

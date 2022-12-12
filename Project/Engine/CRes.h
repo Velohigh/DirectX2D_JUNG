@@ -18,13 +18,20 @@ private:
     void AddRef() { ++m_iRefCount; }
     void Release();
 
-public:
     // 리소스 바인딩
     virtual void UpdateData() = 0;
 
+
+private:
+    // 파일로부터 로딩, 무조건 리소스 매니저를 통해서 할것이므로, private로 숨긴다.
+    virtual int Load(const wstring& _strFilePath) = 0;
+
+public:
+    // 파일로 저장
+    virtual int Save(const wstring& _strRelativePath) = 0;
+
     // 리소스는 Clone 을 구현하지 않는다.
     virtual CRes* Clone() { return nullptr; assert(nullptr); }
-
 public:
     const wstring& GetKey() { return m_strKey; }
     const wstring& GetRelativePath() { return m_strRelativePath; }

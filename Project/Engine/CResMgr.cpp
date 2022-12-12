@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "CResMgr.h"
 
-#include "CMesh.h"
-#include "CGraphicsShader.h"
+#include "CPathMgr.h"
 
 
 CResMgr::CResMgr()
@@ -17,6 +16,7 @@ void CResMgr::init()
 {
 	CreateDefaultMesh();
 	CreateDefaultGraphicsShader();
+	LoadDefaultTexture();
 }
 
 void CResMgr::CreateDefaultMesh()
@@ -35,18 +35,22 @@ void CResMgr::CreateDefaultMesh()
 	// 정점
 	v.vPos = Vec3(-0.5f, 0.5f, 0.5f);
 	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
+	v.vUV = Vec2(0.f, 0.f);
 	vecVtx.push_back(v);
 
 	v.vPos = Vec3(0.5f, 0.5f, 0.5f);
 	v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
+	v.vUV = Vec2(1.f, 0.f);
 	vecVtx.push_back(v);
 
 	v.vPos = Vec3(0.5f, -0.5f, 0.5f);
 	v.vColor = Vec4(0.f, 0.f, 1.f, 1.f);
+	v.vUV = Vec2(1.f, 1.f);
 	vecVtx.push_back(v);
 
 	v.vPos = Vec3(-0.5f, -0.5f, 0.5f);
 	v.vColor = Vec4(0.f, 0.f, 0.f, 1.f);
+	v.vUV = Vec2(0.f, 1.f); 
 	vecVtx.push_back(v);
 
 	// 인덱스
@@ -59,11 +63,8 @@ void CResMgr::CreateDefaultMesh()
 	vecIdx.push_back(2);
 
 	pMesh = new CMesh;
-	pMesh->SetKey(L"RectMesh");
-
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	// pMesh.Get() 으로 해야 부모 포인터배열에 입력으로 들어갈 수 있다.
-	m_arrRes[(UINT)RES_TYPE::MESH].insert(make_pair(pMesh->GetKey(), pMesh.Get()));	// 리소스 매니저에 등록
+	AddRes<CMesh>(L"RectMesh", pMesh);	// 리소스 매니저에 등록
 }
 
 void CResMgr::CreateDefaultGraphicsShader()
@@ -76,9 +77,28 @@ void CResMgr::CreateDefaultGraphicsShader()
 	// ===========
 
 	pShader = new CGraphicsShader;
-	pShader->SetKey(L"TestShader");
 	pShader->CreateVertexShader(L"shader\\test.fx", "VS_Test");
 	pShader->CreatePixelShader(L"shader\\test.fx", "PS_Test");
-	m_arrRes[(UINT)RES_TYPE::GRAPHICS_SHADER].insert(make_pair(pShader->GetKey(), pShader.Get()));	// 리소스 매니저에 등록
+
+	AddRes<CGraphicsShader>(L"TestShader", pShader);	// 리소스 매니저에 등록
+
+}
+
+void CResMgr::LoadDefaultTexture()
+{
+	//wstring strContent = CPathMgr::GetInst()->GetContentPath();
+	//wstring strFilePath = strContent + L"texture\\cursor.bmp";
+	//// Texture 의 부모인 CRes에서 Friend ResMgr 처리가 되어있기때문에 부모포인터로 private인 Load에 접근한다.
+	//Ptr<CRes> pTexture = new CTexture;		
+	//pTexture->SetKey(L"PlayerTex");
+	//pTexture->SetRelativePath(L"texture\\cursor.bmp");
+	//pTexture->Load(strFilePath);
+
+	//m_arrRes[(UINT)RES_TYPE::TEXTURE].insert(make_pair(pTexture->GetKey(), pTexture.Get()));	// 리소스 매니저에 등록
+
+	Ptr<CTexture> pTexture = Load<CTexture>(L"PlayerTex", L"texture\\cursor.bmp");
+
+	// 로드한 텍스쳐를 t0레지스터에 바인딩한다.
+	((CTexture*)(pTexture.Get()))->UpdateData(0);
 
 }

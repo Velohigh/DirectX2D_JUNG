@@ -37,7 +37,7 @@ void CGraphicsShader::CreateVertexShader(const wstring& _strFileName, const stri
 
 
 	// InputLayout 생성
-	D3D11_INPUT_ELEMENT_DESC LayoutDesc[2] = { };
+	D3D11_INPUT_ELEMENT_DESC LayoutDesc[3] = { };
 
 	LayoutDesc[0].SemanticName = "POSITION";
 	LayoutDesc[0].SemanticIndex = 0;
@@ -55,7 +55,16 @@ void CGraphicsShader::CreateVertexShader(const wstring& _strFileName, const stri
 	LayoutDesc[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	LayoutDesc[1].InstanceDataStepRate = 0;	// 안씀
 
-	if (FAILED(DEVICE->CreateInputLayout(LayoutDesc, 2
+	LayoutDesc[2].SemanticName = "TEXCOORD";
+	LayoutDesc[2].SemanticIndex = 0;
+	LayoutDesc[2].AlignedByteOffset = 28;	// 정점버퍼에서의 해당 데이터 시작 지점
+	LayoutDesc[2].Format = DXGI_FORMAT_R32G32_FLOAT;	// 해당 레이아웃 데이터 크기 8byte
+	LayoutDesc[2].InputSlot = 0;			// 나중에 설명
+	LayoutDesc[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	LayoutDesc[2].InstanceDataStepRate = 0;	// 안씀
+
+
+	if (FAILED(DEVICE->CreateInputLayout(LayoutDesc, 3
 		, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize()
 		, m_Layout.GetAddressOf())))
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEVICE	CDevice::GetInst()->GetDevice()
+#define DEVICE  CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetDeviceContext()
 
 // return new(*this) 는 복사 생성자를 호출한다.
