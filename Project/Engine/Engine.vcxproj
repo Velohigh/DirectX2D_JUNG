@@ -187,6 +187,7 @@ call EngineCopy.bat
     <ClInclude Include="CLayer.h" />
     <ClInclude Include="CLevel.h" />
     <ClInclude Include="CLevelMgr.h" />
+    <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CPathMgr.h" />
@@ -207,7 +208,6 @@ call EngineCopy.bat
     <ClInclude Include="ptr.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="struct.h" />
-    <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CComponent.cpp" />
@@ -221,6 +221,7 @@ call EngineCopy.bat
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelMgr.cpp" />
+    <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
@@ -239,7 +240,6 @@ call EngineCopy.bat
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl" />

@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CPlayerScript.h"
 
+#include "CMeshRender.h"
+#include "CMaterial.h"
+
 CPlayerScript::CPlayerScript()
 {
 }
@@ -48,6 +51,17 @@ void CPlayerScript::tick()
 	
 	Transform()->SetRelativePos(vCurPos);
 
+	if (KEY_TAP(KEY::_1))
+	{
+		int a = 0;
+		MeshRender()->GetMaterial()->SetScalarParam(INT_0, &a);
+	}
+
+	else if (KEY_TAP(KEY::_2))
+	{
+		int a = 1;
+		MeshRender()->GetMaterial()->SetScalarParam(INT_0, &a);
+	}
 
 }
 

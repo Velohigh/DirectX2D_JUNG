@@ -28,7 +28,6 @@
     <ClInclude Include="CDevice.h">
       <Filter>Source\02. Device</Filter>
     </ClInclude>
-    <ClInclude Include="Test.h" />
     <ClInclude Include="SimpleMath.h">
       <Filter>Source\09. Module\SimpleMath</Filter>
     </ClInclude>
@@ -95,6 +94,9 @@
     <ClInclude Include="CTexture.h">
       <Filter>Source\07. Resource\02. Texture</Filter>
     </ClInclude>
+    <ClInclude Include="CMaterial.h">
+      <Filter>Source\07. Resource\03. Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -109,7 +111,6 @@
     <ClCompile Include="CDevice.cpp">
       <Filter>Source\02. Device</Filter>
     </ClCompile>
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="CPathMgr.cpp">
       <Filter>Source\03. Manager\01. PathMgr</Filter>
     </ClCompile>
@@ -169,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="CTexture.cpp">
       <Filter>Source\07. Resource\02. Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>Source\07. Resource\03. Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ class CConstBuffer :
 private:
     ComPtr<ID3D11Buffer>    m_CB;	        // 상수 버퍼
     D3D11_BUFFER_DESC       m_Desc;         // 상수 버퍼 디스크립션
-    const UINT              m_iRegistNum;   // 본인이 몇번 b레지스터에 바인딩 될것인지 지정.
+    const UINT              m_iRegisterNum;   // 본인이 몇번 b레지스터에 바인딩 될것인지 지정.
 
     UINT                    m_iElementSize; // 개별 요소 크기
     UINT                    m_iElementCount;// 개별 요소 개수

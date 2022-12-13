@@ -19,12 +19,16 @@ private:
 	ComPtr<ID3D11Texture2D>			m_DSTex;
 	ComPtr<ID3D11DepthStencilView>	m_DSV;
 
+	// Sampler
+	ComPtr<ID3D11SamplerState>		m_Sampler[2];
+
 	D3D11_VIEWPORT					m_ViewPort;
 
 	// 렌더타겟 해상도
 	Vec2							m_vRenderResolution;
 
 	CConstBuffer*					m_arrConstBuffer[(UINT)CB_TYPE::END];		// 상수 버퍼 관리
+
 
 public:
 	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
@@ -34,6 +38,7 @@ public:
 private:
 	int CreateSwapChain();
 	int CreateView();
+	int CreateSampler();
 	void CreateConstBuffer();
 
 public:

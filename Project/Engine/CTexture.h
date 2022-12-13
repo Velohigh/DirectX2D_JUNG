@@ -28,7 +28,8 @@ public:
     virtual int Save(const wstring& _strRelativePath) override;
 
 public:
-    void UpdateData(int _iRegisterNum);     // 텍스쳐를 레지스터에 바인딩하는 함수.
+    // _PipelineStage : PIPELINE_STAGE
+    void UpdateData(int _iRegisterNum, int _PipelineStage);     // 텍스쳐를 레지스터에 바인딩하는 함수.
 
 private:
     virtual void UpdateData() override;

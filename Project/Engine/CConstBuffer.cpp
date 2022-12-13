@@ -6,7 +6,7 @@
 
 CConstBuffer::CConstBuffer(UINT _iRegistNum)
 	: m_Desc{}
-	, m_iRegistNum(_iRegistNum)
+	, m_iRegisterNum(_iRegistNum)
 	, m_iElementSize(0)
 	, m_iElementCount(0)
 {
@@ -59,7 +59,7 @@ void CConstBuffer::SetData(void* _pSrc, UINT _iSize)
 	if (!FAILED(CONTEXT->Map(m_CB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
 	{
 		// 맵핑으로 시스템메모리에 동적할당하여 복사한다.
-		memcpy(tSubRes.pData, _pSrc, _iSize);  // tSubRes.pData 맵핑으로 가져온, 동적할당된 곳의 주소
+		memcpy(tSubRes.pData, _pSrc, size);  // tSubRes.pData 맵핑으로 가져온, 동적할당된 곳의 주소
 		CONTEXT->Unmap(m_CB.Get(), 0);	// 동적할당하여 가져온 곳의 수정한 정보들을 GPU로 다시 보낸다.
 	}
 
@@ -68,5 +68,9 @@ void CConstBuffer::SetData(void* _pSrc, UINT _iSize)
 void CConstBuffer::UpdateData()
 {
 	// GPU -> 레지스터로 바인딩
-	CONTEXT->VSSetConstantBuffers(m_iRegistNum, 1, m_CB.GetAddressOf());
+	CONTEXT->VSSetConstantBuffers(m_iRegisterNum, 1, m_CB.GetAddressOf());
+	CONTEXT->HSSetConstantBuffers(m_iRegisterNum, 1, m_CB.GetAddressOf());
+	CONTEXT->DSSetConstantBuffers(m_iRegisterNum, 1, m_CB.GetAddressOf());
+	CONTEXT->GSSetConstantBuffers(m_iRegisterNum, 1, m_CB.GetAddressOf());
+	CONTEXT->PSSetConstantBuffers(m_iRegisterNum, 1, m_CB.GetAddressOf());
 }

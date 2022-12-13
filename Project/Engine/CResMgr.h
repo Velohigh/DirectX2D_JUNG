@@ -5,6 +5,7 @@
 #include "CMesh.h"
 #include "CTexture.h"
 #include "CGraphicsShader.h"
+#include "CMaterial.h"
 
 // 리소스 관리 매니저
 class CResMgr :
@@ -24,6 +25,7 @@ public:
 private:
     void CreateDefaultMesh();
     void CreateDefaultGraphicsShader();
+    void CreateDefaultMaterial();
     void LoadDefaultTexture();
 
 public:
@@ -46,7 +48,7 @@ RES_TYPE GetResType()
     // 클래스 타입에 맞는 정보를 리소스 타입별로 미리 넣어둔다.
     const type_info& mesh = typeid(CMesh);
     //const type_info& meshdata = typeid(CMeshData);
-    //const type_info& material = typeid(CMaterial);
+    const type_info& material = typeid(CMaterial);
     const type_info& texture = typeid(CTexture);
     //const type_info& sound = typeid(CSound);
     //const type_info& prefab = typeid(CPrefab);
@@ -61,6 +63,9 @@ RES_TYPE GetResType()
         return RES_TYPE::GRAPHICS_SHADER;
     if (typeid(T).hash_code() == texture.hash_code())
         return RES_TYPE::TEXTURE;
+    if (typeid(T).hash_code() == material.hash_code())
+        return RES_TYPE::MATERIAL;
+
 
 
     return RES_TYPE::END;

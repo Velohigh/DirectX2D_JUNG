@@ -33,6 +33,9 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CLevelMgr.cpp"
 
 
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CMaterial.cpp"
+
+
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CMesh.cpp"
 
 
@@ -67,7 +70,4 @@
 
 
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\Engine.cpp"
-
-
-#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\Test.cpp"
 

@@ -82,6 +82,13 @@ int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	m_Context->RSSetViewports(1, &m_ViewPort);
 
 	
+	// 샘플러 생성
+	if (FAILED(CreateSampler()))
+	{
+		MessageBox(nullptr, L"샘플러 생성 실패", L"Device 초기화 에러", MB_OK);
+		return E_FAIL;
+	}
+
 	// 상수 버퍼 생성
 	CreateConstBuffer();
 	
@@ -176,10 +183,53 @@ int CDevice::CreateView()
 	return S_OK;
 }
 
+int CDevice::CreateSampler()
+{
+	D3D11_SAMPLER_DESC tSamDesc = {};
+	// 텍스쳐 샘플링의 UV좌표가 초과 되었을때 어떻게 할것이냐
+	// 1.Wrap : 이미지가 똑같이 나열되어 있는 방식 (1.1, 0.5 의 색상을 가져온다 치면 0.1, 0.5 좌표 색상을 가져오는 방식)
+	// 2.Mirror : 이미지가 거울처럼 대칭되어 있는 방식 (1.1, 0.5 의 색상 -> 0.9, 0.5 좌표)
+	tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	// 이방선 필터링 방식 : 보정 방식
+	tSamDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[0].GetAddressOf());
+
+	tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;	// 좌표값 색상 그대로 샘플하는 방식.
+	DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[1].GetAddressOf());
+
+	// s0 레지스터에 샘플러 바인딩
+	CONTEXT->VSSetSamplers(0, 1, m_Sampler[0].GetAddressOf());
+	CONTEXT->HSSetSamplers(0, 1, m_Sampler[0].GetAddressOf());
+	CONTEXT->DSSetSamplers(0, 1, m_Sampler[0].GetAddressOf());
+	CONTEXT->GSSetSamplers(0, 1, m_Sampler[0].GetAddressOf());
+	CONTEXT->PSSetSamplers(0, 1, m_Sampler[0].GetAddressOf());
+
+	// s1 레지스터에 샘플러 바인딩
+	CONTEXT->VSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
+	CONTEXT->HSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
+	CONTEXT->DSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
+	CONTEXT->GSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
+	CONTEXT->PSSetSamplers(1, 1, m_Sampler[1].GetAddressOf());
+
+
+	return S_OK;
+}
+
 void CDevice::CreateConstBuffer()
 {
+	// Transform 상수버퍼
 	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM] = new CConstBuffer((UINT)CB_TYPE::TRANSFORM);
 	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(Vec4), 1);
+
+	// Material 상수버퍼 생성
+	m_arrConstBuffer[(UINT)CB_TYPE::MATERIAL] = new CConstBuffer((UINT)CB_TYPE::MATERIAL);
+	m_arrConstBuffer[(UINT)CB_TYPE::MATERIAL]->Create(sizeof(tMtrlConst), 1);
+
 }
 
 void CDevice::ClearTarget(float(&_color)[4])

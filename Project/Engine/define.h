@@ -62,7 +62,60 @@ enum class RES_TYPE
 enum class CB_TYPE
 {
 	TRANSFORM,	// b0
-
+	MATERIAL,	// b1
 
 	END,
+};
+
+enum SCALAR_PARAM
+{
+	INT_0,
+	INT_1,
+	INT_2,
+	INT_3,
+
+	FLOAT_0,
+	FLOAT_1,
+	FLOAT_2,
+	FLOAT_3,
+
+	VEC2_0,
+	VEC2_1,
+	VEC2_2,
+	VEC2_3,
+
+	VEC4_0,
+	VEC4_1,
+	VEC4_2,
+	VEC4_3,
+
+	MAT_0,
+	MAT_1,
+	MAT_2,
+	MAT_3,
+};
+
+enum TEX_PARAM
+{
+	TEX_0,
+	TEX_1,
+	TEX_2,
+	TEX_3,
+	TEX_4,
+	TEX_5,
+	TEX_6,
+	TEX_7,
+
+	TEX_END,
+};
+
+enum PIPELINE_STAGE
+{
+	PS_VERTEX = 0x00,
+	PS_HULL = 0x01,
+	PS_DOMAIN = 0x02,
+	PS_GEOMETRY = 0x04,
+	PS_PIXEL = 0x08,
+
+	PS_ALL = PS_VERTEX | PS_HULL | PS_DOMAIN | PS_GEOMETRY | PS_PIXEL,
 };

@@ -100,8 +100,8 @@ void CGraphicsShader::UpdateData()
 	CONTEXT->IASetPrimitiveTopology(m_eTopology); // 3개씩 끊어서 면으로 보겠다는 세팅
 
 	CONTEXT->VSSetShader(m_VS.Get(), nullptr, 0); // 버텍스 셰이더 세팅
-	//CONTEXT->HSSetShader(m_VS.Get(), nullptr, 0); // 훌 셰이더 세팅
-	//CONTEXT->DSSetShader(m_VS.Get(), nullptr, 0); // 도메인 셰이더 세팅
-	//CONTEXT->GSSetShader(m_VS.Get(), nullptr, 0); // 지오메트리 셰이더 세팅
+	//CONTEXT->HSSetShader(m_HS.Get(), nullptr, 0); // 훌 셰이더 세팅
+	//CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0); // 도메인 셰이더 세팅
+	//CONTEXT->GSSetShader(m_GS.Get(), nullptr, 0); // 지오메트리 셰이더 세팅
 	CONTEXT->PSSetShader(m_PS.Get(), nullptr, 0); // 픽셀 셰이더 세팅
 }

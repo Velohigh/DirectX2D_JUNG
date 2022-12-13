@@ -16,6 +16,7 @@ void CResMgr::init()
 {
 	CreateDefaultMesh();
 	CreateDefaultGraphicsShader();
+	CreateDefaultMaterial();
 	LoadDefaultTexture();
 }
 
@@ -75,8 +76,8 @@ void CResMgr::CreateDefaultGraphicsShader()
 	// ===========
 	// Test Shader
 	// ===========
-
 	pShader = new CGraphicsShader;
+	pShader->SetKey(L"TestShader");
 	pShader->CreateVertexShader(L"shader\\test.fx", "VS_Test");
 	pShader->CreatePixelShader(L"shader\\test.fx", "PS_Test");
 
@@ -84,21 +85,17 @@ void CResMgr::CreateDefaultGraphicsShader()
 
 }
 
+void CResMgr::CreateDefaultMaterial()
+{
+	Ptr<CMaterial> pMtrl = nullptr;
+
+	// Test Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TestShader"));
+	AddRes<CMaterial>(L"TestMtrl", pMtrl);
+}
+
 void CResMgr::LoadDefaultTexture()
 {
-	//wstring strContent = CPathMgr::GetInst()->GetContentPath();
-	//wstring strFilePath = strContent + L"texture\\cursor.bmp";
-	//// Texture 의 부모인 CRes에서 Friend ResMgr 처리가 되어있기때문에 부모포인터로 private인 Load에 접근한다.
-	//Ptr<CRes> pTexture = new CTexture;		
-	//pTexture->SetKey(L"PlayerTex");
-	//pTexture->SetRelativePath(L"texture\\cursor.bmp");
-	//pTexture->Load(strFilePath);
-
-	//m_arrRes[(UINT)RES_TYPE::TEXTURE].insert(make_pair(pTexture->GetKey(), pTexture.Get()));	// 리소스 매니저에 등록
-
 	Ptr<CTexture> pTexture = Load<CTexture>(L"PlayerTex", L"texture\\cursor.bmp");
-
-	// 로드한 텍스쳐를 t0레지스터에 바인딩한다.
-	((CTexture*)(pTexture.Get()))->UpdateData(0);
-
 }
