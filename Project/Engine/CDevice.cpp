@@ -220,20 +220,20 @@ int CDevice::CreateSampler()
 	return S_OK;
 }
 
+void CDevice::ClearTarget(float(&_color)[4])
+{
+	m_Context->ClearRenderTargetView(m_RTV.Get(), _color); // 뷰가 가리키는 렌더타겟 텍스쳐의 색상 지정
+	m_Context->ClearDepthStencilView(m_DSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0); // 
+}
+
 void CDevice::CreateConstBuffer()
 {
 	// Transform 상수버퍼
 	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM] = new CConstBuffer((UINT)CB_TYPE::TRANSFORM);
-	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(Vec4), 1);
+	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(tTransform), 1);
 
 	// Material 상수버퍼 생성
 	m_arrConstBuffer[(UINT)CB_TYPE::MATERIAL] = new CConstBuffer((UINT)CB_TYPE::MATERIAL);
 	m_arrConstBuffer[(UINT)CB_TYPE::MATERIAL]->Create(sizeof(tMtrlConst), 1);
 
-}
-
-void CDevice::ClearTarget(float(&_color)[4])
-{
-	m_Context->ClearRenderTargetView(m_RTV.Get(), _color); // 뷰가 가리키는 렌더타겟 텍스쳐의 색상 지정
-	m_Context->ClearDepthStencilView(m_DSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0); // 
 }

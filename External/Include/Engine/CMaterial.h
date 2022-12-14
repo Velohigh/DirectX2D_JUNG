@@ -15,11 +15,9 @@ private:
     Ptr<CTexture>           m_arrTex[TEX_END];
 
 
-
-public:
-    // Mtrl상수값을 세팅하는 함수, #1.어느 위치에 들어갈 것인지, #2.전달할 데이터의 시작 주소
-    void SetScalarParam(SCALAR_PARAM _Param,void* _Src);  
-    void SetTexParam(TEX_PARAM _Param, const Ptr<CTexture>& _Tex);
+public:    
+    void SetScalarParam(SCALAR_PARAM _Param,void* _Src);  // Mtrl상수값을 세팅하는 함수, #1.어느 위치에 들어갈 것인지, #2.전달할 데이터의 시작 주소
+    void SetTexParam(TEX_PARAM _Param, const Ptr<CTexture>& _Tex);  // 텍스쳐 세팅 함수
 
     void SetShader(Ptr<CGraphicsShader> _Shader) { m_pShader = _Shader; }
     // 상수값을 디바이스에서 만들어둔 상수 버퍼로 옮긴 다음, b1 레지스터에 바인딩한다.

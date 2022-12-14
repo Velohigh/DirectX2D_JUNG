@@ -4,7 +4,9 @@
 // 상수버퍼 레지스터
 cbuffer TRANSFORM : register(b0)
 {
-    float4 vPlayerPos;
+    row_major matrix g_matWorld;    // 월드 스페이스 변환
+    row_major matrix g_matView;     // View 스페이스 변환
+    row_major matrix g_matProj;     // 투영 변환 (뷰 스페이스의 좌표를 -1~ 1의 NDC 좌표계로 투영 시켜야 한다)
 };
 
 cbuffer MATERIAL : register(b1)
@@ -78,10 +80,7 @@ VS_OUT VS_Test(VS_IN _in)
     VS_OUT output = (VS_OUT) 0.f;
     
     // 입력으로 들어온 정점좌표에 상수버퍼 값을 더해서 출력 ( 월드 스페이스 변환 )
-    float3 vPos = _in.vPos;     
-    vPos.xy += vPlayerPos.xy;   
-    
-    output.vPosition = float4(vPos, 1.f);
+    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWorld);
     output.vOutColor = _in.vColor;
     output.vOutUV = _in.vUV;
     

@@ -63,5 +63,14 @@ void CPlayerScript::tick()
 		MeshRender()->GetMaterial()->SetScalarParam(INT_0, &a);
 	}
 
+	// z축 회전 시켜보기
+	if (KEY_PRESSED(KEY::A))
+	{
+		Vec3 vRot = Transform()->GetRelativeRot();
+		vRot.z += DT * XM_PI;
+		Transform()->SetRelativeRot(vRot);
+	}
+
+
 }
 

@@ -35,13 +35,15 @@ void CLevelMgr::init()
 	pObj->AddComponent(new CPlayerScript);	// 플레이어 스크립트 컴포넌트
 
 	// 리소스 매니저에서 메쉬, 재질, 텍스쳐를 찾아와서 넣어준다.
-	Ptr<CMesh> RectMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
+	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh");
 	Ptr<CMaterial> TestMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl");
 	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"PlayerTex");
 
 	TestMtrl->SetTexParam(TEX_0, PlayerTex);
 
-	pObj->MeshRender()->SetMesh(RectMesh);
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.5f));
+
+	pObj->MeshRender()->SetMesh(pMesh);
 	pObj->MeshRender()->SetMaterial(TestMtrl);
 
 	m_pCurLevel->AddGameObject(pObj, 0);
@@ -52,7 +54,7 @@ void CLevelMgr::init()
 	pObj->AddComponent(new CTransform);	// 위치담당 컴포넌트
 	pObj->AddComponent(new CMeshRender);	// 그리기 담당 컴포넌트
 
-	pObj->MeshRender()->SetMesh(RectMesh);
+	pObj->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(TestMtrl);
 
 	m_pCurLevel->AddGameObject(pObj, 1);

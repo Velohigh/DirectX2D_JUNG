@@ -34,22 +34,22 @@ void CResMgr::CreateDefaultMesh()
 	// |	 |
 	// 3 --- 2
 	// 정점
-	v.vPos = Vec3(-0.5f, 0.5f, 0.5f);
+	v.vPos = Vec3(-0.5f, 0.5f, 0.f);
 	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 	v.vUV = Vec2(0.f, 0.f);
 	vecVtx.push_back(v);
 
-	v.vPos = Vec3(0.5f, 0.5f, 0.5f);
+	v.vPos = Vec3(0.5f, 0.5f, 0.f);
 	v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 	v.vUV = Vec2(1.f, 0.f);
 	vecVtx.push_back(v);
 
-	v.vPos = Vec3(0.5f, -0.5f, 0.5f);
+	v.vPos = Vec3(0.5f, -0.5f, 0.f);
 	v.vColor = Vec4(0.f, 0.f, 1.f, 1.f);
 	v.vUV = Vec2(1.f, 1.f);
 	vecVtx.push_back(v);
 
-	v.vPos = Vec3(-0.5f, -0.5f, 0.5f);
+	v.vPos = Vec3(-0.5f, -0.5f, 0.f);
 	v.vColor = Vec4(0.f, 0.f, 0.f, 1.f);
 	v.vUV = Vec2(0.f, 1.f); 
 	vecVtx.push_back(v);
@@ -66,6 +66,56 @@ void CResMgr::CreateDefaultMesh()
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes<CMesh>(L"RectMesh", pMesh);	// 리소스 매니저에 등록
+	vecVtx.clear();
+	vecIdx.clear();
+
+	// ===========
+	// Circle Mesh
+	// ===========
+	//      3
+	//   4     2
+	// 5  --0-- 1
+
+	// 반지름
+	float fRadius = 0.5f;
+
+	// 각도
+	UINT fSlice = 40.f;
+	float fTheta = XM_2PI / (float)fSlice;
+
+	// 중심점
+	v.vPos = Vec3(0.f, 0.f, 0.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vUV = Vec2(0.5f, 0.5f);
+	vecVtx.push_back(v);
+
+	// 정점 위치 지정
+	for (UINT i = 0; i < fSlice; ++i)
+	{
+		v.vPos = Vec3(fRadius * cosf(fTheta * (float)i), fRadius * sinf(fTheta * (float)i), 0.f);
+		v.vUV = Vec2(v.vPos.x + 0.5f, -v.vPos.y + 0.5f);
+		vecVtx.push_back(v);
+	}
+
+	// 인덱스 설정
+	for (UINT i = 0; i < fSlice - 1; ++i)
+	{
+		vecIdx.push_back(0);
+		vecIdx.push_back(i + 2);
+		vecIdx.push_back(i + 1);
+	}
+
+	// 마지막 삼각형
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
+	vecIdx.push_back(fSlice);
+
+	pMesh = new CMesh;
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddRes<CMesh>(L"CircleMesh", pMesh);	// 리소스 매니저에 등록
+	vecVtx.clear();
+	vecIdx.clear();
+
 }
 
 void CResMgr::CreateDefaultGraphicsShader()
