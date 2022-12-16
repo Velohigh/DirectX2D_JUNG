@@ -19,8 +19,7 @@ void CTransform::finaltick()
 {
 	// 크기 행렬
 	Matrix matScale = XMMatrixIdentity();	// 단위 행렬 반환 함수
-	XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);	// 크기 행렬 반환해주는 함수
-
+	matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);	// 크기 행렬 반환해주는 함수
 
 	// 회전 행렬
 	Matrix matRot = XMMatrixIdentity();
@@ -43,7 +42,11 @@ void CTransform::UpdateData()
 	// 위치값을 상수버퍼에 전달 및 바인딩
 	CConstBuffer* pTransformBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
 
-	pTransformBuffer->SetData(&m_matWorld, sizeof(Matrix));	// 상수버퍼 세팅
+	g_transform.matWorld = m_matWorld;
+	g_transform.matView;
+	g_transform.matProj;
+
+	pTransformBuffer->SetData(&g_transform);	// 상수버퍼 세팅
 	pTransformBuffer->UpdateData();	// 상수버퍼 바인딩
 
 }

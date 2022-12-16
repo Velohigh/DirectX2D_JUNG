@@ -4,12 +4,12 @@
 #include "CLevel.h"
 #include "CLayer.h"
 
-#include "CGameObject.h"
-#include "CTransform.h"
-#include "CMeshRender.h"
-#include "CPlayerScript.h"
-
 #include "CResMgr.h"
+
+#include "CGameObject.h"
+#include "component.h"
+#include "CPlayerScript.h"
+#include "CCameraMoveScript.h"
 
 CLevelMgr::CLevelMgr()
 	: m_pCurLevel(nullptr)
@@ -27,6 +27,18 @@ void CLevelMgr::init()
 {
 	m_pCurLevel = new CLevel;
 
+	// Main Camera Object 积己
+	CGameObject* pMainCam = new CGameObject;
+	pMainCam->SetName(L"MainCamera");
+
+	pMainCam->AddComponent(new CTransform);
+	pMainCam->AddComponent(new CCamera);
+	pMainCam->AddComponent(new CCameraMoveScript);
+
+	m_pCurLevel->AddGameObject(pMainCam, 0);
+
+
+
 	// 坷宏璃飘 积己
 	CGameObject* pObj = new CGameObject;
 	pObj->SetName(L"Player");
@@ -41,7 +53,8 @@ void CLevelMgr::init()
 
 	TestMtrl->SetTexParam(TEX_0, PlayerTex);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.5f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(pMesh);
 	pObj->MeshRender()->SetMaterial(TestMtrl);

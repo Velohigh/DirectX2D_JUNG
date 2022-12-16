@@ -35,6 +35,8 @@ public:
 	void ClearTarget(float(&_color)[4]);
 	void Present() { m_SwapChain->Present(0, 0); }
 
+	Vec2 GetRenderResolution() { return m_vRenderResolution; }
+
 private:
 	int CreateSwapChain();
 	int CreateView();

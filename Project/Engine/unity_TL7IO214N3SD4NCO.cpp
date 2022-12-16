@@ -1,5 +1,11 @@
 #include "pch.h"
 
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CCamera.cpp"
+
+
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CCameraMoveScript.cpp"
+
+
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CComponent.cpp"
 
 
@@ -70,4 +76,7 @@
 
 
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\Engine.cpp"
+
+
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\extern.cpp"
 

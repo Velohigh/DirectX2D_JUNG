@@ -97,6 +97,15 @@
     <ClInclude Include="CMaterial.h">
       <Filter>Source\07. Resource\03. Material</Filter>
     </ClInclude>
+    <ClInclude Include="component.h">
+      <Filter>Source\00. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Source\06. Component\03. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Source\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -173,6 +182,15 @@
     </ClCompile>
     <ClCompile Include="CMaterial.cpp">
       <Filter>Source\07. Resource\03. Material</Filter>
+    </ClCompile>
+    <ClCompile Include="extern.cpp">
+      <Filter>Source\00. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Source\06. Component\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Source\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +280,9 @@
     </Filter>
     <Filter Include="Source\03. Manager\02. KeyMgr">
       <UniqueIdentifier>{3aa2a9a8-ed7f-4dff-bc0d-d5513dafa19f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\03. Camera">
+      <UniqueIdentifier>{a32adc0d-d7e6-45b2-b852-ce21fc549e85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

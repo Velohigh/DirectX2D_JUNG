@@ -18,6 +18,7 @@ struct tTransform
 	Matrix matProj;
 };
 
+extern tTransform g_transform;
 
 // 재질을 통해 상수 값을 전달할 것임
 struct tMtrlConst

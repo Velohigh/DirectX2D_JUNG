@@ -176,6 +176,8 @@ call EngineCopy.bat
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CDevice.h" />
@@ -190,6 +192,7 @@ call EngineCopy.bat
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
+    <ClInclude Include="component.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CRes.h" />
@@ -210,6 +213,8 @@ call EngineCopy.bat
     <ClInclude Include="struct.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CDevice.cpp" />
@@ -234,6 +239,7 @@ call EngineCopy.bat
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="extern.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

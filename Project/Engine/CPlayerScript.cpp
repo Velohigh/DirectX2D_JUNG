@@ -5,6 +5,7 @@
 #include "CMaterial.h"
 
 CPlayerScript::CPlayerScript()
+	: m_fSpeed(100.f)
 {
 }
 
@@ -20,7 +21,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.y += (float)DT * 1.f;
+			vCurPos.y += (float)DT * m_fSpeed;
 		}
 	}
 
@@ -28,7 +29,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.y -= (float)DT * 1.f;
+			vCurPos.y -= (float)DT * m_fSpeed;
 
 		}
 	}
@@ -37,7 +38,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.x -= (float)DT * 1.f;
+			vCurPos.x -= (float)DT * m_fSpeed;
 		}
 	}
 
@@ -45,7 +46,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.x += (float)DT * 1.f;
+			vCurPos.x += (float)DT * m_fSpeed;
 		}
 	}
 	
@@ -64,12 +65,16 @@ void CPlayerScript::tick()
 	}
 
 	// z축 회전 시켜보기
-	if (KEY_PRESSED(KEY::A))
+	if (KEY_PRESSED(KEY::Z))
 	{
 		Vec3 vRot = Transform()->GetRelativeRot();
 		vRot.z += DT * XM_PI;
 		Transform()->SetRelativeRot(vRot);
+
+		vCurPos.z += DT * m_fSpeed;
 	}
+
+	Transform()->SetRelativePos(vCurPos);
 
 
 }

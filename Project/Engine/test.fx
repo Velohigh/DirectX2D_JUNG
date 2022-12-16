@@ -79,8 +79,18 @@ VS_OUT VS_Test(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
-    // 입력으로 들어온 정점좌표에 상수버퍼 값을 더해서 출력 ( 월드 스페이스 변환 )
-    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWorld);
+    // 입력으로 들어온 정점좌표에 월드 행렬 변환 -> 뷰 행렬 변환 -> 투영 행렬 변환
+    float4 vWorldPos = mul(float4(_in.vPos, 1.f), g_matWorld);
+    float4 vViewPos = mul(vWorldPos, g_matView);
+    float4 vProjPos = mul(vViewPos, g_matProj);
+
+    //// 원근 투영일 경우 투영행렬까지 곱해준게 최종 NDC 좌표계가 되는 것이 아니다.
+    //// xyz좌표의 z값을 기억하고있는 w로 각각 나눠줘야 한다. 단, 셰이더의 레스터 라이저 과정에서 알아서 나눠서 사용한다.
+    //vProjPos.x /= vProjPos.w;
+    //vProjPos.y /= vProjPos.w;
+    //vProjPos.z /= vProjPos.w;
+    
+    output.vPosition = vProjPos;
     output.vOutColor = _in.vColor;
     output.vOutUV = _in.vUV;
     
