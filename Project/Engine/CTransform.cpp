@@ -8,6 +8,10 @@
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
 	, m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
+	, m_vRelativeDir{
+		Vec3(1.f, 0.f, 0.f),
+		Vec3(0.f, 1.f, 0.f),
+		Vec3(0.f, 0.f, 1.f)}
 {
 }
 
@@ -30,8 +34,26 @@ void CTransform::finaltick()
 	// 이동 행렬
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
+
+	Vec3 vDefaultDir[3] = {
+		Vec3(1.f, 0.f, 0.f),
+		Vec3(0.f, 1.f, 0.f),
+		Vec3(0.f, 0.f, 1.f)
+	};
+
+	for (int i = 0; i < 3; ++i)
+	{
+		// XMVector3TransformCoord(vDefaultDir[i], matRot);	// Coordinate 동차 좌표를 1로 확장하여 계산
+
+		//m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);	// 동차 좌표를 0으로 확장하여 계산
+		//m_vRelativeDir[i].Normalize();
+		
+		m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);	// 동차 좌표를 0으로 확장하여 계산
+	}
+
+
 	// 월드 행렬
-	m_matWorld = matScale* matRot* matTranslation;
+	m_matWorld = matScale * matRot * matTranslation;
 }
 
 void CTransform::UpdateData()

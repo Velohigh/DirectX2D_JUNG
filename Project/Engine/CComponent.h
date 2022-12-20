@@ -5,6 +5,7 @@
 
 class CTransform;
 class CMeshRender;
+class CCamera;
 
 class CComponent :
     public CEntity
@@ -25,6 +26,7 @@ public:
 public:
     CTransform* Transform() { return m_pOwner->Transform(); }
     CMeshRender* MeshRender() { return m_pOwner->MeshRender(); }
+    CCamera* Camera() { return m_pOwner->Camera(); }
 
 public:
     CComponent(COMPONENT_TYPE _Type);

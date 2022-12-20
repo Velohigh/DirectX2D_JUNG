@@ -35,6 +35,8 @@ void CLevelMgr::init()
 	pMainCam->AddComponent(new CCamera);
 	pMainCam->AddComponent(new CCameraMoveScript);
 
+	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+
 	m_pCurLevel->AddGameObject(pMainCam, 0);
 
 
@@ -53,7 +55,7 @@ void CLevelMgr::init()
 
 	TestMtrl->SetTexParam(TEX_0, PlayerTex);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(pMesh);
@@ -66,6 +68,10 @@ void CLevelMgr::init()
 	pObj->SetName(L"Test Object");
 	pObj->AddComponent(new CTransform);	// 위치담당 컴포넌트
 	pObj->AddComponent(new CMeshRender);	// 그리기 담당 컴포넌트
+
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 200.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
 
 	pObj->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(TestMtrl);

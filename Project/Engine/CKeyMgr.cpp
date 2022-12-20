@@ -109,10 +109,14 @@ void CKeyMgr::tick()
 		}
 
 		// Mouse 위치 갱신
+		m_vPrevMousePos = m_vMousePos;
 		POINT ptMousePos = {};
 		GetCursorPos(&ptMousePos);		
 		ScreenToClient(CEngine::GetInst()->GetMainWnd(), &ptMousePos);
 		m_vMousePos = Vec2((float)ptMousePos.x, (float)ptMousePos.y);
+
+		m_vMouseDir = m_vMousePos - m_vPrevMousePos;
+		m_vMouseDir.y *= -1;
 	}
 
 	// Window 가 focus 상태가 아니다
