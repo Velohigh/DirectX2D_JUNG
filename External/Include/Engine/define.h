@@ -120,6 +120,18 @@ enum PIPELINE_STAGE
 	PS_ALL = PS_VERTEX | PS_HULL | PS_DOMAIN | PS_GEOMETRY | PS_PIXEL,
 };
 
+enum class RS_TYPE
+{
+	CULL_BACK,		// 
+	CULL_FRONT,		// 시계 방향을 컬링, 반시계를 보겠다. 하늘 같은, 맵안에서 밖을 바라볼 때 사용
+	CULL_NONE,		// 앞면이든 뒷면이든 컬링하지 않겠다.
+	WIRE_FRAME,		// 텍스쳐가 아닌 뼈대만 확인하기 위한 옵션
+	END,
+};
+
+
+
+
 enum class DIR_TYPE
 {
 	RIGHT,

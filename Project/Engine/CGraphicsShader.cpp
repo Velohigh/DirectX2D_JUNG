@@ -90,12 +90,10 @@ void CGraphicsShader::CreatePixelShader(const wstring& _strFileName, const strin
 	// 컴파일된 객체로 PixelShader 를 만든다.
 	DEVICE->CreatePixelShader(m_PSBlob->GetBufferPointer(), m_PSBlob->GetBufferSize()
 		, nullptr, m_PS.GetAddressOf());
-
 }
 
 void CGraphicsShader::UpdateData()
 {
-
 	CONTEXT->IASetInputLayout(m_Layout.Get());	// IA에서 사용될 레이아웃을 세팅
 	CONTEXT->IASetPrimitiveTopology(m_eTopology); // 3개씩 끊어서 면으로 보겠다는 세팅
 
@@ -104,4 +102,7 @@ void CGraphicsShader::UpdateData()
 	//CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0); // 도메인 셰이더 세팅
 	//CONTEXT->GSSetShader(m_GS.Get(), nullptr, 0); // 지오메트리 셰이더 세팅
 	CONTEXT->PSSetShader(m_PS.Get(), nullptr, 0); // 픽셀 셰이더 세팅
+
+	CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
+
 }

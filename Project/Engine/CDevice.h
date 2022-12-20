@@ -21,6 +21,9 @@ private:
 
 	// Sampler
 	ComPtr<ID3D11SamplerState>		m_Sampler[2];
+	// RasterizerState
+	ComPtr<ID3D11RasterizerState>	m_RSState[(UINT)RS_TYPE::END];
+
 
 	D3D11_VIEWPORT					m_ViewPort;
 
@@ -40,6 +43,7 @@ public:
 private:
 	int CreateSwapChain();
 	int CreateView();
+	int CreateRasterizerState();
 	int CreateSampler();
 	void CreateConstBuffer();
 
@@ -47,6 +51,7 @@ public:
 	ID3D11Device* GetDevice() { return m_Device.Get(); }
 	ID3D11DeviceContext* GetDeviceContext() { return m_Context.Get(); }
 	CConstBuffer* GetConstBuffer(CB_TYPE _Type) { return m_arrConstBuffer[(UINT)_Type]; }
+	ComPtr<ID3D11RasterizerState> GetRSState(RS_TYPE _Type) { return m_RSState[(UINT)_Type]; }
 
 public:
 	CDevice();

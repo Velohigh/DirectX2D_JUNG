@@ -22,7 +22,6 @@ CLevelMgr::~CLevelMgr()
 		delete m_pCurLevel;
 }
 
-
 void CLevelMgr::init()
 {
 	m_pCurLevel = new CLevel;

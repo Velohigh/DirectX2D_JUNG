@@ -81,7 +81,15 @@ int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
 	m_Context->RSSetViewports(1, &m_ViewPort);
 
-	
+	// RasterizerState 생성
+	if (FAILED(CreateRasterizerState()))
+	{
+		MessageBox(nullptr, L"레스터라이져 스테이트 생성 실패", L"Device 초기화 에러", MB_OK);
+		return E_FAIL;
+	}
+
+
+
 	// 샘플러 생성
 	if (FAILED(CreateSampler()))
 	{
@@ -179,6 +187,26 @@ int CDevice::CreateView()
 		return E_FAIL;
 	}
 
+
+	return S_OK;
+}
+
+int CDevice::CreateRasterizerState()
+{
+	m_RSState[(UINT)RS_TYPE::CULL_BACK] = nullptr; // nullptr이면 기본 옵션을 사용하라는 것.
+
+	D3D11_RASTERIZER_DESC Desc = {};
+	Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
+	Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;	// 면 내부를 채울지 여부, 설정안하면 기본옵션
+	DEVICE->CreateRasterizerState(&Desc, m_RSState[(UINT)RS_TYPE::CULL_FRONT].GetAddressOf()); 
+
+	Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+	Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+	DEVICE->CreateRasterizerState(&Desc, m_RSState[(UINT)RS_TYPE::CULL_NONE].GetAddressOf());
+
+	Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+	Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+	DEVICE->CreateRasterizerState(&Desc, m_RSState[(UINT)RS_TYPE::WIRE_FRAME].GetAddressOf());
 
 	return S_OK;
 }
