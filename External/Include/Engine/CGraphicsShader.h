@@ -21,14 +21,16 @@ private:
     D3D11_PRIMITIVE_TOPOLOGY        m_eTopology;    // 정점을 몇개씩 끊어서 어떤 형태로 볼것인지 정하는 거
     
     RS_TYPE                         m_RSType;       // Rasterrizer 상태값
+    DS_TYPE                         m_DSType;       // DepthStencil State
+    BS_TYPE                         m_BSType;       // Blending State
 
-    //BS_TYPE;
-    //DS_TYPE;
 public:
     void CreateVertexShader(const wstring& _strFileName, const string& _strFuncName);
     void CreatePixelShader(const wstring& _strFileName, const string& _strFuncName);
     void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _Topology) { m_eTopology = _Topology; }
     void SetRSType(RS_TYPE _Type) { m_RSType = _Type; }
+    void SetDSType(DS_TYPE _Type) { m_DSType = _Type; }
+    void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
     virtual void UpdateData() override;     // 리소스 바인딩하는 함수, 이 셰이더를 사용하겠다!! 라는 거
 
 public:

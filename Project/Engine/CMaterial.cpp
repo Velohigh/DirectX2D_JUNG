@@ -27,11 +27,13 @@ void CMaterial::UpdateData()
 	{
 		if (nullptr == m_arrTex[i])
 		{
+			m_Const.arrTex[i] = 0;
 			continue;
 		}
 
 		else
 		{
+			m_Const.arrTex[i] = 1;
 			m_arrTex[i]->UpdateData(i, PIPELINE_STAGE::PS_PIXEL);
 		}
 	}

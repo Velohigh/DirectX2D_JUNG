@@ -294,5 +294,11 @@
     <FxCompile Include="test.fx">
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="value.fx">
+      <Filter>Source\08. ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="std2d.fx">
+      <Filter>Source\08. ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

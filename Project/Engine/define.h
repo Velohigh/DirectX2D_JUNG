@@ -19,8 +19,13 @@
 #define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
 
 
+
+
+
+
 enum class COMPONENT_TYPE
 {
+	// update
 	TRANSFORM,		// 위치, 크기, 회전
 	COLLIDER2D,		// 2차원 충돌
 	COLLIDER3D,		// 3차원 충돌
@@ -42,6 +47,7 @@ enum class COMPONENT_TYPE
 	
 	END,
 };
+
 
 enum class RES_TYPE
 {
@@ -66,6 +72,7 @@ enum class CB_TYPE
 
 	END,
 };
+
 
 enum SCALAR_PARAM
 {
@@ -129,6 +136,28 @@ enum class RS_TYPE
 	END,
 };
 
+enum class DS_TYPE
+{
+	LESS,				// 디폴트 옵션, 깊이 값이 낮은 걸 출력, // 이전에 누가 세팅해둔게 남아 있을 수 있으므로, nullptr 로 다시 세팅해줘야한다.
+	LESS_EQUAL,			
+	GREATER,			// 깊이 값이 높은 걸 출력
+	GREATER_EQUAL,
+	NO_WRITE,			// LESS, DepthWrite X   출력후 깊이값 저장 X
+	NO_TEST_NO_WRITE,	// Test X, DepthWrite X	깊이 상관없이 무조건 출력, 저장 X
+	END,
+};
+
+
+enum class BS_TYPE
+{
+	DEFAULT,		// No Blending, 출력 색상을 그대로 출력
+	MASK,			// Alpha Coverage
+	ALPHA_BLEND,	// Alpha 계수에 따라 출력색상 * 알파값 + 기존색상 * (1-알파값)
+	ONE_ONE,		// 1:1 혼합, 보통 검은색 배경은 알파값이 없기 때문에, 검은 부분을 빼는 작업에 사용함
+	END,
+};
+
+
 
 
 
@@ -143,4 +172,13 @@ enum class PROJ_TYPE
 {
 	ORTHOGRAPHIC,
 	PERSPECTIVE,
+};
+
+enum class SHADER_DOMAIN
+{
+	DOMAIN_OPAQUE,		// 불투명 오브젝트
+	DOMAIN_MASK,		// 불투명, 투명
+	DOMAIN_TRANSPARENT,	// 반투명
+
+	DOMAIN_UNDEFINED,	// 미정, Domain은 무조건 분류되어야 하므로, assert로 처리해준다.
 };

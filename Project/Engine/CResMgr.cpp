@@ -130,9 +130,37 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetKey(L"TestShader");
 	pShader->CreateVertexShader(L"shader\\test.fx", "VS_Test");
 	pShader->CreatePixelShader(L"shader\\test.fx", "PS_Test");
+
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트 진행, 깊이 기록 X
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
 	AddRes<CGraphicsShader>(L"TestShader", pShader);	// 리소스 매니저에 등록
+
+
+	// ============================
+	// Std2DShader
+	// RasterizerState      : None
+	// BlendState           : Mask
+	// DepthStencilState    : Less
+	//
+	// Parameter
+	// g_tex_0              : Output Texture
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"Std2DShader");
+	pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+	pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetBSType(BS_TYPE::MASK);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
+
+	AddRes(pShader->GetKey(), pShader);
 
 }
 
@@ -144,9 +172,16 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TestShader"));
 	AddRes<CMaterial>(L"TestMtrl", pMtrl);
+
+
+	// Std2D Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
+	AddRes(L"Std2DMtrl", pMtrl);
 }
 
 void CResMgr::LoadDefaultTexture()
 {
-	Ptr<CTexture> pTexture = Load<CTexture>(L"PlayerTex", L"texture\\cursor.bmp");
+	Ptr<CTexture> pTexture = Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");
+	Ptr<CTexture> pSmoke = Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
 }

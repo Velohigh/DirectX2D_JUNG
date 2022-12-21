@@ -6,8 +6,10 @@
 
 #include "CResMgr.h"
 
+
 #include "CGameObject.h"
 #include "component.h"
+
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"
 
@@ -34,7 +36,7 @@ void CLevelMgr::init()
 	pMainCam->AddComponent(new CCamera);
 	pMainCam->AddComponent(new CCameraMoveScript);
 
-	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+	pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 
 	m_pCurLevel->AddGameObject(pMainCam, 0);
 
@@ -49,18 +51,19 @@ void CLevelMgr::init()
 
 	// 리소스 매니저에서 메쉬, 재질, 텍스쳐를 찾아와서 넣어준다.
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh");
-	Ptr<CMaterial> TestMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl");
+	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl");
 	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"PlayerTex");
 
-	TestMtrl->SetTexParam(TEX_0, PlayerTex);
+	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"SmokeTex");
+	Std2DMtrl->SetTexParam(TEX_0, PlayerTex);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pObj->MeshRender()->SetMesh(pMesh);
-	pObj->MeshRender()->SetMaterial(TestMtrl);
+	pObj->MeshRender()->SetMaterial(Std2DMtrl);
 
-	m_pCurLevel->AddGameObject(pObj, 0);
+	m_pCurLevel->AddGameObject(pObj, 1);
 
 	// Test 오브젝트
 	pObj = new CGameObject;
@@ -68,14 +71,14 @@ void CLevelMgr::init()
 	pObj->AddComponent(new CTransform);	// 위치담당 컴포넌트
 	pObj->AddComponent(new CMeshRender);	// 그리기 담당 컴포넌트
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 200.f));
-	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(400.f, 0.f, 200.f));
+	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 
 	pObj->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(TestMtrl);
+	pObj->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-	m_pCurLevel->AddGameObject(pObj, 1);
+	m_pCurLevel->AddGameObject(pObj, 0);
 }
 
 void CLevelMgr::tick()
