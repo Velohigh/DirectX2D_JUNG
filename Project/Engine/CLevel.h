@@ -14,10 +14,10 @@ private:
 public:
     void tick();
     void finaltick();
-    void render();
 
 public:
     void AddGameObject(CGameObject* _Object, int _iLayerIndex); // 해당 레이어에 오브젝트 추가.
+    CLayer* GetLayer(int _iLayerIdx) { assert(!(_iLayerIdx < 0)); return m_arrLayer[_iLayerIdx]; }
 
     CLONE(CLevel); 
 public:

@@ -7,6 +7,7 @@
 #include "CTimeMgr.h"
 #include "CResMgr.h"
 #include "CLevelMgr.h"
+#include "CRenderMgr.h"
 
 CEngine::CEngine()
 	: m_hWnd(nullptr)
@@ -42,6 +43,7 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	CKeyMgr::GetInst()->init();
 	CTimeMgr::GetInst()->init();
 	CResMgr::GetInst()->init();
+	CRenderMgr::GetInst()->init();
 	CLevelMgr::GetInst()->init();
 
 	return S_OK;
@@ -69,11 +71,10 @@ void CEngine::render()
 
 	// 여기서 물체들을 다 그리고, 스왑체인에 프레젠트를 요청한다.
 	// 렌더링 시작
-	float arrColor[4] = { 0.f, 0.f, 0.f, 1.f };
+	float arrColor[4] = { 0.4f, 0.4f, 0.4f, 1.f };
 	CDevice::GetInst()->ClearTarget(arrColor);  // 렌더 타겟 색상 지정
 
-
-	CLevelMgr::GetInst()->render();
+	CRenderMgr::GetInst()->render();
 
 
 	// 렌더 종료

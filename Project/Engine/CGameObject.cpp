@@ -6,6 +6,7 @@
 
 CGameObject::CGameObject()
 	: m_arrCom{}
+	, m_RenderCom(nullptr)
 {
 }
 
@@ -46,10 +47,8 @@ void CGameObject::finaltick()
 
 void CGameObject::render()
 {
-	if (nullptr == MeshRender())
-		return;
-
-	MeshRender()->render();
+	if (nullptr != m_RenderCom)
+		m_RenderCom->render();
 }
 
 void CGameObject::AddComponent(CComponent* _Component)
@@ -59,4 +58,12 @@ void CGameObject::AddComponent(CComponent* _Component)
 
 	_Component->m_pOwner = this;
 	m_arrCom[(UINT)_Component->GetType()] = _Component;
+
+	// RenderComponent 확인,   렌더 컴포넌트는 딱 하나만 가져야 한다.
+	if (COMPONENT_TYPE::MESHRENDER <= _Component->GetType()
+		&& _Component->GetType() <= COMPONENT_TYPE::DECAL)
+	{
+		assert(!m_RenderCom);
+		m_RenderCom = (CRenderComponent*)_Component;
+	}
 }

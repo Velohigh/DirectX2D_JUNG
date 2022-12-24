@@ -106,6 +106,12 @@
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Source\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CRenderMgr.h">
+      <Filter>Source\03. Manager\06. RenderMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderComponent.h">
+      <Filter>Source\06. Component\RenderComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -191,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Source\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgr.cpp">
+      <Filter>Source\03. Manager\06. RenderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderComponent.cpp">
+      <Filter>Source\06. Component\RenderComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +295,12 @@
     </Filter>
     <Filter Include="Source\06. Component\03. Camera">
       <UniqueIdentifier>{a32adc0d-d7e6-45b2-b852-ce21fc549e85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03. Manager\06. RenderMgr">
+      <UniqueIdentifier>{dafe18c8-55a1-482b-9c70-55556944d06a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\RenderComponent">
+      <UniqueIdentifier>{e5e7965d-dd6f-47ea-a6b8-cabf676d7b1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

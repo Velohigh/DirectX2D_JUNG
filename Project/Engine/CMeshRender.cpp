@@ -4,9 +4,7 @@
 #include "CTransform.h"
 
 CMeshRender::CMeshRender()
-	: CComponent(COMPONENT_TYPE::MESHRENDER)
-	, m_pMesh(nullptr)
-	, m_pMtrl(nullptr)
+	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)
 {
 }
 
@@ -21,14 +19,16 @@ void CMeshRender::finaltick()
 void CMeshRender::render()
 {
 	// 메쉬나 메터리얼을 지정안했다면 출력 X
-	if (nullptr == m_pMesh || nullptr == m_pMtrl)
+	if (nullptr == GetMesh() || nullptr == GetMaterial())
 		return;
 
 	// Transform 에 UpdateData 요청 (위치값 레지스터b0에 세팅하라고 요청)
 	Transform()->UpdateData();
 
-	m_pMtrl->UpdateData();		// Material 값 바인딩
-	m_pMesh->render();			// 출력할 메쉬정하고 출력
+	// 재질 업데이트
+	GetMaterial()->UpdateData();	// Material 값 바인딩
 
-
+	// 렌더
+	GetMesh()->render();	// 출력할 메쉬정하고 출력
+	
 }

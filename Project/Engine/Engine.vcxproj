@@ -195,6 +195,8 @@ call EngineCopy.bat
     <ClInclude Include="component.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CRenderComponent.h" />
+    <ClInclude Include="CRenderMgr.h" />
     <ClInclude Include="CRes.h" />
     <ClInclude Include="CResMgr.h" />
     <ClInclude Include="CScript.h" />
@@ -231,6 +233,8 @@ call EngineCopy.bat
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CRenderComponent.cpp" />
+    <ClCompile Include="CRenderMgr.cpp" />
     <ClCompile Include="CRes.cpp" />
     <ClCompile Include="CResMgr.cpp" />
     <ClCompile Include="CScript.cpp" />

@@ -39,19 +39,6 @@ VS_OUT VS_Std2D(VS_IN _in)
 float4 PS_Std2D(VS_OUT _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
-            
-    //uint iWidth = 0;
-    //uint iHeight = 0;
-    //g_tex_0.GetDimensions(iWidth, iHeight);
-    
-    //if (0 == iWidth && 0 == iHeight)
-    //{
-    //    vOutColor = float4(1.f, 0.f, 0.f, 1.f);
-    //}
-    //else
-    //{
-    //    vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    //}
         
     if (g_btex_0)   // 이미지가 세팅 되었다면, 해당 이미지UV 좌표 컬러로 샘플링 한다.
     {
@@ -64,9 +51,6 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     
     if (0.f == vOutColor.a) // 알파값이 0이면 discard, 픽셀을 날려버린다. 출력 X
         discard;
-    
-    //clip(-1);
-    //discard;
     
     return vOutColor;
 }

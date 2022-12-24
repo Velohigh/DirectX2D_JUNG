@@ -182,6 +182,7 @@ void CResMgr::CreateDefaultMaterial()
 
 void CResMgr::LoadDefaultTexture()
 {
-	Ptr<CTexture> pTexture = Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");
-	Ptr<CTexture> pSmoke = Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
+	Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");
+	Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
+	Load<CTexture>(L"CharacterTex", L"texture\\Character.png");
 }

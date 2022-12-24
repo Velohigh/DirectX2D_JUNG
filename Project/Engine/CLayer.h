@@ -12,10 +12,10 @@ private:
 public:
     void tick();
     void finaltick();
-    void render();
 
 public:
     void AddGameObject(CGameObject* _Object) { m_vecObject.push_back(_Object); }
+    const vector<CGameObject*>& GetObjects() { return m_vecObject; }
 
     CLONE(CLayer)
 public:
