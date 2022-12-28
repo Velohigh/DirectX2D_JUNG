@@ -19,8 +19,13 @@
 #define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
 
 
+
+
+
+
 enum class COMPONENT_TYPE
 {
+	// update
 	TRANSFORM,		// 위치, 크기, 회전
 	COLLIDER2D,		// 2차원 충돌
 	COLLIDER3D,		// 3차원 충돌
@@ -37,11 +42,13 @@ enum class COMPONENT_TYPE
 	LANDSCAPE,		// 3차원 지형
 	DECAL,			// 내부 렌더링
 
+	END,
+
 	// custom
 	SCRIPT,			// 프로그래머가 직접 만드는 기능. (ex. PlayerScript, MonsterScript)
 	
-	END,
 };
+
 
 enum class RES_TYPE
 {
@@ -66,6 +73,7 @@ enum class CB_TYPE
 
 	END,
 };
+
 
 enum SCALAR_PARAM
 {
@@ -140,6 +148,7 @@ enum class DS_TYPE
 	END,
 };
 
+
 enum class BS_TYPE
 {
 	DEFAULT,		// No Blending, 출력 색상을 그대로 출력
@@ -148,6 +157,8 @@ enum class BS_TYPE
 	ONE_ONE,		// 1:1 혼합, 보통 검은색 배경은 알파값이 없기 때문에, 검은 부분을 빼는 작업에 사용함
 	END,
 };
+
+
 
 
 
@@ -162,4 +173,14 @@ enum class PROJ_TYPE
 {
 	ORTHOGRAPHIC,
 	PERSPECTIVE,
+};
+
+enum class SHADER_DOMAIN
+{
+	DOMAIN_OPAQUE,		// 불투명 오브젝트
+	DOMAIN_MASK,		// 불투명, 투명
+	DOMAIN_TRANSPARENT,	// 반투명
+	DOMAIN_POSTPROCESS, // 후 처리
+	DOMAIN_UI,
+	DOMAIN_UNDEFINED,	// 미정, Domain은 무조건 분류되어야 하므로, assert로 처리해준다.
 };

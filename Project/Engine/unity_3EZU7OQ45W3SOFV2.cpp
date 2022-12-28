@@ -54,6 +54,12 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CPlayerScript.cpp"
 
 
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CRenderComponent.cpp"
+
+
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CRenderMgr.cpp"
+
+
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CRes.cpp"
 
 

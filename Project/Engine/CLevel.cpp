@@ -9,12 +9,21 @@ CLevel::CLevel()
 	for (UINT i = 0; i < MAX_LAYER; ++i)
 	{
 		m_arrLayer[i] = new CLayer;
+		m_arrLayer[i]->m_iLayerIdx = i;
 	}
 }
 
 CLevel::~CLevel()
 {
 	Safe_Del_Array(m_arrLayer);
+}
+
+void CLevel::begin()
+{
+	for (UINT i = 0; i < MAX_LAYER; ++i)
+	{
+		m_arrLayer[i]->begin();
+	}
 }
 
 
@@ -34,8 +43,17 @@ void CLevel::finaltick()
 	}
 }
 
-void CLevel::AddGameObject(CGameObject* _Object, int _iLayerIndex)
+void CLevel::AddGameObject(CGameObject* _Object, int _iLayerIndex, bool _bMove)
 {
-	m_arrLayer[_iLayerIndex]->AddGameObject(_Object);
+	m_arrLayer[_iLayerIndex]->AddGameObject(_Object, _bMove);
 }
 
+
+
+void CLevel::clear()
+{
+	for (int i = 0; i < MAX_LAYER; ++i)
+	{
+		m_arrLayer[i]->m_vecObject.clear();
+	}
+}

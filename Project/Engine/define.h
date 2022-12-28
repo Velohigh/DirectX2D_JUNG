@@ -42,10 +42,11 @@ enum class COMPONENT_TYPE
 	LANDSCAPE,		// 3차원 지형
 	DECAL,			// 내부 렌더링
 
+	END,
+
 	// custom
 	SCRIPT,			// 프로그래머가 직접 만드는 기능. (ex. PlayerScript, MonsterScript)
 	
-	END,
 };
 
 

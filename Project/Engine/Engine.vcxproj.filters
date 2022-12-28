@@ -97,7 +97,7 @@
     <ClInclude Include="CMaterial.h">
       <Filter>Source\07. Resource\03. Material</Filter>
     </ClInclude>
-    <ClInclude Include="component.h">
+    <ClInclude Include="components.h">
       <Filter>Source\00. Header</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">

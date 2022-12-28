@@ -56,8 +56,6 @@ void CPlayerScript::tick()
 		Vec3 vRot = Transform()->GetRelativeRot();
 		vRot.z += DT * XM_PI;
 		Transform()->SetRelativeRot(vRot);
-
-		vCurPos.z += DT * m_fSpeed;
 	}
 
 	Transform()->SetRelativePos(vCurPos);

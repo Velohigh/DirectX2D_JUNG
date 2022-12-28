@@ -9,22 +9,56 @@ CLayer::CLayer()
 
 CLayer::~CLayer()
 {
-	Safe_Del_Vec(m_vecObject);
+	Safe_Del_Vec(m_vecParentObj);
+}
+
+void CLayer::begin()
+{
+	for (size_t i = 0; i < m_vecParentObj.size(); ++i)
+	{
+		m_vecParentObj[i]->begin();
+	}
 }
 
 void CLayer::tick()
 {
-	for (size_t i = 0; i < m_vecObject.size(); ++i)
+	for (size_t i = 0; i < m_vecParentObj.size(); ++i)
 	{
-		m_vecObject[i]->tick();
+		m_vecParentObj[i]->tick();
 	}
 }
 
 void CLayer::finaltick()
 {
-	for (size_t i = 0; i < m_vecObject.size(); ++i)
+	for (size_t i = 0; i < m_vecParentObj.size(); ++i)
 	{
-		m_vecObject[i]->finaltick();
+		m_vecParentObj[i]->finaltick();
+	}
+}
+
+void CLayer::AddGameObject(CGameObject* _Object, bool _bMove)
+{
+	m_vecParentObj.push_back(_Object);
+
+	// 소유하고 있는 모든 자식오브젝트가 있는지 검사
+	static list<CGameObject*> queue;
+	queue.clear();
+
+	queue.push_back(_Object);
+
+	while (!queue.empty())
+	{
+		CGameObject* pObject = queue.front();
+		queue.pop_front();
+
+		for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+		{
+			queue.push_back(pObject->m_vecChild[i]);
+		}
+
+		// 부모타입 or 소속 레이어가 없는경우 or 부모와 같이 이동하는 경우
+		if (nullptr == pObject->m_Parent || -1 == pObject->m_iLayerIdx || _bMove)
+			pObject->m_iLayerIdx = m_iLayerIdx;
 	}
 }
 

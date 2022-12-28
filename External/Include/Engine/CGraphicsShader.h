@@ -24,6 +24,8 @@ private:
     DS_TYPE                         m_DSType;       // DepthStencil State
     BS_TYPE                         m_BSType;       // Blending State
 
+    SHADER_DOMAIN                   m_Domain;       // 도메인 ( 분류 )
+
 public:
     void CreateVertexShader(const wstring& _strFileName, const string& _strFuncName);
     void CreatePixelShader(const wstring& _strFileName, const string& _strFuncName);
@@ -31,6 +33,9 @@ public:
     void SetRSType(RS_TYPE _Type) { m_RSType = _Type; }
     void SetDSType(DS_TYPE _Type) { m_DSType = _Type; }
     void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
+    void SetDomain(SHADER_DOMAIN _domain) { m_Domain = _domain; }
+
+    SHADER_DOMAIN GetDomain() { return m_Domain; }
     virtual void UpdateData() override;     // 리소스 바인딩하는 함수, 이 셰이더를 사용하겠다!! 라는 거
 
 public:

@@ -192,7 +192,7 @@ call EngineCopy.bat
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
-    <ClInclude Include="component.h" />
+    <ClInclude Include="components.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CRenderComponent.h" />

@@ -34,6 +34,8 @@ void CTransform::finaltick()
 	// 이동 행렬
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
+	// 월드 행렬
+	m_matWorld = matScale * matRot * matTranslation;
 
 	Vec3 vDefaultDir[3] = {
 		Vec3(1.f, 0.f, 0.f),
@@ -43,17 +45,16 @@ void CTransform::finaltick()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		// XMVector3TransformCoord(vDefaultDir[i], matRot);	// Coordinate 동차 좌표를 1로 확장하여 계산
-
-		//m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);	// 동차 좌표를 0으로 확장하여 계산
-		//m_vRelativeDir[i].Normalize();
-		
 		m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);	// 동차 좌표를 0으로 확장하여 계산
 	}
 
+	// 부모 오브젝트가 있으면, 본인 월드행렬 * 부모 월드행렬
+	CGameObject* pParent = GetOwner()->GetParent();
+	if (pParent)
+	{
+		m_matWorld *= pParent->Transform()->m_matWorld;
+	}
 
-	// 월드 행렬
-	m_matWorld = matScale * matRot * matTranslation;
 }
 
 void CTransform::UpdateData()
