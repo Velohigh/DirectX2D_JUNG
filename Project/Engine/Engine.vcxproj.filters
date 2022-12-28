@@ -112,6 +112,15 @@
     <ClInclude Include="CRenderComponent.h">
       <Filter>Source\06. Component\RenderComponent</Filter>
     </ClInclude>
+    <ClInclude Include="CEventMgr.h">
+      <Filter>Source\03. Manager\09. EventMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissileScript.h">
+      <Filter>Source\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CPrefab.h">
+      <Filter>Source\07. Resource\05. Prefab</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -203,6 +212,15 @@
     </ClCompile>
     <ClCompile Include="CRenderComponent.cpp">
       <Filter>Source\06. Component\RenderComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventMgr.cpp">
+      <Filter>Source\03. Manager\09. EventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissileScript.cpp">
+      <Filter>Source\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CPrefab.cpp">
+      <Filter>Source\07. Resource\05. Prefab</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +319,12 @@
     </Filter>
     <Filter Include="Source\06. Component\RenderComponent">
       <UniqueIdentifier>{e5e7965d-dd6f-47ea-a6b8-cabf676d7b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03. Manager\09. EventMgr">
+      <UniqueIdentifier>{51e62ee7-c05f-4fd1-8aba-81ea801f682b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07. Resource\05. Prefab">
+      <UniqueIdentifier>{8e2c9aa7-a42a-4d9f-8a21-f430df5829d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

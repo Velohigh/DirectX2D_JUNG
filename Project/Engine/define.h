@@ -184,3 +184,15 @@ enum class SHADER_DOMAIN
 	DOMAIN_UI,
 	DOMAIN_UNDEFINED,	// 미정, Domain은 무조건 분류되어야 하므로, assert로 처리해준다.
 };
+
+enum class EVENT_TYPE
+{
+	CREATE_OBJECT,
+	DELETE_OBJECT,
+
+	ADD_CHILD,
+
+	DELETE_RESOURCE,
+
+	LEVEL_CHANGE,
+};

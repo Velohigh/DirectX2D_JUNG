@@ -3,6 +3,7 @@
 
 #include "CLayer.h"
 
+
 CLevel::CLevel()
 	: m_arrLayer{}
 {
@@ -18,6 +19,7 @@ CLevel::~CLevel()
 	Safe_Del_Array(m_arrLayer);
 }
 
+
 void CLevel::begin()
 {
 	for (UINT i = 0; i < MAX_LAYER; ++i)
@@ -25,7 +27,6 @@ void CLevel::begin()
 		m_arrLayer[i]->begin();
 	}
 }
-
 
 void CLevel::tick()
 {
@@ -43,9 +44,28 @@ void CLevel::finaltick()
 	}
 }
 
-void CLevel::AddGameObject(CGameObject* _Object, int _iLayerIndex, bool _bMove)
+CLayer* CLevel::FindLayerByName(const wstring& _strName)
 {
-	m_arrLayer[_iLayerIndex]->AddGameObject(_Object, _bMove);
+	for (int i = 0; i < MAX_LAYER; ++i)
+	{
+		if (m_arrLayer[i]->GetName() == _strName)
+			return m_arrLayer[i];
+	}
+
+	return nullptr;
+}
+
+void CLevel::AddGameObject(CGameObject* _Object, int _iLayerIdx, bool _bMove)
+{
+	m_arrLayer[_iLayerIdx]->AddGameObject(_Object, _bMove);
+}
+
+void CLevel::AddGameObject(CGameObject* _Object, const wstring& _LayerName, bool _Move)
+{
+	CLayer* pLayer = FindLayerByName(_LayerName);
+	assert(pLayer);
+
+	pLayer->AddGameObject(_Object, _Move);
 }
 
 

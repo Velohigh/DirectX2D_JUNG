@@ -17,7 +17,12 @@ public:
     void finaltick();
 
 public:
-    void AddGameObject(CGameObject* _Object, int _iLayerIndex, bool _Move); // 해당 레이어에 오브젝트 추가.
+    CLayer* FindLayerByName(const wstring& _strName);
+
+    void AddGameObject(CGameObject* _Object, int _iLayerIdx, bool _Move);
+    void AddGameObject(CGameObject* _Object, const wstring& _LayerName, bool _Move);
+
+
     CLayer* GetLayer(int _iLayerIdx) { assert(!(_iLayerIdx < 0)); return m_arrLayer[_iLayerIdx]; }
 
 

@@ -4,6 +4,9 @@
 #include "CMeshRender.h"
 #include "CMaterial.h"
 
+#include "CMissileScript.h"
+
+
 CPlayerScript::CPlayerScript()
 	: m_fSpeed(100.f)
 {
@@ -21,7 +24,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.y += (float)DT * m_fSpeed;
+			vCurPos.y += DT * m_fSpeed;
 		}
 	}
 
@@ -29,8 +32,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.y -= (float)DT * m_fSpeed;
-
+			vCurPos.y -= DT * m_fSpeed;
 		}
 	}
 
@@ -38,7 +40,7 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.x -= (float)DT * m_fSpeed;
+			vCurPos.x -= DT * m_fSpeed;
 		}
 	}
 
@@ -46,11 +48,10 @@ void CPlayerScript::tick()
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			vCurPos.x += (float)DT * m_fSpeed;
+			vCurPos.x += DT * m_fSpeed;
 		}
 	}
-	
-	// z축 회전 시켜보기
+
 	if (KEY_PRESSED(KEY::Z))
 	{
 		Vec3 vRot = Transform()->GetRelativeRot();
@@ -60,5 +61,36 @@ void CPlayerScript::tick()
 
 	Transform()->SetRelativePos(vCurPos);
 
+	if (KEY_TAP(KEY::SPACE))
+	{
+		Shoot();
+	}
 }
 
+void CPlayerScript::Shoot()
+{
+	// 미사일 오브젝트 생성
+	CGameObject* pMissile = new CGameObject;
+
+	pMissile->AddComponent(new CTransform);
+	pMissile->AddComponent(new CMeshRender);
+	pMissile->AddComponent(new CMissileScript);
+
+	pMissile->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 0.5f, 0.f) * Transform()->GetRelativeScale());
+	pMissile->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
+
+	pMissile->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pMissile->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+
+	CMissileScript* pMissileScript = pMissile->GetScript<CMissileScript>();
+	if (nullptr != pMissileScript)
+		pMissileScript->SetSpeed(500.f);
+
+	//// 미사일 프리팹 참조
+	//Ptr<CPrefab> pMissilePrefab = CResMgr::GetInst()->FindRes<CPrefab>(L"MissilePrefab");
+	//CGameObject* pCloneMissile = pMissilePrefab->Instantiate();
+	
+	// 레벨에 추가
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
+	pCurLevel->AddGameObject(pMissile, L"PlayerProjectile", false);
+}

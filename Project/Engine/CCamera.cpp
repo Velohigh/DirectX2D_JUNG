@@ -51,9 +51,9 @@ void CCamera::CalcViewMat()
 	// 카메라가 바라보는 방향을 Z 축과 평행하게 만드는 회전 행렬을 적용
 	Matrix matViewRot = XMMatrixIdentity();
 
-	Vec3 vR = Transform()->GetRelativeDir(DIR_TYPE::RIGHT);
-	Vec3 vU = Transform()->GetRelativeDir(DIR_TYPE::UP);
-	Vec3 vF = Transform()->GetRelativeDir(DIR_TYPE::FRONT);
+	Vec3 vR = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vU = Transform()->GetWorldDir(DIR_TYPE::UP);
+	Vec3 vF = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
 	matViewRot._11 = vR.x;	matViewRot._12 = vU.x;	matViewRot._13 = vF.x;
 	matViewRot._21 = vR.y;	matViewRot._22 = vU.y;	matViewRot._23 = vF.y;

@@ -29,6 +29,13 @@ void CLevelMgr::init()
 {
 	m_pCurLevel = new CLevel;
 
+	// Layer 이름설정
+	m_pCurLevel->GetLayer(0)->SetName(L"Default");
+	m_pCurLevel->GetLayer(1)->SetName(L"Player");
+	m_pCurLevel->GetLayer(2)->SetName(L"Monster");
+	m_pCurLevel->GetLayer(3)->SetName(L"PlayerProjectile");
+	m_pCurLevel->GetLayer(4)->SetName(L"MonsterProjectile");
+
 	// Main Camera Object 생성
 	CGameObject* pMainCam = new CGameObject;
 	pMainCam->SetName(L"MainCamera");
@@ -70,8 +77,9 @@ void CLevelMgr::init()
 	pChild->AddComponent(new CTransform);
 	pChild->AddComponent(new CMeshRender);
 
-	pChild->Transform()->SetRelativePos(Vec3(2.f, 0.f, 0.f));
-	pChild->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	pChild->Transform()->SetAbsolute(true);
+	pChild->Transform()->SetRelativePos(Vec3(400.f, 0.f, 0.f));
+	pChild->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pChild->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pChild->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));

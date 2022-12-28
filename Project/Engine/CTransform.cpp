@@ -8,6 +8,7 @@
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
 	, m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
+	, m_bAbsolute(false)
 	, m_vRelativeDir{
 		Vec3(1.f, 0.f, 0.f),
 		Vec3(0.f, 1.f, 0.f),
@@ -22,8 +23,8 @@ CTransform::~CTransform()
 void CTransform::finaltick()
 {
 	// 크기 행렬
-	Matrix matScale = XMMatrixIdentity();	// 단위 행렬 반환 함수
-	matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);	// 크기 행렬 반환해주는 함수
+	m_matWorldScale = XMMatrixIdentity();
+	m_matWorldScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z); // 크기행렬 반환함수
 
 	// 회전 행렬
 	Matrix matRot = XMMatrixIdentity();
@@ -35,7 +36,7 @@ void CTransform::finaltick()
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
 	// 월드 행렬
-	m_matWorld = matScale * matRot * matTranslation;
+	m_matWorld = m_matWorldScale * matRot * matTranslation;
 
 	Vec3 vDefaultDir[3] = {
 		Vec3(1.f, 0.f, 0.f),
@@ -45,14 +46,34 @@ void CTransform::finaltick()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);	// 동차 좌표를 0으로 확장하여 계산
+		m_vWorldDir[i] = m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);	// 동차 좌표를 0으로 확장하여 계산
 	}
 
 	// 부모 오브젝트가 있으면, 본인 월드행렬 * 부모 월드행렬
 	CGameObject* pParent = GetOwner()->GetParent();
 	if (pParent)
 	{
-		m_matWorld *= pParent->Transform()->m_matWorld;
+		if (m_bAbsolute)
+		{
+			Matrix matParentWorld = pParent->Transform()->m_matWorld;
+			Matrix matParentScale = pParent->Transform()->m_matWorldScale;
+			Matrix matParentScaleInv = XMMatrixInverse(nullptr, matParentScale);
+
+			// 월드 = 로컬월드 * 부모크기 역 * 부모 월드(크기/회전/이동)
+			m_matWorld = m_matWorld * matParentScaleInv * matParentWorld;
+		}
+		else
+		{
+			m_matWorldScale = pParent->Transform()->m_matWorldScale;
+			m_matWorld *= pParent->Transform()->m_matWorld;
+		}
+
+
+		for (int i = 0; i < 3; ++i)
+		{
+			m_vWorldDir[i] = XMVector3TransformNormal(vDefaultDir[i], m_matWorld);
+			m_vWorldDir[i].Normalize();
+		}
 	}
 
 }
