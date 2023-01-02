@@ -41,6 +41,8 @@ public:
     const Matrix& GetWorldScaleMat() { return m_matWorldScale; }
     const Matrix& GetWorldMat() const { return m_matWorld; }
 
+    void SetWorldMat(const Matrix& _mat) { m_matWorld = _mat; }
+
 public:
     virtual void finaltick() override;
     void UpdateData();

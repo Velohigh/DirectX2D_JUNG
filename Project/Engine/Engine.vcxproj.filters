@@ -97,9 +97,6 @@
     <ClInclude Include="CMaterial.h">
       <Filter>Source\07. Resource\03. Material</Filter>
     </ClInclude>
-    <ClInclude Include="components.h">
-      <Filter>Source\00. Header</Filter>
-    </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>Source\06. Component\03. Camera</Filter>
     </ClInclude>
@@ -123,6 +120,12 @@
     </ClInclude>
     <ClInclude Include="CCollider2D.h">
       <Filter>Source\06. Component\02. Collider2D</Filter>
+    </ClInclude>
+    <ClInclude Include="components.h">
+      <Filter>Source\00. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>Source\03. Manager\07. CollisionMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +231,9 @@
     <ClCompile Include="func.cpp" />
     <ClCompile Include="CCollider2D.cpp">
       <Filter>Source\06. Component\02. Collider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>Source\03. Manager\07. CollisionMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +353,9 @@
     </Filter>
     <Filter Include="Source\06. Component\02. Collider2D">
       <UniqueIdentifier>{3e8a4f9f-7426-4c2b-b7f0-b11c235df63c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03. Manager\07. CollisionMgr">
+      <UniqueIdentifier>{726ad5e4-db74-48ff-93d0-0cb6b15dbe92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

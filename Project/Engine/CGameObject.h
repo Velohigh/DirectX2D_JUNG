@@ -5,6 +5,7 @@
 class CComponent;
 class CTransform;
 class CMeshRender;
+class CCollider2D;
 class CCamera;
 class CRenderComponent;
 class CScript;
@@ -42,6 +43,8 @@ public:
     CTransform* Transform() const { return (CTransform*)m_arrCom[(UINT)COMPONENT_TYPE::TRANSFORM]; }
     CMeshRender* MeshRender() const { return (CMeshRender*)m_arrCom[(UINT)COMPONENT_TYPE::MESHRENDER]; }
     CCamera* Camera() const { return (CCamera*)m_arrCom[(UINT)COMPONENT_TYPE::CAMERA]; }
+    CCollider2D* Collider2D() const { return (CCollider2D*)m_arrCom[(UINT)COMPONENT_TYPE::COLLIDER2D]; }
+
     CRenderComponent* GetRenderComponent() const { return m_RenderCom; }
 
 

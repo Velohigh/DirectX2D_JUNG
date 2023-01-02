@@ -5,7 +5,7 @@
 #include "CLayer.h"
 
 #include "CResMgr.h"
-
+#include "CCollisionMgr.h"
 
 #include "CGameObject.h"
 #include "components.h"
@@ -36,6 +36,7 @@ void CLevelMgr::init()
 	m_pCurLevel->GetLayer(3)->SetName(L"PlayerProjectile");
 	m_pCurLevel->GetLayer(4)->SetName(L"MonsterProjectile");
 
+
 	// Main Camera Object 생성
 	CGameObject* pMainCam = new CGameObject;
 	pMainCam->SetName(L"MainCamera");
@@ -56,8 +57,8 @@ void CLevelMgr::init()
 	pParent->SetName(L"Parent Object");
 	pParent->AddComponent(new CTransform);
 	pParent->AddComponent(new CMeshRender);
+	pParent->AddComponent(new CCollider2D);
 	pParent->AddComponent(new CPlayerScript);
-	//pParent->AddComponent(new CPlayerScript);
 
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
 	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl");
@@ -69,6 +70,10 @@ void CLevelMgr::init()
 
 	pParent->MeshRender()->SetMesh(pMesh);
 	pParent->MeshRender()->SetMaterial(Std2DMtrl);
+
+	pParent->Collider2D()->SetAbsolute(true);
+	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
+
 
 	// Child Object
 	CGameObject* pChild = new CGameObject;
@@ -83,9 +88,33 @@ void CLevelMgr::init()
 	pChild->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pChild->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-
 	pParent->AddChild(pChild);
-	m_pCurLevel->AddGameObject(pParent, 0, false);
+	m_pCurLevel->AddGameObject(pParent, L"Player", false);
+
+
+	// Monster
+	CGameObject* pMonster = new CGameObject;
+	pMonster->SetName(L"Monster");
+
+	pMonster->AddComponent(new CTransform);
+	pMonster->AddComponent(new CMeshRender);
+	pMonster->AddComponent(new CCollider2D);
+
+	pMonster->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
+	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+
+	pMonster->Collider2D()->SetAbsolute(true);
+	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+
+	m_pCurLevel->AddGameObject(pMonster, L"Monster", false);
+
+
+
+	// 충돌 시킬 레이어 짝 지정
+	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"Monster");
 }
 
 void CLevelMgr::tick()

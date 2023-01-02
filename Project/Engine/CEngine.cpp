@@ -7,8 +7,10 @@
 #include "CTimeMgr.h"
 #include "CResMgr.h"
 #include "CLevelMgr.h"
+#include "CCollisionMgr.h"
 #include "CRenderMgr.h"
 #include "CEventMgr.h"
+
 
 CEngine::CEngine()
 	: m_hWnd(nullptr)
@@ -17,20 +19,21 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-}
 
+}
 
 int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 {
 	// 메인 윈도우 핸들
 	m_hWnd = _hWnd;
 	m_vResolution = Vec2((float)_iWidth, (float)_iHeight);
-	
+
 	// 해상도에 맞는 작업영역 크기 조정
-	RECT rt = { 0, 0, (int)_iWidth, (int)_iHeight};
+	RECT rt = { 0, 0, (int)_iWidth, (int)_iHeight };
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 	SetWindowPos(m_hWnd, nullptr, 10, 10, rt.right - rt.left, rt.bottom - rt.top, 0);
 	ShowWindow(m_hWnd, true);
+
 
 	// Device 초기화
 	if (FAILED(CDevice::GetInst()->init(m_hWnd, _iWidth, _iHeight)))
@@ -38,6 +41,7 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 		MessageBox(nullptr, L"Device 초기화 실패", L"에러", MB_OK);
 		return E_FAIL;
 	}
+
 
 	// Manager 초기화
 	CPathMgr::GetInst()->init();
@@ -65,18 +69,17 @@ void CEngine::tick()
 	// Manager Tick
 	CTimeMgr::GetInst()->tick();
 	CKeyMgr::GetInst()->tick();
-
 	CLevelMgr::GetInst()->tick();
+	CCollisionMgr::GetInst()->tick();
 }
 
 void CEngine::render()
 {
 	CTimeMgr::GetInst()->render();
 
-	// 여기서 물체들을 다 그리고, 스왑체인에 프레젠트를 요청한다.
 	// 렌더링 시작
 	float arrColor[4] = { 0.4f, 0.4f, 0.4f, 1.f };
-	CDevice::GetInst()->ClearTarget(arrColor);  // 렌더 타겟 색상 지정
+	CDevice::GetInst()->ClearTarget(arrColor);
 
 	CRenderMgr::GetInst()->render();
 }

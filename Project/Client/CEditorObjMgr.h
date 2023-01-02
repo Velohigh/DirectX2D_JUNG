@@ -1,5 +1,4 @@
 #pragma once
-// 에디터 용으로 만들어진 오브젝트들을 관리하는 클래스
 
 class CGameObjectEx;
 
@@ -8,7 +7,10 @@ class CEditorObjMgr
 {
 	SINGLE(CEditorObjMgr);
 private:
-	vector<CGameObjectEx*> m_vecDebugShape;
+	CGameObjectEx*			m_DebugShape[(UINT)SHAPE_TYPE::END];
+	vector<tDebugShapeInfo> m_DebugShapeInfo;
+
+
 
 public:
 	void init();
