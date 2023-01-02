@@ -3,7 +3,6 @@
 
 #include "CPathMgr.h"
 
-
 CResMgr::CResMgr()
 {
 }
@@ -18,6 +17,7 @@ void CResMgr::init()
 	CreateDefaultGraphicsShader();
 	CreateDefaultMaterial();
 	CreateDefaultPrefab();
+
 	LoadDefaultTexture();
 }
 
@@ -27,14 +27,14 @@ void CResMgr::CreateDefaultMesh()
 	vector<UINT> vecIdx;
 	Vtx v;
 
+
 	Ptr<CMesh> pMesh = nullptr;
 	// =============
 	// RectMesh 생성
 	// =============
-	// 0 --- 1
-	// |	 |
+	// 0 --- 1 
+	// |  \  |
 	// 3 --- 2
-	// 정점
 	v.vPos = Vec3(-0.5f, 0.5f, 0.f);
 	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 	v.vUV = Vec2(0.f, 0.f);
@@ -52,10 +52,9 @@ void CResMgr::CreateDefaultMesh()
 
 	v.vPos = Vec3(-0.5f, -0.5f, 0.f);
 	v.vColor = Vec4(0.f, 0.f, 0.f, 1.f);
-	v.vUV = Vec2(0.f, 1.f); 
+	v.vUV = Vec2(0.f, 1.f);
 	vecVtx.push_back(v);
 
-	// 인덱스
 	vecIdx.push_back(0);
 	vecIdx.push_back(2);
 	vecIdx.push_back(3);
@@ -66,23 +65,35 @@ void CResMgr::CreateDefaultMesh()
 
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddRes<CMesh>(L"RectMesh", pMesh);	// 리소스 매니저에 등록
+	AddRes(L"RectMesh", pMesh);
+
+	vecIdx.clear();
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
+	vecIdx.push_back(2);
+	vecIdx.push_back(3);
+	vecIdx.push_back(0);
+
+	pMesh = new CMesh;
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddRes(L"RectMesh_Debug", pMesh);
+
 	vecVtx.clear();
 	vecIdx.clear();
+
 
 	// ===========
 	// Circle Mesh
 	// ===========
-	//      3
+	//      3 
 	//   4     2
-	// 5  --0-- 1
-
+	//  5 --0-- 1	
 	// 반지름
 	float fRadius = 0.5f;
 
 	// 각도
-	UINT fSlice = 40.f;
-	float fTheta = XM_2PI / (float)fSlice;
+	UINT Slice = 40;
+	float fTheta = XM_2PI / (float)Slice;
 
 	// 중심점
 	v.vPos = Vec3(0.f, 0.f, 0.f);
@@ -91,7 +102,7 @@ void CResMgr::CreateDefaultMesh()
 	vecVtx.push_back(v);
 
 	// 정점 위치 지정
-	for (UINT i = 0; i < fSlice; ++i)
+	for (UINT i = 0; i < Slice; ++i)
 	{
 		v.vPos = Vec3(fRadius * cosf(fTheta * (float)i), fRadius * sinf(fTheta * (float)i), 0.f);
 		v.vUV = Vec2(v.vPos.x + 0.5f, -v.vPos.y + 0.5f);
@@ -99,7 +110,7 @@ void CResMgr::CreateDefaultMesh()
 	}
 
 	// 인덱스 설정
-	for (UINT i = 0; i < fSlice - 1; ++i)
+	for (UINT i = 0; i < Slice - 1; ++i)
 	{
 		vecIdx.push_back(0);
 		vecIdx.push_back(i + 2);
@@ -109,19 +120,29 @@ void CResMgr::CreateDefaultMesh()
 	// 마지막 삼각형
 	vecIdx.push_back(0);
 	vecIdx.push_back(1);
-	vecIdx.push_back(fSlice);
+	vecIdx.push_back(Slice);
 
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
-	AddRes<CMesh>(L"CircleMesh", pMesh);	// 리소스 매니저에 등록
+	AddRes(L"CircleMesh", pMesh);
+
+	vecIdx.clear();
+	for (UINT i = 0; i < Slice; ++i)
+	{
+		vecIdx.push_back(i + 1);
+	}
+	vecIdx.push_back(1);
+
+	pMesh = new CMesh;
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddRes(L"CircleMesh_Debug", pMesh);
+
 	vecVtx.clear();
 	vecIdx.clear();
-
 }
 
 void CResMgr::CreateDefaultGraphicsShader()
 {
-	// Shader 생성
 	Ptr<CGraphicsShader> pShader = nullptr;
 
 	// ===========
@@ -138,7 +159,7 @@ void CResMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
-	AddRes<CGraphicsShader>(L"TestShader", pShader);	// 리소스 매니저에 등록
+	AddRes(L"TestShader", pShader);
 
 
 	// ============================
@@ -163,6 +184,28 @@ void CResMgr::CreateDefaultGraphicsShader()
 
 	AddRes(pShader->GetKey(), pShader);
 
+
+	// =================
+	// DebugShape Shader
+	// Topology : LineStrip
+	// RS_TYPE  : CULL_NONE
+	// DS_TYPE  : NO_TEST_NO_WRITE
+	// BS_TYPE  : Default
+	// g_vec4_0 : OutColor
+	// ==================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"DebugShapeShader");
+	pShader->CreateVertexShader(L"shader\\debugshape.fx", "VS_DebugShape");
+	pShader->CreatePixelShader(L"shader\\debugshape.fx", "PS_DebugShape");
+
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
+
+	AddRes(pShader->GetKey(), pShader);
 }
 
 void CResMgr::CreateDefaultMaterial()
@@ -172,13 +215,17 @@ void CResMgr::CreateDefaultMaterial()
 	// Test Material
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TestShader"));
-	AddRes<CMaterial>(L"TestMtrl", pMtrl);
-
+	AddRes(L"TestMtrl", pMtrl);
 
 	// Std2D Material
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
 	AddRes(L"Std2DMtrl", pMtrl);
+
+	// DebugShape Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DebugShapeShader"));
+	AddRes(L"DebugShapeMtrl", pMtrl);
 }
 
 #include "CGameObject.h"
@@ -211,4 +258,5 @@ void CResMgr::LoadDefaultTexture()
 	Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");
 	Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
 	Load<CTexture>(L"CharacterTex", L"texture\\Character.png");
+
 }

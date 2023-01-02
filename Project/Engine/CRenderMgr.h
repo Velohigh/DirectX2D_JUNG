@@ -8,17 +8,16 @@ class CRenderMgr :
 {
     SINGLE(CRenderMgr);
 private:
-    vector<CCamera*>    m_vecCam;
-
+    vector<CCamera*>            m_vecCam;
+    vector<tDebugShapeInfo>     m_vecShapeInfo;
 
 public:
     void init();
     void render();
 
-
-
 public:
     int RegisterCamera(CCamera* _Cam, int _idx);
+	void AddDebugShapeInfo(const tDebugShapeInfo& _Info) { m_vecShapeInfo.push_back(_Info); }
 
     CCamera* GetMainCam()
     {

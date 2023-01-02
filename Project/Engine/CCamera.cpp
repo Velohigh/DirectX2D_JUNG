@@ -26,6 +26,16 @@ CCamera::CCamera()
 	m_fAspectRatio = vRenderResol.x / vRenderResol.y;
 }
 
+CCamera::CCamera(const CCamera& _Other)
+	: CComponent(_Other)
+	, m_fAspectRatio(_Other.m_fAspectRatio)   // 종횡비
+	, m_fScale(_Other.m_fScale)			// Orthograpic 에서 사용하는 카메라 배율
+	, m_ProjType(_Other.m_ProjType)     // 투영 방식
+	, m_iLayerMask(_Other.m_iLayerMask)
+	, m_iCamIdx(-1)						// 카메라 우선순위
+{
+}
+
 CCamera::~CCamera()
 {
 }

@@ -9,7 +9,6 @@ private:
 	wstring		m_strName;		// 이름
 	const UINT	m_iID;			// 객체 고유 번호
 
-
 public:
 	void SetName(const wstring& _strName) {	m_strName = _strName; }
 	const wstring& GetName() { return m_strName; }

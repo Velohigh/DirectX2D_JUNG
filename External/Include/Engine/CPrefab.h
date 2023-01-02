@@ -12,9 +12,6 @@ private:
 public:
 	CGameObject* Instantiate();
 
-
-
-
 private:
 	virtual int Load(const wstring& _strFilePath) { return S_OK; }
 public:

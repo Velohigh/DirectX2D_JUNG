@@ -187,7 +187,7 @@ enum class SHADER_DOMAIN
 
 enum class EVENT_TYPE
 {
-	CREATE_OBJECT,
+	CREATE_OBJECT,	// wParam : GameObject, lParam : Layer Index
 	DELETE_OBJECT,
 
 	ADD_CHILD,
@@ -195,4 +195,20 @@ enum class EVENT_TYPE
 	DELETE_RESOURCE,
 
 	LEVEL_CHANGE,
+};
+
+
+enum class SHAPE_TYPE
+{
+	RECT,
+	CIRCLE,
+	CUBE,
+	SPHERE,
+};
+
+
+enum class COLLIDER2D_TYPE
+{
+	RECT,
+	CIRCLE,
 };

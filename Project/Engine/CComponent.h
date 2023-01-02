@@ -31,6 +31,7 @@ public:
 
 public:
     CComponent(COMPONENT_TYPE _Type);
+    CComponent(const CComponent& _Other);
     virtual ~CComponent();
 
     friend class CGameObject;

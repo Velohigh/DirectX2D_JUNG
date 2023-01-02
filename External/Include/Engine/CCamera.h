@@ -66,6 +66,7 @@ private:
     CLONE(CCamera);
 public:
     CCamera();
+    CCamera(const CCamera& _Other);
     ~CCamera();
 
 };

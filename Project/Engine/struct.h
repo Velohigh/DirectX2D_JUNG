@@ -18,7 +18,17 @@ struct tEvent
 	DWORD_PTR	lParam;
 };
 
-
+struct tDebugShapeInfo
+{
+	SHAPE_TYPE	eShape;
+	Matrix		matWorld;
+	Vec3		vWorldPos;
+	Vec3		vWorldScale;
+	Vec3		vWorldRotation;
+	Vec4		vColor;
+	float		fMaxTime;	// 이미지가 유지되는 시간
+	float		fCurTime;
+};
 
 
 

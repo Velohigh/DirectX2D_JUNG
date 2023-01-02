@@ -178,6 +178,7 @@ call EngineCopy.bat
   <ItemGroup>
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CCollider2D.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CDevice.h" />
@@ -220,6 +221,7 @@ call EngineCopy.bat
   <ItemGroup>
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CCollider2D.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CDevice.cpp" />
@@ -250,6 +252,7 @@ call EngineCopy.bat
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="extern.cpp" />
+    <ClCompile Include="func.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -261,6 +264,16 @@ call EngineCopy.bat
     <None Include="SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="debugshape.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="std2d.fx">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ObjectFileOutput>

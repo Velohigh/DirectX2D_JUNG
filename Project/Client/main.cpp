@@ -1,31 +1,16 @@
 ﻿// Client.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
-#include "framework.h"
+#include "pch.h"
 #include "Client.h"
+#include <Engine/CDevice.h>
 
-
-// Engine Library
-#include <Engine/global.h>
-#include <Engine/CEngine.h>
-
-#ifdef _DEBUG
-#pragma comment(lib, "Engine//Engine_d")
-#else
-#pragma comment(lib, "Engine//Engine")
-#endif
-
-
-
+#include "CEditorObjMgr.h"
 typedef int (*FUNC_TYPE)(int, int); // typedef 를 사용한 함수 포인터 자료형을 만든다고 생각하면 쉽다.
-
-#define MAX_LOADSTRING 100
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 HWND        g_hWnd;
-WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
-WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -38,14 +23,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-    
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     // _CrtSetBreakAlloc(270); // 메모리 누수 생겼을때 라인에 중단 거는 함수
-
-
-    // 전역 문자열을 초기화합니다.
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
+;
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -60,6 +40,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return 0;
     }
+
+    // Editor 초기화
+    CEditorObjMgr::GetInst()->init();
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
@@ -83,6 +66,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		else
 		{
             CEngine::GetInst()->progress();
+
+
+            CEditorObjMgr::GetInst()->progress();
+
+
+            // 렌더 종료
+            CDevice::GetInst()->Present();
 		}
 	}
 

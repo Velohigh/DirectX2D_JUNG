@@ -23,12 +23,8 @@ public:
     void AddGameObject(CGameObject* _Object, bool _bMove);
     const vector<CGameObject*>& GetParentObject() { return m_vecParentObj; }
     const vector<CGameObject*>& GetObjects() { return m_vecObject; }
-
-    void RegisterObject(CGameObject* _Object)
-    {
-        m_vecObject.push_back(_Object);
-    }
-
+	void RegisterObject(CGameObject* _Object) { m_vecObject.push_back(_Object); }
+    int GetLayerIndex() { return m_iLayerIdx; }
 
     CLONE(CLayer)
 public:

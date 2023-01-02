@@ -19,6 +19,38 @@ CGameObject::CGameObject()
 {
 }
 
+CGameObject::CGameObject(const CGameObject& _Other)
+	: CEntity(_Other)
+	, m_arrCom{}
+	, m_RenderCom(nullptr)
+	, m_Parent(nullptr)
+	, m_iLayerIdx(-1)
+{
+	// Component 복사
+	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+	{
+		if (_Other.m_arrCom[i])
+		{
+			AddComponent(_Other.m_arrCom[i]->Clone());
+
+		}
+	}
+
+	// Script 복사
+	for (size_t i = 0; i < _Other.m_vecScript.size(); ++i)
+	{
+		AddComponent(_Other.m_vecScript[i]->Clone());
+	}
+
+	// 자식 오브젝트 복사
+	for (size_t i = 0; i < _Other.m_vecChild.size(); ++i)
+	{
+		AddChild(_Other.m_vecChild[i]->Clone());
+	}
+
+
+}
+
 CGameObject::~CGameObject()
 {
 	Safe_Del_Array(m_arrCom);
