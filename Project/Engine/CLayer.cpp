@@ -30,9 +30,19 @@ void CLayer::tick()
 
 void CLayer::finaltick()
 {
-	for (size_t i = 0; i < m_vecParentObj.size(); ++i)
+	vector<CGameObject*>::iterator iter = m_vecParentObj.begin();
+	for (; iter != m_vecParentObj.end(); )
 	{
-		m_vecParentObj[i]->finaltick();
+		(*iter)->finaltick();
+
+		if ((*iter)->IsDead())
+		{
+			iter = m_vecParentObj.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
 	}
 }
 
@@ -61,4 +71,3 @@ void CLayer::AddGameObject(CGameObject* _Object, bool _bMove)
 			pObject->m_iLayerIdx = m_iLayerIdx;
 	}
 }
-

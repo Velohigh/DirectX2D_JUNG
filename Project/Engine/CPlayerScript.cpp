@@ -63,7 +63,7 @@ void CPlayerScript::tick()
 
 	if (KEY_TAP(KEY::SPACE))
 	{
-		DrawDebugCircle(Transform()->GetWorldPos(), 500.f, Vec4(0.f, 0.f, 1.f, 1.f),Vec3(0.f, 0.f, 0.f), 2.f);
+		DrawDebugCircle(Transform()->GetWorldPos(), 500.f, Vec4(0.f, 0.f, 1.f, 1.f), Vec3(0.f, 0.f, 0.f), 2.f);
 
 		Shoot();
 	}
@@ -78,4 +78,10 @@ void CPlayerScript::Shoot()
 
 	// 레벨에 추가
 	SpawnGameObject(pCloneMissile, vMissilePos, L"PlayerProjectile");
+}
+
+
+void CPlayerScript::BeginOverlap(CCollider2D* _Other)
+{
+
 }

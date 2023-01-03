@@ -83,10 +83,23 @@ void CCollisionMgr::CollisionBtwObject(CGameObject* _LeftObject, CGameObject* _R
 		iter = m_mapColID.find(id.id);
 	}
 
+	// 둘 중 하나라도 삭제 예정 상태라면(Dead 상태)
+	bool bDead = false;
+	if (_LeftObject->IsDead() || _RightObject->IsDead())
+	{
+		bDead = true;
+	}
+
 	// 두 충돌체가 지금 충돌 중인지 확인
 	if (CollisionBtwCollider(_LeftObject->Collider2D(), _RightObject->Collider2D()))
 	{
-		if (iter->second)
+		// 이전에 충돌한 적이 있고, 둘중 하나 이상이 삭제 예정이라면
+		if (bDead && iter->second)
+		{
+			_LeftObject->Collider2D()->EndOverlap(_RightObject->Collider2D());
+			_RightObject->Collider2D()->EndOverlap(_LeftObject->Collider2D());
+		}
+		else if (iter->second)
 		{
 			// 계속 충돌 중
 			_LeftObject->Collider2D()->OnOverlap(_RightObject->Collider2D());
@@ -95,9 +108,12 @@ void CCollisionMgr::CollisionBtwObject(CGameObject* _LeftObject, CGameObject* _R
 		else
 		{
 			// 이번 프레임에 충돌
-			_LeftObject->Collider2D()->BeginOverlap(_RightObject->Collider2D());
-			_RightObject->Collider2D()->BeginOverlap(_LeftObject->Collider2D());
-			iter->second = true;
+			if (!bDead) // 둘중 하나라도 Dead 상태면 충돌을 무시한다.
+			{
+				_LeftObject->Collider2D()->BeginOverlap(_RightObject->Collider2D());
+				_RightObject->Collider2D()->BeginOverlap(_LeftObject->Collider2D());
+				iter->second = true;
+			}
 		}
 	}
 
@@ -145,7 +161,7 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
 	// 분리축 테스트
 	for (int i = 0; i < 4; ++i)
 	{
-		Vec3 vProj = arrProj[i];	// 투영축
+		Vec3 vProj = arrProj[i];
 		vProj.Normalize();
 
 		// 4개의 표면백터를 지정된 투영축으로 투영시킨 거리의 총합 / 2

@@ -35,6 +35,21 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _s
 	CEventMgr::GetInst()->AddEvent(evn);
 }
 
+void DestroyObject(CGameObject* _DeletObject)
+{
+	if (_DeletObject->IsDead())
+		return;
+
+	tEvent evn = {};
+
+	evn.Type = EVENT_TYPE::DELETE_OBJECT;
+	evn.wParam = (DWORD_PTR)_DeletObject;
+
+	CEventMgr::GetInst()->AddEvent(evn);
+}
+
+
+
 void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRotation, float _fTime)
 {
 	tDebugShapeInfo info = {};

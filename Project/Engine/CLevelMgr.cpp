@@ -12,6 +12,7 @@
 
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"
+#include "CMonsterScript.h"
 
 CLevelMgr::CLevelMgr()
 	: m_pCurLevel(nullptr)
@@ -50,6 +51,20 @@ void CLevelMgr::init()
 	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
 
 	m_pCurLevel->AddGameObject(pMainCam, 0, false);
+
+
+
+	// 광원 추가
+	CGameObject* pLightObj = new CGameObject;
+	pLightObj->SetName(L"Directional Light");
+
+	pLightObj->AddComponent(new CTransform);
+	pLightObj->AddComponent(new CLight2D);
+
+	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
+
+	m_pCurLevel->AddGameObject(pLightObj, 0, false);
 
 
 	// 오브젝트 생성
@@ -99,6 +114,7 @@ void CLevelMgr::init()
 	pMonster->AddComponent(new CTransform);
 	pMonster->AddComponent(new CMeshRender);
 	pMonster->AddComponent(new CCollider2D);
+	pMonster->AddComponent(new CMonsterScript);
 
 	pMonster->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
 	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));

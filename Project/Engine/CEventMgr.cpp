@@ -5,7 +5,6 @@
 #include "CLevel.h"
 #include "CGameObject.h"
 
-
 CEventMgr::CEventMgr()
 {
 
@@ -16,13 +15,17 @@ CEventMgr::~CEventMgr()
 
 }
 
+
 void CEventMgr::tick()
 {
+	GC_Clear();
+
+
 	for (size_t i = 0; i < m_vecEvent.size(); ++i)
 	{
 		switch (m_vecEvent[i].Type)
 		{
-		// wParam : GameObject, lParam : Layer Index
+			// wParam : GameObject, lParam : Layer Index
 		case EVENT_TYPE::CREATE_OBJECT:
 		{
 			CGameObject* NewObject = (CGameObject*)m_vecEvent[i].wParam;
@@ -30,11 +33,18 @@ void CEventMgr::tick()
 
 			CLevelMgr::GetInst()->GetCurLevel()->AddGameObject(NewObject, iLayerIdx, false);
 		}
-			break;
+		break;
 		case EVENT_TYPE::DELETE_OBJECT:
+		{
+			CGameObject* DeleteObject = (CGameObject*)m_vecEvent[i].wParam;
 
-
-			break;
+			if (false == DeleteObject->m_bDead)
+			{
+				DeleteObject->m_bDead = true;
+				m_vecGC.push_back(DeleteObject);
+			}
+		}
+		break;
 		case EVENT_TYPE::ADD_CHILD:
 
 
@@ -51,4 +61,15 @@ void CEventMgr::tick()
 	}
 
 	m_vecEvent.clear();
+}
+
+
+void CEventMgr::GC_Clear()
+{
+	for (size_t i = 0; i < m_vecGC.size(); ++i)
+	{
+		if (nullptr != m_vecGC[i])
+			delete m_vecGC[i];
+	}
+	m_vecGC.clear();
 }

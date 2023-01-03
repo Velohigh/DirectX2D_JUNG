@@ -16,6 +16,10 @@ CGameObject::CGameObject()
 	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
 	, m_iLayerIdx(-1)
+	, m_bDead(false)
+	, m_LifeTime(0.f)
+	, m_CurLifeTime(0.f)
+	, m_bLifeSpan(false)
 {
 }
 
@@ -25,6 +29,10 @@ CGameObject::CGameObject(const CGameObject& _Other)
 	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
 	, m_iLayerIdx(-1)
+	, m_bDead(false)
+	, m_LifeTime(0.f)
+	, m_CurLifeTime(0.f)
+	, m_bLifeSpan(false)
 {
 	// Component บนป็
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -32,7 +40,6 @@ CGameObject::CGameObject(const CGameObject& _Other)
 		if (_Other.m_arrCom[i])
 		{
 			AddComponent(_Other.m_arrCom[i]->Clone());
-
 		}
 	}
 
@@ -47,8 +54,6 @@ CGameObject::CGameObject(const CGameObject& _Other)
 	{
 		AddChild(_Other.m_vecChild[i]->Clone());
 	}
-
-
 }
 
 CGameObject::~CGameObject()
@@ -98,6 +103,16 @@ void CGameObject::tick()
 
 void CGameObject::finaltick()
 {
+	if (m_bLifeSpan)
+	{
+		m_CurLifeTime += DT;
+		if (m_LifeTime < m_CurLifeTime)
+		{
+			DestroyObject(this);
+		}
+	}
+
+
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::SCRIPT; ++i)
 	{
 		if (nullptr != m_arrCom[i])

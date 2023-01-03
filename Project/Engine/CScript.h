@@ -14,14 +14,26 @@
 #include "components.h"
 
 
+class CCollider2D;
+
 class CScript :
     public CComponent
 {
 private:
 
 
+
+public:
+    void Destroy() { DestroyObject(GetOwner()); }
+    void SetLifeSpan(float _Time) { GetOwner()->SetLifeSpan(_Time); }
+
+
 public:
     virtual void finaltick() final {};
+
+    virtual void BeginOverlap(CCollider2D* _Other) {}
+    virtual void OnOverlap(CCollider2D* _Other) {}
+    virtual void EndOverlap(CCollider2D* _Other) {}
 
 public:
     CScript();

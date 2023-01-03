@@ -1,11 +1,17 @@
 #pragma once
-// 자주 사용하게될 전역함수들 모음
+// 자주사용하게 될 전역함수들 모음
 
 
 // 오브젝트 생성
 class CGameObject;
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx);
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _strName);
+
+// 오브젝트 삭제
+void DestroyObject(CGameObject* _DeletObject);
+
+
+
 
 
 // DrawDebugShape

@@ -2,6 +2,8 @@
 #include "CSingleton.h"
 
 class CCamera;
+class CLight2D;
+
 
 class CRenderMgr :
     public CSingleton<CRenderMgr>
@@ -11,14 +13,20 @@ private:
     vector<CCamera*>            m_vecCam;
     vector<tDebugShapeInfo>     m_vecShapeInfo;
 
+    vector<tLightInfo>          m_vecLight2D;
+
+
+
+
 public:
     void init();
     void render();
 
 public:
     int RegisterCamera(CCamera* _Cam, int _idx);
-	void AddDebugShapeInfo(const tDebugShapeInfo& _Info) { m_vecShapeInfo.push_back(_Info); }
+    void RegisterLight2D(const tLightInfo& _Light2D) { m_vecLight2D.push_back(_Light2D); }
 
+    void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecShapeInfo.push_back(_info); }
     vector<tDebugShapeInfo>& GetDebugShapeInfo() { return m_vecShapeInfo; }
 
     CCamera* GetMainCam()
@@ -28,6 +36,10 @@ public:
 
         return m_vecCam[0];
     }
+
+private:
+    void Clear();
+
 
 };
 

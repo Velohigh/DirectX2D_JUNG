@@ -28,6 +28,8 @@ void CRenderMgr::render()
         m_vecCam[i]->SortObject();
         m_vecCam[i]->render();
     }
+
+    Clear();
 }
 
 int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
@@ -39,4 +41,10 @@ int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
 
     m_vecCam[_idx] = _Cam;
     return _idx;
+}
+
+void CRenderMgr::Clear()
+{
+    m_vecLight2D.clear();
+
 }
