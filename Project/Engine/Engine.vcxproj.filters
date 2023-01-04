@@ -393,5 +393,8 @@
     <FxCompile Include="debugshape.fx">
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="struct.fx">
+      <Filter>Source\08. ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

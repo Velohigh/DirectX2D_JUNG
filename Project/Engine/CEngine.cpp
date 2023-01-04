@@ -78,7 +78,7 @@ void CEngine::render()
 	CTimeMgr::GetInst()->render();
 
 	// ·»´õ¸µ ½ÃÀÛ
-	float arrColor[4] = { 0.4f, 0.4f, 0.4f, 1.f };
+	float arrColor[4] = { 0.f, 0.f, 0.f, 1.f };
 	CDevice::GetInst()->ClearTarget(arrColor);
 
 	CRenderMgr::GetInst()->render();

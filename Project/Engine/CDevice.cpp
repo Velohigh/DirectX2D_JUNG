@@ -376,7 +376,7 @@ void CDevice::ClearTarget(float(&_color)[4])
 
 void CDevice::CreateConstBuffer()
 {
-	// Transform 상수버퍼
+	// Transform 상수버퍼 생성
 	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM] = new CConstBuffer((UINT)CB_TYPE::TRANSFORM);
 	m_arrConstBuffer[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(tTransform), 1);
 
@@ -384,4 +384,7 @@ void CDevice::CreateConstBuffer()
 	m_arrConstBuffer[(UINT)CB_TYPE::MATERIAL] = new CConstBuffer((UINT)CB_TYPE::MATERIAL);
 	m_arrConstBuffer[(UINT)CB_TYPE::MATERIAL]->Create(sizeof(tMtrlConst), 1);
 
+	// Light 상수버퍼 생성
+	m_arrConstBuffer[(UINT)CB_TYPE::LIGHT] = new CConstBuffer((UINT)CB_TYPE::LIGHT);
+	m_arrConstBuffer[(UINT)CB_TYPE::LIGHT]->Create(sizeof(tLightInfo) * 10 + 16, 1);
 }

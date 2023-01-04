@@ -52,18 +52,24 @@ void CLevelMgr::init()
 
 	m_pCurLevel->AddGameObject(pMainCam, 0, false);
 
-
-
 	// ±¤¿ø Ãß°¡
 	CGameObject* pLightObj = new CGameObject;
-	pLightObj->SetName(L"Directional Light");
+	pLightObj->SetName(L"Point Light");
 
 	pLightObj->AddComponent(new CTransform);
 	pLightObj->AddComponent(new CLight2D);
 
-	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
+	pLightObj->Transform()->SetRelativePos(Vec3(-200.f, 0.f, 0.f));
 
+	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
+	pLightObj->Light2D()->SetRadius(500.f);
+
+	m_pCurLevel->AddGameObject(pLightObj, 0, false);
+
+
+	pLightObj = pLightObj->Clone();
+	pLightObj->Transform()->SetRelativePos(Vec3(200.f, 0.f, 0.f));
 	m_pCurLevel->AddGameObject(pLightObj, 0, false);
 
 
@@ -76,7 +82,7 @@ void CLevelMgr::init()
 	pParent->AddComponent(new CPlayerScript);
 
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
-	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl");
+	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
 	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"CharacterTex");
 	Std2DMtrl->SetTexParam(TEX_0, PlayerTex);
 
@@ -89,23 +95,7 @@ void CLevelMgr::init()
 	pParent->Collider2D()->SetAbsolute(true);
 	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
 
-
-	// Child Object
-	CGameObject* pChild = new CGameObject;
-	pChild->SetName(L"Child Object");
-	pChild->AddComponent(new CTransform);
-	pChild->AddComponent(new CMeshRender);
-
-	pChild->Transform()->SetAbsolute(true);
-	pChild->Transform()->SetRelativePos(Vec3(400.f, 0.f, 0.f));
-	pChild->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	pChild->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pChild->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-	pParent->AddChild(pChild);
 	m_pCurLevel->AddGameObject(pParent, L"Player", false);
-
 
 	// Monster
 	CGameObject* pMonster = new CGameObject;
@@ -120,7 +110,7 @@ void CLevelMgr::init()
 	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl"));
 
 	pMonster->Collider2D()->SetAbsolute(true);
 	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));

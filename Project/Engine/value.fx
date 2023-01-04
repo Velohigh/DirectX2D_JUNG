@@ -1,15 +1,17 @@
 #ifndef _VALUE
 #define _VALUE
 
+#include "struct.fx"
+
 // 상수버퍼 레지스터
 cbuffer TRANSFORM : register(b0)
 {
-    row_major matrix g_matWorld; // 월드 스페이스 변환
-    row_major matrix g_matView; // View 스페이스 변환
-    row_major matrix g_matProj; // 투영 변환 (뷰 스페이스의 좌표를 -1~ 1의 NDC 좌표계로 투영 시켜야 한다)
+    row_major matrix g_matWorld;    // 월드 스페이스 변환
+    row_major matrix g_matView;     // View 스페이스 변환
+    row_major matrix g_matProj;     // 투영 변환 (뷰 스페이스의 좌표를 -1~ 1의 NDC 좌표계로 투영 시켜야 한다)
     
-    row_major matrix g_matWV;   // 월드 * 뷰
-    row_major matrix g_matWVP;  // 월드 * 뷰 * 투영
+    row_major matrix g_matWV;       // 월드 * 뷰
+    row_major matrix g_matWVP;      // 월드 * 뷰 * 투영
 };
 
 cbuffer MATERIAL : register(b1)
@@ -48,6 +50,14 @@ cbuffer MATERIAL : register(b1)
     int g_btex_6;
     int g_btex_7;
 };
+
+cbuffer LIGHT : register(b2)
+{
+    tLightInfo arrInfo[10];
+    int iLightCount;
+    int3 iLightPadding;
+}
+
 
 // 하나의 재질안에 여러장의 텍스쳐를 쓰는 경우도 있다.
 Texture2D g_tex_0 : register(t0);
