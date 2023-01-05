@@ -133,6 +133,9 @@
     <ClInclude Include="CMonsterScript.h">
       <Filter>Source\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CStructuredBuffer.h">
+      <Filter>Source\02. Device\StructureBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -248,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>Source\00. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="CStructuredBuffer.cpp">
+      <Filter>Source\02. Device\StructureBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,6 +380,9 @@
     <Filter Include="Source\06. Component\04. Light2D">
       <UniqueIdentifier>{256b2a09-3a96-4d39-a72a-6436c28a1887}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\02. Device\StructureBuffer">
+      <UniqueIdentifier>{d94063d3-34d3-4c64-ab51-4d39a5ea8e20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -394,6 +403,9 @@
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="struct.fx">
+      <Filter>Source\08. ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="func.fx">
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>

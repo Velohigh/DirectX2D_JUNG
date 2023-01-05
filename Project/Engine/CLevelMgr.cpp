@@ -59,18 +59,20 @@ void CLevelMgr::init()
 	pLightObj->AddComponent(new CTransform);
 	pLightObj->AddComponent(new CLight2D);
 
-	pLightObj->Transform()->SetRelativePos(Vec3(-200.f, 0.f, 0.f));
+	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
 
-	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
-	pLightObj->Light2D()->SetRadius(500.f);
+	pLightObj->Light2D()->SetRadius(1000.f);
 
 	m_pCurLevel->AddGameObject(pLightObj, 0, false);
 
 
-	pLightObj = pLightObj->Clone();
+	/*pLightObj = pLightObj->Clone();
+	pLightObj->Light2D()->SetLightDiffuse(Vec3(0.3f, 0.3f, 1.f));
 	pLightObj->Transform()->SetRelativePos(Vec3(200.f, 0.f, 0.f));
-	m_pCurLevel->AddGameObject(pLightObj, 0, false);
+	m_pCurLevel->AddGameObject(pLightObj, 0, false);*/
 
 
 	// 오브젝트 생성
@@ -83,11 +85,13 @@ void CLevelMgr::init()
 
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
 	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
-	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"CharacterTex");
+	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"DeadCell");
+	Ptr<CTexture> PlayerTex_N = CResMgr::GetInst()->FindRes<CTexture>(L"DeadCell_N");
 	Std2DMtrl->SetTexParam(TEX_0, PlayerTex);
+	Std2DMtrl->SetTexParam(TEX_1, PlayerTex_N);
 
 	pParent->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+	pParent->Transform()->SetRelativeScale(Vec3(2048.f, 4096, 1.f));
 
 	pParent->MeshRender()->SetMesh(pMesh);
 	pParent->MeshRender()->SetMaterial(Std2DMtrl);
@@ -110,7 +114,7 @@ void CLevelMgr::init()
 	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl"));
+	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 
 	pMonster->Collider2D()->SetAbsolute(true);
 	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));

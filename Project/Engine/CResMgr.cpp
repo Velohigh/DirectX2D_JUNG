@@ -291,4 +291,6 @@ void CResMgr::LoadDefaultTexture()
 	Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
 	Load<CTexture>(L"CharacterTex", L"texture\\Character.png");
 
+	Load<CTexture>(L"DeadCell", L"texture\\beheaded.png");
+	Load<CTexture>(L"DeadCell_N", L"texture\\beheaded_n.png");
 }

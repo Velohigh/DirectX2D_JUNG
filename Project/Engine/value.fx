@@ -69,6 +69,8 @@ Texture2D g_tex_5 : register(t5);
 Texture2D g_tex_6 : register(t6);
 Texture2D g_tex_7 : register(t7);
 
+// 구조화 버퍼, Tex레지스터에 구조체를 바인딩시킨다. t레지스터는 참조하는식으로 작동하기에 가능.
+StructuredBuffer<tLightInfo> g_buffer_0 : register(t8);
 
 // 이미지에서 색상을 가져오기 위한 샘플러
 SamplerState g_sam_0 : register(s0);
