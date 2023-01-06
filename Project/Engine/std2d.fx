@@ -140,9 +140,11 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
     
     // Lighting 처리
     tLightColor LightColor = (tLightColor) 0.f;
+
     CalcLight2D(_in.vWorldPos, LightColor);
     //CalcLight2D(_in.vWorldPos, vNormal, LightColor);  // 노말맵 사용시.
-        
+    
+    
     vOutColor.rgb *= (LightColor.vDiffuse.rgb + LightColor.vAmbient.rgb);
     
     return vOutColor;
