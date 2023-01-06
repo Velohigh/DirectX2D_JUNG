@@ -1,8 +1,8 @@
 #ifndef _STD2D
 #define _STD2D
-// 2D에서 일반적으로 사용할 셰이더.
 
 #include "value.fx"
+#include "func.fx"
 
 struct VS_IN
 {
@@ -40,20 +40,27 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
         
-    if (g_btex_0)   // 이미지가 세팅 되었다면, 해당 이미지UV 좌표 컬러로 샘플링 한다.
+    if (g_btex_0)
     {
         vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     }
-    else            // 이미지가 세팅되지 않았다면 마젠타 색 출력
+    else
     {
         vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     }
-    
-    if (0.f == vOutColor.a) // 알파값이 0이면 discard, 픽셀을 날려버린다. 출력 X
+        
+    if (0.f == vOutColor.a)
         discard;
     
     return vOutColor;
 }
+
+
+
+
+
+
+
 
 
 // ======================================
@@ -88,7 +95,7 @@ VS_Light_OUT VS_Std2DLight(VS_Light_IN _in)
     
     output.vPosition = mul(float4(_in.vLocalPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
-    output.vWorldPos = mul(float4(_in.vLocalPos, 1.f), g_matWorld);
+    output.vWorldPos = mul(float4(_in.vLocalPos, 1.f), g_matWorld).xyz;
     
         
     return output;
@@ -108,32 +115,42 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
         vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     }
         
+    float3 vNormal = (float3) vNormal;
+    if (g_btex_1)
+    {
+        // Normal 값 추출
+        vNormal = g_tex_1.Sample(g_sam_0, _in.vUV);
+        
+        // 0 ~ 1 범위를 -1 ~ 1 로 변경
+        vNormal = (vNormal * 2.f) - 1.f;
+        
+        // NormalTexture 좌표계는 y축과 z 축이 반대로 되어있다.
+        float f = vNormal.y;
+        vNormal.y = vNormal.z;
+        vNormal.z = f;
+        
+        // Texture 에서 추출한 Normal 방향을 월드로 변환시킨다.
+        vNormal = normalize(mul(float4(vNormal, 0.f), g_matWorld)).xyz;
+    }
+    
+    
+    
     if (0.f == vOutColor.a)
         discard;
     
     // Lighting 처리
-    float3 vLightColor = (float3) 0.f;
-    for (int i = 0; i < iLightCount; ++i)
-    {
-        if (arrInfo[i].LightType == 0)
-        {
-            vLightColor += arrInfo[i].Color.vDiffuse;
-        }
-        else if (arrInfo[i].LightType == 1)
-        {
-            float3 vLightWorldPos = float3(arrInfo[i].vWorldPos.xy, 0.f);
-            float3 vWorldPos = float3(_in.vWorldPos.xy, 0.f);
-
-            float fDistance = abs(distance(vWorldPos, vLightWorldPos));
-            float fPow = saturate(1.f - (fDistance / arrInfo[i].Radius));
+    tLightColor LightColor = (tLightColor) 0.f;
+    CalcLight2D(_in.vWorldPos, LightColor);
+    //CalcLight2D(_in.vWorldPos, vNormal, LightColor);  // 노말맵 사용시.
         
-            vLightColor += arrInfo[i].Color.vDiffuse * fPow;
-        }
-    }
-    
-    vOutColor.rgb *= vLightColor;
+    vOutColor.rgb *= (LightColor.vDiffuse.rgb + LightColor.vAmbient.rgb);
     
     return vOutColor;
 }
+
+
+
+
+
 
 #endif

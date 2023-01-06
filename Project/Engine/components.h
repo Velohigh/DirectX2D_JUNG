@@ -11,6 +11,6 @@
 
 #include "CMeshRender.h"
 //#include "CParticleSystem.h"
-//#include "CTileMap.h"
+#include "CTileMap.h"
 //#include "Decal.h"
 //#include "Landscape.h"

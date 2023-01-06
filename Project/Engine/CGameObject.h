@@ -9,7 +9,12 @@ class CCollider2D;
 class CLight2D;
 class CCamera;
 class CRenderComponent;
+class CTileMap;
 class CScript;
+
+#define GET_COMPONENT(Type, TYPE) C##Type* Type() const { return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::TYPE]; }
+
+
 
 class CGameObject :
     public CEntity
@@ -43,12 +48,12 @@ public:
 
     CGameObject* GetParent() const { return m_Parent; }
 
-    CTransform* Transform() const { return (CTransform*)m_arrCom[(UINT)COMPONENT_TYPE::TRANSFORM]; }
-    CMeshRender* MeshRender() const { return (CMeshRender*)m_arrCom[(UINT)COMPONENT_TYPE::MESHRENDER]; }
-    CCamera* Camera() const { return (CCamera*)m_arrCom[(UINT)COMPONENT_TYPE::CAMERA]; }
-    CCollider2D* Collider2D() const { return (CCollider2D*)m_arrCom[(UINT)COMPONENT_TYPE::COLLIDER2D]; }
-    CLight2D* Light2D() const { return (CLight2D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT2D]; }
-
+    GET_COMPONENT(Transform, TRANSFORM);
+    GET_COMPONENT(MeshRender, MESHRENDER);
+    GET_COMPONENT(Camera, CAMERA);
+    GET_COMPONENT(Collider2D, COLLIDER2D);
+    GET_COMPONENT(Light2D, LIGHT2D);
+    GET_COMPONENT(TileMap, TILEMAP);
 
     CRenderComponent* GetRenderComponent() const { return m_RenderCom; }
 
@@ -70,6 +75,9 @@ public:
     }
 
     bool IsDead() { return m_bDead; }
+
+private:
+    void DisconnectFromParent();
 
 
     CLONE(CGameObject)

@@ -172,3 +172,22 @@ void CGameObject::AddChild(CGameObject* _Object)
 	_Object->m_Parent = this;
 	m_vecChild.push_back(_Object);
 }
+
+
+void CGameObject::DisconnectFromParent()
+{
+	if (!m_Parent)
+		return;
+
+	vector<CGameObject*>::iterator iter = m_Parent->m_vecChild.begin();
+	for (; iter != m_Parent->m_vecChild.end(); ++iter)
+	{
+		if (this == *iter)
+		{
+			m_Parent->m_vecChild.erase(iter);
+			return;
+		}
+	}
+
+	assert(nullptr);
+}

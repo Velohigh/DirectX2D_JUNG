@@ -232,6 +232,29 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
 
 	AddRes(pShader->GetKey(), pShader);
+
+	// ============================
+	// TileMap Shader
+	// 
+	// RS_TYPE : CULL_NONE
+	// DS_TYPE : LESS
+	// BS_TYPE : MASK
+
+	// Parameter
+	// g_tex_0 : Tile Atlas Texture
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"TileMapShader");
+	pShader->CreateVertexShader(L"shader\\tilemap.fx", "VS_TileMap");
+	pShader->CreatePixelShader(L"shader\\tilemap.fx", "PS_TileMap");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetBSType(BS_TYPE::MASK);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
+
+	AddRes(pShader->GetKey(), pShader);
 }
 
 void CResMgr::CreateDefaultMaterial()
@@ -253,11 +276,15 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"Std2DLightMtrl", pMtrl);
 
-
 	// DebugShape Material
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DebugShapeShader"));
 	AddRes(L"DebugShapeMtrl", pMtrl);
+
+	// TileMap Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TileMapShader"));
+	AddRes(L"TileMapMtrl", pMtrl);
 }
 
 #include "CGameObject.h"
@@ -293,4 +320,6 @@ void CResMgr::LoadDefaultTexture()
 
 	Load<CTexture>(L"DeadCell", L"texture\\beheaded.png");
 	Load<CTexture>(L"DeadCell_N", L"texture\\beheaded_n.png");
+
+	Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 }

@@ -3,23 +3,29 @@
 
 #include "CDevice.h"
 #include "CConstBuffer.h"
+#include "CStructuredBuffer.h"
 
 #include "CCamera.h"
 #include "CLight2D.h"
 
 CRenderMgr::CRenderMgr()
+    : m_Light2DBuffer(nullptr)
 {
 
 }
 
 CRenderMgr::~CRenderMgr()
 {
-
+    if (nullptr != m_Light2DBuffer)
+        delete m_Light2DBuffer;
 }
 
 
 void CRenderMgr::init()
 {
+    // Light2DBuffer 구조화 버퍼 생성
+    m_Light2DBuffer = new CStructuredBuffer;
+    m_Light2DBuffer->Create(sizeof(tLightInfo), 10);
 }
 
 void CRenderMgr::render()
@@ -52,21 +58,24 @@ int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
 
 void CRenderMgr::UpdateData()
 {
-    struct {
-        tLightInfo  arrInfo[10];
-        int         iLightCount;
-        int         padding[3];
-    }arrInfo{};
+    // GlobalData 에 광원 개수정보 세팅
+    GlobalData.Light2DCount = m_vecLight2D.size();
 
-    for (size_t i = 0; i < m_vecLight2D.size(); ++i)
+    // 구조화버퍼의 크기가 모자라면 더 크게 새로 만든다.
+    if (m_Light2DBuffer->GetElementCount() < m_vecLight2D.size())
     {
-        arrInfo.arrInfo[i] = m_vecLight2D[i];
+        m_Light2DBuffer->Create(sizeof(tLightInfo), m_vecLight2D.size());
     }
-    arrInfo.iLightCount = m_vecLight2D.size();
 
-    static CConstBuffer* pLightBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::LIGHT);
-    pLightBuffer->SetData(&arrInfo, sizeof(arrInfo));
-    pLightBuffer->UpdateData();
+    // 구조화버퍼로 광원 데이터를 옮긴다.
+    m_Light2DBuffer->SetData(m_vecLight2D.data(), sizeof(tLightInfo) * m_vecLight2D.size());
+    m_Light2DBuffer->UpdateData(8, PIPELINE_STAGE::PS_PIXEL);
+
+
+    // 전역 상수 데이터 바인딩
+    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL);
+    pGlobalBuffer->SetData(&GlobalData, sizeof(tGlobal));
+    pGlobalBuffer->UpdateData();
 }
 
 void CRenderMgr::Clear()

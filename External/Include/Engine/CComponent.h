@@ -6,12 +6,17 @@
 class CTransform;
 class CMeshRender;
 
+#define GET_OTHER_COMPONENT(Type) C##Type* Type() {return m_pOwner->Type();}
+
+
+
+
 class CComponent :
     public CEntity
 {
 private:
-    CGameObject*            m_pOwner;
-    const COMPONENT_TYPE    m_Type;
+    CGameObject* m_pOwner;
+    const COMPONENT_TYPE m_Type;
 
 public:
     COMPONENT_TYPE GetType() { return m_Type; }
@@ -24,11 +29,12 @@ public:
     virtual CComponent* Clone() = 0;
 
 public:
-    CTransform* Transform() { return m_pOwner->Transform(); }
-    CMeshRender* MeshRender() { return m_pOwner->MeshRender(); }
-    CCamera* Camera() { return m_pOwner->Camera(); }
-    CCollider2D* Collider2D() { return m_pOwner->Collider2D(); }
-    CLight2D* Light2D() { return m_pOwner->Light2D(); }
+    GET_OTHER_COMPONENT(Transform);
+    GET_OTHER_COMPONENT(MeshRender);
+    GET_OTHER_COMPONENT(Camera);
+    GET_OTHER_COMPONENT(Collider2D);
+    GET_OTHER_COMPONENT(Light2D);
+    GET_OTHER_COMPONENT(TileMap);
 
 public:
     CComponent(COMPONENT_TYPE _Type);

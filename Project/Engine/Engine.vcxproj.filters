@@ -136,6 +136,9 @@
     <ClInclude Include="CStructuredBuffer.h">
       <Filter>Source\02. Device\StructureBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="CTileMap.h">
+      <Filter>Source\06. Component\RenderComponent\03. TileMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -254,6 +257,9 @@
     </ClCompile>
     <ClCompile Include="CStructuredBuffer.cpp">
       <Filter>Source\02. Device\StructureBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMap.cpp">
+      <Filter>Source\06. Component\RenderComponent\03. TileMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +412,9 @@
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="func.fx">
+      <Filter>Source\08. ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="tilemap.fx">
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>

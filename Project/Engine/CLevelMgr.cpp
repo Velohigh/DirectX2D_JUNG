@@ -32,10 +32,11 @@ void CLevelMgr::init()
 
 	// Layer 이름설정
 	m_pCurLevel->GetLayer(0)->SetName(L"Default");
-	m_pCurLevel->GetLayer(1)->SetName(L"Player");
-	m_pCurLevel->GetLayer(2)->SetName(L"Monster");
-	m_pCurLevel->GetLayer(3)->SetName(L"PlayerProjectile");
-	m_pCurLevel->GetLayer(4)->SetName(L"MonsterProjectile");
+	m_pCurLevel->GetLayer(1)->SetName(L"Tile");
+	m_pCurLevel->GetLayer(2)->SetName(L"Player");
+	m_pCurLevel->GetLayer(3)->SetName(L"Monster");
+	m_pCurLevel->GetLayer(4)->SetName(L"PlayerProjectile");
+	m_pCurLevel->GetLayer(5)->SetName(L"MonsterProjectile");
 
 
 	// Main Camera Object 생성
@@ -62,9 +63,9 @@ void CLevelMgr::init()
 	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
 
-	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
-	pLightObj->Light2D()->SetRadius(1000.f);
+	pLightObj->Light2D()->SetRadius(500.f);
 
 	m_pCurLevel->AddGameObject(pLightObj, 0, false);
 
@@ -85,13 +86,12 @@ void CLevelMgr::init()
 
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
 	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
-	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"DeadCell");
-	Ptr<CTexture> PlayerTex_N = CResMgr::GetInst()->FindRes<CTexture>(L"DeadCell_N");
+	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"CharacterTex");
+
 	Std2DMtrl->SetTexParam(TEX_0, PlayerTex);
-	Std2DMtrl->SetTexParam(TEX_1, PlayerTex_N);
 
 	pParent->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pParent->Transform()->SetRelativeScale(Vec3(2048.f, 4096, 1.f));
+	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200, 1.f));
 
 	pParent->MeshRender()->SetMesh(pMesh);
 	pParent->MeshRender()->SetMaterial(Std2DMtrl);
@@ -122,6 +122,18 @@ void CLevelMgr::init()
 	m_pCurLevel->AddGameObject(pMonster, L"Monster", false);
 
 
+	// TileMap Object
+	CGameObject* pTileMap = new CGameObject;
+
+	pTileMap->AddComponent(new CTransform);
+	pTileMap->AddComponent(new CTileMap);
+
+	pTileMap->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
+	pTileMap->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
+
+	pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"TileAtlasTex"));
+
+	m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
 
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"Monster");

@@ -3,15 +3,14 @@
 
 #include "struct.fx"
 
-// 상수버퍼 레지스터
 cbuffer TRANSFORM : register(b0)
 {
-    row_major matrix g_matWorld;    // 월드 스페이스 변환
-    row_major matrix g_matView;     // View 스페이스 변환
-    row_major matrix g_matProj;     // 투영 변환 (뷰 스페이스의 좌표를 -1~ 1의 NDC 좌표계로 투영 시켜야 한다)
+    row_major matrix g_matWorld;
+    row_major matrix g_matView;
+    row_major matrix g_matProj;
     
-    row_major matrix g_matWV;       // 월드 * 뷰
-    row_major matrix g_matWVP;      // 월드 * 뷰 * 투영
+    row_major matrix g_matWV;
+    row_major matrix g_matWVP;
 };
 
 cbuffer MATERIAL : register(b1)
@@ -30,7 +29,7 @@ cbuffer MATERIAL : register(b1)
     float2 g_vec2_1;
     float2 g_vec2_2;
     float2 g_vec2_3;
-    
+
     float4 g_vec4_0;
     float4 g_vec4_1;
     float4 g_vec4_2;
@@ -51,13 +50,16 @@ cbuffer MATERIAL : register(b1)
     int g_btex_7;
 };
 
-cbuffer LIGHT : register(b2)
+// 전역 상수 레지스터, 어디서든 필요할 수 있는 값들
+cbuffer GLOBAL : register(b2)
 {
-    tLightInfo arrInfo[10];
-    int iLightCount;
-    int3 iLightPadding;
+    float2 g_Resolution;
+    float g_DT;
+    float g_AccTime;
+    uint g_Light2DCount;
+    uint g_Light3DCount;
+    int2 g_globalpadding;
 }
-
 
 // 하나의 재질안에 여러장의 텍스쳐를 쓰는 경우도 있다.
 Texture2D g_tex_0 : register(t0);
@@ -70,16 +72,11 @@ Texture2D g_tex_6 : register(t6);
 Texture2D g_tex_7 : register(t7);
 
 // 구조화 버퍼, Tex레지스터에 구조체를 바인딩시킨다. t레지스터는 참조하는식으로 작동하기에 가능.
-StructuredBuffer<tLightInfo> g_buffer_0 : register(t8);
+StructuredBuffer<tLightInfo> g_Light2DBuffer : register(t8);
 
 // 이미지에서 색상을 가져오기 위한 샘플러
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
-
-
-
-
-
 
 
 #endif

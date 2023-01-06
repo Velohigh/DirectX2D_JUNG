@@ -69,7 +69,13 @@ void CEventMgr::GC_Clear()
 	for (size_t i = 0; i < m_vecGC.size(); ++i)
 	{
 		if (nullptr != m_vecGC[i])
+		{
+			// 자식 타입 오브젝트인 경우
+			if (m_vecGC[i]->GetParent())
+				m_vecGC[i]->DisconnectFromParent();
+
 			delete m_vecGC[i];
+		}
 	}
 	m_vecGC.clear();
 }

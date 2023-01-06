@@ -3,7 +3,7 @@
 
 class CCamera;
 class CLight2D;
-
+class CStructuredBuffer;
 
 class CRenderMgr :
     public CSingleton<CRenderMgr>
@@ -14,7 +14,7 @@ private:
     vector<tDebugShapeInfo>     m_vecShapeInfo;
 
     vector<tLightInfo>          m_vecLight2D;
-
+    CStructuredBuffer* m_Light2DBuffer;
 
 
 
@@ -38,6 +38,7 @@ public:
     }
 
 private:
+    void UpdateData();
     void Clear();
 
 
