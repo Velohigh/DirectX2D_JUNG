@@ -63,10 +63,9 @@ void CLevelMgr::init()
 	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
 
-	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::SPOT);
+	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
 	pLightObj->Light2D()->SetRadius(500.f);
-	pLightObj->Light2D()->SetAngle(XM_PI / 4.f);
 
 	m_pCurLevel->AddGameObject(pLightObj, 0, false);
 
@@ -123,18 +122,21 @@ void CLevelMgr::init()
 	m_pCurLevel->AddGameObject(pMonster, L"Monster", false);
 
 
-	//// TileMap Object
-	//CGameObject* pTileMap = new CGameObject;
+	// TileMap Object
+	CGameObject* pTileMap = new CGameObject;
 
-	//pTileMap->AddComponent(new CTransform);
-	//pTileMap->AddComponent(new CTileMap);
+	pTileMap->AddComponent(new CTransform);
+	pTileMap->AddComponent(new CTileMap);
 
-	//pTileMap->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
-	//pTileMap->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
+	pTileMap->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
+	pTileMap->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
 
-	//pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"TileAtlasTex"));
+	pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"TileAtlasTex"));
+	pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
+	pTileMap->TileMap()->SetTileCount(8, 8);
 
-	//m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
+
+	m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
 
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"Monster");
