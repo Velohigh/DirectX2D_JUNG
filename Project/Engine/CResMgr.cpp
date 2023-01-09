@@ -322,4 +322,5 @@ void CResMgr::LoadDefaultTexture()
 	Load<CTexture>(L"DeadCell_N", L"texture\\beheaded_n.png");
 
 	Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
+	Load<CTexture>(L"Link", L"texture\\link.png");
 }

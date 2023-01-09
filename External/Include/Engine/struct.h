@@ -63,6 +63,14 @@ struct tTile
 	Vec2 vSlice;
 };
 
+// Animator2D
+struct tAnim2DFrm
+{
+	Vec2	LeftTopUV;
+	Vec2	SliceUV;
+	float	fDuration;
+};
+
 
 
 

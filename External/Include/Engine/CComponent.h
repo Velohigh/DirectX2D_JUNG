@@ -35,6 +35,7 @@ public:
     GET_OTHER_COMPONENT(Collider2D);
     GET_OTHER_COMPONENT(Light2D);
     GET_OTHER_COMPONENT(TileMap);
+    GET_OTHER_COMPONENT(Animator2D);
 
 public:
     CComponent(COMPONENT_TYPE _Type);

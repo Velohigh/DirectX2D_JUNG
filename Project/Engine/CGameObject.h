@@ -6,6 +6,7 @@ class CComponent;
 class CTransform;
 class CMeshRender;
 class CCollider2D;
+class CAnimator2D;
 class CLight2D;
 class CCamera;
 class CRenderComponent;
@@ -54,6 +55,7 @@ public:
     GET_COMPONENT(Collider2D, COLLIDER2D);
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(TileMap, TILEMAP);
+    GET_COMPONENT(Animator2D, ANIMATOR2D);
 
     CRenderComponent* GetRenderComponent() const { return m_RenderCom; }
 

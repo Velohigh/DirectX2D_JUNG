@@ -78,17 +78,15 @@ void CLevelMgr::init()
 
 	// 오브젝트 생성
 	CGameObject* pParent = new CGameObject;
-	pParent->SetName(L"Parent Object");
+	pParent->SetName(L"Player");
 	pParent->AddComponent(new CTransform);
 	pParent->AddComponent(new CMeshRender);
 	pParent->AddComponent(new CCollider2D);
+	pParent->AddComponent(new CAnimator2D);
 	pParent->AddComponent(new CPlayerScript);
 
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
 	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
-	Ptr<CTexture> PlayerTex = CResMgr::GetInst()->FindRes<CTexture>(L"CharacterTex");
-
-	Std2DMtrl->SetTexParam(TEX_0, PlayerTex);
 
 	pParent->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200, 1.f));
@@ -98,6 +96,9 @@ void CLevelMgr::init()
 
 	pParent->Collider2D()->SetAbsolute(true);
 	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
+
+	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
+	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 0.5f), Vec2(0.1f, 0.125f), 10, 24);
 
 	m_pCurLevel->AddGameObject(pParent, L"Player", false);
 
@@ -134,7 +135,6 @@ void CLevelMgr::init()
 	pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"TileAtlasTex"));
 	pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
 	pTileMap->TileMap()->SetTileCount(8, 8);
-
 
 	m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
 

@@ -176,6 +176,8 @@ call EngineCopy.bat
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnim2D.h" />
+    <ClInclude Include="CAnimator2D.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCollider2D.h" />
@@ -224,6 +226,8 @@ call EngineCopy.bat
     <ClInclude Include="struct.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnim2D.cpp" />
+    <ClCompile Include="CAnimator2D.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCollider2D.cpp" />
