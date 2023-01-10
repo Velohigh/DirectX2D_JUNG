@@ -3,18 +3,15 @@
 
 class CCamera :
     public CComponent
-
 {
 private:
-    float       m_fAspectRatio;   // 종횡비
+    float       m_fAspectRatio;
     float       m_fScale;       // Orthograpic 에서 사용하는 카메라 배율
 
-    PROJ_TYPE   m_ProjType;     // 투영 방식
+    PROJ_TYPE   m_ProjType;
 
-
-    Matrix      m_matView;      // 뷰 행렬
-    Matrix      m_matProj;      // 투영 행렬
-
+    Matrix      m_matView;
+    Matrix      m_matProj;
 
     UINT        m_iLayerMask;
 
@@ -26,6 +23,7 @@ private:
     vector<CGameObject*>    m_vecTransparent;
     vector<CGameObject*>    m_vecPost;
     vector<CGameObject*>    m_vecUI;
+
 
 
 public:
@@ -44,7 +42,7 @@ public:
     const Matrix& GetProjMat() { return m_matProj; }
 
 public:
-    void SortObject();      // 오브젝트의 사용 셰이더에 따른 도메인 분류
+    void SortObject();
     void render();
 
 public:
@@ -64,10 +62,9 @@ private:
     void CalcProjMat();
 
     CLONE(CCamera);
-public:
+public:    
     CCamera();
     CCamera(const CCamera& _Other);
     ~CCamera();
-
 };
 

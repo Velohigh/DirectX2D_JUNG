@@ -46,7 +46,7 @@ void CLevelMgr::init()
 	pMainCam->AddComponent(new CTransform);
 	pMainCam->AddComponent(new CCamera);
 	pMainCam->AddComponent(new CCameraMoveScript);
-
+	
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
 	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
@@ -60,7 +60,7 @@ void CLevelMgr::init()
 	pLightObj->AddComponent(new CTransform);
 	pLightObj->AddComponent(new CLight2D);
 
-	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));	
 	pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
 
 	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
@@ -86,7 +86,7 @@ void CLevelMgr::init()
 	pParent->AddComponent(new CPlayerScript);
 
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
-	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
+	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");				
 
 	pParent->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
@@ -114,7 +114,7 @@ void CLevelMgr::init()
 
 	pMonster->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
 	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
+	
 	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 
@@ -136,7 +136,7 @@ void CLevelMgr::init()
 	pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"TileAtlasTex"));
 	pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
 	pTileMap->TileMap()->SetTileCount(8, 8);
-
+	
 	m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
 
 	// 충돌 시킬 레이어 짝 지정

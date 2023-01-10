@@ -10,7 +10,7 @@ class CAnim2D :
     public CEntity
 {
 private:
-    CAnimator2D* m_pOwner;
+    CAnimator2D*        m_pOwner;
     vector<tAnim2DFrm>  m_vecFrm;
     Vec2                m_vBackSize;
     Ptr<CTexture>       m_AtlasTex;
@@ -24,7 +24,7 @@ public:
     void finaltick();
     void Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _BackSize, int _FrameCount, int _FPS);
 
-    const tAnim2DFrm& GetCurFrame() { return m_vecFrm[m_iCurFrm]; }
+    const tAnim2DFrm& GetCurFrame() { return m_vecFrm[m_iCurFrm];}
     Vec2 GetBackSize() { return m_vBackSize; }
     Ptr<CTexture> GetAtlasTex() { return m_AtlasTex; }
 

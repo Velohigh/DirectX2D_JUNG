@@ -35,7 +35,7 @@ void Safe_Del_Array(T* (&arr)[Size])
 	{
 		if (nullptr != arr[i])
 			delete arr[i];
-	}
+	}	
 }
 
 template<typename T>

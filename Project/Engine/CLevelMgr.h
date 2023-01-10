@@ -5,11 +5,10 @@ class CLevel;
 
 class CLevelMgr :
     public CSingleton<CLevelMgr>
-{
+{   
     SINGLE(CLevelMgr);
-
 private:
-    CLevel*     m_pCurLevel;    // 현재 지정된 레벨
+    CLevel*     m_pCurLevel;
 
 public:
     CLevel* GetCurLevel() { return m_pCurLevel; }
@@ -17,6 +16,5 @@ public:
 public:
     void init();
     void tick();
-
 };
 

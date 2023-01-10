@@ -14,7 +14,7 @@ private:
     vector<tDebugShapeInfo>     m_vecShapeInfo;
 
     vector<tLightInfo>          m_vecLight2D;
-    CStructuredBuffer* m_Light2DBuffer;
+    CStructuredBuffer*          m_Light2DBuffer;
 
 
 
@@ -29,8 +29,8 @@ public:
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecShapeInfo.push_back(_info); }
     vector<tDebugShapeInfo>& GetDebugShapeInfo() { return m_vecShapeInfo; }
 
-    CCamera* GetMainCam()
-    {
+    CCamera* GetMainCam() 
+    { 
         if (m_vecCam.empty())
             return nullptr;
 

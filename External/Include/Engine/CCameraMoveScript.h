@@ -5,7 +5,7 @@ class CCameraMoveScript :
     public CScript
 {
 private:
-    float   m_fCamSpeed;
+    float       m_fCamSpeed;
 
 public:
     virtual void tick() override;
@@ -18,6 +18,5 @@ private:
 public:
     CCameraMoveScript();
     ~CCameraMoveScript();
-
 };
 

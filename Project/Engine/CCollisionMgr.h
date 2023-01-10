@@ -18,7 +18,7 @@ union CollisionID
 
 
 class CCollisionMgr :
-	public CSingleton<CCollisionMgr>
+    public CSingleton<CCollisionMgr>
 {
 	SINGLE(CCollisionMgr);
 private:
@@ -38,8 +38,8 @@ public:
 	void tick();
 
 private:
-	void CollisionBtwLayer(CLayer* _LeftLayer, CLayer* _RightLayer);	// 어떤 레이어, 어떤레이어가 충돌할것인지
+	void CollisionBtwLayer(CLayer* _LeftLayer, CLayer* _RightLayer);
 	void CollisionBtwObject(CGameObject* _LeftObject, CGameObject* _RightObject);
-	bool CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRight);	// 두 충돌체가 충돌하는지 true,false
+	bool CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRight);
 };
 

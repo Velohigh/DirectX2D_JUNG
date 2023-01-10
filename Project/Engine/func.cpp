@@ -44,7 +44,7 @@ void DestroyObject(CGameObject* _DeletObject)
 
 	evn.Type = EVENT_TYPE::DELETE_OBJECT;
 	evn.wParam = (DWORD_PTR)_DeletObject;
-
+	
 	CEventMgr::GetInst()->AddEvent(evn);
 }
 
@@ -71,7 +71,7 @@ void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime)
 
 	info.matWorld = _matWorld;
 	info.eShape = SHAPE_TYPE::RECT;
-	info.fMaxTime = _fTime;
+	info.fMaxTime = _fTime;	
 	info.vColor = _vColor;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
@@ -98,7 +98,7 @@ void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime)
 
 	info.matWorld = _matWorld;
 	info.eShape = SHAPE_TYPE::CIRCLE;
-	info.fMaxTime = _fTime;
+	info.fMaxTime = _fTime;	
 	info.vColor = _vColor;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);

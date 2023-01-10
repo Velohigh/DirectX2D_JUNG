@@ -21,11 +21,11 @@ class CGameObject :
     public CEntity
 {
 private:
-    CComponent* m_arrCom[(UINT)COMPONENT_TYPE::END];
-    CRenderComponent* m_RenderCom;
+    CComponent*             m_arrCom[(UINT)COMPONENT_TYPE::END];
+    CRenderComponent*       m_RenderCom;
     vector<CScript*>        m_vecScript;
 
-    CGameObject* m_Parent;
+    CGameObject*            m_Parent;
     vector<CGameObject*>    m_vecChild;
 
     int                     m_iLayerIdx;
@@ -36,7 +36,7 @@ private:
 
 public:
     void begin();       // 레벨이 시작될 때 호출 or 시작 된 레벨에 합류할 때
-    void tick();
+    void tick();        
     virtual void finaltick();
     void render();
 
@@ -57,7 +57,7 @@ public:
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
 
-    CRenderComponent* GetRenderComponent() const { return m_RenderCom; }
+    CRenderComponent* GetRenderComponent() const {  return m_RenderCom; }
 
 
     int GetLayerIndex() { return m_iLayerIdx; }
@@ -82,7 +82,7 @@ private:
     void DisconnectFromParent();
 
 
-    CLONE(CGameObject)
+    CLONE(CGameObject)    
 public:
     CGameObject();
     CGameObject(const CGameObject& _Other);

@@ -36,7 +36,7 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount)
 
 	m_tDesc.Usage = D3D11_USAGE_DYNAMIC;
 	m_tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
+	
 	if (FAILED(DEVICE->CreateBuffer(&m_tDesc, nullptr, m_SB.GetAddressOf())))
 	{
 		assert(nullptr);
@@ -60,7 +60,7 @@ void CStructuredBuffer::SetData(void* _pSrc, UINT _iSize)
 	D3D11_MAPPED_SUBRESOURCE tSub = {};
 	CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSub);
 
-	memcpy(tSub.pData, _pSrc, _iSize);
+	memcpy(tSub.pData, _pSrc, _iSize);	
 
 	CONTEXT->Unmap(m_SB.Get(), 0);
 }

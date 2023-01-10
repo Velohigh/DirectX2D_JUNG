@@ -16,9 +16,9 @@ CPathMgr::~CPathMgr()
 void CPathMgr::init()
 {
 	GetCurrentDirectory(256, m_szContentPath);	
-	
+
 	// 상위폴더로 감
-	int iLen = (int)wcslen(m_szContentPath);	// Wide Character 문자 길이 구하는 함수
+	int iLen = (int)wcslen(m_szContentPath);
 
 	for (int i = iLen - 1; i >= 0; --i)
 	{

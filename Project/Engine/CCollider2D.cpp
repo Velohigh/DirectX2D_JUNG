@@ -38,16 +38,16 @@ void CCollider2D::finaltick()
 		// 충돌체 월드 * 오브젝트 월드
 		m_matCollider2D *= matWorld;
 	}
-
+	
 	// DebugShape 요청
 	Vec4 vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 	if (0 < m_iCollisionCount)
 		vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 
 	if (COLLIDER2D_TYPE::CIRCLE == m_Shape)
-		DrawDebugCircle(m_matCollider2D, vColor, 0.f);
-	else
-		DrawDebugRect(m_matCollider2D, vColor, 0.f);
+		DrawDebugCircle(m_matCollider2D, vColor, 0.f);	
+	else	
+		DrawDebugRect(m_matCollider2D, vColor, 0.f);	
 }
 
 

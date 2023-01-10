@@ -4,10 +4,10 @@
 class CGameObject;
 
 class CPrefab :
-	public CRes
+    public CRes
 {
 private:
-	CGameObject* m_ProtoObj;
+	CGameObject*	m_ProtoObj;
 
 public:
 	CGameObject* Instantiate();

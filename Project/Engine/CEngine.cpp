@@ -29,7 +29,7 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	m_vResolution = Vec2((float)_iWidth, (float)_iHeight);
 
 	// 해상도에 맞는 작업영역 크기 조정
-	RECT rt = { 0, 0, (int)_iWidth, (int)_iHeight };
+	RECT rt = { 0, 0, (int)_iWidth, (int)_iHeight};
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 	SetWindowPos(m_hWnd, nullptr, 10, 10, rt.right - rt.left, rt.bottom - rt.top, 0);
 	ShowWindow(m_hWnd, true);
@@ -49,7 +49,7 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 	CTimeMgr::GetInst()->init();
 	CResMgr::GetInst()->init();
 	CRenderMgr::GetInst()->init();
-	CLevelMgr::GetInst()->init();
+	CLevelMgr::GetInst()->init();		
 
 	return S_OK;
 }
@@ -68,7 +68,7 @@ void CEngine::tick()
 {
 	// Manager Tick
 	CTimeMgr::GetInst()->tick();
-	CKeyMgr::GetInst()->tick();
+	CKeyMgr::GetInst()->tick();	
 	CLevelMgr::GetInst()->tick();
 	CCollisionMgr::GetInst()->tick();
 }
@@ -81,5 +81,5 @@ void CEngine::render()
 	float arrColor[4] = { 0.f, 0.f, 0.f, 1.f };
 	CDevice::GetInst()->ClearTarget(arrColor);
 
-	CRenderMgr::GetInst()->render();
+	CRenderMgr::GetInst()->render();	
 }

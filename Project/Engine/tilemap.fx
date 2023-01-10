@@ -54,9 +54,9 @@ float4 PS_TileMap(VTX_TILEMAP_OUT _in) : SV_Target
     // 정수파트, floor(_in.vUV): 전체 타일 중에서 인덱스(행, 열)    
     int2 TileIdx = floor(_in.vUV);
     int BufferIdx = g_int_0 * TileIdx.y + TileIdx.x;
-    float2 vUV = TileBuffer[BufferIdx].vLeftTop + (TileBuffer[BufferIdx].vSlice * frac(_in.vUV));
+    float2 vUV = TileBuffer[BufferIdx].vLeftTop + (TileBuffer[BufferIdx].vSlice * frac(_in.vUV));    
     
-    if (g_btex_0)
+    if(g_btex_0)
     {
         vOutColor = g_tex_0.Sample(g_sam_1, vUV);
     }

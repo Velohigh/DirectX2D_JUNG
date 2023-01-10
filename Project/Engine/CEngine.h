@@ -1,17 +1,18 @@
 #pragma once
 
 class CEngine
-	:  public CSingleton<CEngine>	// 매니저들 클래스는 항상 싱글톤<자기> 버전을 상속받는다.
+	: public CSingleton<CEngine>
 {
 private:
 	HWND	m_hWnd;
 
 	// 윈도우 해상도
 	Vec2	m_vResolution;
+	
 
 public:
 	Vec2 GetWindowResolution() { return m_vResolution; }
-	HWND GetMainWnd() { return m_hWnd; }
+	HWND GetMainWnd() { return m_hWnd ; }
 
 public:
 	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
@@ -21,10 +22,8 @@ private:
 	void tick();
 	void render();
 
+
 public:
 	CEngine();
 	~CEngine();
-
-
 };
-

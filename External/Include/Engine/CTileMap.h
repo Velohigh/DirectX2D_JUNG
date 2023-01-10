@@ -15,7 +15,7 @@ private:
 
 
     vector<tTile>       m_vecTile;
-    CStructuredBuffer* m_Buffer;
+    CStructuredBuffer*  m_Buffer;
 
 public:
     virtual void finaltick() override;
@@ -24,7 +24,7 @@ public:
     void UpdateData();
 
     void SetTileCount(UINT _iXCount, UINT _iYCount);
-    void SetSliceSize(Vec2 _vSliceSize) { m_vSliceSize = _vSliceSize; }
+    void SetSliceSize(Vec2 _vSliceSize)  { m_vSliceSize = _vSliceSize; }
 
     CLONE(CTileMap);
 public:

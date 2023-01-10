@@ -3,7 +3,7 @@
 
 CComponent::CComponent(COMPONENT_TYPE _Type)
 	: m_pOwner(nullptr)
-	, m_Type(_Type)
+	, m_Type(_Type)	
 {
 }
 

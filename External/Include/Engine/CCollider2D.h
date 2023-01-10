@@ -18,7 +18,7 @@ public:
     virtual void finaltick() override;
 
 public:
-    void SetOffsetPos(Vec2 _vOffsetPos) { m_vOffsetPos = Vec3(_vOffsetPos.x, _vOffsetPos.y, 0.f); }
+    void SetOffsetPos(Vec2 _vOffsetPos){ m_vOffsetPos = Vec3(_vOffsetPos.x, _vOffsetPos.y, 0.f); }
     void SetOffsetScale(Vec2 _vOffsetScale) { m_vOffsetScale = Vec3(_vOffsetScale.x, _vOffsetScale.y, 1.f); }
     void SetAbsolute(bool _bSet) { m_bAbsolute = _bSet; }
     void SetCollider2DType(COLLIDER2D_TYPE _Type) { m_Shape = _Type; }
@@ -27,9 +27,9 @@ public:
 
 
 public:
-    void BeginOverlap(CCollider2D* _Other); // 둘이 최초 충돌
-    void OnOverlap(CCollider2D* _Other);    // 충돌중
-    void EndOverlap(CCollider2D* _Other);   // 충돌이 끝날때
+    void BeginOverlap(CCollider2D* _Other);
+    void OnOverlap(CCollider2D* _Other);
+    void EndOverlap(CCollider2D* _Other);
 
 
 

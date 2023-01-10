@@ -40,7 +40,7 @@ void CRenderMgr::render()
 
         m_vecCam[i]->SortObject();
         m_vecCam[i]->render();
-    }
+    }   
 
     Clear();
 }
@@ -52,7 +52,7 @@ int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
         m_vecCam.resize(_idx + 1);
     }
 
-    m_vecCam[_idx] = _Cam;
+    m_vecCam[_idx] = _Cam;    
     return _idx;
 }
 

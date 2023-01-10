@@ -29,7 +29,7 @@ void CAnimator2D::finaltick()
 		}
 
 		m_pCurAnim->finaltick();
-	}
+	}	
 }
 
 void CAnimator2D::UpdateData()

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CCamera.h"
 
+
 #include "CDevice.h"
 #include "CRenderMgr.h"
 #include "CTransform.h"
@@ -28,11 +29,11 @@ CCamera::CCamera()
 
 CCamera::CCamera(const CCamera& _Other)
 	: CComponent(_Other)
-	, m_fAspectRatio(_Other.m_fAspectRatio)   // 종횡비
-	, m_fScale(_Other.m_fScale)			// Orthograpic 에서 사용하는 카메라 배율
-	, m_ProjType(_Other.m_ProjType)     // 투영 방식
+	, m_fAspectRatio(_Other.m_fAspectRatio)
+	, m_fScale(_Other.m_fScale)
+	, m_ProjType(_Other.m_ProjType)
 	, m_iLayerMask(_Other.m_iLayerMask)
-	, m_iCamIdx(-1)						// 카메라 우선순위
+	, m_iCamIdx(-1)
 {
 }
 
@@ -44,7 +45,7 @@ void CCamera::finaltick()
 {
 	CalcViewMat();
 
-	CalcProjMat();
+	CalcProjMat();	
 }
 
 void CCamera::CalcViewMat()
@@ -69,8 +70,6 @@ void CCamera::CalcViewMat()
 	matViewRot._21 = vR.y;	matViewRot._22 = vU.y;	matViewRot._23 = vF.y;
 	matViewRot._31 = vR.z;	matViewRot._32 = vU.z;	matViewRot._33 = vF.z;
 
-	// 최종 뷰행렬
-	// 카메라를 원점으로 이동시키고, 카메라가 z축을 바라보도록 회전
 	m_matView = matViewTrans * matViewRot;
 }
 
@@ -80,21 +79,21 @@ void CCamera::CalcProjMat()
 	// 투영 행렬 계산
 	// =============
 	m_matProj = XMMatrixIdentity();
-
+	
 	if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
 	{
 		// 직교 투영
 		Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
-		// 넣어준 해상도를 -1 ~ 1 의 NDC 좌표계로 투영 해주는 행렬을 반환하는 함수.
-		m_matProj = XMMatrixOrthographicLH(vResolution.x * (1.f / m_fScale), vResolution.y * (1.f / m_fScale), 1.f, 10000.f);
+		m_matProj =  XMMatrixOrthographicLH(vResolution.x * (1.f / m_fScale), vResolution.y * (1.f / m_fScale), 1.f, 10000.f);
 	}
 	else
-	{
+	{	
 		// 원근 투영
 		m_matProj = XMMatrixPerspectiveFovLH(XM_PI / 2.f, m_fAspectRatio, 1.f, 10000.f);
 	}
 
 }
+
 
 void CCamera::SetLayerMask(int _iLayer, bool _Visible)
 {
@@ -116,13 +115,11 @@ void CCamera::SetLayerMaskAll(bool _Visible)
 		m_iLayerMask = 0;
 }
 
-
 void CCamera::SetCameraIndex(int _idx)
 {
 	m_iCamIdx = _idx;
 	CRenderMgr::GetInst()->RegisterCamera(this, m_iCamIdx);
 }
-
 
 void CCamera::SortObject()
 {
@@ -145,7 +142,7 @@ void CCamera::SortObject()
 				CRenderComponent* pRenderCom = vecObject[j]->GetRenderComponent();
 
 				// 렌더링 기능이 없는 오브젝트는 제외
-				if (nullptr == pRenderCom
+				if (   nullptr == pRenderCom 
 					|| nullptr == pRenderCom->GetMaterial()
 					|| nullptr == pRenderCom->GetMaterial()->GetShader())
 					continue;
@@ -168,7 +165,7 @@ void CCamera::SortObject()
 					break;
 				case SHADER_DOMAIN::DOMAIN_UI:
 					m_vecUI.push_back(vecObject[j]);
-					break;
+					break;				
 				}
 			}
 		}
@@ -177,7 +174,7 @@ void CCamera::SortObject()
 
 void CCamera::render()
 {
-	// 행렬 업데이트			// 카메라에서 렌더해야, 현재 카메라의 transform 위치, 각도를 레지스터에 대입한다.
+	// 행렬 업데이트
 	g_transform.matView = m_matView;
 	g_transform.matProj = m_matProj;
 
@@ -188,6 +185,8 @@ void CCamera::render()
 	render_postprocess();
 	render_ui();
 }
+
+
 
 void CCamera::clear()
 {

@@ -4,7 +4,6 @@
 class CLayer;
 class CGameObject;
 
-// 오브젝트들을 들고있는 레이어들을 관리하는 클래스, 크게보면 오브젝트들을 관리한다.
 class CLevel :
     public CEntity
 {
@@ -14,7 +13,7 @@ private:
 public:
     void begin();
     void tick();
-    void finaltick();
+    void finaltick(); 
 
 public:
     CLayer* FindLayerByName(const wstring& _strName);
@@ -30,7 +29,7 @@ private:
     // 등록된 GameObject 제거
     void clear();
 
-    CLONE(CLevel); 
+    CLONE(CLevel);
 public:
     CLevel();
     ~CLevel();

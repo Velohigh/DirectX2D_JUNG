@@ -32,19 +32,20 @@ private:
 	ComPtr<ID3D11BlendState>		m_BSState[(UINT)BS_TYPE::END];
 
 
-
 	D3D11_VIEWPORT					m_ViewPort;
 
 	// 렌더타겟 해상도
-	Vec2							m_vRenderResolution;
+	Vec2							m_vRenderResolution;							
+	CConstBuffer*					m_arrConstBuffer[(UINT)CB_TYPE::END];
 
-	CConstBuffer*					m_arrConstBuffer[(UINT)CB_TYPE::END];		// 상수 버퍼 관리
+
+
 
 
 public:
 	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void ClearTarget(float(&_color)[4]);
-	void Present() { m_SwapChain->Present(0, 0); }
+	void Present()	{ m_SwapChain->Present(0, 0); }
 
 	Vec2 GetRenderResolution() { return m_vRenderResolution; }
 
@@ -65,6 +66,8 @@ public:
 	ComPtr<ID3D11RasterizerState> GetRSState(RS_TYPE _Type) { return m_RSState[(UINT)_Type]; }
 	ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) { return m_DSState[(UINT)_Type]; }
 	ComPtr<ID3D11BlendState> GetBSState(BS_TYPE _Type) { return m_BSState[(UINT)_Type]; }
+
+
 
 public:
 	CDevice();

@@ -1,7 +1,6 @@
 #pragma once
 #include "CComponent.h"
-// 헤더에서 헤더 참조는 가능하면 지양해야 하지만,
-// 스크립트들이 자주 사용하게 될 기능들은 미리 include 해놓겠습니다.
+
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
@@ -20,7 +19,7 @@ class CScript :
     public CComponent
 {
 private:
-
+   
 
 
 public:
@@ -28,7 +27,7 @@ public:
     void SetLifeSpan(float _Time) { GetOwner()->SetLifeSpan(_Time); }
 
 
-public:
+public:   
     virtual void finaltick() final {};
 
     virtual void BeginOverlap(CCollider2D* _Other) {}

@@ -36,6 +36,8 @@ int g_arrVK[(UINT)KEY::END]
 	 'X',
 	 'C',
 	 'V',
+	  
+	 	 
 
 	 '0',
 	 '1',
@@ -110,6 +112,7 @@ void CKeyMgr::tick()
 
 		// Mouse 위치 갱신
 		m_vPrevMousePos = m_vMousePos;
+
 		POINT ptMousePos = {};
 		GetCursorPos(&ptMousePos);		
 		ScreenToClient(CEngine::GetInst()->GetMainWnd(), &ptMousePos);

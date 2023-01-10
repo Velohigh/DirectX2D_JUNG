@@ -42,7 +42,7 @@ VS_OUT VS_Std2D(VS_IN _in)
 
 float4 PS_Std2D(VS_OUT _in) : SV_Target
 {
-    float4 vOutColor = (float4) 0.f;
+    float4 vOutColor = (float4) 0.f;            
         
     if (g_btex_0)
     {
@@ -51,7 +51,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     else
     {
         vOutColor = float4(1.f, 0.f, 1.f, 1.f);
-    }
+    }    
         
     if (0.f == vOutColor.a)
         discard;
@@ -120,7 +120,7 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
     {
         if (bAnimUse)
         {
-            float2 vUV = LeftTop + (BackSize * _in.vUV);
+            float2 vUV = LeftTop + (BackSize * _in.vUV);       
             vUV -= ((BackSize - Slice) / 2.f);
             vUV -= Offset;
             
@@ -138,15 +138,15 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
         else
         {
             vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-        }
+        }        
     }
     else
     {
         vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     }
         
-    float3 vNormal = (float3) 0.f;
-    if (g_btex_1)
+    float3 vNormal = (float3)0.f;
+    if(g_btex_1)
     {
         // Normal 값 추출
         vNormal = g_tex_1.Sample(g_sam_0, _in.vUV);
@@ -156,11 +156,11 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
         
         // NormalTexture 좌표계는 y축과 z 축이 반대로 되어있다.
         float f = vNormal.y;
-        vNormal.y = vNormal.z;
+        vNormal.y = vNormal.z;               
         vNormal.z = f;
         
         // Texture 에서 추출한 Normal 방향을 월드로 변환시킨다.
-        vNormal = normalize(mul(float4(vNormal, 0.f), g_matWorld)).xyz;
+        vNormal = normalize(mul(float4(vNormal, 0.f), g_matWorld)).xyz;        
     }
     
     
@@ -183,7 +183,7 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
     else
     {
         CalcLight2D(_in.vWorldPos, vNormal, LightColor);
-    }
+    }    
         
     vOutColor.rgb *= (LightColor.vDiffuse.rgb + LightColor.vAmbient.rgb);
     

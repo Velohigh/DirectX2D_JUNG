@@ -5,7 +5,7 @@
 #include "CAnimator2D.h"
 
 CMeshRender::CMeshRender()
-	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)
+	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)		
 {
 }
 
@@ -18,12 +18,11 @@ void CMeshRender::finaltick()
 }
 
 void CMeshRender::render()
-{
-	// 메쉬나 메터리얼을 지정안했다면 출력 X
+{	
 	if (nullptr == GetMesh() || nullptr == GetMaterial())
 		return;
 
-	// Transform 에 UpdateData 요청 (위치값 레지스터b0에 세팅하라고 요청)
+	// Transform 에 UpdateData 요청
 	Transform()->UpdateData();
 
 	// Animator2D 컴포넌트가 있다면
@@ -33,9 +32,8 @@ void CMeshRender::render()
 	}
 
 	// 재질 업데이트
-	GetMaterial()->UpdateData();	// Material 값 바인딩
+	GetMaterial()->UpdateData();
 
 	// 렌더
-	GetMesh()->render();	// 출력할 메쉬정하고 출력
-	
+	GetMesh()->render();
 }

@@ -13,7 +13,7 @@
 // ==================
 struct VS_DEBUG_IN
 {
-    float3 vPos : POSITION;
+    float3 vPos : POSITION;    
 };
 
 struct VS_DEBUG_OUT
@@ -23,11 +23,11 @@ struct VS_DEBUG_OUT
 
 VS_DEBUG_OUT VS_DebugShape(VS_DEBUG_IN _in)
 {
-    VS_DEBUG_OUT output = (VS_DEBUG_OUT) 0.f;
+    VS_DEBUG_OUT output = (VS_DEBUG_OUT) 0.f;    
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     
-    return output;
+    return output;    
 }
 
 float4 PS_DebugShape(VS_DEBUG_OUT _in) : SV_Target

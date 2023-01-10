@@ -59,7 +59,7 @@ void CPlayerScript::tick()
 		Transform()->SetRelativeRot(vRot);
 	}
 
-	Transform()->SetRelativePos(vCurPos);
+	Transform()->SetRelativePos(vCurPos);			
 
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -83,5 +83,5 @@ void CPlayerScript::Shoot()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
 {
-
+	
 }

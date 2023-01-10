@@ -43,13 +43,13 @@ void CLayer::finaltick()
 		{
 			++iter;
 		}
-	}
+	}	
 }
 
 void CLayer::AddGameObject(CGameObject* _Object, bool _bMove)
 {
 	m_vecParentObj.push_back(_Object);
-
+	
 	// 소유하고 있는 모든 자식오브젝트가 있는지 검사
 	static list<CGameObject*> queue;
 	queue.clear();
@@ -63,11 +63,11 @@ void CLayer::AddGameObject(CGameObject* _Object, bool _bMove)
 
 		for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
 		{
-			queue.push_back(pObject->m_vecChild[i]);
+			queue.push_back(pObject->m_vecChild[i]);			
 		}
 
 		// 부모타입 or 소속 레이어가 없는경우 or 부모와 같이 이동하는 경우
-		if (nullptr == pObject->m_Parent || -1 == pObject->m_iLayerIdx || _bMove)
+		if(nullptr == pObject->m_Parent || -1 == pObject->m_iLayerIdx || _bMove)
 			pObject->m_iLayerIdx = m_iLayerIdx;
-	}
+	}	
 }

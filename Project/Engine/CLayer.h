@@ -12,19 +12,21 @@ private:
     int                     m_iLayerIdx;    // 레이어 번호 (0~31)
 
 
-public:
+public:    
     void begin();
     void tick();
-    void finaltick();
+    void finaltick(); 
+
 
 public:
     // Layer 에 부모오브젝트 입력
     // _bMove : 자식 오브젝트들이 부모 오브젝트를 따라서 이동 할 것인지 체크
-    void AddGameObject(CGameObject* _Object, bool _bMove);
+    void AddGameObject(CGameObject* _Object, bool _bMove);    
     const vector<CGameObject*>& GetParentObject() { return m_vecParentObj; }
     const vector<CGameObject*>& GetObjects() { return m_vecObject; }
-	void RegisterObject(CGameObject* _Object) { m_vecObject.push_back(_Object); }
+    void RegisterObject(CGameObject* _Object){ m_vecObject.push_back(_Object); }
     int GetLayerIndex() { return m_iLayerIdx; }
+
 
     CLONE(CLayer)
 public:

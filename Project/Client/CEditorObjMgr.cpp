@@ -59,7 +59,7 @@ void CEditorObjMgr::tick()
 
 void CEditorObjMgr::render()
 {
-	return;
+	//return;
 
 	// DebugShape Render
 	CGameObjectEx* pShapeObj = nullptr;
