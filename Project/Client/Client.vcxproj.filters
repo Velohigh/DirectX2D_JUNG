@@ -6,16 +6,19 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Default">
-      <UniqueIdentifier>{01581e2e-0d22-458f-a487-e49b829c53e8}</UniqueIdentifier>
+      <UniqueIdentifier>{8e093ada-c2c2-4bff-9390-9244f58587a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="EditorObjMgr">
-      <UniqueIdentifier>{00a13157-8ea3-4bbf-b519-4127322dcbc4}</UniqueIdentifier>
+      <UniqueIdentifier>{9345d13f-0174-4f6d-9ddb-3587d6334bea}</UniqueIdentifier>
     </Filter>
     <Filter Include="EditorObjMgr\GameObjectEx">
-      <UniqueIdentifier>{2cf62147-4c2e-42f8-96e0-c472c8ca8504}</UniqueIdentifier>
+      <UniqueIdentifier>{ee8a76cf-4e38-431e-bc14-b6bd5c62857b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h">
+      <Filter>Default</Filter>
+    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>Default</Filter>
     </ClInclude>
@@ -23,9 +26,6 @@
       <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Default</Filter>
-    </ClInclude>
-    <ClInclude Include="Client.h">
       <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="CEditorObjMgr.h">

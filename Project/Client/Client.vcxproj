@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{75a075f7-4517-484a-99a7-fec3b9f73e3b}</ProjectGuid>
+    <ProjectGuid>{96a12f2b-f2e6-4aaa-8eb7-5f163384da7b}</ProjectGuid>
     <RootNamespace>Client</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -72,21 +72,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)OutputFile\bin_d\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
     <IncludePath>$(SolutionDir)External\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)OutputFile\bin\</OutDir>
     <IncludePath>$(SolutionDir)External\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>

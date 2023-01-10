@@ -53,7 +53,7 @@ void CEditorObjMgr::progress()
 
 void CEditorObjMgr::tick()
 {
-
+	
 
 }
 
@@ -78,7 +78,7 @@ void CEditorObjMgr::render()
 		case SHAPE_TYPE::CUBE:
 			break;
 		case SHAPE_TYPE::SPHERE:
-			break;
+			break;		
 		}
 
 		if (iter->matWorld != XMMatrixIdentity())
@@ -92,7 +92,7 @@ void CEditorObjMgr::render()
 			pShapeObj->Transform()->SetRelativeRot(iter->vWorldRotation);
 			pShapeObj->finaltick();
 		}
-
+		
 		pShapeObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, &iter->vColor);
 		pShapeObj->render();
 
