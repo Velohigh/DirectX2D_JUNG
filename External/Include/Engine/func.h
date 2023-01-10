@@ -1,5 +1,5 @@
 #pragma once
-// 자주사용하게 될 전역함수들 모음
+
 
 
 // 오브젝트 생성
@@ -49,6 +49,18 @@ void Safe_Del_Vec(vector<T*>& _vec)
 		}
 	}
 	_vec.clear();
+}
+
+template<typename T1, typename T2>
+void Safe_Del_Map(map<T1, T2>& _map)
+{
+	for (const auto& pair : _map)
+	{
+		if (nullptr != pair.second)
+			delete pair.second;
+	}
+
+	_map.clear();
 }
 
 

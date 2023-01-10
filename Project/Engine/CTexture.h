@@ -22,6 +22,11 @@ private:
                                     
     void* m_pSystem;    // 1단계로 파일로부터 시스템 메모리로 텍스쳐 데이터를 불러온다.
 
+public:
+    float Width() { return m_Desc.Width; }
+    float Height() { return m_Desc.Height; }
+
+
 private:
     virtual int Load(const wstring& _strFilePath) override; // 메모리로 로딩
 public:

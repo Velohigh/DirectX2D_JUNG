@@ -15,12 +15,14 @@ CMaterial::~CMaterial()
 {
 }
 
+
 void CMaterial::UpdateData()
 {
 	if (nullptr == m_pShader)
 		return;
 
 	m_pShader->UpdateData();
+
 
 	// Texture Update
 	for (UINT i = 0; i < TEX_END; ++i)
@@ -38,15 +40,13 @@ void CMaterial::UpdateData()
 		}
 	}
 
-
 	// Constant Update
 	CConstBuffer* pMtrlBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL);
-	pMtrlBuffer->SetData(&m_Const);		// 상수 버퍼 값 세팅
-	pMtrlBuffer->UpdateData();			// b1 레지스터에 바인딩
-
+	pMtrlBuffer->SetData(&m_Const);
+	pMtrlBuffer->UpdateData();
 }
 
-void CMaterial::SetScalarParam(SCALAR_PARAM _Param, void* _Src)
+void CMaterial::SetScalarParam(SCALAR_PARAM _Param, const void* _Src)
 {
 	switch (_Param)
 	{
@@ -62,18 +62,21 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _Param, void* _Src)
 	case FLOAT_3:
 		m_Const.arrFloat[_Param - FLOAT_0] = *((float*)_Src);
 		break;
+
 	case VEC2_0:
 	case VEC2_1:
 	case VEC2_2:
 	case VEC2_3:
 		m_Const.arrV2[_Param - VEC2_0] = *((Vec2*)_Src);
 		break;
+
 	case VEC4_0:
 	case VEC4_1:
 	case VEC4_2:
 	case VEC4_3:
 		m_Const.arrV4[_Param - VEC4_0] = *((Vec4*)_Src);
 		break;
+
 	case MAT_0:
 	case MAT_1:
 	case MAT_2:

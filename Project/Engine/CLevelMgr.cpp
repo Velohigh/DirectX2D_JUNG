@@ -89,7 +89,7 @@ void CLevelMgr::init()
 	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
 
 	pParent->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200, 1.f));
+	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pParent->MeshRender()->SetMesh(pMesh);
 	pParent->MeshRender()->SetMaterial(Std2DMtrl);
@@ -98,7 +98,8 @@ void CLevelMgr::init()
 	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
 
 	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
-	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 0.5f), Vec2(0.1f, 0.125f), 10, 24);
+	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
+	pParent->Animator2D()->Play(L"WalkDown", true);
 
 	m_pCurLevel->AddGameObject(pParent, L"Player", false);
 

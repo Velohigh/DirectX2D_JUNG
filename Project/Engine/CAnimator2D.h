@@ -17,10 +17,13 @@ private:
 
 public:
     virtual void finaltick() override;
-
+    void UpdateData();
 
 public:
-    void CreateAnimation(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, int _FrameCount, int _FPS);
+    void Play(const wstring& _strName, bool _bRepeat);
+    CAnim2D* FindAnim(const wstring& _strName);
+
+    void CreateAnimation(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _vBackSize, int _FrameCount, int _FPS);
 
     CLONE(CAnimator2D);
 public:
