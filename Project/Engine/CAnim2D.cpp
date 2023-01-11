@@ -6,6 +6,8 @@
 CAnim2D::CAnim2D()
 	: m_pOwner(nullptr)
 	, m_iCurFrm(0)
+	, m_bFinish(false)
+	, m_fTime(0.f)
 {
 }
 
@@ -14,7 +16,7 @@ CAnim2D::~CAnim2D()
 }
 
 void CAnim2D::finaltick()
-{	
+{
 	if (m_bFinish)
 		return;
 
@@ -22,7 +24,7 @@ void CAnim2D::finaltick()
 
 	if (m_vecFrm[m_iCurFrm].fDuration < m_fTime)
 	{
-		m_fTime = 0.f;
+		m_fTime = m_fTime - m_vecFrm[m_iCurFrm].fDuration;
 		++m_iCurFrm;
 
 		if (m_vecFrm.size() <= m_iCurFrm)
@@ -53,8 +55,6 @@ void CAnim2D::Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex
 		frm.fDuration = 1.f / (float)_FPS;
 		frm.LeftTopUV = Vec2(_vLeftTop.x + _vSlice.x * i, _vLeftTop.y) / vResolution;
 		frm.SliceUV = _vSlice / vResolution;
-		
-		frm.Offset = Vec2(0.05f, 0.f);	
 
 		m_vecFrm.push_back(frm);
 	}

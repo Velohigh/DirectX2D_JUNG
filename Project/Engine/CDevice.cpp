@@ -5,7 +5,7 @@
 #include "CConstBuffer.h"
 
 CDevice::CDevice()
-    : m_hWnd(nullptr)  
+    : m_hWnd(nullptr)
     , m_ViewPort{}
     , m_arrConstBuffer{}
 {
@@ -18,7 +18,7 @@ CDevice::~CDevice()
 
 int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 {
-    m_hWnd = _hWnd;    
+    m_hWnd = _hWnd;
     m_vRenderResolution = Vec2((float)_iWidth, (float)_iHeight);
 
     GlobalData.Resolution = m_vRenderResolution;
@@ -32,7 +32,7 @@ int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
     D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_11_0;
 
-      
+
 
     if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE
         , nullptr, iFlag
@@ -56,11 +56,6 @@ int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
         MessageBox(nullptr, L"View 생성 실패", L"Device 초기화 에러", MB_OK);
         return E_FAIL;
     }
-
-
-    // 출력 타겟 설정
-    m_Context->OMSetRenderTargets(1, m_RTV.GetAddressOf(), m_DSV.Get());
-
 
     // ViewPort 설정
     m_ViewPort.TopLeftX = 0.f;
@@ -120,7 +115,7 @@ int CDevice::CreateSwapChain()
     tDesc.OutputWindow = m_hWnd;    // 출력 윈도우
     tDesc.Windowed = true;          // 창모드, 전체화면 모드
 
-    tDesc.BufferCount = 1;              
+    tDesc.BufferCount = 1;
     tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
     tDesc.BufferDesc.Height = (UINT)m_vRenderResolution.y;
@@ -129,13 +124,13 @@ int CDevice::CreateSwapChain()
     tDesc.BufferDesc.RefreshRate.Numerator = 60;
     tDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
     tDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER::DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    
+
     tDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_DISCARD;
 
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
     tDesc.Flags = 0;
-    
+
 
     // 스왚체인 생성
     ComPtr<IDXGIDevice>  pDXGIDevice;
@@ -156,7 +151,7 @@ int CDevice::CreateSwapChain()
 int CDevice::CreateView()
 {
     m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)m_RTTex.GetAddressOf());
-    
+
     if (FAILED(m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTV.GetAddressOf())))
     {
         return E_FAIL;
@@ -172,7 +167,7 @@ int CDevice::CreateView()
     tDesc.Height = (UINT)m_vRenderResolution.y;
     tDesc.ArraySize = 1;
 
-    tDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;    
+    tDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
     tDesc.Usage = D3D11_USAGE_DEFAULT;
     tDesc.CPUAccessFlags = 0;
 
@@ -180,7 +175,7 @@ int CDevice::CreateView()
 
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
-    
+
 
     if (FAILED(m_Device->CreateTexture2D(&tDesc, nullptr, m_DSTex.GetAddressOf())))
     {
@@ -229,7 +224,7 @@ int CDevice::CreateDepthStencilState()
     Desc.StencilEnable = false;
     Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     DEVICE->CreateDepthStencilState(&Desc, m_DSState[(UINT)DS_TYPE::LESS_EQUAL].GetAddressOf());
-    
+
     // Greater
     Desc.DepthEnable = true;
     Desc.DepthFunc = D3D11_COMPARISON_GREATER;
@@ -252,7 +247,7 @@ int CDevice::CreateDepthStencilState()
     DEVICE->CreateDepthStencilState(&Desc, m_DSState[(UINT)DS_TYPE::NO_WRITE].GetAddressOf());
 
     // NoTest NoWrite
-    Desc.DepthEnable = false;    
+    Desc.DepthEnable = false;
     Desc.StencilEnable = false;
     Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
     DEVICE->CreateDepthStencilState(&Desc, m_DSState[(UINT)DS_TYPE::NO_TEST_NO_WRITE].GetAddressOf());
@@ -269,7 +264,7 @@ int CDevice::CreateBlendState()
     // Mask
     D3D11_BLEND_DESC Desc = {};
     Desc.AlphaToCoverageEnable = true;
-    Desc.IndependentBlendEnable = false;   
+    Desc.IndependentBlendEnable = false;
 
     Desc.RenderTarget[0].BlendEnable = true;
     Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
@@ -336,7 +331,7 @@ int CDevice::CreateSampler()
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    tSamDesc.Filter   = D3D11_FILTER_ANISOTROPIC;    
+    tSamDesc.Filter = D3D11_FILTER_ANISOTROPIC;
     DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[0].GetAddressOf());
 
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
