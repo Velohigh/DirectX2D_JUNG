@@ -8,9 +8,7 @@
 #include "CEditorObjMgr.h"
 
 // ImGui
-#include "ImGui\imgui.h"
-#include "ImGui\imgui_impl_win32.h"
-#include "ImGui\imgui_impl_dx11.h"
+#include "ImGuiMgr.h"
 
 
 
@@ -51,52 +49,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
     // ImGui 초기화
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-    //io.ConfigViewportsNoAutoMerge = true;
-    //io.ConfigViewportsNoTaskBarIcon = true;
-    //io.ConfigViewportsNoDefaultParent = true;
-    //io.ConfigDockingAlwaysTabBar = true;
-    //io.ConfigDockingTransparentPayload = true;
-    //io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T WORK AS EXPECTED. DON'T USE IN USER APP!
-    //io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; // FIXME-DPI: Experimental.
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplWin32_Init(g_hWnd);
-    ImGui_ImplDX11_Init(DEVICE, CONTEXT);
+    ImGuiMgr::GetInst()->init(g_hWnd);
 
 
 
-
-
-
+    // 메세지 루프
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
     MSG msg;
-
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-
-    bool bTestUI = true;
 
     while (true)
     {
@@ -115,59 +74,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             CEngine::GetInst()->progress();
+
             CEditorObjMgr::GetInst()->progress();
 
-            // ImGui Update               
-            ImGui_ImplDX11_NewFrame();
-            ImGui_ImplWin32_NewFrame();
-            ImGui::NewFrame();
+            ImGuiMgr::GetInst()->progress();
+
 
             // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).            
-            if (show_demo_window)
-                ImGui::ShowDemoWindow(&show_demo_window);
-
-            if (bTestUI)
-            {
-                ImGui::Begin("TestWindow", &bTestUI);
-
-                ImGui::Text("Test String");
-                ImGui::Button("Test Button");
-
-                if (ImGui::BeginChild("ChildUI"))
-                {
-                    ImGui::Text("Child Part");
-                    ImGui::EndChild();
-                }
-
-                ImGui::End();
-            }
 
 
 
-            //
-            ImGui::Begin("Transform##2");
-            ImGui::End();
 
-            // ImGui Rendering
-            ImGui::Render();
-            ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-            // Update and Render additional Platform Windows
-            if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-            {
-                ImGui::UpdatePlatformWindows();
-                ImGui::RenderPlatformWindowsDefault();
-            }
+
 
             // 렌더 종료
             CDevice::GetInst()->Present();
         }
     }
 
-    // ImGui Release
-    ImGui_ImplDX11_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
+
 
     return (int)msg.wParam;
 }
