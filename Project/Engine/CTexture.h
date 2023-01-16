@@ -21,8 +21,8 @@ private:
 
 
 public:
-    float Width() { return m_Desc.Width; }
-    float Height() { return m_Desc.Height; }
+    float Width() { return (float)m_Desc.Width; }
+    float Height() { return (float)m_Desc.Height; }
 
 private:
     virtual int Load(const wstring& _strFilePath) override;

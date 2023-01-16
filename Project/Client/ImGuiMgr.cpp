@@ -7,12 +7,11 @@
 
 #include <Engine\CGameObject.h>
 
-#include "InspectorUI.h"
+#include "UI.h"
 
 
 ImGuiMgr::ImGuiMgr()
     : m_hMainHwnd(nullptr)
-    , m_Inspector(nullptr)
 {
 
 }
@@ -24,7 +23,8 @@ ImGuiMgr::~ImGuiMgr()
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
 
-    delete m_Inspector;
+    // UI »èÁ¦
+    Safe_Del_Map(m_mapUI);
 }
 
 
@@ -89,7 +89,10 @@ void ImGuiMgr::begin()
 
 void ImGuiMgr::tick()
 {
-    m_Inspector->tick();
+    for (const auto& pair : m_mapUI)
+    {
+        pair.second->tick();
+    }
 }
 
 void ImGuiMgr::finaltick()
@@ -98,8 +101,10 @@ void ImGuiMgr::finaltick()
     ImGui::ShowDemoWindow();
 
     // InspectorUI
-    m_Inspector->finaltick();
-
+    for (const auto& pair : m_mapUI)
+    {
+        pair.second->finaltick();
+    }
 
     if (KEY_TAP(KEY::ENTER))
         ImGui::SetWindowFocus(nullptr);
@@ -123,9 +128,21 @@ void ImGuiMgr::render()
 }
 
 
+#include "InspectorUI.h"
+#include "ListUI.h"
 
 void ImGuiMgr::CreateUI()
 {
-    m_Inspector = new InspectorUI;
+    UI* pUI = nullptr;
 
+    // InspectorUI
+    pUI = new InspectorUI;
+    pUI->SetActive(true);
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+
+    // ListUI
+    pUI = new ListUI;
+    pUI->SetModal(true);
+    pUI->SetActive(true);
+    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
 }

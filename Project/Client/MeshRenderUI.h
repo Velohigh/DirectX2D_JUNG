@@ -1,17 +1,12 @@
 #pragma once
-#include "UI.h"
+#include "ComponentUI.h"
 
 class MeshRenderUI :
-    public UI
+    public ComponentUI
 {
-private:
-    CGameObject* m_Target;
 
 public:
-    virtual void render_update() override;
-
-public:
-    void SetTarget(CGameObject* _Target) { m_Target = _Target; }
+    virtual int render_update() override;
 
 public:
     MeshRenderUI();

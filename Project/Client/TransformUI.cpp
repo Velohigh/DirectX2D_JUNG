@@ -5,8 +5,7 @@
 #include <Engine\CTransform.h>
 
 TransformUI::TransformUI()
-	: UI("Transform")
-	, m_Target(nullptr)
+	: ComponentUI("Transform", COMPONENT_TYPE::TRANSFORM)
 {
 }
 
@@ -14,14 +13,14 @@ TransformUI::~TransformUI()
 {
 }
 
-void TransformUI::render_update()
+int TransformUI::render_update()
 {
-	if (nullptr == m_Target)
-		return;
+	if (FALSE == ComponentUI::render_update())
+		return FALSE;
 
-	Vec3 vPos = m_Target->Transform()->GetRelativePos();
-	Vec3 vScale = m_Target->Transform()->GetRelativeScale();
-	Vec3 vRotation = m_Target->Transform()->GetRelativeRot();
+	Vec3 vPos = GetTarget()->Transform()->GetRelativePos();
+	Vec3 vScale = GetTarget()->Transform()->GetRelativeScale();
+	Vec3 vRotation = GetTarget()->Transform()->GetRelativeRot();
 	vRotation = (vRotation / XM_PI) * 180.f;
 
 	ImGui::Text("Position");
@@ -36,9 +35,11 @@ void TransformUI::render_update()
 	ImGui::SameLine();
 	ImGui::InputFloat3("##Relative Rotation", vRotation);
 
-	m_Target->Transform()->SetRelativePos(vPos);
-	m_Target->Transform()->SetRelativeScale(vScale);
+	GetTarget()->Transform()->SetRelativePos(vPos);
+	GetTarget()->Transform()->SetRelativeScale(vScale);
 
 	vRotation = (vRotation / 180.f) * XM_PI;
-	m_Target->Transform()->SetRelativeRot(vRotation);
+	GetTarget()->Transform()->SetRelativeRot(vRotation);
+
+	return TRUE;
 }

@@ -5,16 +5,15 @@
 #include "ImGui\imgui_impl_dx11.h"
 #include "ImGui\imgui_impl_win32.h"
 
-class InspectorUI;
+class UI;
 
 class ImGuiMgr :
     public CSingleton<ImGuiMgr>
 {
     SINGLE(ImGuiMgr);
 private:
-    HWND            m_hMainHwnd;
-
-    InspectorUI* m_Inspector;
+    HWND                m_hMainHwnd;
+    map<string, UI*>    m_mapUI;
 
 
 

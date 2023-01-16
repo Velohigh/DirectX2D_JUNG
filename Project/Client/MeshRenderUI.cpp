@@ -4,8 +4,7 @@
 #include <Engine\CMeshRender.h>
 
 MeshRenderUI::MeshRenderUI()
-	: UI("MeshRender")
-	, m_Target(nullptr)
+	: ComponentUI("MeshRender", COMPONENT_TYPE::MESHRENDER)
 {
 }
 
@@ -14,10 +13,29 @@ MeshRenderUI::~MeshRenderUI()
 }
 
 
-void MeshRenderUI::render_update()
+int MeshRenderUI::render_update()
 {
-	if (nullptr == m_Target || !m_Target->MeshRender())
-		return;
+	if (FALSE == ComponentUI::render_update())
+		return FALSE;
 
-	ImGui::Text("MeshRenderUI");
+	char szBuff[50] = {};
+
+	Ptr<CMesh> pMesh = GetTarget()->MeshRender()->GetMesh();
+	Ptr<CMaterial> pMtrl = GetTarget()->MeshRender()->GetMaterial();
+
+	ImGui::Text("Mesh    ");
+	ImGui::SameLine();
+	GetResKey(pMesh.Get(), szBuff, 50);
+	ImGui::InputText("##MeshName", szBuff, 50, ImGuiInputTextFlags_ReadOnly);
+	ImGui::SameLine();
+	ImGui::Button("##MeshSelectBtn", ImVec2(18, 18));
+
+	ImGui::Text("Material");
+	ImGui::SameLine();
+	GetResKey(pMtrl.Get(), szBuff, 50);
+	ImGui::InputText("##MtrlName", szBuff, 50, ImGuiInputTextFlags_ReadOnly);
+	ImGui::SameLine();
+	ImGui::Button("##MtrlSelectBtn", ImVec2(18, 18));
+
+	return TRUE;
 }
