@@ -3,8 +3,9 @@
 
 
 Collider2DUI::Collider2DUI()
-    : ComponentUI("Coillider2D", COMPONENT_TYPE::COLLIDER2D)
+    : ComponentUI("##Coillider2D", COMPONENT_TYPE::COLLIDER2D)
 {
+    SetName("Coillider2D");
 }
 
 Collider2DUI::~Collider2DUI()

@@ -15,10 +15,12 @@
 #include "Light2DUI.h"
 
 InspectorUI::InspectorUI()
-	: UI("Inspector")
+	: UI("##Inspector")
 	, m_pTarget(nullptr)
 	, m_arrComUI{}
 {
+	SetName("Inspector");
+
 	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM] = new TransformUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]->SetSize(0.f, 150.f);
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]);

@@ -5,8 +5,9 @@
 #include <Engine\CTransform.h>
 
 TransformUI::TransformUI()
-	: ComponentUI("Transform", COMPONENT_TYPE::TRANSFORM)
+	: ComponentUI("##Transform", COMPONENT_TYPE::TRANSFORM)
 {
+	SetName("Transform");
 }
 
 TransformUI::~TransformUI()

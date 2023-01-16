@@ -2,8 +2,8 @@
 #include "UI.h"
 
 
-UI::UI(const string& _Name)
-	: m_strName(_Name)
+UI::UI(const string& _ID)
+	: m_strID(_ID)
 	, m_ParentUI(nullptr)
 	, m_Modal(false)
 	, m_Active(false)
@@ -18,8 +18,11 @@ UI::~UI()
 
 void UI::finaltick()
 {
+
 	if (!m_Active)
 		return;
+
+	string strFullName = m_strName + m_strID;
 
 	// 부모 UI
 	if (nullptr == m_ParentUI)
@@ -27,7 +30,7 @@ void UI::finaltick()
 		// 모달리스
 		if (!m_Modal)
 		{
-			ImGui::Begin(m_strName.c_str(), &m_Active);
+			ImGui::Begin(strFullName.c_str(), &m_Active);
 
 			render_update();
 
@@ -50,8 +53,10 @@ void UI::finaltick()
 		// 모달
 		else
 		{
-			ImGui::OpenPopup(m_strName.c_str());
-			if (ImGui::BeginPopupModal(m_strName.c_str(), &m_Active))
+			ImGui::SetNextWindowPos(ImVec2(0.f, 0.f));
+
+			ImGui::OpenPopup(strFullName.c_str());
+			if (ImGui::BeginPopupModal(strFullName.c_str(), &m_Active))
 			{
 				render_update();
 
@@ -76,7 +81,7 @@ void UI::finaltick()
 	// 자식 UI
 	else
 	{
-		ImGui::BeginChild(m_strName.c_str(), m_vSize);
+		ImGui::BeginChild(strFullName.c_str(), m_vSize);
 
 		render_update();
 

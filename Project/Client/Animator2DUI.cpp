@@ -3,8 +3,9 @@
 
 
 Animator2DUI::Animator2DUI()
-    : ComponentUI("Animator2D", COMPONENT_TYPE::ANIMATOR2D)
+    : ComponentUI("##Animator2D", COMPONENT_TYPE::ANIMATOR2D)
 {
+    SetName("Animator2D");
 }
 
 Animator2DUI::~Animator2DUI()

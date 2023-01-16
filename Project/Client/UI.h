@@ -6,9 +6,11 @@
 class UI
 {
 private:
-	const string	m_strName;		// 타이틀 이름, ID
+	string			m_strName;		// 타이틀 이름, 
+	string			m_strID;		// ID 이름
 
 	ImVec2			m_vSize;		// UI 크기
+
 
 	UI*				m_ParentUI;		// 부모 UI
 	vector<UI*>		m_vecChildUI;	// 자식 UI 목록
@@ -30,6 +32,9 @@ public:
 	bool IsModal() { return m_Modal; }
 
 	const string& GetName() { return m_strName; }
+	void SetName(const string& _Name) { m_strName = _Name; }
+
+	const string& GetID() { return m_strID; }
 
 	void SetSize(float _width, float _height) { m_vSize = ImVec2(_width, _height); }
 
@@ -42,6 +47,6 @@ public:
 
 public:
 	UI(const string& _Name);
-	~UI();
+	virtual ~UI();
 };
 

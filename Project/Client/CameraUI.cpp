@@ -3,8 +3,9 @@
 
 
 CameraUI::CameraUI()
-    : ComponentUI("Camera", COMPONENT_TYPE::CAMERA)
+    : ComponentUI("##Camera", COMPONENT_TYPE::CAMERA)
 {
+    SetName("Camera");
 }
 
 CameraUI::~CameraUI()

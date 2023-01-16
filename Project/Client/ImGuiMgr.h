@@ -21,6 +21,9 @@ public:
     void init(HWND _hWnd);
     void progress();
 
+public:
+    UI* FindUI(const string& _UIName);
+
 private:
     void CreateUI();
 

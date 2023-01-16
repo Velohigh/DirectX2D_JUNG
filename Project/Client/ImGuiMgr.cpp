@@ -80,6 +80,7 @@ void ImGuiMgr::progress()
 }
 
 
+
 void ImGuiMgr::begin()
 {
     ImGui_ImplDX11_NewFrame();
@@ -138,11 +139,22 @@ void ImGuiMgr::CreateUI()
     // InspectorUI
     pUI = new InspectorUI;
     pUI->SetActive(true);
-    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+    m_mapUI.insert(make_pair(pUI->GetID(), pUI));
 
     // ListUI
     pUI = new ListUI;
     pUI->SetModal(true);
-    pUI->SetActive(true);
-    m_mapUI.insert(make_pair(pUI->GetName(), pUI));
+    pUI->SetActive(false);
+    m_mapUI.insert(make_pair(pUI->GetID(), pUI));
+}
+
+
+UI* ImGuiMgr::FindUI(const string& _UIName)
+{
+    map<string, UI*>::iterator iter = m_mapUI.find(_UIName);
+
+    if (iter == m_mapUI.end())
+        return nullptr;
+
+    return iter->second;
 }

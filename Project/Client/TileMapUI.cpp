@@ -3,8 +3,9 @@
 
 
 TileMapUI::TileMapUI()
-    : ComponentUI("TileMap", COMPONENT_TYPE::TILEMAP)
+    : ComponentUI("##TileMap", COMPONENT_TYPE::TILEMAP)
 {
+    SetName("TileMap");
 }
 
 TileMapUI::~TileMapUI()
