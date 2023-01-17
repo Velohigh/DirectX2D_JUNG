@@ -35,6 +35,9 @@ public:
     virtual int Save(const wstring& _strRelativePath) { return S_OK; }
 
 public:
+    CLONE(CMaterial);
+
+public:
     CMaterial();
     ~CMaterial();
 };

@@ -18,7 +18,6 @@ UI::~UI()
 
 void UI::finaltick()
 {
-
 	if (!m_Active)
 		return;
 
@@ -53,7 +52,8 @@ void UI::finaltick()
 		// И№До
 		else
 		{
-			ImGui::SetNextWindowPos(ImVec2(0.f, 0.f));
+			ImGui::SetNextWindowPos(m_vPopupPos);
+			ImGui::SetNextWindowSize(m_vSize);
 
 			ImGui::OpenPopup(strFullName.c_str());
 			if (ImGui::BeginPopupModal(strFullName.c_str(), &m_Active))

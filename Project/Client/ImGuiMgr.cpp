@@ -104,7 +104,10 @@ void ImGuiMgr::finaltick()
     // InspectorUI
     for (const auto& pair : m_mapUI)
     {
-        pair.second->finaltick();
+        if (pair.second->IsActive())
+        {
+            pair.second->finaltick();
+        }
     }
 
     if (KEY_TAP(KEY::ENTER))
@@ -116,7 +119,6 @@ void ImGuiMgr::render()
     // ImGui Rendering
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
 
     // Update and Render additional Platform Windows
     ImGuiIO& io = ImGui::GetIO(); (void)io;

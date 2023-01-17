@@ -8,6 +8,7 @@
 #include "ListUI.h"
 
 
+
 MeshRenderUI::MeshRenderUI()
 	: ComponentUI("##MeshRender", COMPONENT_TYPE::MESHRENDER)
 {
@@ -39,18 +40,15 @@ int MeshRenderUI::render_update()
 		const map<wstring, Ptr<CRes>>& mapMesh = CResMgr::GetInst()->GetResources(RES_TYPE::MESH);
 
 		ListUI* pListUI = (ListUI*)ImGuiMgr::GetInst()->FindUI("##List");
-
-		pListUI->SetName("Mesh List");
-		pListUI->Clear();
+		pListUI->Reset("Mesh List", ImVec2(300.f, 500.f));
 		for (const auto& pair : mapMesh)
 		{
 			pListUI->AddItem(string(pair.first.begin(), pair.first.end()));
 		}
-		pListUI->SetActive(true);
+
+		// 항목 선택시 호출받을 델리게이트 등록
+		pListUI->AddDynamic_Select(this, (UI_DELEGATE_1)&MeshRenderUI::SelectMesh);
 	}
-
-
-
 
 	ImGui::Text("Material");
 	ImGui::SameLine();
@@ -62,15 +60,29 @@ int MeshRenderUI::render_update()
 		const map<wstring, Ptr<CRes>>& mapMtrl = CResMgr::GetInst()->GetResources(RES_TYPE::MATERIAL);
 
 		ListUI* pListUI = (ListUI*)ImGuiMgr::GetInst()->FindUI("##List");
-
-		pListUI->SetName("Material List");
-		pListUI->Clear();
+		pListUI->Reset("Material", ImVec2(300.f, 500.f));
 		for (const auto& pair : mapMtrl)
 		{
 			pListUI->AddItem(string(pair.first.begin(), pair.first.end()));
 		}
-		pListUI->SetActive(true);
+
+		// 항목 선택시 호출받을 델리게이트 등록
+		pListUI->AddDynamic_Select(this, (UI_DELEGATE_1)&MeshRenderUI::SelectMaterial);
 	}
 
 	return TRUE;
+}
+
+void MeshRenderUI::SelectMesh(DWORD_PTR _Key)
+{
+	string strKey = (char*)_Key;
+	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(wstring(strKey.begin(), strKey.end()));
+	GetTarget()->MeshRender()->SetMesh(pMesh);
+}
+
+void MeshRenderUI::SelectMaterial(DWORD_PTR _Key)
+{
+	string strKey = (char*)_Key;
+	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(wstring(strKey.begin(), strKey.end()));
+	GetTarget()->MeshRender()->SetMaterial(pMtrl);
 }

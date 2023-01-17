@@ -11,7 +11,12 @@ class CRenderComponent :
 {
 private:
     Ptr<CMesh>              m_pMesh;
-    Ptr<CMaterial>          m_pMtrl;
+
+    Ptr<CMaterial>          m_pSharedMtrl;  // 원본 메테리얼
+    Ptr<CMaterial>          m_pDynamicMtrl; // SharedMaterial 복사본
+    Ptr<CMaterial>          m_pCurrentMtrl; // 현재 사용 중인 재질
+
+
 
 public:
     virtual void render() = 0;
@@ -19,10 +24,14 @@ public:
 
 public:
     void SetMesh(Ptr<CMesh> _Mesh) { m_pMesh = _Mesh; }
-    void SetMaterial(Ptr<CMaterial> _Mtrl) { m_pMtrl = _Mtrl; }
+    void SetMaterial(Ptr<CMaterial> _Mtrl);
 
     Ptr<CMesh> GetMesh() { return m_pMesh; }
-    Ptr<CMaterial> GetMaterial() { return m_pMtrl; }
+    Ptr<CMaterial> GetMaterial() { return m_pCurrentMtrl; }
+    Ptr<CMaterial> GetSharedMaterial() { return m_pSharedMtrl; }
+    Ptr<CMaterial> GetDynamicMaterial();
+
+
 
 
 public:
