@@ -16,6 +16,11 @@ CPlayerScript::~CPlayerScript()
 {
 }
 
+void CPlayerScript::begin()
+{
+	MeshRender()->GetDynamicMaterial();
+}
+
 void CPlayerScript::tick()
 {
 	Vec3 vCurPos = Transform()->GetRelativePos();
@@ -59,7 +64,7 @@ void CPlayerScript::tick()
 		Transform()->SetRelativeRot(vRot);
 	}
 
-	Transform()->SetRelativePos(vCurPos);			
+	Transform()->SetRelativePos(vCurPos);
 
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -83,5 +88,5 @@ void CPlayerScript::Shoot()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
 {
-	
+
 }

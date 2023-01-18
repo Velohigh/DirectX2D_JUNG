@@ -7,6 +7,9 @@
 #include <Engine\CResMgr.h>
 #include <Engine\CRenderMgr.h>
 #include <Engine\CTimeMgr.h>
+#include <Engine\CKeyMgr.h>
+
+#include <Engine\CCameraMoveScript.h>
 
 CEditorObjMgr::CEditorObjMgr()
 	: m_DebugShape{}
@@ -16,6 +19,7 @@ CEditorObjMgr::CEditorObjMgr()
 
 CEditorObjMgr::~CEditorObjMgr()
 {
+	Safe_Del_Vec(m_vecEditorObj);
 	Safe_Del_Array(m_DebugShape);
 }
 
@@ -33,6 +37,17 @@ void CEditorObjMgr::init()
 	m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE]->AddComponent(new CMeshRender);
 	m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE]->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh_Debug"));
 	m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE]->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DebugShapeMtrl"));
+
+	// EditorObject »ý¼º
+	CGameObjectEx* pEditorCamObj = new CGameObjectEx;
+	pEditorCamObj->AddComponent(new CTransform);
+	pEditorCamObj->AddComponent(new CCamera);
+	pEditorCamObj->AddComponent(new CCameraMoveScript);
+
+	pEditorCamObj->Camera()->SetLayerMaskAll(true);
+
+	m_vecEditorObj.push_back(pEditorCamObj);
+	CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCamObj->Camera());
 }
 
 
@@ -53,13 +68,38 @@ void CEditorObjMgr::progress()
 
 void CEditorObjMgr::tick()
 {
-	
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 
+	if (KEY_TAP(KEY::P))
+	{
+		if (pCurLevel->GetState() == LEVEL_STATE::PLAY)
+			CLevelMgr::GetInst()->GetCurLevel()->ChangeState(LEVEL_STATE::STOP);
+		else
+			CLevelMgr::GetInst()->GetCurLevel()->ChangeState(LEVEL_STATE::PLAY);
+	}
+
+
+
+
+	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
+	{
+		m_vecEditorObj[i]->tick();
+	}
+
+	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
+	{
+		m_vecEditorObj[i]->finaltick();
+	}
 }
 
 void CEditorObjMgr::render()
 {
-	//return;
+	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
+	{
+		m_vecEditorObj[i]->render();
+	}
+
+
 
 	// DebugShape Render
 	CGameObjectEx* pShapeObj = nullptr;
@@ -78,7 +118,7 @@ void CEditorObjMgr::render()
 		case SHAPE_TYPE::CUBE:
 			break;
 		case SHAPE_TYPE::SPHERE:
-			break;		
+			break;
 		}
 
 		if (iter->matWorld != XMMatrixIdentity())
@@ -92,7 +132,7 @@ void CEditorObjMgr::render()
 			pShapeObj->Transform()->SetRelativeRot(iter->vWorldRotation);
 			pShapeObj->finaltick();
 		}
-		
+
 		pShapeObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, &iter->vColor);
 		pShapeObj->render();
 

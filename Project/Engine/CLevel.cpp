@@ -4,8 +4,11 @@
 #include "CLayer.h"
 #include "CGameObject.h"
 
+#include "CRenderMgr.h"
+
 CLevel::CLevel()
 	: m_arrLayer{}
+	, m_State(LEVEL_STATE::STOP)
 {
 	for (UINT i = 0; i < MAX_LAYER; ++i)
 	{
@@ -69,6 +72,19 @@ void CLevel::AddGameObject(CGameObject* _Object, const wstring& _LayerName, bool
 	pLayer->AddGameObject(_Object, _Move);
 }
 
+void CLevel::ChangeState(LEVEL_STATE _State)
+{
+	m_State = _State;
+
+	if (LEVEL_STATE::PLAY == m_State)
+	{
+		CRenderMgr::GetInst()->SetRenderFunc(true);
+	}
+	else
+	{
+		CRenderMgr::GetInst()->SetRenderFunc(false);
+	}
+}
 
 
 void CLevel::clear()

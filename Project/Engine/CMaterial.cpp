@@ -8,13 +8,12 @@ CMaterial::CMaterial()
 	: CRes(RES_TYPE::MATERIAL)
 	, m_Const{}
 	, m_arrTex{}
-{	
+{
 }
 
 CMaterial::~CMaterial()
 {
 }
-
 
 void CMaterial::UpdateData()
 {
@@ -53,7 +52,7 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _Param, const void* _Src)
 	case INT_0:
 	case INT_1:
 	case INT_2:
-	case INT_3:		
+	case INT_3:
 		m_Const.arrInt[_Param] = *((int*)_Src);
 		break;
 	case FLOAT_0:
@@ -82,7 +81,7 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _Param, const void* _Src)
 	case MAT_2:
 	case MAT_3:
 		m_Const.arrMat[_Param - MAT_0] = *((Matrix*)_Src);
-		break;	
+		break;
 	}
 }
 

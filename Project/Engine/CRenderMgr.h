@@ -11,11 +11,14 @@ class CRenderMgr :
     SINGLE(CRenderMgr);
 private:
     vector<CCamera*>            m_vecCam;
+    CCamera* m_pEditorCam;
+
     vector<tDebugShapeInfo>     m_vecShapeInfo;
 
     vector<tLightInfo>          m_vecLight2D;
     CStructuredBuffer*          m_Light2DBuffer;
 
+    void (CRenderMgr::* RENDER_FUNC)(void);
 
 
 public:
@@ -24,13 +27,15 @@ public:
 
 public:
     int RegisterCamera(CCamera* _Cam, int _idx);
+    void RegisterEditorCamera(CCamera* _Cam) { m_pEditorCam = _Cam; }
+    void SetRenderFunc(bool _IsPlay);
     void RegisterLight2D(const tLightInfo& _Light2D) { m_vecLight2D.push_back(_Light2D); }
 
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecShapeInfo.push_back(_info); }
     vector<tDebugShapeInfo>& GetDebugShapeInfo() { return m_vecShapeInfo; }
 
-    CCamera* GetMainCam() 
-    { 
+    CCamera* GetMainCam()
+    {
         if (m_vecCam.empty())
             return nullptr;
 
@@ -39,6 +44,8 @@ public:
 
 private:
     void UpdateData();
+    void render_play();
+    void render_editor();
     void Clear();
 
 

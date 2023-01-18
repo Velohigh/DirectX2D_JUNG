@@ -25,14 +25,13 @@ public:
 
     virtual void UpdateData() override;
 
-
-
-
-
 private:
     virtual int Load(const wstring& _strFilePath) { return S_OK; }
 public:
     virtual int Save(const wstring& _strRelativePath) { return S_OK; }
+
+public:
+    CLONE(CMaterial);
 
 public:
     CMaterial();

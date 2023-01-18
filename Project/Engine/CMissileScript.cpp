@@ -18,4 +18,7 @@ void CMissileScript::tick()
 	vPos += m_vDir * DT * m_fSpeed;
 
 	Transform()->SetRelativePos(vPos);
+
+	int a = 1;
+	MeshRender()->GetDynamicMaterial()->SetScalarParam(INT_2, &a);
 }

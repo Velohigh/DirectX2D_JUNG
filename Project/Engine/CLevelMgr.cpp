@@ -29,6 +29,7 @@ CLevelMgr::~CLevelMgr()
 void CLevelMgr::init()
 {
 	m_pCurLevel = new CLevel;
+	m_pCurLevel->ChangeState(LEVEL_STATE::STOP);
 
 	// Layer 이름설정
 	m_pCurLevel->GetLayer(0)->SetName(L"Default");
@@ -45,7 +46,6 @@ void CLevelMgr::init()
 
 	pMainCam->AddComponent(new CTransform);
 	pMainCam->AddComponent(new CCamera);
-	pMainCam->AddComponent(new CCameraMoveScript);
 
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
@@ -147,10 +147,13 @@ void CLevelMgr::tick()
 {
 	m_pCurLevel->clear();
 
-	m_pCurLevel->tick();
+	if (LEVEL_STATE::PLAY == m_pCurLevel->GetState())
+	{
+		m_pCurLevel->tick();
+	}
+
 	m_pCurLevel->finaltick();
 }
-
 
 
 CGameObject* CLevelMgr::FindObjectByName(const wstring& _strName)

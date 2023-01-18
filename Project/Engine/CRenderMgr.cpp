@@ -30,12 +30,26 @@ void CRenderMgr::init()
 
 void CRenderMgr::render()
 {
+    // 렌더링 시작
+    float arrColor[4] = { 0.f, 0.f, 0.f, 1.f };
+    CDevice::GetInst()->ClearTarget(arrColor);
+
     // 출력 타겟 지정    
     CDevice::GetInst()->OMSet();
 
     // 광원 및 전역 데이터 업데이트 및 바인딩
     UpdateData();
 
+    // 렌더 함수 호출
+    (this->*RENDER_FUNC)();
+
+    // 광원 해제
+    Clear();
+}
+
+
+void CRenderMgr::render_play()
+{
     // 카메라 기준 렌더링
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
@@ -45,10 +59,14 @@ void CRenderMgr::render()
         m_vecCam[i]->SortObject();
         m_vecCam[i]->render();
     }
-
-    // 광원 해제
-    Clear();
 }
+
+void CRenderMgr::render_editor()
+{
+    m_pEditorCam->SortObject();
+    m_pEditorCam->render();
+}
+
 
 int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
 {
@@ -59,6 +77,14 @@ int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
 
     m_vecCam[_idx] = _Cam;
     return _idx;
+}
+
+void CRenderMgr::SetRenderFunc(bool _IsPlay)
+{
+    if (_IsPlay)
+        RENDER_FUNC = &CRenderMgr::render_play;
+    else
+        RENDER_FUNC = &CRenderMgr::render_editor;
 }
 
 void CRenderMgr::UpdateData()
@@ -82,6 +108,7 @@ void CRenderMgr::UpdateData()
     pGlobalBuffer->SetData(&GlobalData, sizeof(tGlobal));
     pGlobalBuffer->UpdateData();
 }
+
 
 void CRenderMgr::Clear()
 {

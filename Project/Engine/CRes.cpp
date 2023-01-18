@@ -7,6 +7,15 @@ CRes::CRes(RES_TYPE _type)
 {
 }
 
+CRes::CRes(const CRes& _Other)
+	: CEntity(_Other)
+	, m_Type(_Other.m_Type)
+	, m_iRefCount(0)
+	, m_strKey(_Other.m_strKey)
+	, m_strRelativePath(_Other.m_strRelativePath)
+{
+}
+
 CRes::~CRes()
 {
 }

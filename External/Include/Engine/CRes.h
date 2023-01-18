@@ -39,6 +39,7 @@ public:
 
 public:
     CRes(RES_TYPE _type);
+    CRes(const CRes& _Other);
     virtual ~CRes();
 
     friend class CResMgr;

@@ -221,3 +221,10 @@ enum class LIGHT_TYPE
 	POINT,
 	SPOT,
 };
+
+enum class LEVEL_STATE
+{
+	PLAY,
+	PAUSE,
+	STOP,
+};
