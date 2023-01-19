@@ -79,15 +79,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
             ImGuiMgr::GetInst()->progress();
 
-
-            // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).            
-
-
-
-
-
-
-
             // 렌더 종료
             CDevice::GetInst()->Present();
         }

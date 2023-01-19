@@ -28,6 +28,14 @@ CLevelMgr::~CLevelMgr()
 
 void CLevelMgr::init()
 {
+	// 텍스쳐 색칠하기
+	// 1. CreateTexture
+	// 2. 생성한 텍스쳐를 RenderTarget
+	// 3. SetColorShader 를 사용해서 색칠을 한다.
+
+	// ComputeShader 로 텍스쳐 색 변경하기
+
+
 	m_pCurLevel = new CLevel;
 	m_pCurLevel->ChangeState(LEVEL_STATE::STOP);
 

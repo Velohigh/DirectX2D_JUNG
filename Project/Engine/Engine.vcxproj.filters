@@ -145,6 +145,9 @@
     <ClInclude Include="CAnim2D.h">
       <Filter>Source\06. Component\5. Animator2D</Filter>
     </ClInclude>
+    <ClInclude Include="CComputeShader.h">
+      <Filter>Source\07. Resource\4. Shader\ComputeShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -272,6 +275,9 @@
     </ClCompile>
     <ClCompile Include="CAnim2D.cpp">
       <Filter>Source\06. Component\5. Animator2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CComputeShader.cpp">
+      <Filter>Source\07. Resource\4. Shader\ComputeShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
