@@ -14,6 +14,8 @@
 #include "CCameraMoveScript.h"
 #include "CMonsterScript.h"
 
+#include "CDevice.h"
+
 CLevelMgr::CLevelMgr()
 	: m_pCurLevel(nullptr)
 {
@@ -30,8 +32,23 @@ void CLevelMgr::init()
 {
 	// 텍스쳐 색칠하기
 	// 1. CreateTexture
-	// 2. 생성한 텍스쳐를 RenderTarget
+	Ptr<CTexture> pCreateTex = CResMgr::GetInst()->CreateTexture(
+		L"SampleTexture"
+		, 1280, 768
+		, DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM
+		, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
+		, D3D11_USAGE_DEFAULT);
+
+	// 2. 생성한 텍스쳐를 RenderTarget 으로 지정
+	Ptr<CTexture> pDSTex = CResMgr::GetInst()->FindRes<CTexture>(L"DepthStencilTex");
+	CONTEXT->OMSetRenderTargets(1, pCreateTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+
 	// 3. SetColorShader 를 사용해서 색칠을 한다.
+	Ptr<CGraphicsShader> pSetColorShader = CResMgr::GetInst()->FindRes<CGraphicsShader>(L"SetColorShader");
+	pSetColorShader->UpdateData();
+
+	Ptr<CMesh> pRectMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
+	pRectMesh->render();
 
 	// ComputeShader 로 텍스쳐 색 변경하기
 
@@ -125,6 +142,7 @@ void CLevelMgr::init()
 
 	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+	pMonster->MeshRender()->GetMaterial()->SetTexParam(TEX_0, pCreateTex);
 
 	pMonster->Collider2D()->SetAbsolute(true);
 	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));

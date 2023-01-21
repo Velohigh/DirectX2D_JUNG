@@ -8,7 +8,7 @@ class CDevice
 private:
 	HWND							m_hWnd;
 
-	ComPtr<ID3D11Device>			m_Device;		// GPU 메모리 할당 	
+	ComPtr<ID3D11Device>			m_Device;		// GPU 메모리 할당
 	ComPtr<ID3D11DeviceContext>		m_Context;		// GPU 제어, 렌더링, 동작 수행
 
 	ComPtr<IDXGISwapChain>			m_SwapChain;

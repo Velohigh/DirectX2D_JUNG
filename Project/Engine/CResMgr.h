@@ -33,6 +33,12 @@ private:
 public:
     const map<wstring, Ptr<CRes>>& GetResources(RES_TYPE _Type) { return m_arrRes[(UINT)_Type]; }
 
+    // _BindFlag = D3D11_BIND_FLAG
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height
+        , DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage);
+
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D);
+
 
     template<typename T>
     Ptr<T> FindRes(const wstring& _strKey);
@@ -42,6 +48,8 @@ public:
 
     template<typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
+
+
 };
 
 template<typename T>

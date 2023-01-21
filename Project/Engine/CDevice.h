@@ -1,7 +1,9 @@
 #pragma once
 
-class CConstBuffer;
+#include "ptr.h"
+#include "CTexture.h"
 
+class CConstBuffer;
 class CDevice
 	: public CSingleton<CDevice>
 {
@@ -13,11 +15,8 @@ private:
 
 	ComPtr<IDXGISwapChain>			m_SwapChain;
 
-	ComPtr<ID3D11Texture2D>			m_RTTex;
-	ComPtr<ID3D11RenderTargetView>	m_RTV;
-
-	ComPtr<ID3D11Texture2D>			m_DSTex;
-	ComPtr<ID3D11DepthStencilView>	m_DSV;
+	Ptr<CTexture>					m_RTTex;
+	Ptr<CTexture>					m_DSTex;
 
 	// Sampler
 	ComPtr<ID3D11SamplerState>		m_Sampler[2];
@@ -45,7 +44,7 @@ private:
 public:
 	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void ClearTarget(float(&_color)[4]);
-	void OMSet() { m_Context->OMSetRenderTargets(1, m_RTV.GetAddressOf(), m_DSV.Get()); }
+	void OMSet() { m_Context->OMSetRenderTargets(1, m_RTTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get()); }
 	void Present() { m_SwapChain->Present(0, 0); }
 
 	Vec2 GetRenderResolution() { return m_vRenderResolution; }

@@ -4,6 +4,8 @@
 #include "CEngine.h"
 #include "CConstBuffer.h"
 
+#include "CResMgr.h"
+
 CDevice::CDevice()
     : m_hWnd(nullptr)
     , m_ViewPort{}
@@ -150,43 +152,16 @@ int CDevice::CreateSwapChain()
 
 int CDevice::CreateView()
 {
-    m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)m_RTTex.GetAddressOf());
+    ComPtr<ID3D11Texture2D> tex2D;
+    m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
 
-    if (FAILED(m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTV.GetAddressOf())))
-    {
-        return E_FAIL;
-    }
+    // RenderTarget 용 텍스쳐 등록
+    m_RTTex = CResMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
     // DepthStencil 용도 텍스쳐 생성
-    D3D11_TEXTURE2D_DESC tDesc = {};
-
-    tDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-    // 반드시 렌더타겟과 같은 해상도로 설정해야 함
-    tDesc.Width = (UINT)m_vRenderResolution.x;
-    tDesc.Height = (UINT)m_vRenderResolution.y;
-    tDesc.ArraySize = 1;
-
-    tDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-    tDesc.Usage = D3D11_USAGE_DEFAULT;
-    tDesc.CPUAccessFlags = 0;
-
-    tDesc.MipLevels = 1;    // 원본만 생성
-
-    tDesc.SampleDesc.Count = 1;
-    tDesc.SampleDesc.Quality = 0;
-
-
-    if (FAILED(m_Device->CreateTexture2D(&tDesc, nullptr, m_DSTex.GetAddressOf())))
-    {
-        return E_FAIL;
-    }
-
-    // DepthStencilView 생성
-    if (FAILED(m_Device->CreateDepthStencilView(m_DSTex.Get(), nullptr, m_DSV.GetAddressOf())))
-    {
-        return E_FAIL;
-    }
+    m_DSTex = CResMgr::GetInst()->CreateTexture(L"DepthStencilTex"
+        , (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y
+        , DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 
 
     return S_OK;
@@ -358,8 +333,8 @@ int CDevice::CreateSampler()
 
 void CDevice::ClearTarget(float(&_color)[4])
 {
-    m_Context->ClearRenderTargetView(m_RTV.Get(), _color);
-    m_Context->ClearDepthStencilView(m_DSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+    m_Context->ClearRenderTargetView(m_RTTex->GetRTV().Get(), _color);
+    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
 
