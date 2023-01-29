@@ -23,7 +23,7 @@ public:
     void Play(const wstring& _strName, bool _bRepeat);
     CAnim2D* FindAnim(const wstring& _strName);
     //const CAnim2D* GetCurAnim() { return m_pCurAnim; }
-    //map<wstring, CAnim2D*> GetAnimMap() { return m_mapAnim; }
+    const map<wstring, CAnim2D*> GetAnimMap() { return m_mapAnim; }
 
     void CreateAnimation(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _vBackSize, int _FrameCount, int _FPS);
 
