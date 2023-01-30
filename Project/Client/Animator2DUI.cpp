@@ -14,6 +14,10 @@ Animator2DUI::Animator2DUI()
     : ComponentUI("##Animator2D", COMPONENT_TYPE::ANIMATOR2D)
     , m_iSelectedIdx(0)
     , m_bcheck(false)
+    , SelectAnim(nullptr)
+    , vLT{}
+    , vSlice{}
+    , vOffSet{}
 {
     SetName("Animator2D");
 }
@@ -63,6 +67,9 @@ int Animator2DUI::render_update()
                 ImGui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
             {
                 strcpy_s(szBuff, m_vecStrData[m_iSelectedIdx].c_str());
+
+
+
             }
 
             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -81,32 +88,44 @@ int Animator2DUI::render_update()
         ImGui::Image((void*)m_pTexture->GetSRV().Get(), ImVec2(m_pTexture->Width(), m_pTexture->Height()));
     }
 
+	string szName = m_vecStrData[m_iSelectedIdx].c_str();
+	wstring szWName(szName.begin(), szName.end());
+
+	SelectAnim = GetTarget()->Animator2D()->FindAnim(szWName);
+
+	vLT = SelectAnim->GetCurFrame().LeftTopUV;
+	vSlice = SelectAnim->GetCurFrame().SliceUV;
+	vOffSet = SelectAnim->GetCurFrame().Offset;
+
     if (m_bcheck)
     {
         ImGui::Begin("##AnimationEditTool1");
 
         m_pTexture = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
-
         ImGui::Text("Size : %d, %d", (int)m_pTexture->Width(), (int)m_pTexture->Height());
-        ImGui::Image((void*)m_pTexture->GetSRV().Get(), ImVec2(m_pTexture->Width(), m_pTexture->Height()));
-
+        ImGui::Image((void*)m_pTexture->GetSRV().Get(), ImVec2(500.f, 500.f));
 
         ImGui::End();
 
 
         ImGui::Begin("##AnimationEditTool2");
 
-        string szName = m_vecStrData[m_iSelectedIdx].c_str();
-        wstring szWName(szName.begin(), szName.end());
-
-        CAnim2D* CurAnim = GetTarget()->Animator2D()->FindAnim(szWName);
-
-        Vec2 vLT = CurAnim->GetCurFrame().LeftTopUV;
-        Vec2 vSlice = CurAnim->GetCurFrame().SliceUV;
-        Vec2 vOffSet = CurAnim->GetCurFrame().Offset;
         float fvLT[] = { vLT.x , vLT.y };
         float fvSlice[] = { vSlice.x , vSlice.y };
-        float fvOffSet[] = { vOffSet.x , vOffSet.y};
+        float fvOffSet[] = { vOffSet.x , vOffSet.y };
+
+		ImGui::Image((void*)m_pTexture->GetSRV().Get(), ImVec2(300.f, 300.f), 
+            ImVec2(vLT.x, vLT.y), ImVec2(vLT.x + vSlice.x, vLT.y + vSlice.y));
+
+        for (int i = 0; i < SelectAnim->GetvecFrame().size(); ++i)
+        {
+            ImGui::ImageButton((void*)m_pTexture->GetSRV().Get(), ImVec2(80.f, 80.f), 
+                ImVec2(vLT.x + (vSlice.x * i), vLT.y), ImVec2(vLT.x + (vSlice.x * i) + vSlice.x, vLT.y + vSlice.y));
+            ImGui::SameLine();
+        }
+
+        ImGui::Text("\n");
+
         ImGui::Text("LeftTop");
         ImGui::SameLine();
         ImGui::DragFloat2("##LeftTop", fvLT);

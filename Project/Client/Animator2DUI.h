@@ -2,6 +2,7 @@
 #include "ComponentUI.h"
 
 class CTexture;
+class CAnim2D;
 class Animator2DUI :
     public ComponentUI
 {
@@ -12,6 +13,11 @@ private:
     int                 m_iSelectedIdx;
     bool                m_bcheck;
 
+    Vec2    vLT;
+    Vec2    vSlice;
+    Vec2    vOffSet;
+
+    CAnim2D* SelectAnim;
 
 public:
     virtual int render_update() override;
