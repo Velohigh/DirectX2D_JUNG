@@ -410,6 +410,9 @@
     <Filter Include="Source\06. Component\5. Animator2D">
       <UniqueIdentifier>{7d787944-7b75-432b-91a9-8452604ba075}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\08. ShaderCode\Compute">
+      <UniqueIdentifier>{8e97ca1f-93c2-44f6-9d9a-1aa46e2a852b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -438,6 +441,9 @@
     </FxCompile>
     <FxCompile Include="tilemap.fx">
       <Filter>Source\08. ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="setcolor.fx">
+      <Filter>Source\08. ShaderCode\Compute</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

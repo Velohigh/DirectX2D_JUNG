@@ -42,6 +42,21 @@ void CTexture::UpdateData(int _iRegisterNum, int _PipelineStage)
 	}
 }
 
+void CTexture::UpdateData_CS(int _iRegisterNum)
+{
+	m_iRecentCSNum = _iRegisterNum;
+
+	UINT i = -1;
+	CONTEXT->CSSetUnorderedAccessViews(_iRegisterNum, 1, m_UAV.GetAddressOf(), &i);
+}
+
+void CTexture::Clear()
+{
+	ID3D11UnorderedAccessView* pUAV = nullptr;
+	UINT i = -1;
+	CONTEXT->CSSetUnorderedAccessViews(m_iRecentCSNum, 1, &pUAV, &i);
+}
+
 void CTexture::UpdateData()
 {
 }

@@ -31,26 +31,23 @@ CLevelMgr::~CLevelMgr()
 void CLevelMgr::init()
 {
 	// 텍스쳐 색칠하기
-	// 1. CreateTexture
+	// 텍스쳐 생성(UnorderedAccess)
 	Ptr<CTexture> pCreateTex = CResMgr::GetInst()->CreateTexture(
 		L"SampleTexture"
 		, 1280, 768
 		, DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM
-		, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
+		, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS
 		, D3D11_USAGE_DEFAULT);
 
-	// 2. 생성한 텍스쳐를 RenderTarget 으로 지정
-	Ptr<CTexture> pDSTex = CResMgr::GetInst()->FindRes<CTexture>(L"DepthStencilTex");
-	CONTEXT->OMSetRenderTargets(1, pCreateTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
-
-	// 3. SetColorShader 를 사용해서 색칠을 한다.
-	Ptr<CGraphicsShader> pSetColorShader = CResMgr::GetInst()->FindRes<CGraphicsShader>(L"SetColorShader");
-	pSetColorShader->UpdateData();
-
-	Ptr<CMesh> pRectMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
-	pRectMesh->render();
+	// U0 에 바인딩
+	pCreateTex->UpdateData_CS(0);
 
 	// ComputeShader 로 텍스쳐 색 변경하기
+	Ptr<CComputeShader> pCS = CResMgr::GetInst()->FindRes<CComputeShader>(L"SetColorCS");
+	pCS->Dispatch(pCreateTex->Width() / 32, pCreateTex->Height() / 32, 1);
+
+	// U0 에 바인딩 된 텍스쳐 해제
+	pCreateTex->Clear();
 
 
 	m_pCurLevel = new CLevel;
