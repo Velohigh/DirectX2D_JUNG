@@ -13,11 +13,21 @@ private:
     int                 m_iSelectedIdx;
     bool                m_bcheck;
 
+    char    AnimName[50];
     Vec2    vLT;
     Vec2    vSlice;
+    Vec2    vBackSize;
+    int     FrameCount;
+    int     FPS;
     Vec2    vOffSet;
 
     CAnim2D* SelectAnim;
+
+    Vec2    DragLT;
+    Vec2    DragRB;
+
+    bool    m_AutoMode;
+    bool    m_MenualMode;
 
 public:
     virtual int render_update() override;

@@ -24,8 +24,7 @@ public:
     void finaltick();
     void Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _BackSize, int _FrameCount, int _FPS);
 
-    const tAnim2DFrm& GetCurFrame() { return m_vecFrm[m_iCurFrm]; }
-    const vector<tAnim2DFrm> GetvecFrame() { return m_vecFrm;}
+    const tAnim2DFrm& GetCurFrame() { return m_vecFrm[m_iCurFrm];}
     Vec2 GetBackSize() { return m_vBackSize; }
     Ptr<CTexture> GetAtlasTex() { return m_AtlasTex; }
 
