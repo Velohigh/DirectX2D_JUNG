@@ -13,11 +13,11 @@ CStructuredBuffer::~CStructuredBuffer()
 {
 }
 
-void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount)
+void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type)
 {
 	m_SB = nullptr;
 	m_SRV = nullptr;
-
+	m_Type = _Type;
 
 	m_iElementSize = _iElementSize;
 	m_iElementCount = _iElementCount;
@@ -31,12 +31,21 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount)
 	m_tDesc.ByteWidth = iBufferSize;				// 버퍼 크기
 	m_tDesc.StructureByteStride = m_iElementSize;	// 데이터 간격
 
-	m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	// Texture 레지스터에 바이딩하기 위한 플래그
+	if (SB_TYPE::READ_ONLY == m_Type)
+	{
+		m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	// Texture 레지스터에 바이딩하기 위한 플래그
+	}
+	else
+	{
+		m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+	}
+
+
 	m_tDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 구조화 버퍼 체크
 
 	m_tDesc.Usage = D3D11_USAGE_DYNAMIC;
 	m_tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	
+
 	if (FAILED(DEVICE->CreateBuffer(&m_tDesc, nullptr, m_SB.GetAddressOf())))
 	{
 		assert(nullptr);
@@ -53,6 +62,19 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount)
 	{
 		assert(nullptr);
 	}
+
+	if (SB_TYPE::READ_WRITE == m_Type)
+	{
+
+		D3D11_UNORDERED_ACCESS_VIEW_DESC m_UABDesc = {};
+		m_UABDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+		m_UABDesc.Buffer.NumElements = m_iElementCount;
+
+		if (FAILED(DEVICE->CreateUnorderedAccessView(m_SB.Get(), &m_UABDesc, m_UAV.GetAddressOf())))
+		{
+			assert(nullptr);
+		}
+	}
 }
 
 void CStructuredBuffer::SetData(void* _pSrc, UINT _iSize)
@@ -60,7 +82,7 @@ void CStructuredBuffer::SetData(void* _pSrc, UINT _iSize)
 	D3D11_MAPPED_SUBRESOURCE tSub = {};
 	CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSub);
 
-	memcpy(tSub.pData, _pSrc, _iSize);	
+	memcpy(tSub.pData, _pSrc, _iSize);
 
 	CONTEXT->Unmap(m_SB.Get(), 0);
 }

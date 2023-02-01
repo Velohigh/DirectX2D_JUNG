@@ -10,12 +10,12 @@ CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
 	, m_iTileCountX(1)
 	, m_iTileCountY(1)
-{	
+{
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TileMapMtrl"));
 
 	m_Buffer = new CStructuredBuffer;
-	m_Buffer->Create(sizeof(tTile), m_iTileCountX * m_iTileCountY);
+	m_Buffer->Create(sizeof(tTile), m_iTileCountX * m_iTileCountY, SB_TYPE::READ_ONLY);
 }
 
 CTileMap::~CTileMap()
@@ -64,14 +64,14 @@ void CTileMap::SetTileCount(UINT _iXCount, UINT _iYCount)
 
 	if (m_Buffer->GetElementCount() < m_vecTile.size())
 	{
-		m_Buffer->Create(sizeof(tTile), (UINT)m_vecTile.size());
+		m_Buffer->Create(sizeof(tTile), (UINT)m_vecTile.size(), SB_TYPE::READ_ONLY);
 	}
 
 	// 타일 세팅 테스트
 	for (size_t i = 0; i < m_iTileCountY; ++i)
 	{
 		for (size_t j = 0; j < m_iTileCountX; ++j)
-		{			
+		{
 			m_vecTile[i * m_iTileCountX + j].vLeftTop.x = m_vSliceSize.x * j;
 			m_vecTile[i * m_iTileCountX + j].vLeftTop.y = 0.f;
 			m_vecTile[i * m_iTileCountX + j].vSlice = m_vSliceSize;

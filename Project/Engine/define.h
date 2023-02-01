@@ -228,3 +228,9 @@ enum class LEVEL_STATE
 	PAUSE,
 	STOP,
 };
+
+enum class SB_TYPE
+{
+	READ_ONLY,
+	READ_WRITE,
+};
