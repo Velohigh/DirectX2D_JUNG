@@ -3,10 +3,14 @@
 
 #include "CPathMgr.h"
 #include "CDevice.h"
+#include "CConstBuffer.h"
 
 
 CComputeShader::CComputeShader()
 	: CShader(RES_TYPE::COMPUTE_SHADER)
+	, m_iGroupX(1)
+	, m_iGroupY(1)
+	, m_iGroupZ(1)
 {
 }
 
@@ -33,17 +37,16 @@ void CComputeShader::CreateComputeShader(const wstring& _strFileName, const stri
 		, nullptr, m_CS.GetAddressOf());
 }
 
-void CComputeShader::Dispatch(UINT _X, UINT _Y, UINT _Z)
+void CComputeShader::Execute()
 {
+	UpdateData();
+
+	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL);
+	pCB->SetData(&m_Const);
+	pCB->UpdateData_CS();
+
 	CONTEXT->CSSetShader(m_CS.Get(), nullptr, 0);
-	CONTEXT->Dispatch(_X, _Y, _Z);
-}
+	CONTEXT->Dispatch(m_iGroupX, m_iGroupY, m_iGroupZ);
 
-void CComputeShader::UpdateData()
-{
-
-}
-
-void CComputeShader::Clear()
-{
+	Clear();
 }

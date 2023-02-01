@@ -274,12 +274,15 @@ void CResMgr::CreateDefaultGraphicsShader()
 	AddRes(pShader->GetKey(), pShader);
 }
 
+
+#include "CSetColorShader.h"
+
 void CResMgr::CreateDefaultComputeShader()
 {
 	Ptr<CComputeShader> pCS = nullptr;
 
 	// Texture 색상 변경 쉐이더
-	pCS = new CComputeShader;
+	pCS = new CSetColorShader(32, 32, 1);
 	pCS->SetKey(L"SetColorCS");
 	pCS->CreateComputeShader(L"shader\\setcolor.fx", "CS_SetColor");
 	AddRes(pCS->GetKey(), pCS);

@@ -31,7 +31,7 @@ void CRenderMgr::init()
 void CRenderMgr::render()
 {
     // 렌더링 시작
-    float arrColor[4] = { 0.f, 0.f, 0.f, 1.f };
+    float arrColor[4] = { 0.2f, 0.2f, 0.2f, 1.f };
     CDevice::GetInst()->ClearTarget(arrColor);
 
     // 출력 타겟 지정    

@@ -22,6 +22,8 @@ private:
     D3D11_TEXTURE2D_DESC                m_Desc;
     ScratchImage                        m_Image;
 
+    UINT                                m_iRecentCSNum;
+
 public:
     int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat
         , UINT _BindFlag, D3D11_USAGE _Usage);
@@ -46,6 +48,9 @@ public:
 public:
     // _PipelineStage : PIPELINE_STAGE
     void UpdateData(int _iRegisterNum, int _PipelineStage);
+    void UpdateData_CS(int _iRegisterNum);
+    void Clear();   // u레지스터 바인딩 해제
+
 
 private:
     virtual void UpdateData() override;

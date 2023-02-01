@@ -12,12 +12,13 @@ private:
 
     UINT                    m_iElementSize;
     UINT                    m_iElementCount;
-        
+
 
 public:
     void Create(UINT _iElementSize, UINT _iElementCount);
     void SetData(void* _pSrc, UINT _iSize = 0);
     void UpdateData();
+    void UpdateData_CS();
 
 
 

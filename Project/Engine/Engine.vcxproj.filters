@@ -148,6 +148,9 @@
     <ClInclude Include="CComputeShader.h">
       <Filter>Source\07. Resource\4. Shader\ComputeShader</Filter>
     </ClInclude>
+    <ClInclude Include="CSetColorShader.h">
+      <Filter>Source\08. ShaderCode\Compute\SetColor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -278,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="CComputeShader.cpp">
       <Filter>Source\07. Resource\4. Shader\ComputeShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CSetColorShader.cpp">
+      <Filter>Source\08. ShaderCode\Compute\SetColor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -413,6 +419,9 @@
     <Filter Include="Source\08. ShaderCode\Compute">
       <UniqueIdentifier>{8e97ca1f-93c2-44f6-9d9a-1aa46e2a852b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\08. ShaderCode\Compute\SetColor">
+      <UniqueIdentifier>{f09a42eb-3a81-4494-b1df-bb90a0a7ce64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -443,7 +452,7 @@
       <Filter>Source\08. ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="setcolor.fx">
-      <Filter>Source\08. ShaderCode\Compute</Filter>
+      <Filter>Source\08. ShaderCode\Compute\SetColor</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
