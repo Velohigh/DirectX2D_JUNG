@@ -17,7 +17,7 @@ private:
     SB_TYPE                             m_Type;
 
 public:
-    void Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type);
+    void Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type, void* _pSysMem = nullptr);
     void SetData(void* _pSrc, UINT _iSize = 0);
 
     // PIPELINE_STAGE

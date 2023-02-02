@@ -13,7 +13,7 @@ CStructuredBuffer::~CStructuredBuffer()
 {
 }
 
-void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type)
+void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type, void* _pSysMem)
 {
 	m_SB = nullptr;
 	m_SRV = nullptr;
@@ -46,9 +46,24 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE 
 	m_tDesc.Usage = D3D11_USAGE_DYNAMIC;
 	m_tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	if (FAILED(DEVICE->CreateBuffer(&m_tDesc, nullptr, m_SB.GetAddressOf())))
+
+	if (nullptr == _pSysMem)
 	{
-		assert(nullptr);
+		if (FAILED(DEVICE->CreateBuffer(&m_tDesc, nullptr, m_SB.GetAddressOf())))
+		{
+			assert(nullptr);
+		}
+	}
+	else
+	{
+		D3D11_SUBRESOURCE_DATA tSubData = {};
+		tSubData.pSysMem = _pSysMem;
+
+		HRESULT hr = DEVICE->CreateBuffer(&m_tDesc, &tSubData, m_SB.GetAddressOf());
+		if (hr)
+		{
+			assert(nullptr);
+		}
 	}
 
 

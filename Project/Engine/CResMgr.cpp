@@ -272,6 +272,34 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
 
 	AddRes(pShader->GetKey(), pShader);
+
+
+	// ============================
+	// ParticleRender
+	// 
+	// RS_TYPE : CULL_NONE
+	// DS_TYPE : NO_WRITE
+	// BS_TYPE : ALPHA_BLEND
+
+	// Parameter
+	// g_int_0 : Particle Index
+	// 
+	// Domain : TRANSPARENT
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"ParticleRenderShader");
+	pShader->CreateVertexShader(L"shader\\particle_render.fx", "VS_ParticleRender");
+	pShader->CreatePixelShader(L"shader\\particle_render.fx", "PS_ParticleRender");
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+	AddRes(pShader->GetKey(), pShader);
+
+
 }
 
 
@@ -316,6 +344,12 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TileMapShader"));
 	AddRes(L"TileMapMtrl", pMtrl);
+
+
+	// Particle Render Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"ParticleRenderShader"));
+	AddRes(L"ParticleRenderMtrl", pMtrl);
 }
 
 #include "CGameObject.h"

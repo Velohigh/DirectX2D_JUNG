@@ -46,7 +46,6 @@ void CLevelMgr::init()
 	pCS->SetColor(Vec3(0.f, 1.f, 1.f));
 	pCS->Execute();
 
-
 	m_pCurLevel = new CLevel;
 	m_pCurLevel->ChangeState(LEVEL_STATE::STOP);
 
@@ -158,6 +157,15 @@ void CLevelMgr::init()
 	pTileMap->TileMap()->SetTileCount(8, 8);
 
 	m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
+
+
+	// Particle Object
+	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->AddComponent(new CTransform);
+	pParticleObj->AddComponent(new CParticleSystem);
+
+	m_pCurLevel->AddGameObject(pParticleObj, L"Default", false);
+
 
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"Monster");
