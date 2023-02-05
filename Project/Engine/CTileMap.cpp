@@ -15,7 +15,7 @@ CTileMap::CTileMap()
 	SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TileMapMtrl"));
 
 	m_Buffer = new CStructuredBuffer;
-	m_Buffer->Create(sizeof(tTile), m_iTileCountX * m_iTileCountY, SB_TYPE::READ_ONLY);
+	m_Buffer->Create(sizeof(tTile), m_iTileCountX * m_iTileCountY, SB_TYPE::READ_ONLY, true);
 }
 
 CTileMap::~CTileMap()
@@ -64,7 +64,7 @@ void CTileMap::SetTileCount(UINT _iXCount, UINT _iYCount)
 
 	if (m_Buffer->GetElementCount() < m_vecTile.size())
 	{
-		m_Buffer->Create(sizeof(tTile), (UINT)m_vecTile.size(), SB_TYPE::READ_ONLY);
+		m_Buffer->Create(sizeof(tTile), (UINT)m_vecTile.size(), SB_TYPE::READ_ONLY, true);
 	}
 
 	// 타일 세팅 테스트

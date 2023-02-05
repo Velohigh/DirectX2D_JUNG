@@ -17,6 +17,8 @@
 #include "CDevice.h"
 #include "CSetColorShader.h"
 
+#include "CStructuredBuffer.h"
+
 CLevelMgr::CLevelMgr()
 	: m_pCurLevel(nullptr)
 {
@@ -31,6 +33,29 @@ CLevelMgr::~CLevelMgr()
 
 void CLevelMgr::init()
 {
+	// 구조화버퍼 테스트
+	struct tTestStruct
+	{
+		int a;
+		float f;
+		long long l;
+	};
+
+	CStructuredBuffer* pBuffer = new CStructuredBuffer;
+	pBuffer->Create(sizeof(tTestStruct), 1, SB_TYPE::READ_ONLY, true);
+
+	tTestStruct testParam = {};
+	testParam.a = 10;
+	testParam.f = 1.4f;
+	testParam.l = 1000000000000;
+	pBuffer->SetData(&testParam);
+
+	tTestStruct testParam2 = {};
+	pBuffer->GetData(&testParam2);
+
+	delete pBuffer;
+
+
 	// 텍스쳐 색칠하기
 	// 텍스쳐 생성(UnorderedAccess)
 	Ptr<CTexture> pCreateTex = CResMgr::GetInst()->CreateTexture(

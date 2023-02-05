@@ -20,6 +20,7 @@ struct VS_IN
 {
     float3 vPos : POSITION;
     float2 vUV : TEXCOORD;
+    uint iInstID : SV_InstanceID;
 };
 
 struct VS_OUT
@@ -33,7 +34,7 @@ VS_OUT VS_ParticleRender(VS_IN _in)
     VS_OUT output = (VS_OUT) 0.f;
     
     // Local Mesh 의 정점에 파티클 배율을 곱하고 월드 위치로 이동시킨다.
-    float3 vWorldPos = _in.vPos * ParticleBuffer[g_int_0].vWorldScale.xyz + ParticleBuffer[g_int_0].vWorldPos.xyz;
+    float3 vWorldPos = _in.vPos * ParticleBuffer[_in.iInstID].vWorldScale.xyz + ParticleBuffer[_in.iInstID].vWorldPos.xyz;
     
     // View, Proj 행렬을 곱해서 NDC 좌표계로 이동시킨다.
     float4 vViewPos = mul(float4(vWorldPos, 1.f), g_matView);

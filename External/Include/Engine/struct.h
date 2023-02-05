@@ -75,6 +75,22 @@ struct tAnim2DFrm
 };
 
 
+// Particle
+struct tParticle
+{
+	Vec4	vWorldPos;		// 파티클 위치
+	Vec4	vWorldScale;	// 파티클 크기
+	Vec4	vColor;			// 파티클 색상
+	Vec4	vVelocity;		// 파티클 현재 속도
+	Vec4	vForce;			// 파티클에 주어진 힘
+
+	float   Age;			// 생존 시간
+	float   NomalizedAge;	// 수명대비 생존시간을 0~1로 정규화 한 값
+	float	LifeTime;		// 수명
+	float	Mass;			// 질량
+};
+
+
 
 // ===================
 // 상수버퍼 대응 구조체

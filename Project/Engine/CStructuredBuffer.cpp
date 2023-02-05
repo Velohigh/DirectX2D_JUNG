@@ -13,11 +13,18 @@ CStructuredBuffer::~CStructuredBuffer()
 {
 }
 
-void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type, void* _pSysMem)
+void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount
+	, SB_TYPE _Type, bool _bSysAccess, void* _pSysMem)
 {
 	m_SB = nullptr;
 	m_SRV = nullptr;
+	m_UAV = nullptr;
+
+	m_SB_CPU_Read = nullptr;
+	m_SB_CPU_Write = nullptr;
+
 	m_Type = _Type;
+	m_bSysAccess = _bSysAccess;
 
 	m_iElementSize = _iElementSize;
 	m_iElementCount = _iElementCount;
@@ -35,17 +42,14 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE 
 	{
 		m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	// Texture 레지스터에 바이딩하기 위한 플래그
 	}
-	else
+	else if (SB_TYPE::READ_WRITE == m_Type)
 	{
 		m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
 	}
 
-
 	m_tDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 구조화 버퍼 체크
-
-	m_tDesc.Usage = D3D11_USAGE_DYNAMIC;
-	m_tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
+	m_tDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_tDesc.CPUAccessFlags = 0;
 
 	if (nullptr == _pSysMem)
 	{
@@ -90,16 +94,58 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE 
 			assert(nullptr);
 		}
 	}
+
+	// CPU Access 보조 버퍼
+	if (m_bSysAccess)
+	{
+		m_tDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
+
+		// GPU -> CPU Read
+		m_tDesc.Usage = D3D11_USAGE_DEFAULT;
+		m_tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		if (FAILED(DEVICE->CreateBuffer(&m_tDesc, nullptr, m_SB_CPU_Read.GetAddressOf())))
+		{
+			assert(nullptr);
+		}
+
+		// CPU -> GPU Write
+		m_tDesc.Usage = D3D11_USAGE_DYNAMIC;
+		m_tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		if (FAILED(DEVICE->CreateBuffer(&m_tDesc, nullptr, m_SB_CPU_Write.GetAddressOf())))
+		{
+			assert(nullptr);
+		}
+	}
 }
 
 void CStructuredBuffer::SetData(void* _pSrc, UINT _iSize)
 {
+	UINT iSize = _iSize;
+	if (0 == iSize)
+	{
+		iSize = GetBufferSize();
+	}
+
+	// CPU -> CPU WriteBuffer
 	D3D11_MAPPED_SUBRESOURCE tSub = {};
-	CONTEXT->Map(m_SB.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSub);
+	CONTEXT->Map(m_SB_CPU_Write.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &tSub);
+	memcpy(tSub.pData, _pSrc, iSize);
+	CONTEXT->Unmap(m_SB_CPU_Write.Get(), 0);
 
-	memcpy(tSub.pData, _pSrc, _iSize);
+	// CPU WriteBuffer -> Main Buffer
+	CONTEXT->CopyResource(m_SB.Get(), m_SB_CPU_Write.Get());
+}
 
-	CONTEXT->Unmap(m_SB.Get(), 0);
+void CStructuredBuffer::GetData(void* _pDst)
+{
+	// Main Buffer -> CPU ReadBuffer
+	CONTEXT->CopyResource(m_SB_CPU_Read.Get(), m_SB.Get());
+
+	// CPU ReadBuffer -> CPU
+	D3D11_MAPPED_SUBRESOURCE tSub = {};
+	CONTEXT->Map(m_SB_CPU_Read.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &tSub);
+	memcpy(_pDst, tSub.pData, GetBufferSize());
+	CONTEXT->Unmap(m_SB_CPU_Read.Get(), 0);
 }
 
 void CStructuredBuffer::UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage)
