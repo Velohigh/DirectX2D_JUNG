@@ -9,26 +9,33 @@
 
 CParticleSystem::CParticleSystem()
 	: CRenderComponent(COMPONENT_TYPE::PARTICLESYSTEM)
-	, m_iMaxParticleCount(5)
+	, m_ParticleBuffer(nullptr)
+	, m_iMaxParticleCount(100)
 {
+	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+	// 파티클 전용 재질
 	SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"ParticleRenderMtrl"));
 
-	tParticle arrParticle[1000] = { };
+	// 파티클 업데이트 컴퓨트 쉐이더	
+	m_UpdateCS = (CParticleUpdateShader*)CResMgr::GetInst()->FindRes<CComputeShader>(L"ParticleUpdateCS").Get();
 
-	float fStep = 100.f;
+	// 파티클 버퍼 초기 데이터
+	tParticle arrParticle[100] = { };
+	float fAngle = XM_2PI / 100.f;
+	float fRadius = 20.f;
+	float fSpeed = 100.f;
 
-	arrParticle[0].vWorldPos = Vec3(-2.f * fStep, 0.f, 10.f);
-	arrParticle[1].vWorldPos = Vec3(-1.f * fStep, 0.f, 10.f);
-	arrParticle[2].vWorldPos = Vec3(0.f, 0.f, 10.f);
-	arrParticle[3].vWorldPos = Vec3(1.f * fStep, 0.f, 10.f);
-	arrParticle[4].vWorldPos = Vec3(2.f * fStep, 0.f, 10.f);
-
-	arrParticle[0].vWorldScale = Vec3(10.f, 10.f, 1.f);
-	arrParticle[1].vWorldScale = Vec3(10.f, 10.f, 1.f);
-	arrParticle[2].vWorldScale = Vec3(10.f, 10.f, 1.f);
-	arrParticle[3].vWorldScale = Vec3(10.f, 10.f, 1.f);
-	arrParticle[4].vWorldScale = Vec3(10.f, 10.f, 1.f);
+	for (UINT i = 0; i < 100; ++i)
+	{
+		arrParticle[i].vWorldPos = Vec3(fRadius * cosf(fAngle * (float)i), fRadius * sinf(fAngle * (float)i), 100.f);
+		arrParticle[i].vVelocity = arrParticle[i].vWorldPos;
+		arrParticle[i].vVelocity.z = 0.f;
+		arrParticle[i].vVelocity.Normalize();
+		arrParticle[i].vVelocity *= fSpeed;
+		arrParticle[i].vWorldScale = Vec3(10.f, 10.f, 1.f);
+	}
 
 	m_ParticleBuffer = new CStructuredBuffer;
 	m_ParticleBuffer->Create(sizeof(tParticle), m_iMaxParticleCount, SB_TYPE::READ_WRITE, false, arrParticle);
@@ -43,7 +50,9 @@ CParticleSystem::~CParticleSystem()
 
 void CParticleSystem::finaltick()
 {
-
+	// 파티클 업데이트
+	m_UpdateCS->SetParticleBuffer(m_ParticleBuffer);
+	m_UpdateCS->Execute();
 }
 
 void CParticleSystem::render()

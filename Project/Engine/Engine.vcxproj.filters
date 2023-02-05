@@ -154,6 +154,9 @@
     <ClInclude Include="CParticleSystem.h">
       <Filter>Source\06. Component\RenderComponent\2. ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CparticleUpdateShader.h">
+      <Filter>Source\08. ShaderCode\Compute\ParticleUpdate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -290,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="CParticleSystem.cpp">
       <Filter>Source\06. Component\RenderComponent\2. ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CparticleUpdateShader.cpp">
+      <Filter>Source\08. ShaderCode\Compute\ParticleUpdate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

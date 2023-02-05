@@ -304,6 +304,7 @@ void CResMgr::CreateDefaultGraphicsShader()
 
 
 #include "CSetColorShader.h"
+#include "CParticleUpdateShader.h"
 
 void CResMgr::CreateDefaultComputeShader()
 {
@@ -313,6 +314,12 @@ void CResMgr::CreateDefaultComputeShader()
 	pCS = new CSetColorShader(32, 32, 1);
 	pCS->SetKey(L"SetColorCS");
 	pCS->CreateComputeShader(L"shader\\setcolor.fx", "CS_SetColor");
+	AddRes(pCS->GetKey(), pCS);
+
+	// Particle Update ½¦ÀÌ´õ
+	pCS = new CParticleUpdateShader(128, 1, 1);
+	pCS->SetKey(L"ParticleUpdateCS");
+	pCS->CreateComputeShader(L"shader\\particle_update.fx", "CS_ParticleUpdate");
 	AddRes(pCS->GetKey(), pCS);
 }
 

@@ -20,6 +20,8 @@ private:
     SB_TYPE                             m_Type;
     bool                                m_bSysAccess;
 
+    UINT                                m_iRecentRegisterNum;
+
 public:
     void Create(UINT _iElementSize, UINT _iElementCount, SB_TYPE _Type, bool _bUseSysAccess, void* _pSysMem = nullptr);
     void SetData(void* _pSrc, UINT _iSize = 0);
@@ -27,6 +29,10 @@ public:
 
     // PIPELINE_STAGE
     void UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage);
+    void UpdateData_CS(UINT _iRegisterNum);
+
+    void Clear();
+    void Clear_CS();
 
     UINT GetElementSize() { return m_iElementSize; }
     UINT GetElementCount() { return m_iElementCount; }

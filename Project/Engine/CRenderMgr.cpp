@@ -107,6 +107,7 @@ void CRenderMgr::UpdateData()
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL);
     pGlobalBuffer->SetData(&GlobalData, sizeof(tGlobal));
     pGlobalBuffer->UpdateData();
+    pGlobalBuffer->UpdateData_CS();
 }
 
 

@@ -150,6 +150,8 @@ void CStructuredBuffer::GetData(void* _pDst)
 
 void CStructuredBuffer::UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage)
 {
+	m_iRecentRegisterNum = _iRegisterNum;
+
 	if (PIPELINE_STAGE::PS_VERTEX & _iPipeLineStage)
 	{
 		CONTEXT->VSSetShaderResources(_iRegisterNum, 1, m_SRV.GetAddressOf());
@@ -174,4 +176,31 @@ void CStructuredBuffer::UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage)
 	{
 		CONTEXT->PSSetShaderResources(_iRegisterNum, 1, m_SRV.GetAddressOf());
 	}
+}
+
+void CStructuredBuffer::UpdateData_CS(UINT _iRegisterNum)
+{
+	m_iRecentRegisterNum = _iRegisterNum;
+
+	UINT i = -1;
+	CONTEXT->CSSetUnorderedAccessViews(_iRegisterNum, 1, m_UAV.GetAddressOf(), &i);
+}
+
+void CStructuredBuffer::Clear()
+{
+	ID3D11ShaderResourceView* pSRV = nullptr;
+	CONTEXT->VSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+	CONTEXT->HSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+	CONTEXT->DSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+	CONTEXT->GSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+	CONTEXT->PSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+	CONTEXT->CSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+
+}
+
+void CStructuredBuffer::Clear_CS()
+{
+	ID3D11UnorderedAccessView* pUAV = nullptr;
+	UINT i = -1;
+	CONTEXT->CSSetUnorderedAccessViews(m_iRecentRegisterNum, 1, &pUAV, &i);
 }
