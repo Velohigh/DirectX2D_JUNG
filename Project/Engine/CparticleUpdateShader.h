@@ -8,9 +8,14 @@ class CParticleUpdateShader :
 {
 private:
     CStructuredBuffer* m_ParticleBuffer;
+    CStructuredBuffer* m_RWBuffer;
+    CStructuredBuffer* m_ModuleData;
+
 
 public:
     void SetParticleBuffer(CStructuredBuffer* _Buffer);
+    void SetRWParticleBuffer(CStructuredBuffer* _Buffer) { m_RWBuffer = _Buffer; }
+    void SetModuleData(CStructuredBuffer* _Buffer) { m_ModuleData = _Buffer; }
 
 public:
     virtual void UpdateData() override;

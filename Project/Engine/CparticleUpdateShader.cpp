@@ -5,6 +5,8 @@
 
 CParticleUpdateShader::CParticleUpdateShader(UINT _iGroupPerThreadX, UINT _iGroupPerThreadY, UINT _iGroupPerThreadZ)
 	: m_ParticleBuffer(nullptr)
+	, m_ModuleData(nullptr)
+	, m_RWBuffer(nullptr)
 {
 	m_iGroupPerThreadX = _iGroupPerThreadX;
 	m_iGroupPerThreadY = _iGroupPerThreadY;
@@ -24,7 +26,9 @@ void CParticleUpdateShader::SetParticleBuffer(CStructuredBuffer* _Buffer)
 
 void CParticleUpdateShader::UpdateData()
 {
-	m_ParticleBuffer->UpdateData_CS(0);
+	m_ParticleBuffer->UpdateData_CS(0, false);
+	m_RWBuffer->UpdateData_CS(1, false);
+	m_ModuleData->UpdateData_CS(20, true);
 
 	// ±×·ì ¼ö
 	m_iGroupX = (m_ParticleBuffer->GetElementCount() / m_iGroupPerThreadX) + 1;

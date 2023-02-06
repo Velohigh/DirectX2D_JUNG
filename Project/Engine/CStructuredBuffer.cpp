@@ -178,12 +178,19 @@ void CStructuredBuffer::UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage)
 	}
 }
 
-void CStructuredBuffer::UpdateData_CS(UINT _iRegisterNum)
+void CStructuredBuffer::UpdateData_CS(UINT _iRegisterNum, bool _IsShaderRes)
 {
 	m_iRecentRegisterNum = _iRegisterNum;
 
-	UINT i = -1;
-	CONTEXT->CSSetUnorderedAccessViews(_iRegisterNum, 1, m_UAV.GetAddressOf(), &i);
+	if (_IsShaderRes)
+	{
+		CONTEXT->CSSetShaderResources(_iRegisterNum, 1, m_SRV.GetAddressOf());
+	}
+	else
+	{
+		UINT i = -1;
+		CONTEXT->CSSetUnorderedAccessViews(_iRegisterNum, 1, m_UAV.GetAddressOf(), &i);
+	}
 }
 
 void CStructuredBuffer::Clear()

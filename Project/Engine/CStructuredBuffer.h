@@ -29,7 +29,7 @@ public:
 
     // PIPELINE_STAGE
     void UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage);
-    void UpdateData_CS(UINT _iRegisterNum);
+    void UpdateData_CS(UINT _iRegisterNum, bool _IsShaderRes);
 
     void Clear();
     void Clear_CS();

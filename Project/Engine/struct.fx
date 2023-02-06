@@ -39,5 +39,26 @@ struct tParticle
 };
 
 
+struct tParticleModule
+{
+	// 스폰 모듈
+    float4 vSpawnColor;
+    float4 vSpawnScale;
+    float3 vBoxShapeScale;
+    int iMaxParticleCount;
+    float fSphereShapeRadius;
+    int SpawnShapeType; // Sphere , Box
+
+	// Color Change 모듈
+    float4 vStartColor; // 초기 색상
+    float4 vEndColor; // 최종 색상
+
+	// Scale Change 모듈
+    float4 vStartScale; // 초기 크기
+    float4 vEndScale; // 최종 크기	
+
+	// Module Check
+    int ModuleCheck[3];
+};
 
 #endif

@@ -45,7 +45,7 @@ void CEditorObjMgr::init()
 	pEditorCamObj->AddComponent(new CCameraMoveScript);
 
 	pEditorCamObj->Camera()->SetLayerMaskAll(true);
-	pEditorCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+	pEditorCamObj->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 
 
 	m_vecEditorObj.push_back(pEditorCamObj);
