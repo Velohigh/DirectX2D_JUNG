@@ -19,34 +19,57 @@ StructuredBuffer<tParticle> ParticleBuffer : register(t20);
 struct VS_IN
 {
     float3 vPos : POSITION;
-    float2 vUV : TEXCOORD;
-    uint iInstID : SV_InstanceID;
 };
 
 struct VS_OUT
 {
-    float4 vPosition : SV_Position;
-    float2 vUV : TEXCOORD;
+    float3 vPos : POSITION;
 };
 
 VS_OUT VS_ParticleRender(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
-    
-    // Local Mesh 의 정점에 파티클 배율을 곱하고 월드 위치로 이동시킨다.
-    float3 vWorldPos = _in.vPos * ParticleBuffer[_in.iInstID].vWorldScale.xyz + ParticleBuffer[_in.iInstID].vWorldPos.xyz;
-    
-    // View, Proj 행렬을 곱해서 NDC 좌표계로 이동시킨다.
-    float4 vViewPos = mul(float4(vWorldPos, 1.f), g_matView);
-    output.vPosition = mul(vViewPos, g_matProj);
-    
-    // UV 전달
-    output.vUV = _in.vUV;
+     
+    output.vPos = _in.vPos;
     
     return output;
 }
 
-float4 PS_ParticleRender(VS_OUT _in) : SV_Target
+// GeometryShader 사용
+// 1. 파이프라인 제어
+// 2. 빌보드 처리 (카메라를 바라보는..)
+struct GS_OUT
+{
+    float3 vPosition : SV_Position;
+    float2 vUV : TEXCOORD;
+};
+
+[maxvertexcount(6)]
+void GS_ParticleRender(VS_OUT _in, uint _iInstID : SV_InstanceID, inout TriangleStream<GS_OUT> _outstream)
+{
+    if (ParticleBuffer[_iInstID].Age < 0.f)
+        return;
+
+    float3 vParticleViewPos = mul(float4(ParticleBuffer[_iInstID].vWorldPos.xyz, 1.f), g_matView).xyz;
+    float2 vParticleScale = ParticleBuffer[_iInstID].vWorldScale;
+    
+    // 0 -- 1
+    // |    |
+    // 3 -- 2
+    float3 NewPos[4] =
+    {
+        float3(vParticleViewPos.x - vParticleScale.x / 2.f, vParticleViewPos.y + vParticleScale.y / 2.f, vParticleViewPos.z),
+        float3(vParticleViewPos.x + vParticleScale.x / 2.f, vParticleViewPos.y + vParticleScale.y / 2.f, vParticleViewPos.z),
+        float3(vParticleViewPos.x + vParticleScale.x / 2.f, vParticleViewPos.y - vParticleScale.y / 2.f, vParticleViewPos.z),
+        float3(vParticleViewPos.x - vParticleScale.x / 2.f, vParticleViewPos.y - vParticleScale.y / 2.f, vParticleViewPos.z)
+    };
+    
+    // 정점 생성
+    //_outstream.Append();    
+}
+
+
+float4 PS_ParticleRender(GS_OUT _in) : SV_Target
 {
     return float4(1.f, 0.f, 0.f, 1.f);
 }

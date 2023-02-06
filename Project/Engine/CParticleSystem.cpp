@@ -13,7 +13,7 @@ CParticleSystem::CParticleSystem()
 	, m_iMaxParticleCount(100)
 {
 	// 입자 메쉬
-	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));
 
 	// 파티클 전용 재질
 	SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"ParticleRenderMtrl"));
