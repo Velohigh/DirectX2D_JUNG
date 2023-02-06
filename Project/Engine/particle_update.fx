@@ -16,7 +16,7 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
     
     tParticle particle = ParticleBuffer[_ID.x];
     
-    particle.vWorldPos += particle.vVelocity * g_DT;
+    particle.vWorldPos += particle.vVelocity * g_DT * 0.01f;
     
     ParticleBuffer[_ID.x] = particle;
 }

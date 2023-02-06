@@ -74,6 +74,25 @@ void CGraphicsShader::CreateVertexShader(const wstring& _strFileName, const stri
 	}
 }
 
+void CGraphicsShader::CreateGeometryShader(const wstring& _strFileName, const string& _strFuncName)
+{
+	// Shader 파일 경로
+	wstring strShaderFile = CPathMgr::GetInst()->GetContentPath();
+	strShaderFile += _strFileName;
+
+	// Shader Compile	
+	if (FAILED(D3DCompileFromFile(strShaderFile.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		, _strFuncName.c_str(), "gs_5_0", 0, 0, m_GSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+	{
+		MessageBoxA(nullptr, (const char*)m_ErrBlob->GetBufferPointer()
+			, "Shader Compile Failed!!", MB_OK);
+	}
+
+	// 컴파일된 객체로 Shader 를 만든다.
+	DEVICE->CreateGeometryShader(m_GSBlob->GetBufferPointer(), m_GSBlob->GetBufferSize()
+		, nullptr, m_GS.GetAddressOf());
+}
+
 void CGraphicsShader::CreatePixelShader(const wstring& _strFileName, const string& _strFuncName)
 {
 	// Shader 파일 경로
@@ -100,9 +119,9 @@ void CGraphicsShader::UpdateData()
 	CONTEXT->IASetPrimitiveTopology(m_eTopology);
 		
 	CONTEXT->VSSetShader(m_VS.Get(), nullptr, 0);
-	//CONTEXT->HSSetShader(m_HS.Get(), nullptr, 0);
-	//CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0);
-	//CONTEXT->GSSetShader(m_GS.Get(), nullptr, 0);
+	CONTEXT->HSSetShader(m_HS.Get(), nullptr, 0);
+	CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0);
+	CONTEXT->GSSetShader(m_GS.Get(), nullptr, 0);
 	CONTEXT->PSSetShader(m_PS.Get(), nullptr, 0);
 
 	CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());

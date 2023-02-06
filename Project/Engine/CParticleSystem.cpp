@@ -35,6 +35,9 @@ CParticleSystem::CParticleSystem()
 		arrParticle[i].vVelocity.Normalize();
 		arrParticle[i].vVelocity *= fSpeed;
 		arrParticle[i].vWorldScale = Vec3(10.f, 10.f, 1.f);
+
+		if (i < 50)
+			arrParticle[i].Age = -1.f;
 	}
 
 	m_ParticleBuffer = new CStructuredBuffer;

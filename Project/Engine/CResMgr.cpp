@@ -304,6 +304,7 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader = new CGraphicsShader;
 	pShader->SetKey(L"ParticleRenderShader");
 	pShader->CreateVertexShader(L"shader\\particle_render.fx", "VS_ParticleRender");
+	pShader->CreateGeometryShader(L"shader\\particle_render.fx", "GS_ParticleRender");
 	pShader->CreatePixelShader(L"shader\\particle_render.fx", "PS_ParticleRender");
 
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
