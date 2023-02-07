@@ -36,5 +36,7 @@ void CParticleUpdateShader::UpdateData()
 
 void CParticleUpdateShader::Clear()
 {
-	m_ParticleBuffer->Clear_CS();
+	m_ParticleBuffer->Clear_CS(false);
+	m_RWBuffer->Clear_CS(false);
+	m_ModuleData->Clear_CS(true);
 }

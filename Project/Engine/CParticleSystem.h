@@ -12,7 +12,7 @@ class CParticleSystem :
 private:
     CStructuredBuffer* m_ParticleBuffer;
     CStructuredBuffer* m_RWBuffer;
-    CStructuredBuffer* m_ModleDataBuffer;
+    CStructuredBuffer* m_ModuleDataBuffer;
 
     tParticleModule             m_ModuleData;
     Ptr<CParticleUpdateShader>  m_UpdateCS;

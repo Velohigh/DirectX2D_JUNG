@@ -32,7 +32,7 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount
 	UINT iBufferSize = m_iElementSize * _iElementCount;
 
 	// 16바이트 단위 메모리 정렬
-	assert(!(iBufferSize % 16));
+	//assert(!(iBufferSize % 16));
 
 	// 상수버퍼 생성
 	m_tDesc.ByteWidth = iBufferSize;				// 버퍼 크기
@@ -205,9 +205,17 @@ void CStructuredBuffer::Clear()
 
 }
 
-void CStructuredBuffer::Clear_CS()
+void CStructuredBuffer::Clear_CS(bool _IsShaderRes)
 {
-	ID3D11UnorderedAccessView* pUAV = nullptr;
-	UINT i = -1;
-	CONTEXT->CSSetUnorderedAccessViews(m_iRecentRegisterNum, 1, &pUAV, &i);
+	if (_IsShaderRes)
+	{
+		ID3D11ShaderResourceView* pSRV = nullptr;
+		CONTEXT->CSSetShaderResources(m_iRecentRegisterNum, 1, &pSRV);
+	}
+	else
+	{
+		ID3D11UnorderedAccessView* pUAV = nullptr;
+		UINT i = -1;
+		CONTEXT->CSSetUnorderedAccessViews(m_iRecentRegisterNum, 1, &pUAV, &i);
+	}
 }

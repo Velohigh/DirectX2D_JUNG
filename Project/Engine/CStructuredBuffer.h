@@ -32,7 +32,7 @@ public:
     void UpdateData_CS(UINT _iRegisterNum, bool _IsShaderRes);
 
     void Clear();
-    void Clear_CS();
+    void Clear_CS(bool _IsShaderRes);
 
     UINT GetElementSize() { return m_iElementSize; }
     UINT GetElementCount() { return m_iElementCount; }

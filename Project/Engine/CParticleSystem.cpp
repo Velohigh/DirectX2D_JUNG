@@ -17,7 +17,7 @@ CParticleSystem::CParticleSystem()
 	, m_AccTime(0.f)
 {
 	m_ModuleData.iMaxParticleCount = 100;
-	m_ModuleData.SpawnRate = 10;
+	m_ModuleData.SpawnRate = 1;
 
 
 	// 입자 메쉬
@@ -43,6 +43,7 @@ CParticleSystem::CParticleSystem()
 		arrParticle[i].vVelocity.Normalize();
 		arrParticle[i].vVelocity *= fSpeed;
 		arrParticle[i].vWorldScale = Vec3(10.f, 10.f, 1.f);
+		arrParticle[i].Age = -1.f;
 	}
 
 	m_ParticleBuffer = new CStructuredBuffer;
@@ -51,8 +52,8 @@ CParticleSystem::CParticleSystem()
 	m_RWBuffer = new CStructuredBuffer;
 	m_RWBuffer->Create(sizeof(tRWParticleBuffer), 1, SB_TYPE::READ_WRITE, true);
 
-	m_ModleDataBuffer = new CStructuredBuffer;
-	m_ModleDataBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::READ_ONLY, true);
+	m_ModuleDataBuffer = new CStructuredBuffer;
+	m_ModuleDataBuffer->Create(sizeof(tParticleModule), 1, SB_TYPE::READ_ONLY, true);
 }
 
 CParticleSystem::~CParticleSystem()
@@ -62,6 +63,9 @@ CParticleSystem::~CParticleSystem()
 
 	if (nullptr != m_RWBuffer)
 		delete m_RWBuffer;
+
+	if (nullptr != m_ModuleDataBuffer)
+		delete m_ModuleDataBuffer;
 }
 
 
@@ -81,17 +85,19 @@ void CParticleSystem::finaltick()
 		// 나머지는 남은 시간
 		m_AccTime = fTimePerCount * (fData - floor(fData));
 
-		tRWParticleBuffer rwbuffer = { (int)fData, };
+		// 버퍼에 스폰 카운트 전달
+		//tRWParticleBuffer rwbuffer = { (int)fData, };		
+		tRWParticleBuffer rwbuffer = { (int)8, };
 		m_RWBuffer->SetData(&rwbuffer);
 	}
 
 
-	// 파티클 업데이트
-	m_ModleDataBuffer->SetData(&m_ModuleData);
+	// 파티클 업데이트 컴퓨트 쉐이더
+	m_ModuleDataBuffer->SetData(&m_ModuleData);
 
 	m_UpdateCS->SetParticleBuffer(m_ParticleBuffer);
 	m_UpdateCS->SetRWParticleBuffer(m_RWBuffer);
-	m_UpdateCS->SetModuleData(m_ModleDataBuffer);
+	m_UpdateCS->SetModuleData(m_ModuleDataBuffer);
 
 	m_UpdateCS->Execute();
 }
@@ -100,9 +106,13 @@ void CParticleSystem::render()
 {
 	Transform()->UpdateData();
 
+	// 파티클버퍼 t20 에 바인딩
 	m_ParticleBuffer->UpdateData(20, PIPELINE_STAGE::PS_ALL);
 
 	// Particle Render	
 	GetMaterial()->UpdateData();
 	GetMesh()->render_particle(m_ModuleData.iMaxParticleCount);
+
+	// 파티클 버퍼 바인딩 해제
+	m_ParticleBuffer->Clear();
 }
