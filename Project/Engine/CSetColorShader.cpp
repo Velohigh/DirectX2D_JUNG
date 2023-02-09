@@ -16,7 +16,7 @@ CSetColorShader::~CSetColorShader()
 
 void CSetColorShader::UpdateData()
 {
-	m_OutTex->UpdateData_CS(0);
+	m_OutTex->UpdateData_CS(0, false);
 
 	// 그룹 개수 계산
 	m_iGroupX = m_OutTex->Width() / m_iGroupPerThreadX;

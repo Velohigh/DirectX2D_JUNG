@@ -36,6 +36,9 @@ struct tParticle
     float NomalizedAge; // 수명대비 생존시간을 0~1로 정규화 한 값
     float LifeTime; // 수명
     float Mass; // 질량
+    
+    int Active;
+    int3 pad;
 };
 
 

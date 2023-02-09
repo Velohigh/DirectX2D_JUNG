@@ -52,7 +52,7 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
 {
     uint id = _in[0].iInstID;
     
-    if (ParticleBuffer[id].Age < 0.f)
+    if (0 == ParticleBuffer[id].Active)
         return;
 
     float3 vParticleViewPos = mul(float4(ParticleBuffer[id].vWorldPos.xyz, 1.f), g_matView).xyz;

@@ -88,6 +88,9 @@ struct tParticle
 	float   NomalizedAge;	// 수명대비 생존시간을 0~1로 정규화 한 값
 	float	LifeTime;		// 수명
 	float	Mass;			// 질량
+
+	int     Active;			// 파티클 활성화 여부
+	int     pad[3];
 };
 
 struct tRWParticleBuffer

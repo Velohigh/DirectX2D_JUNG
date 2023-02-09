@@ -16,8 +16,8 @@ CParticleSystem::CParticleSystem()
 	, m_ModuleData{}
 	, m_AccTime(0.f)
 {
-	m_ModuleData.iMaxParticleCount = 100;
-	m_ModuleData.SpawnRate = 1;
+	m_ModuleData.iMaxParticleCount = 1000;
+	m_ModuleData.SpawnRate = 10;
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
 
 	// 입자 메쉬
@@ -29,25 +29,8 @@ CParticleSystem::CParticleSystem()
 	// 파티클 업데이트 컴퓨트 쉐이더	
 	m_UpdateCS = (CParticleUpdateShader*)CResMgr::GetInst()->FindRes<CComputeShader>(L"ParticleUpdateCS").Get();
 
-	// 파티클 버퍼 초기 데이터
-	tParticle arrParticle[100] = { };
-	float fAngle = XM_2PI / 100.f;
-	float fRadius = 20.f;
-	float fSpeed = 100.f;
-
-	for (UINT i = 0; i < 100; ++i)
-	{
-		arrParticle[i].vWorldPos = Vec3(fRadius * cosf(fAngle * (float)i), fRadius * sinf(fAngle * (float)i), 100.f);
-		arrParticle[i].vVelocity = arrParticle[i].vWorldPos;
-		arrParticle[i].vVelocity.z = 0.f;
-		arrParticle[i].vVelocity.Normalize();
-		arrParticle[i].vVelocity *= fSpeed;
-		arrParticle[i].vWorldScale = Vec3(10.f, 10.f, 1.f);
-		arrParticle[i].Age = -1.f;
-	}
-
 	m_ParticleBuffer = new CStructuredBuffer;
-	m_ParticleBuffer->Create(sizeof(tParticle), m_ModuleData.iMaxParticleCount, SB_TYPE::READ_WRITE, false, arrParticle);
+	m_ParticleBuffer->Create(sizeof(tParticle), m_ModuleData.iMaxParticleCount, SB_TYPE::READ_WRITE, false);
 
 	m_RWBuffer = new CStructuredBuffer;
 	m_RWBuffer->Create(sizeof(tRWParticleBuffer), 1, SB_TYPE::READ_WRITE, true);
@@ -97,7 +80,7 @@ void CParticleSystem::finaltick()
 	m_UpdateCS->SetParticleBuffer(m_ParticleBuffer);
 	m_UpdateCS->SetRWParticleBuffer(m_RWBuffer);
 	m_UpdateCS->SetModuleData(m_ModuleDataBuffer);
-	m_UpdateCS->SetNoiseTexture(CResMgr::GetInst()->FindRes<CTexture>(L"Noise_03"));
+	m_UpdateCS->SetNoiseTexture(CResMgr::GetInst()->FindRes<CTexture>(L"Noise_01"));
 
 	m_UpdateCS->Execute();
 }

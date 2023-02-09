@@ -33,7 +33,7 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
     if (SpawnModule)
     {
         // 파티클이 비활성화 상태인 경우
-        if (particle.Age < 0.f)
+        if (particle.Active == 0)
         {
             // SpawnCount 를 확인
             // 만약 SpawnCount 가 0 이상이라면, 파티클을 활성화시킴      
@@ -45,13 +45,24 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
             
                 if (orgvalue == outvalue)
                 {
+                    particle.Active = 1;
+                    
                     // 랜덤 결과를 받을 변수
-                    float3 vOut = (float3) 0.f;
+                    float3 vOut1 = (float3) 0.f;
+                    float3 vOut2 = (float3) 0.f;
                     
                     // 전체 유효 스레드의 아이디를 0 ~ 1 로 정규화
                     float fNormalizeThreadID = (float) _ID.x / (float) ParticleMaxCount;
-                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID, vOut);
+                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID, vOut1);
+                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID + 0.1f, vOut2);
                     
+                    float fRadius = 500.f; //vOut1.r * 200.f;
+                    float fAngle = vOut2.r * 2 * 3.1415926535f;
+                    //particle.vWorldPos.xyz = float3(fRadius * cos(fAngle), fRadius * sin(fAngle), 100.f);                    
+                    
+                    particle.vWorldPos.xyz = float3(fRadius * vOut1.r - fRadius * 0.5f, fRadius * vOut2.r - fRadius * 0.5f, 100.f);
+                    particle.vWorldScale.xyz = float3(10.f, 10.f, 1.f);
+                   
                     particle.Age = 0.f;
                     particle.LifeTime = 10.f;
                     break;
@@ -62,7 +73,7 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
            
     
     // 파티클이 활성화인 경우
-    if (0.f <= particle.Age)
+    if (particle.Active)
     {
         // 속도에 따른 파티클위치 이동
         particle.vWorldPos += particle.vVelocity * g_DT;
