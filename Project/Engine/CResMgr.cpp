@@ -412,6 +412,11 @@ void CResMgr::LoadDefaultTexture()
 
 	Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 	Load<CTexture>(L"Link", L"texture\\link.png");
+
+	// NoiseTexture
+	Load<CTexture>(L"Noise_01", L"texture\\Noise\\noise_01.png");
+	Load<CTexture>(L"Noise_02", L"texture\\Noise\\noise_02.png");
+	Load<CTexture>(L"Noise_03", L"texture\\Noise\\noise_03.jpg");
 }
 
 Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height

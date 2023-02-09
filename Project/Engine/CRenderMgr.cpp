@@ -100,7 +100,7 @@ void CRenderMgr::UpdateData()
 
     // 구조화버퍼로 광원 데이터를 옮긴다.
     m_Light2DBuffer->SetData(m_vecLight2D.data(), sizeof(tLightInfo) * m_vecLight2D.size());
-    m_Light2DBuffer->UpdateData(8, PIPELINE_STAGE::PS_PIXEL);
+    m_Light2DBuffer->UpdateData(12, PIPELINE_STAGE::PS_PIXEL);
 
 
     // 전역 상수 데이터 바인딩

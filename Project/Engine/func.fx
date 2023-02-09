@@ -71,4 +71,35 @@ void CalcLight2D(float3 _vWorldPos, float3 _vWorldDir, inout tLightColor _Light)
     }
 }
 
+
+// ======
+// Random
+// ======
+static float GaussianFilter[5][5] =
+{
+    0.003f, 0.0133f, 0.0219f, 0.0133f, 0.003f,
+    0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f,
+    0.0219f, 0.0983f, 0.1621f, 0.0983f, 0.0219f,
+    0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f,
+    0.003f, 0.0133f, 0.0219f, 0.0133f, 0.003f,
+};
+
+void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _NomalizedThreadID, out float3 _vOut)
+{
+    float2 vUV = float2(_NomalizedThreadID, 0.5f);
+  
+    // sin 그래프로 텍스쳐의 샘플링 위치 UV 를 계산
+    vUV.y -= (sin((_NomalizedThreadID - (g_AccTime /*그래프 우측 이동 속도*/)) * 2.f * 3.1415926535f * 10.f /*반복주기*/) / 2.f);
+    
+    int2 pixel = vUV * _vResolution;
+    
+    for (int i = 0; i < 5; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            //_NoiseTex[pixel + ] * GaussianFilter[i][j];
+        }
+    }
+}
+
 #endif

@@ -106,6 +106,7 @@ struct tParticleModule
 	float	fSphereShapeRadius;
 	int		SpawnShapeType;		// Sphere , Box
 	int		SpawnRate;			// 초당 생성 개수
+	int     spawnpad[2];
 
 	// Color Change 모듈
 	Vec4	vStartColor;		// 초기 색상
@@ -115,11 +116,12 @@ struct tParticleModule
 	Vec4	vStartScale;		// 초기 크기
 	Vec4	vEndScale;			// 최종 크기	
 
-	// 버퍼 최대크기
-	int		iMaxParticleCount;
-
 	// Module Check
 	int		ModuleCheck[(UINT)PARTICLE_MODULE::END];
+
+	// 버퍼 최대크기
+	int		iMaxParticleCount;
+	int		ipad[3];
 };
 
 

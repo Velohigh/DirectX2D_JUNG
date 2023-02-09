@@ -18,7 +18,7 @@ CParticleSystem::CParticleSystem()
 {
 	m_ModuleData.iMaxParticleCount = 100;
 	m_ModuleData.SpawnRate = 1;
-
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
 
 	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));
@@ -86,8 +86,7 @@ void CParticleSystem::finaltick()
 		m_AccTime = fTimePerCount * (fData - floor(fData));
 
 		// 버퍼에 스폰 카운트 전달
-		//tRWParticleBuffer rwbuffer = { (int)fData, };		
-		tRWParticleBuffer rwbuffer = { (int)8, };
+		tRWParticleBuffer rwbuffer = { (int)fData, };
 		m_RWBuffer->SetData(&rwbuffer);
 	}
 
@@ -98,6 +97,7 @@ void CParticleSystem::finaltick()
 	m_UpdateCS->SetParticleBuffer(m_ParticleBuffer);
 	m_UpdateCS->SetRWParticleBuffer(m_RWBuffer);
 	m_UpdateCS->SetModuleData(m_ModuleDataBuffer);
+	m_UpdateCS->SetNoiseTexture(CResMgr::GetInst()->FindRes<CTexture>(L"Noise_03"));
 
 	m_UpdateCS->Execute();
 }

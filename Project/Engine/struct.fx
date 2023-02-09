@@ -45,9 +45,10 @@ struct tParticleModule
     float4 vSpawnColor;
     float4 vSpawnScale;
     float3 vBoxShapeScale;
-    int iMaxParticleCount;
     float fSphereShapeRadius;
     int SpawnShapeType; // Sphere , Box
+    int SpawnRate;
+    int2 spawnpad;
 
 	// Color Change 모듈
     float4 vStartColor; // 초기 색상
@@ -58,7 +59,13 @@ struct tParticleModule
     float4 vEndScale; // 최종 크기	
 
 	// Module Check
-    int ModuleCheck[3];
+    int Spawn;
+    int ColorChange;
+    int ScaleChange;
+    int dummy;
+    
+    int iMaxParticleCount;
+    int3 ipad;
 };
 
 #endif

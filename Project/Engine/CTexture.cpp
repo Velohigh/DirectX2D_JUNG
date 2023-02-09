@@ -16,6 +16,8 @@ CTexture::~CTexture()
 
 void CTexture::UpdateData(int _iRegisterNum, int _PipelineStage)
 {
+	m_iRecentNum = _iRegisterNum;
+
 	if (PIPELINE_STAGE::PS_VERTEX & _PipelineStage)
 	{
 		CONTEXT->VSSetShaderResources(_iRegisterNum, 1, m_SRV.GetAddressOf());
@@ -42,19 +44,44 @@ void CTexture::UpdateData(int _iRegisterNum, int _PipelineStage)
 	}
 }
 
-void CTexture::UpdateData_CS(int _iRegisterNum)
+void CTexture::UpdateData_CS(int _iRegisterNum, bool _bShaderRes)
 {
-	m_iRecentCSNum = _iRegisterNum;
+	m_iRecentNum = _iRegisterNum;
 
-	UINT i = -1;
-	CONTEXT->CSSetUnorderedAccessViews(_iRegisterNum, 1, m_UAV.GetAddressOf(), &i);
+	if (_bShaderRes)
+	{
+		CONTEXT->CSSetShaderResources(m_iRecentNum, 1, m_SRV.GetAddressOf());
+	}
+	else
+	{
+		UINT i = -1;
+		CONTEXT->CSSetUnorderedAccessViews(m_iRecentNum, 1, m_UAV.GetAddressOf(), &i);
+	}
 }
 
 void CTexture::Clear()
 {
-	ID3D11UnorderedAccessView* pUAV = nullptr;
-	UINT i = -1;
-	CONTEXT->CSSetUnorderedAccessViews(m_iRecentCSNum, 1, &pUAV, &i);
+	ID3D11ShaderResourceView* pSRV = nullptr;
+	CONTEXT->VSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->HSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->DSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->GSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->PSSetShaderResources(m_iRecentNum, 1, &pSRV);
+}
+
+void CTexture::Clear_CS(bool _bShaderRes)
+{
+	if (_bShaderRes)
+	{
+		ID3D11ShaderResourceView* pSRV = nullptr;
+		CONTEXT->CSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	}
+	else
+	{
+		ID3D11UnorderedAccessView* pUAV = nullptr;
+		UINT i = -1;
+		CONTEXT->CSSetUnorderedAccessViews(m_iRecentNum, 1, &pUAV, &i);
+	}
 }
 
 void CTexture::UpdateData()

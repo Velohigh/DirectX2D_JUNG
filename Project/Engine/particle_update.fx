@@ -3,14 +3,22 @@
 
 #include "value.fx"
 #include "struct.fx"
+#include "func.fx"
 
 RWStructuredBuffer<tParticle> ParticleBuffer : register(u0);
 RWStructuredBuffer<int4> ParticleSpawnCount : register(u1);
 StructuredBuffer<tParticleModule> ParticleModuleData : register(t20);
+Texture2D NoiseTexture : register(t21);
 
-#define ParticleMaxCount g_int_0
-#define SpawnCount ParticleSpawnCount[0].x
-#define ModuleData ParticleModuleData[0]
+#define NoiseTexResolution  g_vec2_0
+
+#define SpawnCount          ParticleSpawnCount[0].x
+#define ModuleData          ParticleModuleData[0]
+#define ParticleMaxCount    ParticleModuleData[0].iMaxParticleCount
+
+#define SpawnModule         ParticleModuleData[0].Spawn
+#define ColorChangeModule   ParticleModuleData[0].ColorChange
+#define ScaleChangeModule   ParticleModuleData[0].ScaleChange
 
 
 [numthreads(128, 1, 1)]
@@ -21,29 +29,40 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
         return;
         
     tParticle particle = ParticleBuffer[_ID.x];
-        
-    // 파티클이 비활성화 상태인 경우
-    if (particle.Age < 0.f)
+           
+    if (SpawnModule)
     {
-        // SpawnCount 를 확인
-        // 만약 SpawnCount 가 0 이상이라면, 파티클을 활성화시킴      
-        while (0 < SpawnCount)
+        // 파티클이 비활성화 상태인 경우
+        if (particle.Age < 0.f)
         {
-            int orgvalue = SpawnCount;
-            int outvalue = 0;
-            InterlockedCompareExchange(SpawnCount, orgvalue, SpawnCount - 1, outvalue);
-            
-            if (orgvalue == outvalue)
+            // SpawnCount 를 확인
+            // 만약 SpawnCount 가 0 이상이라면, 파티클을 활성화시킴      
+            while (0 < SpawnCount)
             {
-                particle.Age = 0.f;
-                particle.LifeTime = 10.f;
-                break;
+                int orgvalue = SpawnCount;
+                int outvalue = 0;
+                InterlockedCompareExchange(SpawnCount, orgvalue, SpawnCount - 1, outvalue);
+            
+                if (orgvalue == outvalue)
+                {
+                    // 랜덤 결과를 받을 변수
+                    float3 vOut = (float3) 0.f;
+                    
+                    // 전체 유효 스레드의 아이디를 0 ~ 1 로 정규화
+                    float fNormalizeThreadID = (float) _ID.x / (float) ParticleMaxCount;
+                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID, vOut);
+                    
+                    particle.Age = 0.f;
+                    particle.LifeTime = 10.f;
+                    break;
+                }
             }
         }
     }
+           
     
     // 파티클이 활성화인 경우
-    else
+    if (0.f <= particle.Age)
     {
         // 속도에 따른 파티클위치 이동
         particle.vWorldPos += particle.vVelocity * g_DT;
@@ -57,7 +76,6 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
             particle.Age = -1.f;
         }
     }
-    
     
     // 변경점 적용
     ParticleBuffer[_ID.x] = particle;

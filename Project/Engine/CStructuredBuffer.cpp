@@ -32,7 +32,7 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount
 	UINT iBufferSize = m_iElementSize * _iElementCount;
 
 	// 16바이트 단위 메모리 정렬
-	//assert(!(iBufferSize % 16));
+	assert(!(iBufferSize % 16));
 
 	// 상수버퍼 생성
 	m_tDesc.ByteWidth = iBufferSize;				// 버퍼 크기
