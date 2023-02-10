@@ -59,7 +59,7 @@ void InspectorUI::tick()
 {
 	if (nullptr == m_pTarget)
 	{
-		m_pTarget = CLevelMgr::GetInst()->FindObjectByName(L"Player");
+		m_pTarget = CLevelMgr::GetInst()->FindObjectByName(L"ParticleObject");
 
 		for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
 		{

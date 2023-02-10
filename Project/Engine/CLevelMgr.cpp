@@ -186,6 +186,7 @@ void CLevelMgr::init()
 
 	// Particle Object
 	CGameObject* pParticleObj = new CGameObject;
+	pParticleObj->SetName(L"ParticleObject");
 	pParticleObj->AddComponent(new CTransform);
 	pParticleObj->AddComponent(new CParticleSystem);
 

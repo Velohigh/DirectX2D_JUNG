@@ -17,8 +17,13 @@ CParticleSystem::CParticleSystem()
 	, m_AccTime(0.f)
 {
 	m_ModuleData.iMaxParticleCount = 1000;
-	m_ModuleData.SpawnRate = 10;
+
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
+	m_ModuleData.SpawnRate = 10;
+	m_ModuleData.SpawnShapeType = 0;
+	m_ModuleData.vBoxShapeScale = Vec3(500.f, 500.f, 500.f);
+	m_ModuleData.Space = 0; // 시뮬레이션 좌표계
+
 
 	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));
@@ -81,6 +86,7 @@ void CParticleSystem::finaltick()
 	m_UpdateCS->SetRWParticleBuffer(m_RWBuffer);
 	m_UpdateCS->SetModuleData(m_ModuleDataBuffer);
 	m_UpdateCS->SetNoiseTexture(CResMgr::GetInst()->FindRes<CTexture>(L"Noise_01"));
+	m_UpdateCS->SetParticleObjectPos(Transform()->GetWorldPos());
 
 	m_UpdateCS->Execute();
 }

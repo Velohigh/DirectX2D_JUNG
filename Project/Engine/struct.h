@@ -78,7 +78,8 @@ struct tAnim2DFrm
 // Particle
 struct tParticle
 {
-	Vec4	vWorldPos;		// 파티클 위치
+	Vec4	vLocalPos;		// 오브젝트로부터 떨어진 거리
+	Vec4	vWorldPos;		// 파티클 최종 월드위치
 	Vec4	vWorldScale;	// 파티클 크기
 	Vec4	vColor;			// 파티클 색상
 	Vec4	vVelocity;		// 파티클 현재 속도
@@ -107,9 +108,11 @@ struct tParticleModule
 	Vec4	vSpawnScale;
 	Vec3	vBoxShapeScale;
 	float	fSphereShapeRadius;
-	int		SpawnShapeType;		// Sphere , Box
+	int		SpawnShapeType;		// 0 : BOX, 1 : Sphere
 	int		SpawnRate;			// 초당 생성 개수
-	int     spawnpad[2];
+	int		Space;				// 파티클 업데이트 좌표계 ( 0 : World,  1 : Local)
+	int     spawnpad;
+
 
 	// Color Change 모듈
 	Vec4	vStartColor;		// 초기 색상
