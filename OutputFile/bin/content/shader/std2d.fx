@@ -23,10 +23,6 @@ struct VS_OUT
 // DepthStencilState    : Less
 //
 // Parameter
-// g_int_0              : AnimUse
-// g_vec2_0             : AnimAtlas LeftTop
-// g_vec2_1             : AnimAtlas Slice
-//
 // g_tex_0              : Output Texture
 // ============================
 VS_OUT VS_Std2D(VS_IN _in)
@@ -56,9 +52,6 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     if (0.f == vOutColor.a)
         discard;
     
-    if (g_int_2 == 1)
-        vOutColor = float4(1.f, 0.f, 0.f, 1.f);
-    
     return vOutColor;
 }
 
@@ -77,12 +70,6 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
 // DepthStencilState    : Less
 //
 // Parameter
-#define bAnimUse        g_int_0
-#define LeftTop         g_vec2_0
-#define Slice           g_vec2_1
-#define Offset          g_vec2_2
-#define BackSize        g_vec2_3
-
 // g_tex_0              : Output Texture
 // g_tex_1              : Nomal Texture
 // ======================================
@@ -121,34 +108,14 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
        
     if (g_btex_0)
     {
-        if (bAnimUse)
-        {
-            float2 vUV = LeftTop + (BackSize * _in.vUV);
-            vUV -= ((BackSize - Slice) / 2.f);
-            vUV -= Offset;
-            
-            if (LeftTop.x < vUV.x && vUV.x < LeftTop.x + Slice.x
-                && LeftTop.y < vUV.y && vUV.y < LeftTop.y + Slice.y)
-            {
-                vOutColor = g_tex_0.Sample(g_sam_0, vUV);
-            }
-            else
-            {
-                vOutColor = float4(1.f, 1.f, 0.f, 1.f);
-                //discard;
-            }
-        }
-        else
-        {
-            vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-        }
+        vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     }
     else
     {
         vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     }
         
-    float3 vNormal = (float3) 0.f;
+    float3 vNormal = (float3) vNormal;
     if (g_btex_1)
     {
         // Normal 값 추출
@@ -169,24 +136,12 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
     
     
     if (0.f == vOutColor.a)
-    {
-        return float4(1.f, 0.f, 1.f, 1.f);
-        //discard;
-    }
-     
+        discard;
     
     // Lighting 처리
     tLightColor LightColor = (tLightColor) 0.f;
-    
-    // vNormal 이 Zero Vector 라면
-    if (dot(vNormal, vNormal) == 0.f)
-    {
-        CalcLight2D(_in.vWorldPos, LightColor);
-    }
-    else
-    {
-        CalcLight2D(_in.vWorldPos, vNormal, LightColor);
-    }
+    CalcLight2D(_in.vWorldPos, LightColor);
+    //CalcLight2D(_in.vWorldPos, vNormal, LightColor);
         
     vOutColor.rgb *= (LightColor.vDiffuse.rgb + LightColor.vAmbient.rgb);
     
