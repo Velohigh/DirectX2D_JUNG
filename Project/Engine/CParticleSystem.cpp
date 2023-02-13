@@ -19,11 +19,33 @@ CParticleSystem::CParticleSystem()
 	m_ModuleData.iMaxParticleCount = 1000;
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
-	m_ModuleData.SpawnRate = 10;
+	m_ModuleData.SpawnRate = 5;
+
+	m_ModuleData.vSpawnColor = Vec3(0.4f, 1.f, 0.4f);
+
+	m_ModuleData.vSpawnScaleMin = Vec3(15.f, 15.f, 1.f);
+	m_ModuleData.vSpawnScaleMax = Vec3(50.f, 50.f, 1.f);
+
 	m_ModuleData.SpawnShapeType = 0;
-	m_ModuleData.vBoxShapeScale = Vec3(500.f, 500.f, 500.f);
+	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);
 	m_ModuleData.Space = 0; // 시뮬레이션 좌표계
 
+	m_ModuleData.MinLifeTime = 2.f;
+	m_ModuleData.MaxLifeTime = 5.f;
+
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::SCALE_CHANGE] = true;
+	m_ModuleData.StartScale = 2.f;
+	m_ModuleData.EndScale = 0.1f;
+
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::COLOR_CHANGE] = true;
+	m_ModuleData.vStartColor = Vec3(0.2f, 0.3f, 1.0f);
+	m_ModuleData.vEndColor = Vec3(0.4f, 1.f, 0.4f);
+
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = true;
+	m_ModuleData.AddVelocityType = 0; // From Center
+	m_ModuleData.Speed = 200.f;
+	m_ModuleData.vVelocityDir;
+	m_ModuleData.OffsetAngle;
 
 	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));
@@ -99,6 +121,9 @@ void CParticleSystem::render()
 	m_ParticleBuffer->UpdateData(20, PIPELINE_STAGE::PS_ALL);
 
 	// Particle Render	
+	Ptr<CTexture> pParticleTex = CResMgr::GetInst()->Load<CTexture>(L"Particle_0", L"texture\\particle\\AlphaCircle.png");
+	GetMaterial()->SetTexParam(TEX_0, pParticleTex);
+
 	GetMaterial()->UpdateData();
 	GetMesh()->render_particle(m_ModuleData.iMaxParticleCount);
 

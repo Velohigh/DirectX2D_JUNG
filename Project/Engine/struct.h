@@ -89,9 +89,10 @@ struct tParticle
 	float   NomalizedAge;	// 수명대비 생존시간을 0~1로 정규화 한 값
 	float	LifeTime;		// 수명
 	float	Mass;			// 질량
+	float   ScaleFactor;	// 추가 크기 배율
 
 	int     Active;			// 파티클 활성화 여부
-	int     pad[3];
+	int     pad[2];
 };
 
 struct tRWParticleBuffer
@@ -105,29 +106,40 @@ struct tParticleModule
 {
 	// 스폰 모듈
 	Vec4    vSpawnColor;
-	Vec4	vSpawnScale;
+	Vec4	vSpawnScaleMin;
+	Vec4	vSpawnScaleMax;
 	Vec3	vBoxShapeScale;
 	float	fSphereShapeRadius;
 	int		SpawnShapeType;		// 0 : BOX, 1 : Sphere
 	int		SpawnRate;			// 초당 생성 개수
 	int		Space;				// 파티클 업데이트 좌표계 ( 0 : World,  1 : Local)
-	int     spawnpad;
-
+	float   MinLifeTime;		// 최소 수명
+	float   MaxLifeTime;		// 최대 수명
+	int     spawnpad[3];
 
 	// Color Change 모듈
 	Vec4	vStartColor;		// 초기 색상
 	Vec4	vEndColor;			// 최종 색상
 
 	// Scale Change 모듈
-	Vec4	vStartScale;		// 초기 크기
-	Vec4	vEndScale;			// 최종 크기	
+	float	StartScale;			// 초기 배율
+	float	EndScale;			// 최종 배율	
 
-	// Module Check
-	int		ModuleCheck[(UINT)PARTICLE_MODULE::END];
+
+	// Add Velocity 모듈
+	Vec4	vVelocityDir;
+	int     AddVelocityType;	// 0 : From Center, 1 : Fixed Direction	
+	float	OffsetAngle;
+	float	Speed;
+	int     addvpad;
+
 
 	// 버퍼 최대크기
 	int		iMaxParticleCount;
-	int		ipad[3];
+	int		ipad;
+
+	// Module Check
+	int		ModuleCheck[(UINT)PARTICLE_MODULE::END];
 };
 
 

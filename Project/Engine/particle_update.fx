@@ -69,23 +69,31 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
                                                       , ModuleData.vBoxShapeScale.z * vOut3.r - ModuleData.vBoxShapeScale.z * 0.5f);
                         particle.vWorldPos.xyz = particle.vLocalPos.xyz + ObjectPos.xyz;
                         
-                        particle.vWorldScale.xyz = float3(10.f, 10.f, 1.f);
+                        
+                        // 스폰 크기 범위내에서 랜덤 크기로 지정 (Min, Max 가 일치하면 고정크기)
+                        float4 vSpawnScale = ModuleData.vSpawnScaleMin + (ModuleData.vSpawnScaleMax - ModuleData.vSpawnScaleMin) * vOut3.x;
+                        particle.vWorldScale.xyz = vSpawnScale.xyz;
+                    }
+                    
+                    // AddVelocity 모듈
+                    if (ModuleData.AddVelocity)
+                    {
+                          
                     }
                     
                     // Sphere 스폰
                     else if (ModuleData.SpawnShapeType == 1)
                     {
-                        
+                        float fRadius = 500.f; //vOut1.r * 200.f;
+                        float fAngle = vOut2.r * 2 * 3.1415926535f;
+                        //particle.vWorldPos.xyz = float3(fRadius * cos(fAngle), fRadius * sin(fAngle), 100.f);
                     }
                     
                     
-                    float fRadius = 500.f; //vOut1.r * 200.f;
-                    float fAngle = vOut2.r * 2 * 3.1415926535f;
-                    //particle.vWorldPos.xyz = float3(fRadius * cos(fAngle), fRadius * sin(fAngle), 100.f);                    
-                   
-                   
+                    particle.vColor = ModuleData.vSpawnColor;
+                                      
                     particle.Age = 0.f;
-                    particle.LifeTime = 10.f;
+                    particle.LifeTime = ModuleData.MinLifeTime + (ModuleData.MaxLifeTime - ModuleData.MinLifeTime) * vOut2.r;
                     break;
                 }
             }
@@ -96,6 +104,16 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
     // 파티클이 활성화인 경우
     if (particle.Active)
     {
+        // 파티클의 Age 에 시간을 누적시킴
+        particle.Age += g_DT;
+        particle.NomalizedAge = saturate(particle.Age / particle.LifeTime);
+        
+        // 파티클의 수명이 끝나면, 다시 비활성화 상태로 되돌림
+        if (particle.LifeTime <= particle.Age)
+        {
+            particle.Active = 0.f;
+        }
+        
         // 속도에 따른 파티클위치 이동
         if (ModuleData.Space == 0)
         {
@@ -108,15 +126,19 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
         }
         
         
+        // 크기 변화 모듈이 활성화 되어있으면
+        if (ModuleData.ScaleChange)
+            particle.ScaleFactor = ModuleData.StartScale + particle.NomalizedAge * (ModuleData.EndScale - ModuleData.StartScale);
+        else
+            particle.ScaleFactor = 1.f;
         
-        // 파티클의 Age 에 시간을 누적시킴
-        particle.Age += g_DT;
         
-        // 파티클의 수명이 끝나면, 다시 비활성화 상태로 되돌림
-        if (particle.LifeTime <= particle.Age)
+        // 색상 변화모듈이 활성화 되어있으면
+        if (ModuleData.ColorChange)
         {
-            particle.Active = 0.f;
+            particle.vColor = ModuleData.vStartColor + particle.NomalizedAge * (ModuleData.vEndColor - ModuleData.vStartColor);
         }
+        
     }
     
     // 변경점 적용

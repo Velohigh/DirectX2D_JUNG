@@ -45,6 +45,7 @@ struct GS_OUT
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
+    uint iInstID : SV_InstanceID;
 };
 
 [maxvertexcount(6)]
@@ -56,7 +57,7 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
         return;
 
     float3 vParticleViewPos = mul(float4(ParticleBuffer[id].vWorldPos.xyz, 1.f), g_matView).xyz;
-    float2 vParticleScale = ParticleBuffer[id].vWorldScale.xy;
+    float2 vParticleScale = ParticleBuffer[id].vWorldScale.xy * ParticleBuffer[id].ScaleFactor;
     
     // 0 -- 1
     // |    |
@@ -73,15 +74,19 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
     
     output[0].vPosition = mul(float4(NewPos[0], 1.f), g_matProj);
     output[0].vUV = float2(0.f, 0.f);
+    output[0].iInstID = id;
     
     output[1].vPosition = mul(float4(NewPos[1], 1.f), g_matProj);
     output[1].vUV = float2(1.f, 0.f);
+    output[1].iInstID = id;
     
     output[2].vPosition = mul(float4(NewPos[2], 1.f), g_matProj);
     output[2].vUV = float2(1.f, 1.f);
+    output[2].iInstID = id;
     
     output[3].vPosition = mul(float4(NewPos[3], 1.f), g_matProj);
     output[3].vUV = float2(0.f, 1.f);
+    output[3].iInstID = id;
     
     
     // 정점 생성
@@ -99,7 +104,15 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
 
 float4 PS_ParticleRender(GS_OUT _in) : SV_Target
 {
-    return float4(1.f, 0.f, 0.f, 1.f);
+    float4 vOutColor = float4(1.f, 0.f, 1.f, 1.f);
+    
+    if (g_btex_0)
+    {
+        vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+        vOutColor.rgb *= ParticleBuffer[_in.iInstID].vColor.rgb;
+    }
+    
+    return vOutColor;
 }
 
 
