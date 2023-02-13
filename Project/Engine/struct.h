@@ -125,18 +125,22 @@ struct tParticleModule
 	float	StartScale;			// 초기 배율
 	float	EndScale;			// 최종 배율	
 
+	// 버퍼 최대크기
+	int		iMaxParticleCount;
+	int		ipad;
 
 	// Add Velocity 모듈
 	Vec4	vVelocityDir;
-	int     AddVelocityType;	// 0 : From Center, 1 : Fixed Direction	
+	int     AddVelocityType;	// 0 : From Center, 1: To Center, 2 : Fixed Direction	
 	float	OffsetAngle;
 	float	Speed;
 	int     addvpad;
 
+	// Drag 모듈 - 속도 제한
+	float	StartDrag;
+	float	EndDrag;
+	int     DragPad[2];
 
-	// 버퍼 최대크기
-	int		iMaxParticleCount;
-	int		ipad;
 
 	// Module Check
 	int		ModuleCheck[(UINT)PARTICLE_MODULE::END];

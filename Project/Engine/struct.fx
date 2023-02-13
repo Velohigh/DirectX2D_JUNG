@@ -77,12 +77,20 @@ struct tParticleModule
     float Speed;
     int addvpad;
     
+    // Drag ¸ðµâ
+    float StartDrag;
+    float EndDrag;
+    int2 dragpad;
+    
     
     // Module Check
     int Spawn;
     int ColorChange;
     int ScaleChange;
     int AddVelocity;
+    
+    int Drag;
+    int3 modulepad;
 };
 
 #endif

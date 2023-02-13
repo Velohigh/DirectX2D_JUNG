@@ -19,7 +19,7 @@ CParticleSystem::CParticleSystem()
 	m_ModuleData.iMaxParticleCount = 1000;
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
-	m_ModuleData.SpawnRate = 5;
+	m_ModuleData.SpawnRate = 20;
 
 	m_ModuleData.vSpawnColor = Vec3(0.4f, 1.f, 0.4f);
 
@@ -30,8 +30,8 @@ CParticleSystem::CParticleSystem()
 	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);
 	m_ModuleData.Space = 0; // 시뮬레이션 좌표계
 
-	m_ModuleData.MinLifeTime = 2.f;
-	m_ModuleData.MaxLifeTime = 5.f;
+	m_ModuleData.MinLifeTime = 1.f;
+	m_ModuleData.MaxLifeTime = 3.f;
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::SCALE_CHANGE] = true;
 	m_ModuleData.StartScale = 2.f;
@@ -43,9 +43,14 @@ CParticleSystem::CParticleSystem()
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = true;
 	m_ModuleData.AddVelocityType = 0; // From Center
-	m_ModuleData.Speed = 200.f;
+	m_ModuleData.Speed = 150.f;
 	m_ModuleData.vVelocityDir;
 	m_ModuleData.OffsetAngle;
+
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = true;
+	m_ModuleData.StartDrag = 200.f;
+	m_ModuleData.EndDrag = 0.f;
+
 
 	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));

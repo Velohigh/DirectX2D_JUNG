@@ -78,7 +78,24 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
                     // AddVelocity 모듈
                     if (ModuleData.AddVelocity)
                     {
-                          
+                        // From Center
+                        if (ModuleData.AddVelocityType == 0)
+                        {
+                            float3 vVelocity = normalize(particle.vLocalPos.xyz);
+                            particle.vVelocity.xyz = vVelocity * ModuleData.Speed;
+                        }
+                        
+                        // To Center
+                        else if (ModuleData.AddVelocityType == 1)
+                        {
+                               
+                        }
+                        
+                        // Fixed Direction
+                        else
+                        {
+                            
+                        }
                     }
                     
                     // Sphere 스폰
@@ -113,6 +130,22 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
         {
             particle.Active = 0.f;
         }
+        
+        
+        // 속도 제한(Drag) 모듈
+        if (ModuleData.Drag)
+        {
+            // 파티클의 현재 속력
+            float Speed = length(particle.vVelocity);
+            float fDrag = ModuleData.StartDrag + (ModuleData.EndDrag - ModuleData.StartDrag) * particle.NomalizedAge;
+            
+            if (fDrag < Speed)
+            {
+                particle.vVelocity = normalize(particle.vVelocity) * fDrag;
+            }
+        }
+        
+        
         
         // 속도에 따른 파티클위치 이동
         if (ModuleData.Space == 0)
