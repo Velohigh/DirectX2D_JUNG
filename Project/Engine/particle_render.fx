@@ -14,7 +14,8 @@
 // =========================
 
 StructuredBuffer<tParticle> ParticleBuffer : register(t20);
-
+StructuredBuffer<tParticleModule> ParticleModuleData : register(t21);
+#define ModuleData                  ParticleModuleData[0]
 
 struct VS_IN
 {
@@ -58,6 +59,29 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
 
     float3 vParticleViewPos = mul(float4(ParticleBuffer[id].vWorldPos.xyz, 1.f), g_matView).xyz;
     float2 vParticleScale = ParticleBuffer[id].vWorldScale.xy * ParticleBuffer[id].ScaleFactor;
+    
+    if (ModuleData.Render)
+    {
+        if (ModuleData.VelocityAlignment)
+        {
+            // 파티클 월드 기준 속도를 View 공간으로 변환
+            float3 vVelocity = normalize(ParticleBuffer[id].vVelocity);
+            vVelocity = mul(float4(vVelocity, 0.f), g_matView).xyz;
+                       
+            // 파티클 Right 방향과 이동 방향을 내적해서 둘 사이의 각도를 구한다.
+            float3 vRight = float3(1.f, 0.f, 0.f);
+            float fTheta = acos(dot(vRight, vVelocity));
+            
+            // 구한 각도로 Z 축 회전을 시킨다.
+            
+        }
+        
+        if (ModuleData.VelocityScale)
+        {
+            
+        }
+    }
+       
     
     // 0 -- 1
     // |    |

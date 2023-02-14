@@ -146,6 +146,13 @@ struct tParticleModule
 	float	fNoiseTerm;		// 랜덤 힘 변경 간격
 	float	fNoiseForce;	// 랜덤 힘 크기
 
+	// Render 모듈
+	int		VelocityAlignment;	// 1 : 속도정렬 사용(이동 방향으로 회전) 0 : 사용 안함
+	int		VelocityScale;		// 1 : 속도에 따른 크기 변화 사용, 0 : 사용 안함	
+	float   vMaxSpeed;			// 최대 크기에 도달하는 속력
+	Vec4	vMaxVelocityScale;	// 속력에 따른 크기 변화량 최대치
+	int		renderpad;
+
 	// Module Check
 	int		ModuleCheck[(UINT)PARTICLE_MODULE::END];
 };

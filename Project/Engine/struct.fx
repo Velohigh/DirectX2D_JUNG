@@ -86,7 +86,14 @@ struct tParticleModule
     // NoiseForce 모듈
     float fNoiseTerm;
     float fNoiseForce;
-    
+        
+    // Render 모듈
+    int VelocityAlignment; // 1 : 속도정렬 사용(이동 방향으로 회전) 0 : 사용 안함
+    int VelocityScale; // 1 : 속도에 따른 크기 변화 사용, 0 : 사용 안함	
+    float vMaxSpeed; // 최대 크기에 도달하는 속력
+    float4 vMaxVelocityScale; // 속력에 따른 크기 변화량 최대치
+    int renderpad;
+
     
     // Module Check
     int Spawn;
@@ -96,7 +103,8 @@ struct tParticleModule
     
     int Drag;
     int NoiseForce;
-    int2 modulepad;
+    int Render;
+    int modulepad;
 };
 
 #endif

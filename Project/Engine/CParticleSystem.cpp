@@ -43,17 +43,26 @@ CParticleSystem::CParticleSystem()
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = true;
 	m_ModuleData.AddVelocityType = 0; // From Center
-	m_ModuleData.Speed = 20.f;
+	m_ModuleData.Speed = 500.f;
 	m_ModuleData.vVelocityDir;
 	m_ModuleData.OffsetAngle;
 
-	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = false;
-	m_ModuleData.StartDrag = 200.f;
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = true;
+	m_ModuleData.StartDrag = 500.f;
 	m_ModuleData.EndDrag = 0.f;
 
-	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = true;
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = false;
 	m_ModuleData.fNoiseTerm = 0.3f;
 	m_ModuleData.fNoiseForce = 50.f;
+
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = true;
+	m_ModuleData.VelocityAlignment = true;
+	m_ModuleData.VelocityScale = true;
+	m_ModuleData.vMaxVelocityScale = Vec3(20.f, 1.f, 1.f);
+	m_ModuleData.vMaxSpeed = 500.f;
+
+
+
 
 	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));
@@ -128,6 +137,9 @@ void CParticleSystem::render()
 	// 파티클버퍼 t20 에 바인딩
 	m_ParticleBuffer->UpdateData(20, PIPELINE_STAGE::PS_ALL);
 
+	// 모듈 데이터 t21 에 바인딩
+	m_ModuleDataBuffer->UpdateData(21, PIPELINE_STAGE::PS_GEOMETRY);
+
 	// Particle Render	
 	Ptr<CTexture> pParticleTex = CResMgr::GetInst()->Load<CTexture>(L"Particle_0", L"texture\\particle\\AlphaCircle.png");
 	GetMaterial()->SetTexParam(TEX_0, pParticleTex);
@@ -137,4 +149,5 @@ void CParticleSystem::render()
 
 	// 파티클 버퍼 바인딩 해제
 	m_ParticleBuffer->Clear();
+	m_ModuleDataBuffer->Clear();
 }
