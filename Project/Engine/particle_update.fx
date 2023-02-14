@@ -75,6 +75,18 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
                         particle.vWorldScale.xyz = vSpawnScale.xyz;
                     }
                     
+                    // Sphere 스폰
+                    else if (ModuleData.SpawnShapeType == 1)
+                    {
+                        float fRadius = 500.f; //vOut1.r * 200.f;
+                        float fAngle = vOut2.r * 2 * 3.1415926535f;
+                        //particle.vWorldPos.xyz = float3(fRadius * cos(fAngle), fRadius * sin(fAngle), 100.f);
+                    }
+                    
+                    // 파티클 질량 설정
+                    particle.Mass = 1.f;
+                    
+                    
                     // AddVelocity 모듈
                     if (ModuleData.AddVelocity)
                     {
@@ -88,7 +100,7 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
                         // To Center
                         else if (ModuleData.AddVelocityType == 1)
                         {
-                               
+                            
                         }
                         
                         // Fixed Direction
@@ -98,17 +110,9 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
                         }
                     }
                     
-                    // Sphere 스폰
-                    else if (ModuleData.SpawnShapeType == 1)
-                    {
-                        float fRadius = 500.f; //vOut1.r * 200.f;
-                        float fAngle = vOut2.r * 2 * 3.1415926535f;
-                        //particle.vWorldPos.xyz = float3(fRadius * cos(fAngle), fRadius * sin(fAngle), 100.f);
-                    }
-                    
+                   
                     
                     particle.vColor = ModuleData.vSpawnColor;
-                                      
                     particle.Age = 0.f;
                     particle.LifeTime = ModuleData.MinLifeTime + (ModuleData.MaxLifeTime - ModuleData.MinLifeTime) * vOut2.r;
                     break;
@@ -116,20 +120,72 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
             }
         }
     }
-           
     
     // 파티클이 활성화인 경우
     if (particle.Active)
     {
         // 파티클의 Age 에 시간을 누적시킴
+        particle.PrevAge = particle.Age;
         particle.Age += g_DT;
         particle.NomalizedAge = saturate(particle.Age / particle.LifeTime);
+        particle.vForce.xyz = (float3) 0.f;
+        
         
         // 파티클의 수명이 끝나면, 다시 비활성화 상태로 되돌림
         if (particle.LifeTime <= particle.Age)
         {
             particle.Active = 0.f;
         }
+                
+        // NoiseForce 모듈 (랜덤으로 힘) 적용 모듈
+        if (ModuleData.NoiseForce)
+        {
+            if (particle.PrevAge == 0.f)
+            {
+                 // 랜덤 결과를 받을 변수
+                float3 vOut1 = (float3) 0.f;
+                float3 vOut2 = (float3) 0.f;
+                float3 vOut3 = (float3) 0.f;
+                    
+                // 전체 유효 스레드의 아이디를 0 ~ 1 로 정규화
+                float fNormalizeThreadID = (float) _ID.x / (float) ParticleMaxCount;
+                GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID, vOut1);
+                GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID + 0.1f, vOut2);
+                GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID + 0.2f, vOut3);
+                
+                float3 vForce = normalize(float3(vOut1.x, vOut2.x, vOut1.z));
+                particle.vRandomForce.xyz = vForce * ModuleData.fNoiseForce;
+            }
+            else
+            {
+                int Age = int(particle.Age * (1.f / ModuleData.fNoiseTerm));
+                int PrevAge = int(particle.PrevAge * (1.f / ModuleData.fNoiseTerm));
+
+                // 지정한 간격을 넘어간 순간, 새로운 랜덤 Force 를 준다.
+                if (Age != PrevAge)
+                {
+                    // 랜덤 결과를 받을 변수
+                    float3 vOut1 = (float3) 0.f;
+                    float3 vOut2 = (float3) 0.f;
+                    float3 vOut3 = (float3) 0.f;
+                    
+                    // 전체 유효 스레드의 아이디를 0 ~ 1 로 정규화
+                    float fNormalizeThreadID = (float) _ID.x / (float) ParticleMaxCount;
+                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID, vOut1);
+                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID + 0.1f, vOut2);
+                    GaussianSample(NoiseTexture, NoiseTexResolution, fNormalizeThreadID + 0.2f, vOut3);
+                
+                    float3 vForce = normalize(float3(vOut1.x, vOut2.x, vOut1.z) * 2.f - 1.f);
+                    particle.vRandomForce.xyz = vForce * ModuleData.fNoiseForce;
+                }
+            }
+            
+            particle.vForce.xyz += particle.vRandomForce.xyz;
+        }
+       
+        // 파티클에 힘이 적용 된 경우, 힘에 의한 속도의 변화량 계산
+        float3 vAccel = particle.vForce.xyz / particle.Mass;
+        particle.vVelocity.xyz += vAccel * g_DT;
         
         
         // 속도 제한(Drag) 모듈
@@ -146,8 +202,8 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
         }
         
         
-        
         // 속도에 따른 파티클위치 이동
+        // Sim 좌표계에 따라서 이동방식 분기
         if (ModuleData.Space == 0)
         {
             particle.vWorldPos += particle.vVelocity * g_DT;

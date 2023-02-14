@@ -84,15 +84,17 @@ struct tParticle
 	Vec4	vColor;			// 파티클 색상
 	Vec4	vVelocity;		// 파티클 현재 속도
 	Vec4	vForce;			// 파티클에 주어진 힘
+	Vec4	vRandomForce;	// 파티클에 적용되는 랜덤방향 힘
 
 	float   Age;			// 생존 시간
+	float   PrevAge;		// 이전 프레임 생존 시간
 	float   NomalizedAge;	// 수명대비 생존시간을 0~1로 정규화 한 값
 	float	LifeTime;		// 수명
 	float	Mass;			// 질량
 	float   ScaleFactor;	// 추가 크기 배율
 
 	int     Active;			// 파티클 활성화 여부
-	int     pad[2];
+	int     pad;
 };
 
 struct tRWParticleBuffer
@@ -139,8 +141,10 @@ struct tParticleModule
 	// Drag 모듈 - 속도 제한
 	float	StartDrag;
 	float	EndDrag;
-	int     DragPad[2];
 
+	// NoiseForce 모듈 - 랜덤 힘 적용	
+	float	fNoiseTerm;		// 랜덤 힘 변경 간격
+	float	fNoiseForce;	// 랜덤 힘 크기
 
 	// Module Check
 	int		ModuleCheck[(UINT)PARTICLE_MODULE::END];

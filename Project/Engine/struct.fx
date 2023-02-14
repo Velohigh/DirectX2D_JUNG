@@ -32,15 +32,17 @@ struct tParticle
     float4 vColor; // 파티클 색상
     float4 vVelocity; // 파티클 현재 속도
     float4 vForce; // 파티클에 주어진 힘
+    float4 vRandomForce; // 파티클에 적용되는 랜덤 힘
 
     float Age; // 생존 시간
+    float PrevAge; // 이전 프레임 생존시간
     float NomalizedAge; // 수명대비 생존시간을 0~1로 정규화 한 값
     float LifeTime; // 수명
     float Mass; // 질량
     float ScaleFactor; // 추가 크기 배율
     
     int Active;
-    int2 pad;
+    int pad;
 };
 
 
@@ -80,7 +82,10 @@ struct tParticleModule
     // Drag 모듈
     float StartDrag;
     float EndDrag;
-    int2 dragpad;
+    
+    // NoiseForce 모듈
+    float fNoiseTerm;
+    float fNoiseForce;
     
     
     // Module Check
@@ -90,7 +95,8 @@ struct tParticleModule
     int AddVelocity;
     
     int Drag;
-    int3 modulepad;
+    int NoiseForce;
+    int2 modulepad;
 };
 
 #endif
