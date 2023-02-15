@@ -66,7 +66,7 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
                     {
                         particle.vLocalPos.xyz = float3(ModuleData.vBoxShapeScale.x * vOut1.r - ModuleData.vBoxShapeScale.x * 0.5f
                                                       , ModuleData.vBoxShapeScale.y * vOut2.r - ModuleData.vBoxShapeScale.y * 0.5f
-                                                      , ModuleData.vBoxShapeScale.z * vOut3.r - ModuleData.vBoxShapeScale.z * 0.5f);
+                                                      , 0.f); //ModuleData.vBoxShapeScale.z * vOut3.r - ModuleData.vBoxShapeScale.z * 0.5f);
                         particle.vWorldPos.xyz = particle.vLocalPos.xyz + ObjectPos.xyz;
                         
                         
@@ -195,12 +195,15 @@ void CS_ParticleUpdate(int3 _ID : SV_DispatchThreadID)
             float Speed = length(particle.vVelocity);
             float fDrag = ModuleData.StartDrag + (ModuleData.EndDrag - ModuleData.StartDrag) * particle.NomalizedAge;
             
+            // 속도가 반대로 뒤집히는것 방지
+            if (fDrag <= 0.f)
+                fDrag = 0.001f;
+            
             if (fDrag < Speed)
             {
                 particle.vVelocity = normalize(particle.vVelocity) * fDrag;
             }
         }
-        
         
         // 속도에 따른 파티클위치 이동
         // Sim 좌표계에 따라서 이동방식 분기

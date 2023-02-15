@@ -80,7 +80,7 @@ struct tParticle
 {
 	Vec4	vLocalPos;		// 오브젝트로부터 떨어진 거리
 	Vec4	vWorldPos;		// 파티클 최종 월드위치
-	Vec4	vWorldScale;	// 파티클 크기
+	Vec4	vWorldScale;	// 파티클 크기	
 	Vec4	vColor;			// 파티클 색상
 	Vec4	vVelocity;		// 파티클 현재 속도
 	Vec4	vForce;			// 파티클에 주어진 힘

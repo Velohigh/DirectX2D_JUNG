@@ -6,7 +6,6 @@
 
 #include "CResMgr.h"
 #include "CTransform.h"
-
 #include "CTimeMgr.h"
 
 CParticleSystem::CParticleSystem()
@@ -19,21 +18,19 @@ CParticleSystem::CParticleSystem()
 	m_ModuleData.iMaxParticleCount = 1000;
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
-	m_ModuleData.SpawnRate = 15;
-
+	m_ModuleData.SpawnRate = 20;
 	m_ModuleData.vSpawnColor = Vec3(0.4f, 1.f, 0.4f);
-
 	m_ModuleData.vSpawnScaleMin = Vec3(15.f, 15.f, 1.f);
-	m_ModuleData.vSpawnScaleMax = Vec3(50.f, 50.f, 1.f);
+	m_ModuleData.vSpawnScaleMax = Vec3(20.f, 20.f, 1.f);
 
 	m_ModuleData.SpawnShapeType = 0;
 	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);
 	m_ModuleData.Space = 0; // 시뮬레이션 좌표계
 
 	m_ModuleData.MinLifeTime = 3.f;
-	m_ModuleData.MaxLifeTime = 6.f;
+	m_ModuleData.MaxLifeTime = 5.f;
 
-	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::SCALE_CHANGE] = true;
+	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::SCALE_CHANGE] = false;
 	m_ModuleData.StartScale = 1.5f;
 	m_ModuleData.EndScale = 0.2f;
 
@@ -43,13 +40,13 @@ CParticleSystem::CParticleSystem()
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = true;
 	m_ModuleData.AddVelocityType = 0; // From Center
-	m_ModuleData.Speed = 500.f;
+	m_ModuleData.Speed = 700.f;
 	m_ModuleData.vVelocityDir;
 	m_ModuleData.OffsetAngle;
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = true;
 	m_ModuleData.StartDrag = 500.f;
-	m_ModuleData.EndDrag = 0.f;
+	m_ModuleData.EndDrag = -500.f;
 
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = false;
 	m_ModuleData.fNoiseTerm = 0.3f;
@@ -58,10 +55,8 @@ CParticleSystem::CParticleSystem()
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = true;
 	m_ModuleData.VelocityAlignment = true;
 	m_ModuleData.VelocityScale = true;
-	m_ModuleData.vMaxVelocityScale = Vec3(20.f, 1.f, 1.f);
+	m_ModuleData.vMaxVelocityScale = Vec3(15.f, 1.f, 1.f);
 	m_ModuleData.vMaxSpeed = 500.f;
-
-
 
 
 	// 입자 메쉬
