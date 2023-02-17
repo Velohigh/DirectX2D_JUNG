@@ -132,6 +132,7 @@ void ImGuiMgr::render()
 
 
 #include "InspectorUI.h"
+#include "ContentUI.h"
 #include "ListUI.h"
 
 void ImGuiMgr::CreateUI()
@@ -142,6 +143,12 @@ void ImGuiMgr::CreateUI()
     pUI = new InspectorUI;
     pUI->SetActive(true);
     m_mapUI.insert(make_pair(pUI->GetID(), pUI));
+
+    // ContentUI
+    pUI = new ContentUI;
+    pUI->SetActive(true);
+    m_mapUI.insert(make_pair(pUI->GetID(), pUI));
+
 
     // ListUI
     pUI = new ListUI;
