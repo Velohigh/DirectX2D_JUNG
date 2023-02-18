@@ -67,6 +67,7 @@ void CEngine::progress()
 void CEngine::tick()
 {
 	// Manager Tick
+	CResMgr::GetInst()->tick();
 	CTimeMgr::GetInst()->tick();
 	CKeyMgr::GetInst()->tick();
 	CLevelMgr::GetInst()->tick();

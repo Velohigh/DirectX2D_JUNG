@@ -18,9 +18,11 @@ class CResMgr :
     SINGLE(CResMgr)
 private:
     map<wstring, Ptr<CRes>> m_arrRes[(UINT)RES_TYPE::END];
+    bool                    m_Changed;
 
 public:
     void init();
+    void tick();
 
 private:
     void CreateDefaultMesh();
@@ -29,6 +31,8 @@ private:
     void CreateDefaultMaterial();
     void CreateDefaultPrefab();
     void LoadDefaultTexture();
+
+
 
 public:
     const map<wstring, Ptr<CRes>>& GetResources(RES_TYPE _Type) { return m_arrRes[(UINT)_Type]; }
@@ -39,6 +43,7 @@ public:
 
     Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D);
 
+    bool IsResourceChanged() { return m_Changed; }
 
     template<typename T>
     Ptr<T> FindRes(const wstring& _strKey);
@@ -104,6 +109,8 @@ inline void CResMgr::AddRes(const wstring& _strKey, Ptr<T>& _Res)
     RES_TYPE type = GetResType<T>();
     m_arrRes[(UINT)type].insert(make_pair(_strKey, _Res.Get()));
     _Res->SetKey(_strKey);
+
+    m_Changed = true;
 }
 
 
@@ -130,6 +137,9 @@ inline Ptr<T> CResMgr::Load(const wstring& _strKey, const wstring& _strRelativeP
 
     RES_TYPE type = GetResType<T>();
     m_arrRes[(UINT)type].insert(make_pair(_strKey, pRes));
+
+
+    m_Changed = true;
 
     return (T*)pRes.Get();
 }

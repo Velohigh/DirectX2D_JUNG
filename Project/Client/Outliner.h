@@ -3,7 +3,7 @@
 
 class TreeUI;
 
-class ContentUI :
+class OutlinerUI :
     public UI
 {
 private:
@@ -11,13 +11,14 @@ private:
 
 public:
     virtual void tick() override;
+    void ResetOutliner();
+
+
+public:
     virtual int render_update() override;
 
 public:
-    void ResetContent();
-
-public:
-    ContentUI();
-    ~ContentUI();
+    OutlinerUI();
+    ~OutlinerUI();
 };
 

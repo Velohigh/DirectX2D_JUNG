@@ -17,9 +17,6 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{85a8e714-f3be-4ab5-9413-ce04715da89f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\GUIMgr">
-      <UniqueIdentifier>{6849aa51-5c02-46c4-863d-cc33db9827c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\EditorObjMgr">
       <UniqueIdentifier>{9345d13f-0174-4f6d-9ddb-3587d6334bea}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,39 @@
     </Filter>
     <Filter Include="UI\Module\TreeUI">
       <UniqueIdentifier>{b41a0795-d222-471a-8338-25240085baf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI">
+      <UniqueIdentifier>{31226217-cddb-47c5-94ff-1cce1b478f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\ComputeShaderUI">
+      <UniqueIdentifier>{42643c5e-602e-4b2d-b211-e253fe4a3ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\GraphicsShaderUI">
+      <UniqueIdentifier>{11c52fd9-0311-424e-a15f-9b10c95e8a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\MaterialUI">
+      <UniqueIdentifier>{7ce080aa-26ea-418c-b05f-1262a71e803f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\MeshDataUI">
+      <UniqueIdentifier>{203c6dc4-e21c-4969-a156-706d9614f906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\MeshUI">
+      <UniqueIdentifier>{8df60ed4-7665-45e2-b1e2-7364ca366749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\PrefabUI">
+      <UniqueIdentifier>{bb37d504-e0d5-4141-b3d5-c2f244e4a5a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\SoundUI">
+      <UniqueIdentifier>{aecc2e89-efee-4f1e-9276-0dfa6ce8b456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ResUI\TextureUI">
+      <UniqueIdentifier>{476476ae-543e-4227-9263-be37acd7a9d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ImGUIMgr">
+      <UniqueIdentifier>{6849aa51-5c02-46c4-863d-cc33db9827c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\OutlinerUI">
+      <UniqueIdentifier>{53f3037e-4eff-4c59-831e-633e17107793}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +158,7 @@
       <Filter>UI\InspectorUI</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiMgr.h">
-      <Filter>Manager\GUIMgr</Filter>
+      <Filter>Manager\ImGUIMgr</Filter>
     </ClInclude>
     <ClInclude Include="ComponentUI.h">
       <Filter>UI\InspectorUI\ComponentUI</Filter>
@@ -156,6 +186,12 @@
     </ClInclude>
     <ClInclude Include="TreeUI.h">
       <Filter>UI\Module\TreeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ResUI.h">
+      <Filter>UI\InspectorUI\ResUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Outliner.h">
+      <Filter>UI\OutlinerUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +252,7 @@
       <Filter>UI\InspectorUI</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiMgr.cpp">
-      <Filter>Manager\GUIMgr</Filter>
+      <Filter>Manager\ImGUIMgr</Filter>
     </ClCompile>
     <ClCompile Include="ComponentUI.cpp">
       <Filter>UI\InspectorUI\ComponentUI</Filter>
@@ -244,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="TreeUI.cpp">
       <Filter>UI\Module\TreeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ResUI.cpp">
+      <Filter>UI\InspectorUI\ResUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Outliner.cpp">
+      <Filter>UI\OutlinerUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

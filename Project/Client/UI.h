@@ -19,6 +19,7 @@ private:
 	bool			m_Active;		// UI 활성화 체크
 
 public:
+	virtual void init() {}
 	virtual void tick() {}
 	virtual void finaltick();
 	virtual int render_update() = 0;

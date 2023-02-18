@@ -120,6 +120,9 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount
 
 void CStructuredBuffer::SetData(void* _pSrc, UINT _iSize)
 {
+	if (nullptr == _pSrc)
+		return;
+
 	UINT iSize = _iSize;
 	if (0 == iSize)
 	{

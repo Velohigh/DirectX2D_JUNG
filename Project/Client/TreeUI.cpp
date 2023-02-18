@@ -8,6 +8,7 @@ TreeNode::TreeNode()
     : m_Owner(nullptr)
     , m_ParentNode(nullptr)
     , m_Hilight(false)
+
 {
 
 }
@@ -58,6 +59,8 @@ void TreeNode::render_update()
 }
 
 
+
+
 // ================
 //      TreeUI
 // ================
@@ -67,6 +70,8 @@ TreeUI::TreeUI()
     , g_NextId(0)
     , m_bShowRoot(true)
     , m_SelectedNode(nullptr)
+    , m_SelectInst(nullptr)
+    , m_SelectFunc(nullptr)
 {
 
 }
@@ -150,3 +155,21 @@ TreeNode* TreeUI::AddItem(const string& _strNodeName, DWORD_PTR _Data, TreeNode*
     return pNewNode;
 }
 
+
+void TreeUI::SetSelectedNode(TreeNode* _Node)
+{
+    if (m_SelectedNode)
+        m_SelectedNode->m_Hilight = false;
+
+    m_SelectedNode = _Node;
+
+    if (m_SelectedNode)
+    {
+        m_SelectedNode->m_Hilight = true;
+
+        if (m_SelectInst && m_SelectFunc)
+        {
+            (m_SelectInst->*m_SelectFunc)((DWORD_PTR)m_SelectedNode);
+        }
+    }
+}

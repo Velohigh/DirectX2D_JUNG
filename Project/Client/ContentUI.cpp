@@ -9,7 +9,7 @@
 ContentUI::ContentUI()
     : UI("##Content")
 {
-    SetName("ContentUI");
+    SetName("Content");
 
     // ContentUI 안에 자식으로 Tree 를 추가한다.
     m_Tree = new TreeUI;
@@ -17,17 +17,6 @@ ContentUI::ContentUI()
     m_Tree->SetActive(true);
     m_Tree->ShowRoot(false);
     AddChildUI(m_Tree);
-
-    // 루트 생성
-    m_Tree->AddItem("RootNode", 0);
-
-    // 루트 밑에 자식 2개 추가
-    TreeNode* pChild1Node = m_Tree->AddItem("Child1", 0);
-    m_Tree->AddItem("Child2", 0);
-
-    // Child1 밑에 자식 2개 추가
-    m_Tree->AddItem("ChildChild1", 0, pChild1Node);
-    m_Tree->AddItem("ChildChild2", 0, pChild1Node);
 }
 
 ContentUI::~ContentUI()
@@ -36,12 +25,18 @@ ContentUI::~ContentUI()
 }
 
 
-int ContentUI::render_update()
+void ContentUI::tick()
 {
-    if (KEY_TAP(KEY::SPACE))
+    UI::tick();
+
+    if (CResMgr::GetInst()->IsResourceChanged())
     {
         ResetContent();
     }
+}
+
+int ContentUI::render_update()
+{
     return 0;
 }
 

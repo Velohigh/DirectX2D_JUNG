@@ -28,6 +28,9 @@ public:
         m_CategoryNode = _category;
     }
 
+public:
+    const string& GetName() { return m_strName; }
+    DWORD_PTR GetData() { return m_Data; }
 
 
 private:
@@ -50,10 +53,14 @@ class TreeUI :
 {
 private:
     TreeNode* m_RootNode; // 트리가 소유하고 있는 노드 중 루트 노드
-    UINT        g_NextId;   // 생성되는 노드뒤에 붙여줄 고유 숫자
-    bool        m_bShowRoot;
+    UINT            g_NextId;   // 생성되는 노드뒤에 붙여줄 고유 숫자
+    bool            m_bShowRoot;
 
     TreeNode* m_SelectedNode;
+
+    UI* m_SelectInst;
+    UI_DELEGATE_1   m_SelectFunc;
+
 
 public:
     virtual int render_update() override;
@@ -62,19 +69,15 @@ public:
     void Clear();
     TreeNode* AddItem(const string& _strNodeName, DWORD_PTR _Data, TreeNode* _pParent = nullptr);
     void ShowRoot(bool _Show) { m_bShowRoot = _Show; }
-
-private:
-    void SetSelectedNode(TreeNode* _Node)
+    void AddDynamic_Select(UI* _UI, UI_DELEGATE_1 _MemFunc)
     {
-        if (m_SelectedNode)
-            m_SelectedNode->m_Hilight = false;
-
-        m_SelectedNode = _Node;
-
-        if (m_SelectedNode)
-            m_SelectedNode->m_Hilight = true;
+        m_SelectInst = _UI;
+        m_SelectFunc = _MemFunc;
     }
 
+
+private:
+    void SetSelectedNode(TreeNode* _Node);
 
 public:
     TreeUI();

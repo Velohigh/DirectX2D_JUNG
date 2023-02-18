@@ -22,6 +22,11 @@ void CResMgr::init()
 	LoadDefaultTexture();
 }
 
+void CResMgr::tick()
+{
+	m_Changed = false;
+}
+
 void CResMgr::CreateDefaultMesh()
 {
 	vector<Vtx> vecVtx;

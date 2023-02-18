@@ -133,6 +133,7 @@ void ImGuiMgr::render()
 
 #include "InspectorUI.h"
 #include "ContentUI.h"
+#include "OutlinerUI.h"
 #include "ListUI.h"
 
 void ImGuiMgr::CreateUI()
@@ -146,6 +147,11 @@ void ImGuiMgr::CreateUI()
 
     // ContentUI
     pUI = new ContentUI;
+    pUI->SetActive(true);
+    m_mapUI.insert(make_pair(pUI->GetID(), pUI));
+
+    // Outliner
+    pUI = new OutlinerUI;
     pUI->SetActive(true);
     m_mapUI.insert(make_pair(pUI->GetID(), pUI));
 
