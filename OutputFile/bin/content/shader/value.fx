@@ -47,17 +47,17 @@ cbuffer MATERIAL : register(b1)
     int g_btex_4;
     int g_btex_5;
     int g_btex_6;
-    int g_btex_7;   
+    int g_btex_7;
 };
 
 cbuffer GLOBAL : register(b2)
 {
     float2 g_Resolution;
-    float  g_DT;
-    float  g_AccTime;
-    uint   g_Light2DCount;
-    uint   g_Light3DCount;
-    int2   g_globalpadding;
+    float g_DT;
+    float g_AccTime;
+    uint g_Light2DCount;
+    uint g_Light3DCount;
+    int2 g_globalpadding;
 }
 
 
@@ -70,7 +70,15 @@ Texture2D g_tex_5 : register(t5);
 Texture2D g_tex_6 : register(t6);
 Texture2D g_tex_7 : register(t7);
 
-StructuredBuffer<tLightInfo> g_Light2DBuffer : register(t8);
+TextureCube g_cube_0 : register(t8);
+TextureCube g_cube_1 : register(t9);
+
+Texture2DArray g_arrtex_0 : register(t10);
+Texture2DArray g_arrtex_1 : register(t11);
+
+StructuredBuffer<tLightInfo> g_Light2DBuffer : register(t12);
+StructuredBuffer<tLightInfo> g_Light3DBuffer : register(t13);
+
 
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);

@@ -7,6 +7,7 @@
 TreeNode::TreeNode()
     : m_Owner(nullptr)
     , m_ParentNode(nullptr)
+    , m_Hilight(false)
 {
 
 }
@@ -26,10 +27,26 @@ void TreeNode::render_update()
     itoa(m_ID, szBuff, 10);
     strFinalName += szBuff;
 
-    ImGuiTreeNodeFlags_ flag = ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_None;
+    // Flag 체크
+    UINT flag = ImGuiTreeNodeFlags_DefaultOpen;
+
+    // 자식 노드가 없으면 Lear 플래그를 설정한다(화살표 제거)
+    if (m_vecChildNode.empty())
+        flag |= ImGuiTreeNodeFlags_Leaf;
+
+    // 클릭 되었거나, 항목 대표 노드인 경우 Selected 플래그로 하이라이트를 준다.
+    if (m_Hilight || m_CategoryNode)
+        flag |= ImGuiTreeNodeFlags_Selected;
+
 
     if (ImGui::TreeNodeEx(strFinalName.c_str(), flag))
     {
+        // 해당 노드에 마우스 왼클릭이 발생하면 하이라이트를 준다.
+        if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
+        {
+            m_Owner->SetSelectedNode(this);
+        }
+
         for (size_t i = 0; i < m_vecChildNode.size(); ++i)
         {
             m_vecChildNode[i]->render_update();
@@ -49,6 +66,7 @@ TreeUI::TreeUI()
     , m_RootNode(nullptr)
     , g_NextId(0)
     , m_bShowRoot(true)
+    , m_SelectedNode(nullptr)
 {
 
 }

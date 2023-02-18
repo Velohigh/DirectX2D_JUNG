@@ -18,7 +18,7 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\ComponentUI.cpp"
 
 
-#include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\ImageUI.cpp"
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\ContentUI.cpp"
 
 
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\ImGuiMgr.cpp"
@@ -64,6 +64,9 @@
 
 
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\TransformUI.cpp"
+
+
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\TreeUI.cpp"
 
 
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\UI.cpp"

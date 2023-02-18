@@ -41,7 +41,7 @@ enum class COMPONENT_TYPE
 	TILEMAP,		// 2차원 타일
 	LANDSCAPE,		// 3차원 지형
 	DECAL,			// 내부 렌더링
-		
+
 	END,
 
 	// custom
@@ -99,7 +99,7 @@ enum SCALAR_PARAM
 	MAT_0,
 	MAT_1,
 	MAT_2,
-	MAT_3,	
+	MAT_3,
 };
 
 enum TEX_PARAM
@@ -112,6 +112,12 @@ enum TEX_PARAM
 	TEX_5,
 	TEX_6,
 	TEX_7,
+
+	TEX_CUBE_0,
+	TEX_CUBE_1,
+
+	TEX_ARR_0,
+	TEX_ARR_1,
 
 	TEX_END,
 };
@@ -165,7 +171,7 @@ enum class DIR_TYPE
 {
 	RIGHT,
 	UP,
-	FRONT,	
+	FRONT,
 };
 
 enum class PROJ_TYPE
@@ -194,7 +200,7 @@ enum class EVENT_TYPE
 
 	DELETE_RESOURCE,
 
-	LEVEL_CHANGE,	
+	LEVEL_CHANGE,
 };
 
 
@@ -233,4 +239,19 @@ enum class SB_TYPE
 {
 	READ_ONLY,
 	READ_WRITE,
+};
+
+enum class PARTICLE_MODULE
+{
+	PARTICLE_SPAWN,
+	COLOR_CHANGE,
+	SCALE_CHANGE,
+	ADD_VELOCITY,
+
+	DRAG,
+	NOISE_FORCE,
+	RENDER,
+	DUMMY_3,
+
+	END,
 };

@@ -48,7 +48,6 @@ enum class COMPONENT_TYPE
 	SCRIPT,
 };
 
-
 enum class RES_TYPE
 {
 	MESHDATA,
@@ -64,6 +63,12 @@ enum class RES_TYPE
 
 	END,
 };
+
+extern const char* RES_TYPE_STR[(UINT)RES_TYPE::END];
+extern const wchar_t* RES_TYPE_WSTR[(UINT)RES_TYPE::END];
+
+
+
 
 enum class CB_TYPE
 {

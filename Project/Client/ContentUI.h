@@ -1,6 +1,8 @@
 #pragma once
 #include "UI.h"
 
+class TreeUI;
+
 class ContentUI :
     public UI
 {
