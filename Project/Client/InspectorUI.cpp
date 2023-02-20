@@ -14,10 +14,15 @@
 #include "TileMapUI.h"
 #include "Light2DUI.h"
 
+#include "MeshUI.h"
+//#include "textureui.h"
+
+
 InspectorUI::InspectorUI()
 	: UI("##Inspector")
-	, m_pTarget(nullptr)
+	, m_pTargetObj(nullptr)
 	, m_arrComUI{}
+	, m_arrResUI{}
 {
 	SetName("Inspector");
 
@@ -48,6 +53,11 @@ InspectorUI::InspectorUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP] = new TileMapUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]->SetSize(0.f, 150.f);
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]);
+
+	// ResUI
+	m_arrResUI[(UINT)RES_TYPE::MESH] = new MeshUI;
+	m_arrResUI[(UINT)RES_TYPE::MESH]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::MESH]);
 }
 
 InspectorUI::~InspectorUI()
@@ -55,24 +65,80 @@ InspectorUI::~InspectorUI()
 
 }
 
+void InspectorUI::init()
+{
+	SetTargetObject(nullptr);
+}
+
 void InspectorUI::tick()
 {
-	if (nullptr == m_pTarget)
-	{
-		m_pTarget = CLevelMgr::GetInst()->FindObjectByName(L"ParticleObject");
 
-		for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
-		{
-			if (nullptr == m_arrComUI[i])
-				continue;
-
-			m_arrComUI[i]->SetTarget(m_pTarget);
-		}
-	}
 }
 
 int InspectorUI::render_update()
 {
 
 	return TRUE;
+}
+
+void InspectorUI::SetTargetObject(CGameObject* _Target)
+{
+	ClearTargetResource();
+
+	// 타겟오브젝트 정보 노출
+	m_pTargetObj = _Target;
+
+	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+	{
+		if (nullptr == m_arrComUI[i])
+			continue;
+
+		m_arrComUI[i]->SetTarget(m_pTargetObj);
+	}
+}
+
+void InspectorUI::SetTargetResource(Ptr<CRes> _Res)
+{
+	ClearTargetObject();
+
+	for (UINT i = 0; i < UINT(RES_TYPE::END); ++i)
+	{
+		if (nullptr != m_arrResUI[i])
+			m_arrResUI[i]->SetActive(false);
+	}
+
+	m_pTargetRes = _Res;
+
+	RES_TYPE type = _Res->GetType();
+
+	m_arrResUI[(UINT)type]->SetActive(true);
+	m_arrResUI[(UINT)type]->SetTargetRes(_Res);
+}
+
+void InspectorUI::ClearTargetObject()
+{
+	// 타겟오브젝트 정보 노출
+	m_pTargetObj = nullptr;
+
+	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+	{
+		if (nullptr == m_arrComUI[i])
+			continue;
+
+		m_arrComUI[i]->SetTarget(nullptr);
+	}
+}
+
+void InspectorUI::ClearTargetResource()
+{
+	m_pTargetRes = nullptr;
+
+	for (UINT i = 0; i < UINT(RES_TYPE::END); ++i)
+	{
+		if (nullptr != m_arrResUI[i])
+		{
+			m_arrResUI[i]->SetTargetRes(nullptr);
+			m_arrResUI[i]->SetActive(false);
+		}
+	}
 }

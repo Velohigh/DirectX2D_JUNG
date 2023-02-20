@@ -11,11 +11,12 @@ private:
 
 public:
     virtual void tick() override;
-    void ResetOutliner();
-
+    virtual int render_update() override;
 
 public:
-    virtual int render_update() override;
+    void ResetOutliner();
+    void SetTargetToInspector(DWORD_PTR _SelectedNode);
+
 
 public:
     OutlinerUI();

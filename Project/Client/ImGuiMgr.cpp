@@ -161,6 +161,12 @@ void ImGuiMgr::CreateUI()
     pUI->SetModal(true);
     pUI->SetActive(false);
     m_mapUI.insert(make_pair(pUI->GetID(), pUI));
+
+
+    for (const auto& pair : m_mapUI)
+    {
+        pair.second->init();
+    }
 }
 
 

@@ -193,6 +193,9 @@
     <ClInclude Include="Outliner.h">
       <Filter>UI\OutlinerUI</Filter>
     </ClInclude>
+    <ClInclude Include="MeshUI.h">
+      <Filter>UI\InspectorUI\ResUI\MeshUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -286,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="Outliner.cpp">
       <Filter>UI\OutlinerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshUI.cpp">
+      <Filter>UI\InspectorUI\ResUI\MeshUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

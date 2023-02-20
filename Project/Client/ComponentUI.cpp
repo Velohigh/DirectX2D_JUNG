@@ -36,7 +36,10 @@ void ComponentUI::SetTarget(CGameObject* _Target)
 	m_Target = _Target;
 
 	if (nullptr == m_Target)
+	{
+		SetActive(false);
 		return;
+	}
 
 	if (nullptr == m_Target->GetComponent(m_Type))
 	{

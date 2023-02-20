@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "OutlinerUI.h"
 
+#include "ImGuiMgr.h"
+#include "InspectorUI.h"
+
 #include <Engine\CEventMgr.h>
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
@@ -20,6 +23,8 @@ OutlinerUI::OutlinerUI()
 	m_Tree->SetName("OutlinerTree");
 	m_Tree->SetActive(true);
 	m_Tree->ShowRoot(false);
+	m_Tree->AddDynamic_Select(this, (UI_DELEGATE_1)&OutlinerUI::SetTargetToInspector);
+
 	AddChildUI(m_Tree);
 }
 
@@ -62,4 +67,14 @@ void OutlinerUI::ResetOutliner()
 				, (DWORD_PTR)vecParentObj[i]);
 		}
 	}
+}
+
+void OutlinerUI::SetTargetToInspector(DWORD_PTR _SelectedNode)
+{
+	TreeNode* pSelectedNode = (TreeNode*)_SelectedNode;
+	CGameObject* pSelectObject = (CGameObject*)pSelectedNode->GetData();
+
+	// Inspector 에 선택된 GameObject 를 알려준다.	
+	InspectorUI* pInspector = (InspectorUI*)ImGuiMgr::GetInst()->FindUI("##Inspector");
+	pInspector->SetTargetObject(pSelectObject);
 }
