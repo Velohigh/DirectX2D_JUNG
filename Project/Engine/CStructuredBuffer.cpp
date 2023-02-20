@@ -42,14 +42,14 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount
 	{
 		m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	// Texture 레지스터에 바이딩하기 위한 플래그
 	}
-	else if (SB_TYPE::READ_WRITE == m_Type)
+	else if(SB_TYPE::READ_WRITE == m_Type)
 	{
 		m_tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
 	}
-
+	
 	m_tDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 구조화 버퍼 체크
 	m_tDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_tDesc.CPUAccessFlags = 0;
+	m_tDesc.CPUAccessFlags = 0;	
 
 	if (nullptr == _pSysMem)
 	{
@@ -120,8 +120,8 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount
 
 void CStructuredBuffer::SetData(void* _pSrc, UINT _iSize)
 {
-	if (nullptr == _pSrc)
-		return;
+	if (nullptr == _pSrc)	
+		return;	
 
 	UINT iSize = _iSize;
 	if (0 == iSize)
@@ -146,7 +146,7 @@ void CStructuredBuffer::GetData(void* _pDst)
 
 	// CPU ReadBuffer -> CPU
 	D3D11_MAPPED_SUBRESOURCE tSub = {};
-	CONTEXT->Map(m_SB_CPU_Read.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &tSub);
+	CONTEXT->Map(m_SB_CPU_Read.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &tSub);	
 	memcpy(_pDst, tSub.pData, GetBufferSize());
 	CONTEXT->Unmap(m_SB_CPU_Read.Get(), 0);
 }
@@ -178,13 +178,13 @@ void CStructuredBuffer::UpdateData(UINT _iRegisterNum, UINT _iPipeLineStage)
 	if (PIPELINE_STAGE::PS_PIXEL & _iPipeLineStage)
 	{
 		CONTEXT->PSSetShaderResources(_iRegisterNum, 1, m_SRV.GetAddressOf());
-	}
+	}	
 }
 
 void CStructuredBuffer::UpdateData_CS(UINT _iRegisterNum, bool _IsShaderRes)
 {
 	m_iRecentRegisterNum = _iRegisterNum;
-
+	
 	if (_IsShaderRes)
 	{
 		CONTEXT->CSSetShaderResources(_iRegisterNum, 1, m_SRV.GetAddressOf());
@@ -193,7 +193,7 @@ void CStructuredBuffer::UpdateData_CS(UINT _iRegisterNum, bool _IsShaderRes)
 	{
 		UINT i = -1;
 		CONTEXT->CSSetUnorderedAccessViews(_iRegisterNum, 1, m_UAV.GetAddressOf(), &i);
-	}
+	}	
 }
 
 void CStructuredBuffer::Clear()

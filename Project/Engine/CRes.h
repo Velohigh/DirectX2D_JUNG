@@ -18,7 +18,7 @@ private:
     void AddRef() { ++m_iRefCount; }
     void Release();
 
-
+    
 
     // 리소스 바인딩
     virtual void UpdateData() = 0;

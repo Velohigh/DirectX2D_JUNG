@@ -10,20 +10,20 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _s
 // 오브젝트 삭제
 void DestroyObject(CGameObject* _DeletObject);
 
-
-
-
-
 // DrawDebugShape
 void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f);
 void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f);
-
 
 void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f);
 void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f);
 
 // void DrawDebugSphere();
 // void DrawDebugCube();
+
+
+const char* ToString(RES_TYPE);
+const wchar_t* ToWSTring(RES_TYPE);
+
 
 
 

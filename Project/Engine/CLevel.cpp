@@ -73,7 +73,7 @@ void CLevel::AddGameObject(CGameObject* _Object, const wstring& _LayerName, bool
 }
 
 void CLevel::ChangeState(LEVEL_STATE _State)
-{
+{	
 	m_State = _State;
 
 	if (LEVEL_STATE::PLAY == m_State)
@@ -92,7 +92,7 @@ void CLevel::clear()
 	for (int i = 0; i < MAX_LAYER; ++i)
 	{
 		m_arrLayer[i]->m_vecObject.clear();
-	}
+	}	
 }
 
 

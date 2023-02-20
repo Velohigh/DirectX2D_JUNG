@@ -36,7 +36,7 @@ public:
 
     UINT GetElementSize() { return m_iElementSize; }
     UINT GetElementCount() { return m_iElementCount; }
-    UINT GetBufferSize() { return m_iElementSize * m_iElementCount; }
+    UINT GetBufferSize() { return m_iElementSize * m_iElementCount;}
 
 
     CLONE_DISABLE(CStructuredBuffer);

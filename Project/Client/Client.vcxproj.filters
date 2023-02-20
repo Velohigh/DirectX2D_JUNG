@@ -190,7 +190,7 @@
     <ClInclude Include="ResUI.h">
       <Filter>UI\InspectorUI\ResUI</Filter>
     </ClInclude>
-    <ClInclude Include="Outliner.h">
+    <ClInclude Include="OutlinerUI.h">
       <Filter>UI\OutlinerUI</Filter>
     </ClInclude>
     <ClInclude Include="MeshUI.h">
@@ -287,7 +287,7 @@
     <ClCompile Include="ResUI.cpp">
       <Filter>UI\InspectorUI\ResUI</Filter>
     </ClCompile>
-    <ClCompile Include="Outliner.cpp">
+    <ClCompile Include="OutlinerUI.cpp">
       <Filter>UI\OutlinerUI</Filter>
     </ClCompile>
     <ClCompile Include="MeshUI.cpp">

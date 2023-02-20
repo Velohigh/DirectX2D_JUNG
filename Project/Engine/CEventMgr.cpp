@@ -26,7 +26,7 @@ void CEventMgr::tick()
 	{
 		switch (m_vecEvent[i].Type)
 		{
-			// wParam : GameObject, lParam : Layer Index
+		// wParam : GameObject, lParam : Layer Index
 		case EVENT_TYPE::CREATE_OBJECT:
 		{
 			CGameObject* NewObject = (CGameObject*)m_vecEvent[i].wParam;
@@ -35,7 +35,7 @@ void CEventMgr::tick()
 
 			m_LevelChanged = true;
 		}
-		break;
+			break;
 		case EVENT_TYPE::DELETE_OBJECT:
 		{
 			CGameObject* DeleteObject = (CGameObject*)m_vecEvent[i].wParam;
@@ -48,7 +48,7 @@ void CEventMgr::tick()
 
 			m_LevelChanged = true;
 		}
-		break;
+			break;
 		case EVENT_TYPE::ADD_CHILD:
 
 			m_LevelChanged = true;
@@ -60,7 +60,7 @@ void CEventMgr::tick()
 		case EVENT_TYPE::LEVEL_CHANGE:
 
 			m_LevelChanged = true;
-			break;
+			break;		
 		}
 	}
 
@@ -75,11 +75,11 @@ void CEventMgr::GC_Clear()
 		if (nullptr != m_vecGC[i])
 		{
 			// 자식 타입 오브젝트인 경우
-			if (m_vecGC[i]->GetParent())
+			if (m_vecGC[i]->GetParent())			
 				m_vecGC[i]->DisconnectFromParent();
-
+			
 			delete m_vecGC[i];
-		}
+		}		
 	}
 	m_vecGC.clear();
 }

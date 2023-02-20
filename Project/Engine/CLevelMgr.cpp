@@ -94,7 +94,7 @@ void CLevelMgr::init()
 	pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
 	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
 
-	m_pCurLevel->AddGameObject(pMainCam, 0, false);
+	SpawnGameObject(pMainCam, Vec3(0.f, 0.f, 0.f), 0);
 
 	// 광원 추가
 	CGameObject* pLightObj = new CGameObject;
@@ -110,13 +110,7 @@ void CLevelMgr::init()
 	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
 	pLightObj->Light2D()->SetRadius(500.f);
 
-	m_pCurLevel->AddGameObject(pLightObj, 0, false);
-
-
-	/*pLightObj = pLightObj->Clone();
-	pLightObj->Light2D()->SetLightDiffuse(Vec3(0.3f, 0.3f, 1.f));
-	pLightObj->Transform()->SetRelativePos(Vec3(200.f, 0.f, 0.f));
-	m_pCurLevel->AddGameObject(pLightObj, 0, false);*/
+	SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
 	// 오브젝트 생성
@@ -131,7 +125,6 @@ void CLevelMgr::init()
 	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
 	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
 
-	pParent->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pParent->MeshRender()->SetMesh(pMesh);
@@ -144,7 +137,7 @@ void CLevelMgr::init()
 	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
 	pParent->Animator2D()->Play(L"WalkDown", true);
 
-	m_pCurLevel->AddGameObject(pParent, L"Player", false);
+	SpawnGameObject(pParent, Vec3(0.f, 0.f, 500.f), 0);
 
 	// Monster
 	CGameObject* pMonster = new CGameObject;
@@ -165,11 +158,13 @@ void CLevelMgr::init()
 	pMonster->Collider2D()->SetAbsolute(true);
 	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 
-	m_pCurLevel->AddGameObject(pMonster, L"Monster", false);
+	SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Monster");
+
 
 
 	// TileMap Object
 	CGameObject* pTileMap = new CGameObject;
+	pTileMap->SetName(L"TileMap");
 
 	pTileMap->AddComponent(new CTransform);
 	pTileMap->AddComponent(new CTileMap);
@@ -181,7 +176,7 @@ void CLevelMgr::init()
 	pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
 	pTileMap->TileMap()->SetTileCount(8, 8);
 
-	m_pCurLevel->AddGameObject(pTileMap, L"Tile", false);
+	SpawnGameObject(pTileMap, Vec3(0.f, 0.f, 600.f), L"Tile");
 
 
 	// Particle Object
@@ -190,7 +185,7 @@ void CLevelMgr::init()
 	pParticleObj->AddComponent(new CTransform);
 	pParticleObj->AddComponent(new CParticleSystem);
 
-	m_pCurLevel->AddGameObject(pParticleObj, L"Default", false);
+	SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
 	// 충돌 시킬 레이어 짝 지정

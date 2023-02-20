@@ -23,7 +23,7 @@ void CConstBuffer::Create(UINT _iElementSize, UINT _iElementCount)
 	UINT iBufferSize = m_iElementSize * _iElementCount;
 
 	// 16바이트 단위 메모리 정렬
-	assert(!(iBufferSize % 16));
+	assert(!(iBufferSize % 16));	
 
 	// 상수버퍼 생성
 	m_Desc.ByteWidth = iBufferSize;
@@ -43,7 +43,7 @@ void CConstBuffer::SetData(void* _pSrc, UINT _iSize)
 	UINT size = _iSize;
 	if (0 == _iSize)
 	{
-		size = m_iElementSize * m_iElementCount;
+		size = m_iElementSize* m_iElementCount;
 	}
 
 	// 상수버퍼 크기보다 더 큰 데이터가 입력으로 들어온 경우

@@ -6,10 +6,10 @@ class CGameObject;
 
 class CLevelMgr :
     public CSingleton<CLevelMgr>
-{
+{   
     SINGLE(CLevelMgr);
 private:
-    CLevel* m_pCurLevel;
+    CLevel*     m_pCurLevel;
 
 public:
     CLevel* GetCurLevel() { return m_pCurLevel; }

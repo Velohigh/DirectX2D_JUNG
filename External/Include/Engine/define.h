@@ -41,13 +41,12 @@ enum class COMPONENT_TYPE
 	TILEMAP,		// 2차원 타일
 	LANDSCAPE,		// 3차원 지형
 	DECAL,			// 내부 렌더링
-
+		
 	END,
 
 	// custom
 	SCRIPT,
 };
-
 
 enum class RES_TYPE
 {
@@ -64,6 +63,12 @@ enum class RES_TYPE
 
 	END,
 };
+
+extern const char* RES_TYPE_STR[(UINT)RES_TYPE::END];
+extern const wchar_t* RES_TYPE_WSTR[(UINT)RES_TYPE::END];
+
+
+
 
 enum class CB_TYPE
 {
@@ -99,7 +104,7 @@ enum SCALAR_PARAM
 	MAT_0,
 	MAT_1,
 	MAT_2,
-	MAT_3,
+	MAT_3,	
 };
 
 enum TEX_PARAM
@@ -128,9 +133,9 @@ enum PIPELINE_STAGE
 	PS_HULL = 0x02,
 	PS_DOMAIN = 0x04,
 	PS_GEOMETRY = 0x08,
-	PS_PIXEL = 0x10,
+	PS_PIXEL = 0x10,	
 
-	PS_ALL = PS_VERTEX | PS_HULL | PS_DOMAIN | PS_GEOMETRY | PS_PIXEL,
+	PS_ALL = PS_VERTEX | PS_HULL | PS_DOMAIN | PS_GEOMETRY | PS_PIXEL,	
 };
 
 enum class RS_TYPE
@@ -171,7 +176,7 @@ enum class DIR_TYPE
 {
 	RIGHT,
 	UP,
-	FRONT,
+	FRONT,	
 };
 
 enum class PROJ_TYPE
@@ -200,7 +205,7 @@ enum class EVENT_TYPE
 
 	DELETE_RESOURCE,
 
-	LEVEL_CHANGE,
+	LEVEL_CHANGE,	
 };
 
 

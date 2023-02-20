@@ -17,7 +17,7 @@ RWTexture2D<float4> g_Output : register(u0);
 // 스레드 그룹 개수(HLSL 5.0 기준 1024 제한)
 [numthreads(32, 32, 1)]
 void CS_SetColor(int3 _ID : SV_DispatchThreadID)
-{
+{       
     g_Output[_ID.xy] = float4(Color.xyz, 1.f);
 }
 

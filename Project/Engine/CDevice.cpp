@@ -7,7 +7,7 @@
 #include "CResMgr.h"
 
 CDevice::CDevice()
-    : m_hWnd(nullptr)
+    : m_hWnd(nullptr)  
     , m_ViewPort{}
     , m_arrConstBuffer{}
 {
@@ -20,7 +20,7 @@ CDevice::~CDevice()
 
 int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 {
-    m_hWnd = _hWnd;
+    m_hWnd = _hWnd;    
     m_vRenderResolution = Vec2((float)_iWidth, (float)_iHeight);
 
     GlobalData.Resolution = m_vRenderResolution;
@@ -34,7 +34,7 @@ int CDevice::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
     D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_11_0;
 
-
+      
 
     if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE
         , nullptr, iFlag
@@ -117,7 +117,7 @@ int CDevice::CreateSwapChain()
     tDesc.OutputWindow = m_hWnd;    // 출력 윈도우
     tDesc.Windowed = true;          // 창모드, 전체화면 모드
 
-    tDesc.BufferCount = 1;
+    tDesc.BufferCount = 1;              
     tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
     tDesc.BufferDesc.Height = (UINT)m_vRenderResolution.y;
@@ -126,13 +126,13 @@ int CDevice::CreateSwapChain()
     tDesc.BufferDesc.RefreshRate.Numerator = 60;
     tDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
     tDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER::DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-
+    
     tDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_DISCARD;
 
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
     tDesc.Flags = 0;
-
+    
 
     // 스왚체인 생성
     ComPtr<IDXGIDevice>  pDXGIDevice;
@@ -154,14 +154,14 @@ int CDevice::CreateView()
 {
     ComPtr<ID3D11Texture2D> tex2D;
     m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
-
+    
     // RenderTarget 용 텍스쳐 등록
     m_RTTex = CResMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
     // DepthStencil 용도 텍스쳐 생성
     m_DSTex = CResMgr::GetInst()->CreateTexture(L"DepthStencilTex"
         , (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y
-        , DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+        , DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);        
 
 
     return S_OK;
@@ -199,7 +199,7 @@ int CDevice::CreateDepthStencilState()
     Desc.StencilEnable = false;
     Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     DEVICE->CreateDepthStencilState(&Desc, m_DSState[(UINT)DS_TYPE::LESS_EQUAL].GetAddressOf());
-
+    
     // Greater
     Desc.DepthEnable = true;
     Desc.DepthFunc = D3D11_COMPARISON_GREATER;
@@ -222,7 +222,7 @@ int CDevice::CreateDepthStencilState()
     DEVICE->CreateDepthStencilState(&Desc, m_DSState[(UINT)DS_TYPE::NO_WRITE].GetAddressOf());
 
     // NoTest NoWrite
-    Desc.DepthEnable = false;
+    Desc.DepthEnable = false;    
     Desc.StencilEnable = false;
     Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
     DEVICE->CreateDepthStencilState(&Desc, m_DSState[(UINT)DS_TYPE::NO_TEST_NO_WRITE].GetAddressOf());
@@ -239,7 +239,7 @@ int CDevice::CreateBlendState()
     // Mask
     D3D11_BLEND_DESC Desc = {};
     Desc.AlphaToCoverageEnable = true;
-    Desc.IndependentBlendEnable = false;
+    Desc.IndependentBlendEnable = false;   
 
     Desc.RenderTarget[0].BlendEnable = true;
     Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
@@ -306,7 +306,7 @@ int CDevice::CreateSampler()
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    tSamDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+    tSamDesc.Filter   = D3D11_FILTER_ANISOTROPIC;    
     DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[0].GetAddressOf());
 
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;

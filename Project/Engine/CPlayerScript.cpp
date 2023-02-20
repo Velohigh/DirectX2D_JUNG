@@ -64,14 +64,14 @@ void CPlayerScript::tick()
 		Transform()->SetRelativeRot(vRot);
 	}
 
-	Transform()->SetRelativePos(vCurPos);
+	Transform()->SetRelativePos(vCurPos);			
 
 	if (KEY_TAP(KEY::SPACE))
 	{
 		DrawDebugCircle(Transform()->GetWorldPos(), 500.f, Vec4(0.f, 0.f, 1.f, 1.f), Vec3(0.f, 0.f, 0.f), 2.f);
 
 		Shoot();
-	}
+	}	
 }
 
 void CPlayerScript::Shoot()
@@ -88,5 +88,5 @@ void CPlayerScript::Shoot()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
 {
-
+	
 }

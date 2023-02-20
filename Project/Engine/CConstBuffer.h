@@ -12,7 +12,7 @@ private:
 
     UINT                    m_iElementSize;
     UINT                    m_iElementCount;
-
+        
 
 public:
     void Create(UINT _iElementSize, UINT _iElementCount);

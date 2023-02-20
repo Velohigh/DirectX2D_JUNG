@@ -21,7 +21,7 @@ public:
     void UpdateData();
 
     void SetTileCount(UINT _iXCount, UINT _iYCount);
-    void SetSliceSize(Vec2 _vSliceSize) { m_vSliceSize = _vSliceSize; }
+    void SetSliceSize(Vec2 _vSliceSize)  { m_vSliceSize = _vSliceSize; }
 
     CLONE(CTileMap);
 public:

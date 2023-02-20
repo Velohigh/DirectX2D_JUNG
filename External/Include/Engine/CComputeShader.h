@@ -6,14 +6,14 @@ class CComputeShader :
 {
 private:
     ComPtr<ID3D11ComputeShader>     m_CS;
-    ComPtr<ID3DBlob>                m_CSBlob;
+    ComPtr<ID3DBlob>                m_CSBlob;    
 
 protected:
     // 쉐이더에 전달할 상수 데이터
     tMtrlConst                      m_Const;
 
     // 그룹 개수
-    UINT                            m_iGroupX;
+    UINT                            m_iGroupX; 
     UINT                            m_iGroupY;
     UINT                            m_iGroupZ;
 

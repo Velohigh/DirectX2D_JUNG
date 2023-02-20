@@ -16,7 +16,7 @@ CAnim2D::~CAnim2D()
 }
 
 void CAnim2D::finaltick()
-{
+{	
 	if (m_bFinish)
 		return;
 

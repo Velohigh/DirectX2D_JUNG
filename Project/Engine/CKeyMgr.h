@@ -17,13 +17,13 @@ enum class KEY
 
 	LBTN,
 	RBTN,
-
+	
 	Q,
 	W,
 	E,
 	R,
 
-	T, Y, U, I, O, P,
+	T,Y,U,I,O,P,
 
 	A,
 	S,
@@ -45,7 +45,7 @@ enum class KEY
 	_7,
 	_8,
 	_9,
-
+	
 	END,
 };
 
@@ -68,7 +68,7 @@ struct tKeyInfo
 
 
 
-class CKeyMgr
+class CKeyMgr 
 	: public CSingleton<CKeyMgr>
 {
 	SINGLE(CKeyMgr);

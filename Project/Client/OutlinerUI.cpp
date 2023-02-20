@@ -37,6 +37,11 @@ int OutlinerUI::render_update()
 	return 0;
 }
 
+void OutlinerUI::init()
+{
+	ResetOutliner();
+}
+
 void OutlinerUI::tick()
 {
 	if (CEventMgr::GetInst()->IsLevelChanged())

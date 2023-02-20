@@ -172,7 +172,7 @@
     <ClInclude Include="ListUI.h" />
     <ClInclude Include="MeshRenderUI.h" />
     <ClInclude Include="MeshUI.h" />
-    <ClInclude Include="Outliner.h" />
+    <ClInclude Include="OutlinerUI.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResUI.h" />
@@ -204,7 +204,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeshRenderUI.cpp" />
     <ClCompile Include="MeshUI.cpp" />
-    <ClCompile Include="Outliner.cpp" />
+    <ClCompile Include="OutlinerUI.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

@@ -9,7 +9,7 @@
 CComputeShader::CComputeShader()
 	: CShader(RES_TYPE::COMPUTE_SHADER)
 	, m_iGroupX(1)
-	, m_iGroupY(1)
+	, m_iGroupY(1)	
 	, m_iGroupZ(1)
 {
 }

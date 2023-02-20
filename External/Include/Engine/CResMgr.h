@@ -18,9 +18,11 @@ class CResMgr :
     SINGLE(CResMgr)
 private:
     map<wstring, Ptr<CRes>> m_arrRes[(UINT)RES_TYPE::END];
+    bool                    m_Changed;
 
 public:
     void init();
+    void tick();
 
 private:
     void CreateDefaultMesh();
@@ -28,7 +30,9 @@ private:
     void CreateDefaultComputeShader();
     void CreateDefaultMaterial();
     void CreateDefaultPrefab();
-    void LoadDefaultTexture();
+    void LoadDefaultTexture();   
+
+
 
 public:
     const map<wstring, Ptr<CRes>>& GetResources(RES_TYPE _Type) { return m_arrRes[(UINT)_Type]; }
@@ -39,6 +43,7 @@ public:
 
     Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D);
 
+    bool IsResourceChanged() { return m_Changed; }
 
     template<typename T>
     Ptr<T> FindRes(const wstring& _strKey);
@@ -86,12 +91,12 @@ template<typename T>
 inline Ptr<T> CResMgr::FindRes(const wstring& _strKey)
 {
     RES_TYPE type = GetResType<T>();
-
+      
     map<wstring, Ptr<CRes>>::iterator iter = m_arrRes[(UINT)type].find(_strKey);
     if (iter == m_arrRes[(UINT)type].end())
         return nullptr;
 
-    return (T*)iter->second.Get();
+    return (T*)iter->second.Get();    
 }
 
 
@@ -99,11 +104,13 @@ template<typename T>
 inline void CResMgr::AddRes(const wstring& _strKey, Ptr<T>& _Res)
 {
     // 중복키로 리소스 추가하려는 경우
-    assert(!FindRes<T>(_strKey).Get());
+    assert( ! FindRes<T>(_strKey).Get() );
 
     RES_TYPE type = GetResType<T>();
     m_arrRes[(UINT)type].insert(make_pair(_strKey, _Res.Get()));
     _Res->SetKey(_strKey);
+
+    m_Changed = true;
 }
 
 
@@ -111,11 +118,11 @@ template<typename T>
 inline Ptr<T> CResMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
 {
     Ptr<CRes> pRes = FindRes<T>(_strKey).Get();
-
+    
     // 이미 해당 키로 리소스가 있다면, 반환
     if (nullptr != pRes)
         return (T*)pRes.Get();
-
+        
     pRes = new T;
     pRes->SetKey(_strKey);
     pRes->SetRelativePath(_strRelativePath);
@@ -130,6 +137,9 @@ inline Ptr<T> CResMgr::Load(const wstring& _strKey, const wstring& _strRelativeP
 
     RES_TYPE type = GetResType<T>();
     m_arrRes[(UINT)type].insert(make_pair(_strKey, pRes));
+
+
+    m_Changed = true;
 
     return (T*)pRes.Get();
 }

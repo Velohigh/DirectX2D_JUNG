@@ -113,7 +113,7 @@ int CTexture::Load(const wstring& _strFilePath)
 		// png, jpg, jpeg, bmp
 		hr = LoadFromWICFile(_strFilePath.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, nullptr, m_Image);
 	}
-
+	
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, L"리소스 로딩 실패", L"텍스쳐 로딩 실패", MB_OK);
@@ -154,7 +154,7 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat
 
 	if (D3D11_USAGE::D3D11_USAGE_DYNAMIC == _Usage)
 		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	else if (D3D11_USAGE::D3D11_USAGE_STAGING == _Usage)
+	else if(D3D11_USAGE::D3D11_USAGE_STAGING == _Usage)
 		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 
 	m_Desc.MipLevels = 1;    // 원본만 생성

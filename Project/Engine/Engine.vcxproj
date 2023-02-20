@@ -197,7 +197,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CMonsterScript.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="CParticleSystem.h" />
-    <ClInclude Include="CparticleUpdateShader.h" />
+    <ClInclude Include="CParticleUpdateShader.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPrefab.h" />
@@ -253,7 +253,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CMissileScript.cpp" />
     <ClCompile Include="CMonsterScript.cpp" />
     <ClCompile Include="CParticleSystem.cpp" />
-    <ClCompile Include="CparticleUpdateShader.cpp" />
+    <ClCompile Include="CParticleUpdateShader.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPrefab.cpp" />
@@ -307,19 +307,31 @@ call EngineCopy.bat</Command>
     <FxCompile Include="particle_render.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="particle_update.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="setcolor.fx">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="std2d.fx">

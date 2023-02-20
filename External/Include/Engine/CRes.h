@@ -18,6 +18,8 @@ private:
     void AddRef() { ++m_iRefCount; }
     void Release();
 
+    
+
     // 리소스 바인딩
     virtual void UpdateData() = 0;
 
@@ -35,7 +37,7 @@ public:
 public:
     const wstring& GetKey() { return m_strKey; }
     const wstring& GetRelativePath() { return m_strRelativePath; }
-
+    RES_TYPE GetType() { return m_Type; }
 
 public:
     CRes(RES_TYPE _type);

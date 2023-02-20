@@ -27,8 +27,8 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 
 	// 동적 재질 최초 요청시 제작 해서 준다.
 	if (nullptr == m_pDynamicMtrl)
-	{
-		m_pDynamicMtrl = m_pSharedMtrl->Clone();
+	{		
+		m_pDynamicMtrl = m_pSharedMtrl->Clone();		
 	}
 
 	// 동적 재질을 현재 사용재질로 지정한다.

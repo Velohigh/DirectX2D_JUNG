@@ -13,13 +13,13 @@
 // g_int_0 : Particle Index
 // =========================
 
-StructuredBuffer<tParticle> ParticleBuffer : register(t20);
-StructuredBuffer<tParticleModule> ParticleModuleData : register(t21);
+StructuredBuffer<tParticle>         ParticleBuffer : register(t20);
+StructuredBuffer<tParticleModule>   ParticleModuleData : register(t21);
 #define ModuleData                  ParticleModuleData[0]
 
 struct VS_IN
 {
-    float3 vPos : POSITION;
+    float3 vPos : POSITION;    
     uint iInstID : SV_InstanceID;
 };
 
@@ -31,7 +31,7 @@ struct VS_OUT
 
 VS_OUT VS_ParticleRender(VS_IN _in)
 {
-    VS_OUT output = (VS_OUT) 0.f;
+    VS_OUT output = (VS_OUT) 0.f;      
      
     output.vPos = _in.vPos;
     output.iInstID = _in.iInstID;
@@ -44,14 +44,14 @@ VS_OUT VS_ParticleRender(VS_IN _in)
 // 2. 빌보드 처리 (카메라를 바라보는..)
 struct GS_OUT
 {
-    float4 vPosition : SV_Position;
-    float2 vUV : TEXCOORD;
-    uint iInstID : SV_InstanceID;
+    float4  vPosition : SV_Position;
+    float2  vUV : TEXCOORD;
+    uint    iInstID : SV_InstanceID;
 };
 
 [maxvertexcount(6)]
-void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstream)
-{
+void GS_ParticleRender (point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstream)
+{    
     uint id = _in[0].iInstID;
     
     if (0 == ParticleBuffer[id].Active)
@@ -73,23 +73,23 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
     
     
     if (ModuleData.Render)
-    {
+    {        
         if (ModuleData.VelocityScale)
         {
             // 현재 파티클의 속력을 알아낸다.
-            float fCurSpeed = length(ParticleBuffer[id].vVelocity);
+            float fCurSpeed = length(ParticleBuffer[id].vVelocity);            
             if (ModuleData.vMaxSpeed < fCurSpeed)
                 fCurSpeed = ModuleData.vMaxSpeed;
             
             // 최대속도 대비 현재 속도의 비율을 구한다.
-            float fRatio = saturate(fCurSpeed / ModuleData.vMaxSpeed);
+            float fRatio = saturate(fCurSpeed / ModuleData.vMaxSpeed);            
           
             // 비율에 맞는 크기변화량을 구한다.
             float3 vDefaultScale = float3(1.f, 1.f, 1.f);
             float3 fScale = vDefaultScale + (ModuleData.vMaxVelocityScale.xyz - vDefaultScale) * fRatio;
                       
             NewPos[0] = NewPos[0] * fScale;
-            NewPos[3] = NewPos[3] * fScale;
+            NewPos[3] = NewPos[3] * fScale;            
         }
         
         
@@ -112,9 +112,9 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
             // 구한 각도로 Z 축 회전 행렬을 만든다.
             float3x3 matRotZ =
             {
-                cos(fTheta), sin(fTheta), 0,
-                -sin(fTheta), cos(fTheta), 0,
-                          0, 0, 1.f,
+                cos(fTheta),  sin(fTheta),      0,
+                -sin(fTheta), cos(fTheta),      0,
+                          0,            0,    1.f,
             };
             
             // 4개의 정점을 회전시킨다.
@@ -122,7 +122,7 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
             {
                 NewPos[i] = mul(NewPos[i], matRotZ);
             }
-        }
+        }        
     }
     
     
@@ -159,12 +159,12 @@ void GS_ParticleRender(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _outstr
 
 
 float4 PS_ParticleRender(GS_OUT _in) : SV_Target
-{
+{   
     float4 vOutColor = float4(1.f, 0.f, 1.f, 1.f);
     
-    if (g_btex_0)
+    if(g_btex_0)
     {
-        vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+        vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);        
         vOutColor.rgb *= ParticleBuffer[_in.iInstID].vColor.rgb;
     }
     

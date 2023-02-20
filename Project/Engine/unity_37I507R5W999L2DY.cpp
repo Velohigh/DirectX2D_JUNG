@@ -6,7 +6,7 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CParticleSystem.cpp"
 
 
-#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CparticleUpdateShader.cpp"
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CParticleUpdateShader.cpp"
 
 
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Engine\CPathMgr.cpp"

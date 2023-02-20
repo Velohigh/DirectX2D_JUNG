@@ -42,7 +42,7 @@ void CRenderMgr::render()
 
     // ·»´õ ÇÔ¼ö È£Ãâ
     (this->*RENDER_FUNC)();
-
+    
     // ±¤¿ø ÇØÁ¦
     Clear();
 }
@@ -64,7 +64,7 @@ void CRenderMgr::render_play()
 void CRenderMgr::render_editor()
 {
     m_pEditorCam->SortObject();
-    m_pEditorCam->render();
+    m_pEditorCam->render();    
 }
 
 
@@ -75,13 +75,13 @@ int CRenderMgr::RegisterCamera(CCamera* _Cam, int _idx)
         m_vecCam.resize(_idx + 1);
     }
 
-    m_vecCam[_idx] = _Cam;
+    m_vecCam[_idx] = _Cam;    
     return _idx;
 }
 
 void CRenderMgr::SetRenderFunc(bool _IsPlay)
 {
-    if (_IsPlay)
+    if(_IsPlay)
         RENDER_FUNC = &CRenderMgr::render_play;
     else
         RENDER_FUNC = &CRenderMgr::render_editor;

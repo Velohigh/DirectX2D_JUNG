@@ -11,7 +11,7 @@ class CRenderMgr :
     SINGLE(CRenderMgr);
 private:
     vector<CCamera*>            m_vecCam;
-    CCamera* m_pEditorCam;
+    CCamera*                    m_pEditorCam;
 
     vector<tDebugShapeInfo>     m_vecShapeInfo;
 
@@ -34,8 +34,8 @@ public:
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecShapeInfo.push_back(_info); }
     vector<tDebugShapeInfo>& GetDebugShapeInfo() { return m_vecShapeInfo; }
 
-    CCamera* GetMainCam()
-    {
+    CCamera* GetMainCam() 
+    { 
         if (m_vecCam.empty())
             return nullptr;
 

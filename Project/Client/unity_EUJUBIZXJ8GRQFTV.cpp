@@ -60,6 +60,15 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\MeshRenderUI.cpp"
 
 
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\MeshUI.cpp"
+
+
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\OutlinerUI.cpp"
+
+
+#include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\ResUI.cpp"
+
+
 #include "D:\AR43_JUNG\DirectX_JUNG\Project\Client\TileMapUI.cpp"
 
 

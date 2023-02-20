@@ -154,7 +154,7 @@
     <ClInclude Include="CParticleSystem.h">
       <Filter>Source\06. Component\RenderComponent\2. ParticleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CparticleUpdateShader.h">
+    <ClInclude Include="CParticleUpdateShader.h">
       <Filter>Source\08. ShaderCode\Compute\ParticleUpdate</Filter>
     </ClInclude>
   </ItemGroup>
@@ -294,7 +294,7 @@
     <ClCompile Include="CParticleSystem.cpp">
       <Filter>Source\06. Component\RenderComponent\2. ParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CparticleUpdateShader.cpp">
+    <ClCompile Include="CParticleUpdateShader.cpp">
       <Filter>Source\08. ShaderCode\Compute\ParticleUpdate</Filter>
     </ClCompile>
   </ItemGroup>
@@ -429,13 +429,13 @@
       <UniqueIdentifier>{7d787944-7b75-432b-91a9-8452604ba075}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\08. ShaderCode\Compute">
-      <UniqueIdentifier>{8e97ca1f-93c2-44f6-9d9a-1aa46e2a852b}</UniqueIdentifier>
+      <UniqueIdentifier>{e7e58685-e989-40bc-92c9-4f79bf523b39}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\08. ShaderCode\Compute\SetColor">
-      <UniqueIdentifier>{f09a42eb-3a81-4494-b1df-bb90a0a7ce64}</UniqueIdentifier>
+      <UniqueIdentifier>{10f44ac0-4d7c-466f-8168-e9649d728a5f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\08. ShaderCode\Compute\ParticleUpdate">
-      <UniqueIdentifier>{63ed6ab5-9e5e-4747-b3e9-4c00886087d8}</UniqueIdentifier>
+      <UniqueIdentifier>{12834beb-ba3f-4987-aee4-cf905f38179d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
