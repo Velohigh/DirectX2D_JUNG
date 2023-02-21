@@ -5,7 +5,7 @@
 #include "CAnimator2D.h"
 
 CMeshRender::CMeshRender()
-	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)		
+	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)
 {
 }
 
@@ -18,7 +18,7 @@ void CMeshRender::finaltick()
 }
 
 void CMeshRender::render()
-{	
+{
 	if (nullptr == GetMesh() || nullptr == GetMaterial())
 		return;
 
@@ -36,4 +36,8 @@ void CMeshRender::render()
 
 	// 렌더
 	GetMesh()->render();
+
+	// Animation 관련 정보 제거
+	if (Animator2D())
+		Animator2D()->Clear();
 }

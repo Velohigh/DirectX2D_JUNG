@@ -57,9 +57,16 @@ private:
     bool            m_bShowRoot;
 
     TreeNode* m_SelectedNode;
+    TreeNode* m_DragNode;
+    TreeNode* m_DropNode;
+
 
     UI* m_SelectInst;
     UI_DELEGATE_1   m_SelectFunc;
+
+    UI* m_DragDropInst;
+    UI_DELEGATE_2   m_DragDropFunc;
+
 
 
 public:
@@ -75,9 +82,17 @@ public:
         m_SelectFunc = _MemFunc;
     }
 
+    void AddDynamic_DragDrop(UI* _UI, UI_DELEGATE_2 _MemFunc)
+    {
+        m_DragDropInst = _UI;
+        m_DragDropFunc = _MemFunc;
+    }
+
 
 private:
     void SetSelectedNode(TreeNode* _Node);
+    void SetDragNode(TreeNode* _Node);
+    void SetDropNode(TreeNode* _Node);
 
 public:
     TreeUI();

@@ -7,10 +7,11 @@
 TreeNode::TreeNode()
     : m_Owner(nullptr)
     , m_ParentNode(nullptr)
+    , m_ID(0)
+    , m_Data(0)
+    , m_CategoryNode(false)
     , m_Hilight(false)
-
 {
-
 }
 
 TreeNode::~TreeNode()
@@ -25,7 +26,7 @@ void TreeNode::render_update()
     strFinalName += "##";
 
     char szBuff[100] = {};
-    itoa(m_ID, szBuff, 10);
+    _itoa_s(m_ID, szBuff, 10);
     strFinalName += szBuff;
 
     // Flag 체크
@@ -39,7 +40,6 @@ void TreeNode::render_update()
     if (m_Hilight || m_CategoryNode)
         flag |= ImGuiTreeNodeFlags_Selected;
 
-
     if (ImGui::TreeNodeEx(strFinalName.c_str(), flag))
     {
         // 해당 노드에 마우스 왼클릭이 발생하면 하이라이트를 준다.
@@ -47,6 +47,34 @@ void TreeNode::render_update()
         {
             m_Owner->SetSelectedNode(this);
         }
+
+        // 해당 노드 위에서 드래그 스타트 체크
+        if (ImGui::BeginDragDropSource())
+        {
+            ImGui::SetDragDropPayload("PayLoad", this, sizeof(TreeNode));
+            ImGui::Text(m_strName.c_str());
+
+            // Tree 에 드래그 노드 등록
+            m_Owner->SetDragNode(this);
+
+            ImGui::EndDragDropSource();
+        }
+
+        // 드래그 시작 후, 드랍의 후보인 경우
+        if (ImGui::BeginDragDropTarget())
+        {
+            // 해당 노드에서 마우스 뗀 경우, 지정한 PayLoad 키값이 일치한 경우
+            const ImGuiPayload* pPayLoad = ImGui::AcceptDragDropPayload("PayLoad");
+            if (pPayLoad)
+            {
+                // DropNode 를 Tree 에 알림
+                m_Owner->SetDropNode(this);
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+
 
         for (size_t i = 0; i < m_vecChildNode.size(); ++i)
         {
@@ -97,6 +125,18 @@ int TreeUI::render_update()
                 m_RootNode->m_vecChildNode[i]->render_update();
             }
         }
+    }
+
+    // Drag Drop 노드 둘다 있는 경우
+    if (m_DragNode && m_DropNode)
+    {
+        if (m_DragDropInst && m_DragDropFunc)
+        {
+            (m_DragDropInst->*m_DragDropFunc)((DWORD_PTR)m_DragNode, (DWORD_PTR)m_DropNode);
+        }
+
+        m_DragNode = nullptr;
+        m_DropNode = nullptr;
     }
 
     return 0;
@@ -172,4 +212,15 @@ void TreeUI::SetSelectedNode(TreeNode* _Node)
             (m_SelectInst->*m_SelectFunc)((DWORD_PTR)m_SelectedNode);
         }
     }
+}
+
+void TreeUI::SetDragNode(TreeNode* _Node)
+{
+    m_DragNode = _Node;
+    m_DropNode = nullptr;
+}
+
+void TreeUI::SetDropNode(TreeNode* _Node)
+{
+    m_DropNode = _Node;
 }

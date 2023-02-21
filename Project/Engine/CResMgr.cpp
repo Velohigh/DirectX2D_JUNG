@@ -28,7 +28,7 @@ void CResMgr::tick()
 }
 
 void CResMgr::CreateDefaultMesh()
-{	
+{
 	vector<Vtx> vecVtx;
 	vector<UINT> vecIdx;
 	Vtx v;
@@ -45,7 +45,7 @@ void CResMgr::CreateDefaultMesh()
 
 	UINT idx = 0;
 
-	pMesh = new CMesh;	
+	pMesh = new CMesh;
 	pMesh->Create(&v, 1, &idx, 1);
 	AddRes(L"PointMesh", pMesh);
 
@@ -87,7 +87,7 @@ void CResMgr::CreateDefaultMesh()
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes(L"RectMesh", pMesh);
-	
+
 	vecIdx.clear();
 	vecIdx.push_back(0);
 	vecIdx.push_back(1);
@@ -146,7 +146,7 @@ void CResMgr::CreateDefaultMesh()
 	pMesh = new CMesh;
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes(L"CircleMesh", pMesh);
-	
+
 	vecIdx.clear();
 	for (UINT i = 0; i < Slice; ++i)
 	{
@@ -179,7 +179,7 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
-	
+
 	AddRes(L"TestShader", pShader);
 
 	// ===============
@@ -284,7 +284,7 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetKey(L"TileMapShader");
 	pShader->CreateVertexShader(L"shader\\tilemap.fx", "VS_TileMap");
 	pShader->CreatePixelShader(L"shader\\tilemap.fx", "PS_TileMap");
-	
+
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::MASK);
@@ -359,11 +359,23 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
 	AddRes(L"Std2DMtrl", pMtrl);
 
+	// Std2DAnim Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
+	AddRes(L"Std2DAnimMtrl", pMtrl);
+
+
 	// Std2DLight Material
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"Std2DLightMtrl", pMtrl);
-	
+
+
+	// Std2DLight Material
+	pMtrl = new CMaterial;
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"Std2DAnimLightMtrl", pMtrl);
+
 	// DebugShape Material
 	pMtrl = new CMaterial;
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DebugShapeShader"));
@@ -391,7 +403,7 @@ void CResMgr::CreateDefaultPrefab()
 	pMissile->AddComponent(new CTransform);
 	pMissile->AddComponent(new CMeshRender);
 	pMissile->AddComponent(new CMissileScript);
-		
+
 	pMissile->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
 
 	pMissile->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
@@ -408,26 +420,26 @@ void CResMgr::CreateDefaultPrefab()
 
 void CResMgr::LoadDefaultTexture()
 {
-	Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");	
+	Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");
 	Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
 	Load<CTexture>(L"CharacterTex", L"texture\\Character.png");
 
 	Load<CTexture>(L"DeadCell", L"texture\\beheaded.png");
 	Load<CTexture>(L"DeadCell_N", L"texture\\beheaded_n.png");
 
-	Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");	
+	Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 	Load<CTexture>(L"Link", L"texture\\link.png");
 
 	// NoiseTexture
-	Load<CTexture>(L"Noise_01",	L"texture\\Noise\\noise_01.png");
-	Load<CTexture>(L"Noise_02",	L"texture\\Noise\\noise_02.png");
-	Load<CTexture>(L"Noise_03",	L"texture\\Noise\\noise_03.jpg");
+	Load<CTexture>(L"Noise_01", L"texture\\Noise\\noise_01.png");
+	Load<CTexture>(L"Noise_02", L"texture\\Noise\\noise_02.png");
+	Load<CTexture>(L"Noise_03", L"texture\\Noise\\noise_03.jpg");
 }
 
 Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height
 	, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage)
 {
-	Ptr<CTexture> pTex =  FindRes<CTexture>(_strKey);
+	Ptr<CTexture> pTex = FindRes<CTexture>(_strKey);
 
 	assert(nullptr == pTex);
 

@@ -14,8 +14,15 @@
 #include "TileMapUI.h"
 #include "Light2DUI.h"
 
+#include "MeshDataUI.h"
+#include "TextureUI.h"
 #include "MeshUI.h"
-//#include "textureui.h"
+#include "SoundUI.h"
+#include "PrefabUI.h"
+#include "GraphicsShaderUI.h"
+#include "ComputeShaderUI.h"
+#include "MaterialUI.h"
+
 
 
 InspectorUI::InspectorUI()
@@ -55,9 +62,37 @@ InspectorUI::InspectorUI()
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]);
 
 	// ResUI
+	m_arrResUI[(UINT)RES_TYPE::MESHDATA] = new MeshDataUI;
+	m_arrResUI[(UINT)RES_TYPE::MESHDATA]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::MESHDATA]);
+
 	m_arrResUI[(UINT)RES_TYPE::MESH] = new MeshUI;
 	m_arrResUI[(UINT)RES_TYPE::MESH]->SetSize(0.f, 0.f);
 	AddChildUI(m_arrResUI[(UINT)RES_TYPE::MESH]);
+
+	m_arrResUI[(UINT)RES_TYPE::TEXTURE] = new TextureUI;
+	m_arrResUI[(UINT)RES_TYPE::TEXTURE]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::TEXTURE]);
+
+	m_arrResUI[(UINT)RES_TYPE::GRAPHICS_SHADER] = new GraphicsShaderUI;
+	m_arrResUI[(UINT)RES_TYPE::GRAPHICS_SHADER]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::GRAPHICS_SHADER]);
+
+	m_arrResUI[(UINT)RES_TYPE::COMPUTE_SHADER] = new ComputeShaderUI;
+	m_arrResUI[(UINT)RES_TYPE::COMPUTE_SHADER]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::COMPUTE_SHADER]);
+
+	m_arrResUI[(UINT)RES_TYPE::PREFAB] = new PrefabUI;
+	m_arrResUI[(UINT)RES_TYPE::PREFAB]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::PREFAB]);
+
+	m_arrResUI[(UINT)RES_TYPE::MATERIAL] = new MaterialUI;
+	m_arrResUI[(UINT)RES_TYPE::MATERIAL]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::MATERIAL]);
+
+	m_arrResUI[(UINT)RES_TYPE::SOUND] = new SoundUI;
+	m_arrResUI[(UINT)RES_TYPE::SOUND]->SetSize(0.f, 0.f);
+	AddChildUI(m_arrResUI[(UINT)RES_TYPE::SOUND]);
 }
 
 InspectorUI::~InspectorUI()
@@ -103,8 +138,7 @@ void InspectorUI::SetTargetResource(Ptr<CRes> _Res)
 
 	for (UINT i = 0; i < UINT(RES_TYPE::END); ++i)
 	{
-		if (nullptr != m_arrResUI[i])
-			m_arrResUI[i]->SetActive(false);
+		m_arrResUI[i]->SetActive(false);
 	}
 
 	m_pTargetRes = _Res;

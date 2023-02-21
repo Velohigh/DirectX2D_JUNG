@@ -122,13 +122,10 @@ void CLevelMgr::init()
 	pParent->AddComponent(new CAnimator2D);
 	pParent->AddComponent(new CPlayerScript);
 
-	Ptr<CMesh> pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
-	Ptr<CMaterial> Std2DMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl");
-
 	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
-	pParent->MeshRender()->SetMesh(pMesh);
-	pParent->MeshRender()->SetMaterial(Std2DMtrl);
+	pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
 
 	pParent->Collider2D()->SetAbsolute(true);
 	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
@@ -138,6 +135,24 @@ void CLevelMgr::init()
 	pParent->Animator2D()->Play(L"WalkDown", true);
 
 	SpawnGameObject(pParent, Vec3(0.f, 0.f, 500.f), 0);
+
+
+	CGameObject* pChild = new CGameObject;
+
+	pChild->SetName(L"Child");
+	pChild->AddComponent(new CTransform);
+	pChild->AddComponent(new CMeshRender);
+
+	pChild->Transform()->SetAbsolute(true);
+	pChild->Transform()->SetRelativePos(200.f, 0.f, 0.f);
+	pChild->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
+
+	pChild->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pChild->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl"));
+	pChild->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"PlayerTex"));
+
+
+	pParent->AddChild(pChild);
 
 	// Monster
 	CGameObject* pMonster = new CGameObject;

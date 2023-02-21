@@ -11,13 +11,14 @@ class CAnimator2D :
 {
 private:
     map<wstring, CAnim2D*>  m_mapAnim;  // Animation 목록
-    CAnim2D*                m_pCurAnim; // 현재 재생중인 Animation
+    CAnim2D* m_pCurAnim; // 현재 재생중인 Animation
     bool                    m_bRepeat;  // 반복
 
 
 public:
     virtual void finaltick() override;
     void UpdateData();
+    void Clear();
 
 public:
     void Play(const wstring& _strName, bool _bRepeat);
