@@ -26,7 +26,7 @@ void CEventMgr::tick()
 	{
 		switch (m_vecEvent[i].Type)
 		{
-		// wParam : GameObject, lParam : Layer Index
+			// wParam : GameObject, lParam : Layer Index
 		case EVENT_TYPE::CREATE_OBJECT:
 		{
 			CGameObject* NewObject = (CGameObject*)m_vecEvent[i].wParam;
@@ -35,7 +35,7 @@ void CEventMgr::tick()
 
 			m_LevelChanged = true;
 		}
-			break;
+		break;
 		case EVENT_TYPE::DELETE_OBJECT:
 		{
 			CGameObject* DeleteObject = (CGameObject*)m_vecEvent[i].wParam;
@@ -48,11 +48,34 @@ void CEventMgr::tick()
 
 			m_LevelChanged = true;
 		}
-			break;
+		break;
+
 		case EVENT_TYPE::ADD_CHILD:
+			// wParam : ParentObject, lParam : ChildObject
+		{
+			CGameObject* pParent = (CGameObject*)m_vecEvent[i].wParam;
+			CGameObject* pChild = (CGameObject*)m_vecEvent[i].lParam;
+
+			// 부모로 지정된 오브젝트가 없으면, Child 오브젝트가 최상위 부모 오브젝트가 된다.
+			if (nullptr == pParent)
+			{
+				// 기존 부모와의 연결 해제
+				pChild->DisconnectFromParent();
+
+				// 최상위 부모 오브젝트로, 소속 레이어에 등록
+				pChild->AddParentList();
+			}
+			else
+			{
+				pParent->AddChild(pChild);
+			}
 
 			m_LevelChanged = true;
-			break;
+		}
+
+
+
+		break;
 		case EVENT_TYPE::DELETE_RESOURCE:
 
 
@@ -60,7 +83,7 @@ void CEventMgr::tick()
 		case EVENT_TYPE::LEVEL_CHANGE:
 
 			m_LevelChanged = true;
-			break;		
+			break;
 		}
 	}
 
@@ -75,11 +98,11 @@ void CEventMgr::GC_Clear()
 		if (nullptr != m_vecGC[i])
 		{
 			// 자식 타입 오브젝트인 경우
-			if (m_vecGC[i]->GetParent())			
+			if (m_vecGC[i]->GetParent())
 				m_vecGC[i]->DisconnectFromParent();
-			
+
 			delete m_vecGC[i];
-		}		
+		}
 	}
 	m_vecGC.clear();
 }

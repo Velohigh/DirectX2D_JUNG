@@ -17,10 +17,11 @@ int MeshUI::render_update()
 {
     ResUI::render_update();
 
+    ImGui::Text("Mesh   ");
+    ImGui::SameLine();
+
     Ptr<CMesh> pMesh = (CMesh*)GetTargetRes().Get();
-
     string strKey = string(pMesh->GetKey().begin(), pMesh->GetKey().end());
-
     ImGui::InputText("##MeshUIName", (char*)strKey.c_str(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
 
     return 0;

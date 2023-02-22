@@ -77,9 +77,13 @@ public:
     }
 
     bool IsDead() { return m_bDead; }
+    bool IsAncestor(CGameObject* _Target);
+
 
 private:
     void DisconnectFromParent();
+    void ChangeToChildType();
+    void AddParentList();
 
 
     CLONE(CGameObject)

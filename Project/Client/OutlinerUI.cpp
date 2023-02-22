@@ -99,6 +99,25 @@ void OutlinerUI::DragDrop(DWORD_PTR _DragNode, DWORD_PTR _DropNode)
 	TreeNode* pDragNode = (TreeNode*)_DragNode;
 	TreeNode* pDropNode = (TreeNode*)_DropNode;
 
-	pDragNode->GetData();
-	pDropNode->GetData();
+	CGameObject* pDragObj = (CGameObject*)pDragNode->GetData();
+	CGameObject* pDropObj = nullptr;
+	if (nullptr != pDropNode)
+	{
+		pDropObj = (CGameObject*)pDropNode->GetData();
+	}
+
+	// 자식으로 들어갈 오브젝트가 목적지 오브젝트의 조상(부모계층) 중 하나라면, 
+	// AddChild 처리하지 않는다.
+	if (nullptr != pDropObj)
+	{
+		if (pDropObj->IsAncestor(pDragObj))
+			return;
+	}
+
+	// 이벤트 매니저를 통해서 처리한다.
+	tEvent evn = {};
+	evn.Type = EVENT_TYPE::ADD_CHILD;
+	evn.wParam = (DWORD_PTR)pDropObj;
+	evn.lParam = (DWORD_PTR)pDragObj;
+	CEventMgr::GetInst()->AddEvent(evn);
 }

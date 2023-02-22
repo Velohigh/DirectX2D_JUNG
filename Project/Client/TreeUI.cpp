@@ -60,6 +60,10 @@ void TreeNode::render_update()
             ImGui::EndDragDropSource();
         }
 
+
+
+
+
         // 드래그 시작 후, 드랍의 후보인 경우
         if (ImGui::BeginDragDropTarget())
         {
@@ -128,7 +132,7 @@ int TreeUI::render_update()
     }
 
     // Drag Drop 노드 둘다 있는 경우
-    if (m_DragNode && m_DropNode)
+    if ((m_DragNode && m_DropNode) || (m_DragNode && ImGui::IsMouseReleased(ImGuiMouseButton_::ImGuiMouseButton_Left)))
     {
         if (m_DragDropInst && m_DragDropFunc)
         {
