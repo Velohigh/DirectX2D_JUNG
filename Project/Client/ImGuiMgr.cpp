@@ -8,6 +8,7 @@
 #include <Engine\CGameObject.h>
 
 #include "UI.h"
+#include "ParamUI.h"
 
 
 ImGuiMgr::ImGuiMgr()
@@ -86,6 +87,8 @@ void ImGuiMgr::begin()
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+
+    ParamUI::g_NextId = 0;
 }
 
 void ImGuiMgr::tick()

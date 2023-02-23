@@ -215,11 +215,13 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
 
 	// Param
+	pShader->AddScalarParam(INT_1, "Test Int");
+	pShader->AddScalarParam(FLOAT_0, "Test Float");
+	pShader->AddScalarParam(VEC2_0, "Test Vec2");
+	pShader->AddScalarParam(VEC4_0, "Test Vec4");
 	pShader->AddTexParam(TEX_0, "Output Texture");
 
 	AddRes(pShader->GetKey(), pShader);
-
-
 
 	// =================
 	// DebugShape Shader

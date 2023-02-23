@@ -98,6 +98,9 @@
     <Filter Include="UI\OutlinerUI">
       <UniqueIdentifier>{53f3037e-4eff-4c59-831e-633e17107793}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Module\ParamUI">
+      <UniqueIdentifier>{7224bc5e-2ed0-4544-a0fe-d59ae78bc75b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -217,6 +220,9 @@
     <ClInclude Include="ComputeShaderUI.h">
       <Filter>UI\InspectorUI\ResUI\ComputeShaderUI</Filter>
     </ClInclude>
+    <ClInclude Include="ParamUI.h">
+      <Filter>UI\Module\ParamUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -334,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="ComputeShaderUI.cpp">
       <Filter>UI\InspectorUI\ResUI\ComputeShaderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ParamUI.cpp">
+      <Filter>UI\Module\ParamUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
