@@ -219,7 +219,10 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->AddScalarParam(FLOAT_0, "Test Float");
 	pShader->AddScalarParam(VEC2_0, "Test Vec2");
 	pShader->AddScalarParam(VEC4_0, "Test Vec4");
-	pShader->AddTexParam(TEX_0, "Output Texture");
+
+	pShader->AddTexParam(TEX_0, "Output Texture 1");
+	pShader->AddTexParam(TEX_1, "Output Texture 2");
+	pShader->AddTexParam(TEX_2, "Output Texture 3");
 
 	AddRes(pShader->GetKey(), pShader);
 

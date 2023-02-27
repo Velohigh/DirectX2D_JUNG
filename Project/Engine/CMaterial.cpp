@@ -29,6 +29,7 @@ void CMaterial::UpdateData()
 		if (nullptr == m_arrTex[i])
 		{
 			m_Const.arrTex[i] = 0;
+			CTexture::Clear(i);
 			continue;
 		}
 

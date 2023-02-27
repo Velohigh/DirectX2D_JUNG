@@ -36,11 +36,12 @@ int MaterialUI::render_update()
     if (nullptr != pShader)
     {
         string strKey = string(pShader->GetKey().begin(), pShader->GetKey().end());
-        ImGui::InputText("##ShaderUIName", (char*)strKey.c_str(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputText("##ShaderUIName", (char*)strKey.c_str(), strKey.length(), ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
     }
     else
     {
-        ImGui::InputText("##ShaderUIName", (char*)nullptr, ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
+        char szEmtpy[10] = {};
+        ImGui::InputText("##ShaderUIName", szEmtpy, 10, ImGuiInputTextFlags_::ImGuiInputTextFlags_ReadOnly);
     }
 
     ImGui::NewLine();
@@ -48,6 +49,9 @@ int MaterialUI::render_update()
 
 
     // Shader 에서 요구하는 ScalarParameter 를 UI 에 노출
+    if (nullptr == pShader)
+        return 0;
+
     const vector<tScalarParam>& vecScalarParam = pShader->GetScalarParam();
 
     for (size_t i = 0; i < vecScalarParam.size(); ++i)
@@ -127,8 +131,23 @@ int MaterialUI::render_update()
     const vector<tTexParam>& vecTexParam = pShader->GetTexParam();
     for (size_t i = 0; i < vecTexParam.size(); ++i)
     {
-
+        ImGui::NewLine();
+        Ptr<CTexture> pCurTex = pMtrl->GetTexParam(vecTexParam[i].eParam);
+        if (ParamUI::Param_Tex(vecTexParam[i].strDesc, pCurTex, this, (UI_DELEGATE_1)&MaterialUI::SelectTexture))
+        {
+            m_eSelected = vecTexParam[i].eParam;
+        }
     }
 
     return 0;
+}
+
+
+void MaterialUI::SelectTexture(DWORD_PTR _Key)
+{
+    string strKey = (char*)_Key;
+    Ptr<CTexture> pTex = CResMgr::GetInst()->FindRes<CTexture>(wstring(strKey.begin(), strKey.end()));
+
+    Ptr<CMaterial> pMtrl = (CMaterial*)GetTargetRes().Get();
+    pMtrl->SetTexParam(m_eSelected, pTex);
 }
