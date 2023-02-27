@@ -15,7 +15,6 @@ struct tTexParam
 };
 
 
-
 class CGraphicsShader :
     public CShader
 {

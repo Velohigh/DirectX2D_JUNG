@@ -118,7 +118,7 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
        
-    if (g_int_1)
+    if (g_vec4_0.x == 3.14f)
     {
         return float4(1.f, 0.f, 0.f, 1.f);
     }
