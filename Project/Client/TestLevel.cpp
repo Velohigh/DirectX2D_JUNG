@@ -112,7 +112,7 @@ void CreateTestLevel()
 	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));	
+	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 
 	pMonster->Collider2D()->SetAbsolute(true);
 	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));

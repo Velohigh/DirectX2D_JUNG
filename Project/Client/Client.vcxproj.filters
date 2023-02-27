@@ -101,6 +101,9 @@
     <Filter Include="UI\Module\ParamUI">
       <UniqueIdentifier>{7224bc5e-2ed0-4544-a0fe-d59ae78bc75b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\MenuUI">
+      <UniqueIdentifier>{8dd10cdd-f1f9-44ca-b863-20aa0140b502}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -224,6 +227,9 @@
       <Filter>UI\Module\ParamUI</Filter>
     </ClInclude>
     <ClInclude Include="TestLevel.h" />
+    <ClInclude Include="MenuUI.h">
+      <Filter>UI\MenuUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -346,5 +352,8 @@
       <Filter>UI\Module\ParamUI</Filter>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
+    <ClCompile Include="MenuUI.cpp">
+      <Filter>UI\MenuUI</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
