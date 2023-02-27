@@ -371,29 +371,9 @@ void CResMgr::CreateDefaultMaterial()
 	AddRes(L"ParticleRenderMtrl", pMtrl);
 }
 
-#include "CGameObject.h"
-#include "components.h"
-#include "CMissileScript.h"
 void CResMgr::CreateDefaultPrefab()
 {
-	CGameObject* pMissile = new CGameObject;
 
-	pMissile->AddComponent(new CTransform);
-	pMissile->AddComponent(new CMeshRender);
-	pMissile->AddComponent(new CMissileScript);
-
-	pMissile->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
-
-	pMissile->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMissile->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
-
-	CMissileScript* pMissileScript = pMissile->GetScript<CMissileScript>();
-	if (nullptr != pMissileScript)
-		pMissileScript->SetSpeed(500.f);
-
-	Ptr<CPrefab> MissilePrefab = new CPrefab;
-	MissilePrefab->RegisterProtoObject(pMissile);
-	AddRes<CPrefab>(L"MissilePrefab", MissilePrefab);
 }
 
 void CResMgr::LoadDefaultTexture()

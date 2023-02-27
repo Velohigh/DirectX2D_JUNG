@@ -70,9 +70,6 @@
     <ClInclude Include="CScript.h">
       <Filter>Source\06. Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>Source\Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CConstBuffer.h">
       <Filter>Source\02. Device\ConstBuffer</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
     <ClInclude Include="components.h">
       <Filter>Source\00. Header</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraMoveScript.h">
-      <Filter>Source\Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CRenderMgr.h">
       <Filter>Source\03. Manager\06. RenderMgr</Filter>
     </ClInclude>
@@ -115,9 +109,6 @@
     <ClInclude Include="CEventMgr.h">
       <Filter>Source\03. Manager\09. EventMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CMissileScript.h">
-      <Filter>Source\Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CPrefab.h">
       <Filter>Source\07. Resource\5. Prefab</Filter>
     </ClInclude>
@@ -126,9 +117,6 @@
     </ClInclude>
     <ClInclude Include="CCollisionMgr.h">
       <Filter>Source\03. Manager\07. CollisionMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonsterScript.h">
-      <Filter>Source\Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CLight2D.h">
       <Filter>Source\06. Component\4. Light2D</Filter>
@@ -210,9 +198,6 @@
     <ClCompile Include="CScript.cpp">
       <Filter>Source\06. Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Source\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CConstBuffer.cpp">
       <Filter>Source\02. Device\ConstBuffer</Filter>
     </ClCompile>
@@ -240,9 +225,6 @@
     <ClCompile Include="extern.cpp">
       <Filter>Source\00. Header</Filter>
     </ClCompile>
-    <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>Source\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CRenderMgr.cpp">
       <Filter>Source\03. Manager\06. RenderMgr</Filter>
     </ClCompile>
@@ -251,9 +233,6 @@
     </ClCompile>
     <ClCompile Include="CEventMgr.cpp">
       <Filter>Source\03. Manager\09. EventMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="CMissileScript.cpp">
-      <Filter>Source\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPrefab.cpp">
       <Filter>Source\07. Resource\5. Prefab</Filter>
@@ -266,9 +245,6 @@
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>Source\00. Header</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterScript.cpp">
-      <Filter>Source\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CLight2D.cpp">
       <Filter>Source\06. Component\4. Light2D</Filter>
@@ -331,9 +307,6 @@
     </Filter>
     <Filter Include="Source\06. Component\Script">
       <UniqueIdentifier>{ca120d65-a3f9-4d3c-9f9d-b9642fb0c222}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scripts">
-      <UniqueIdentifier>{e03b309e-cd1a-4fc9-bde6-af05087411c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\02. Device\ConstBuffer">
       <UniqueIdentifier>{57b55dc8-c509-4d81-8671-8f3269f50b93}</UniqueIdentifier>

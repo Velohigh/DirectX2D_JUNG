@@ -19,7 +19,6 @@ class CScript :
     public CComponent
 {
 private:
-   
 
 
 public:
@@ -27,7 +26,7 @@ public:
     void SetLifeSpan(float _Time) { GetOwner()->SetLifeSpan(_Time); }
 
 
-public:   
+public:
     virtual void finaltick() final {};
 
     virtual void BeginOverlap(CCollider2D* _Other) {}

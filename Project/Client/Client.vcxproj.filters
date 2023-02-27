@@ -223,6 +223,7 @@
     <ClInclude Include="ParamUI.h">
       <Filter>UI\Module\ParamUI</Filter>
     </ClInclude>
+    <ClInclude Include="TestLevel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -344,5 +345,6 @@
     <ClCompile Include="ParamUI.cpp">
       <Filter>UI\Module\ParamUI</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevel.cpp" />
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@
 // ImGui
 #include "ImGuiMgr.h"
 
-
+#include "TestLevel.h"
 
 // 전역 변수:
 HINSTANCE   hInst;                                // 현재 인스턴스입니다.
@@ -47,10 +47,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // Editor 초기화
     CEditorObjMgr::GetInst()->init();
 
+    // 테스트 용 레벨 생성
+    CreateTestLevel();
 
     // ImGui 초기화
     ImGuiMgr::GetInst()->init(g_hWnd);
-
 
 
     // 메세지 루프
@@ -76,6 +77,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             CEngine::GetInst()->progress();
 
             CEditorObjMgr::GetInst()->progress();
+
+
 
             ImGuiMgr::GetInst()->progress();
 

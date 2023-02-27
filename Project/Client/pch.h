@@ -13,3 +13,11 @@
 #else
 #pragma comment(lib, "Engine//Engine")
 #endif
+
+
+// Script Library
+#ifdef _DEBUG
+#pragma comment(lib, "Script//Script_d")
+#else
+#pragma comment(lib, "Script//Script")
+#endif
