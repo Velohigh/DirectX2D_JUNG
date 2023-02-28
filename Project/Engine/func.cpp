@@ -22,7 +22,7 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx)
 	CEventMgr::GetInst()->AddEvent(evn);
 }
 
-void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _strName)
+void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _LayerName)
 {
 	_NewObject->Transform()->SetRelativePos(_vWorldPos);
 
@@ -30,7 +30,7 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _s
 
 	evn.Type = EVENT_TYPE::CREATE_OBJECT;
 	evn.wParam = (DWORD_PTR)_NewObject;
-	evn.lParam = CLevelMgr::GetInst()->GetCurLevel()->FindLayerByName(_strName)->GetLayerIndex();
+	evn.lParam = CLevelMgr::GetInst()->GetCurLevel()->FindLayerByName(_LayerName)->GetLayerIndex();
 
 	CEventMgr::GetInst()->AddEvent(evn);
 }

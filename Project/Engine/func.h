@@ -5,7 +5,7 @@
 // 오브젝트 생성
 class CGameObject;
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx);
-void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _strName);
+void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _LayerName);
 
 // 오브젝트 삭제
 void DestroyObject(CGameObject* _DeletObject);

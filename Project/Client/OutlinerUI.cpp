@@ -34,18 +34,25 @@ OutlinerUI::~OutlinerUI()
 {
 }
 
-int OutlinerUI::render_update()
-{
-	return 0;
-}
-
 void OutlinerUI::tick()
 {
 	if (CEventMgr::GetInst()->IsLevelChanged())
 	{
 		ResetOutliner();
+
+		// 트리 리셋 후, 다음 선택노드로 지정된 DATA 가 있으면, 찾아서 선택노드로 변경
+		if (0 != m_dwSelectedData)
+		{
+			m_Tree->GetSelectedNode(m_dwSelectedData);
+		}
 	}
 }
+
+int OutlinerUI::render_update()
+{
+	return 0;
+}
+
 
 void OutlinerUI::ResetOutliner()
 {
@@ -79,6 +86,7 @@ void OutlinerUI::SetTargetToInspector(DWORD_PTR _SelectedNode)
 	pInspector->SetTargetObject(pSelectObject);
 }
 
+
 void OutlinerUI::AddGameObject(CGameObject* _Obj, TreeNode* _ParentNode)
 {
 	// 오브젝트를 트리에 넣고, 생성된 노드 주소를 받아둔다.
@@ -93,6 +101,22 @@ void OutlinerUI::AddGameObject(CGameObject* _Obj, TreeNode* _ParentNode)
 		AddGameObject(vecChild[i], pNode);
 	}
 }
+
+
+CGameObject* OutlinerUI::GetSelectedObject()
+{
+	TreeNode* pSelectedNode = m_Tree->GetSelectedNode();
+
+	if (nullptr == pSelectedNode)
+		return nullptr;
+
+	return (CGameObject*)pSelectedNode->GetData();
+}
+
+
+
+
+
 
 void OutlinerUI::DragDrop(DWORD_PTR _DragNode, DWORD_PTR _DropNode)
 {

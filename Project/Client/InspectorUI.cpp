@@ -143,6 +143,9 @@ void InspectorUI::SetTargetResource(Ptr<CRes> _Res)
 
 	m_pTargetRes = _Res;
 
+	if (nullptr == m_pTargetRes)
+		return;
+
 	RES_TYPE type = _Res->GetType();
 
 	m_arrResUI[(UINT)type]->SetActive(true);

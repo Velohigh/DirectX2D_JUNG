@@ -42,9 +42,15 @@ void TreeNode::render_update()
 
     if (ImGui::TreeNodeEx(strFinalName.c_str(), flag))
     {
-        // 해당 노드에 마우스 왼클릭이 발생하면 하이라이트를 준다.
+        // 해당 노드에 마우스 왼클릭이 발생하면 선택노드로 지정 준다.
         if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
         {
+            m_Owner->SetSelectedNode(this);
+        }
+        // 또는, 트리 재구성 이전에 선택된 노드였다면, 다시 선택노드로 처리한다.
+        else if (0 != m_Owner->m_dwPrevSelected && m_Owner->m_dwPrevSelected == m_Data)
+        {
+            m_Owner->m_dwPrevSelected = 0;
             m_Owner->SetSelectedNode(this);
         }
 
@@ -102,8 +108,11 @@ TreeUI::TreeUI()
     , g_NextId(0)
     , m_bShowRoot(true)
     , m_SelectedNode(nullptr)
+    , m_dwPrevSelected(0)
     , m_SelectInst(nullptr)
     , m_SelectFunc(nullptr)
+    , m_DragDropInst(nullptr)
+    , m_DragDropFunc(nullptr)
 {
 
 }
@@ -148,6 +157,13 @@ int TreeUI::render_update()
 
 void TreeUI::Clear()
 {
+    // 이전에 선택된 노드가 있으면
+    if (nullptr != m_SelectedNode)
+    {
+        // 이름을 기억해둔다.
+        m_dwPrevSelected = m_SelectedNode->GetData();
+    }
+
     if (nullptr != m_RootNode)
     {
         delete m_RootNode;
@@ -227,4 +243,30 @@ void TreeUI::SetDragNode(TreeNode* _Node)
 void TreeUI::SetDropNode(TreeNode* _Node)
 {
     m_DropNode = _Node;
+}
+
+bool TreeUI::GetSelectedNode(DWORD _Data)
+{
+    static list<TreeNode*> queue;
+    queue.push_back(m_RootNode);
+
+    TreeNode* pCurNode = nullptr;
+    while (!queue.empty())
+    {
+        pCurNode = queue.front();
+        queue.pop_front();
+
+        for (size_t i = 0; i < pCurNode->m_vecChildNode.size(); ++i)
+        {
+            queue.push_back(pCurNode->m_vecChildNode[i]);
+        }
+
+        if (pCurNode->GetData() == _Data)
+        {
+            SetSelectedNode(pCurNode);
+            return true;
+        }
+    }
+
+    return false;
 }

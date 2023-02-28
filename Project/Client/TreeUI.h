@@ -60,6 +60,7 @@ private:
     TreeNode* m_DragNode;
     TreeNode* m_DropNode;
 
+    DWORD_PTR       m_dwPrevSelected;
 
     UI* m_SelectInst;
     UI_DELEGATE_1   m_SelectFunc;
@@ -93,6 +94,11 @@ private:
     void SetSelectedNode(TreeNode* _Node);
     void SetDragNode(TreeNode* _Node);
     void SetDropNode(TreeNode* _Node);
+
+public:
+    TreeNode* GetSelectedNode() { return m_SelectedNode; }
+    bool GetSelectedNode(DWORD _Data);  // 입력된 데이터와 동일한 데이터를 보유하고 있는 노드를 선택상태로 만듬
+
 
 public:
     TreeUI();

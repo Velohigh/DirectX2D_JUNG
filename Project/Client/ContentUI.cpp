@@ -75,6 +75,9 @@ void ContentUI::SetTargetToInspector(DWORD_PTR _SelectedNode)
 	TreeNode* pSelectedNode = (TreeNode*)_SelectedNode;
 	CRes* pSelectObject = (CRes*)pSelectedNode->GetData();
 
+	if (nullptr == pSelectObject)
+		return;
+
 	// Inspector 에 선택된 Resource 를 알려준다.	
 	InspectorUI* pInspector = (InspectorUI*)ImGuiMgr::GetInst()->FindUI("##Inspector");
 	pInspector->SetTargetResource(pSelectObject);
