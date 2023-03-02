@@ -19,11 +19,13 @@ class CScript :
     public CComponent
 {
 private:
+    UINT    m_iScriptType;
 
 
 public:
     void Destroy() { DestroyObject(GetOwner()); }
     void SetLifeSpan(float _Time) { GetOwner()->SetLifeSpan(_Time); }
+    UINT GetScriptType() { return m_iScriptType; }
 
 
 public:
@@ -34,7 +36,7 @@ public:
     virtual void EndOverlap(CCollider2D* _Other) {}
 
 public:
-    CScript();
+    CScript(UINT _iScriptType);
     ~CScript();
 };
 

@@ -3,6 +3,7 @@
 
 
 CMonsterScript::CMonsterScript()
+	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 {
 }
 

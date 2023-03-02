@@ -5,7 +5,7 @@
 // 오브젝트 생성
 class CGameObject;
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx);
-void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _strName);
+void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _LayerName);
 
 // 오브젝트 삭제
 void DestroyObject(CGameObject* _DeletObject);
@@ -24,6 +24,9 @@ void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f);
 const char* ToString(RES_TYPE);
 const wchar_t* ToWSTring(RES_TYPE);
 
+const char* ToString(COMPONENT_TYPE);
+const wchar_t* ToWSTring(COMPONENT_TYPE);
+
 
 
 
@@ -35,7 +38,7 @@ void Safe_Del_Array(T* (&arr)[Size])
 	{
 		if (nullptr != arr[i])
 			delete arr[i];
-	}	
+	}
 }
 
 template<typename T>

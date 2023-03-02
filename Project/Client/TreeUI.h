@@ -97,7 +97,7 @@ private:
 
 public:
     TreeNode* GetSelectedNode() { return m_SelectedNode; }
-    bool GetSelectedNode(DWORD _Data);  // 입력된 데이터와 동일한 데이터를 보유하고 있는 노드를 선택상태로 만듬
+    bool GetSelectedNode(DWORD_PTR _Data);  // 입력된 데이터와 동일한 데이터를 보유하고 있는 노드를 선택상태로 만듬
 
 
 public:

@@ -4,6 +4,9 @@
 #include <Engine\CEventMgr.h>
 #include <Engine\CGameObject.h>
 #include <Engine\components.h>
+#include <Engine\CScript.h>
+
+#include <Script\CScriptMgr.h>
 
 #include "ImGuiMgr.h"
 #include "OutlinerUI.h"
@@ -71,14 +74,16 @@ int MenuUI::render_update()
 
             if (ImGui::BeginMenu("Add Script"))
             {
-                if (ImGui::MenuItem("PlayerScript"))
+                vector<wstring> vecScripts;
+                CScriptMgr::GetScriptInfo(vecScripts);
+
+                for (size_t i = 0; i < vecScripts.size(); ++i)
                 {
-
-                }
-
-                if (ImGui::MenuItem("MonsterScript"))
-                {
-
+                    string strScriptName = string(vecScripts[i].begin(), vecScripts[i].end());
+                    if (ImGui::MenuItem(strScriptName.c_str()))
+                    {
+                        AddScript(vecScripts[i]);
+                    }
                 }
 
                 ImGui::EndMenu();
@@ -164,4 +169,21 @@ void MenuUI::AddComponent(COMPONENT_TYPE _type)
     // Inspector 에 새롭게 추가된 컴포넌트를 알리기 위해서 타겟을 다시 알려준다.
     inspector->SetTargetObject(pSelectedObject);
 
+}
+
+void MenuUI::AddScript(const wstring& _strScriptName)
+{
+    // Outliner 와 Inspector 를 가져온다.
+    OutlinerUI* outliner = (OutlinerUI*)ImGuiMgr::GetInst()->FindUI("##Outliner");
+    //InspectorUI* inspector = (InspectorUI*)ImGuiMgr::GetInst()->FindUI("##Inspector");
+
+    // 선택된 오브젝트를 가져와서 ComponentType 에 맞는 컴포넌트를 생성해서 추가한다.
+    CGameObject* pSelectedObject = outliner->GetSelectedObject();
+
+    if (nullptr == pSelectedObject)
+        return;
+
+    CScript* pScript = CScriptMgr::GetScript(_strScriptName);
+
+    pSelectedObject->AddComponent(pScript);
 }

@@ -245,9 +245,11 @@ void TreeUI::SetDropNode(TreeNode* _Node)
     m_DropNode = _Node;
 }
 
-bool TreeUI::GetSelectedNode(DWORD _Data)
+bool TreeUI::GetSelectedNode(DWORD_PTR _Data)
 {
     static list<TreeNode*> queue;
+    queue.clear();
+
     queue.push_back(m_RootNode);
 
     TreeNode* pCurNode = nullptr;

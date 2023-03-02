@@ -16,7 +16,7 @@ public:
 private:
     void CreateEmptyObject();
     void AddComponent(COMPONENT_TYPE _type);
-
+    void AddScript(const wstring& _strScriptName);
 
 public:
     MenuUI();
