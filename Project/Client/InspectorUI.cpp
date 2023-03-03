@@ -22,6 +22,7 @@
 #include "GraphicsShaderUI.h"
 #include "ComputeShaderUI.h"
 #include "MaterialUI.h"
+#include "ScriptUI.h"
 
 
 
@@ -129,6 +130,49 @@ void InspectorUI::SetTargetObject(CGameObject* _Target)
 			continue;
 
 		m_arrComUI[i]->SetTarget(m_pTargetObj);
+	}
+
+	// 타겟 오브젝트가 nullptr 이면
+	// 스크립트UI 들을 전부 비활성화 시킨다.
+	if (nullptr == m_pTargetObj)
+	{
+		for (size_t i = 0; i < m_vecScriptUI.size(); ++i)
+		{
+			m_vecScriptUI[i]->SetActive(false);
+		}
+		return;
+	}
+
+	// 오브젝트의 스크립트 목록을 받아온다.
+	const vector<CScript*>& vecScript = m_pTargetObj->GetScripts();
+
+	// 스크립트UI 가 스크립트 수 보다 적으면 그만큼 추가해준다.
+	if (m_vecScriptUI.size() < vecScript.size())
+	{
+		UINT iDiffer = vecScript.size() - m_vecScriptUI.size();
+		for (UINT i = 0; i < iDiffer; ++i)
+		{
+			ScriptUI* UI = new ScriptUI;
+
+			m_vecScriptUI.push_back(UI);
+			AddChildUI(UI);
+			UI->SetActive(true);
+		}
+	}
+
+	// ScriptUI 반복문 돌면서 오브젝트의 스크립트수 만큼만 활성화 시킨다.
+	for (size_t i = 0; i < m_vecScriptUI.size(); ++i)
+	{
+		if (vecScript.size() <= i)
+		{
+			m_vecScriptUI[i]->SetActive(false);
+			continue;
+		}
+
+		// 스크립트를 스크립트UI 에게 알려준다.
+		m_vecScriptUI[i]->SetTarget(m_pTargetObj);
+		m_vecScriptUI[i]->SetScript(vecScript[i]);
+		m_vecScriptUI[i]->SetActive(true);
 	}
 }
 

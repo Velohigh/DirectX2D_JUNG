@@ -57,6 +57,8 @@ private:
     bool            m_bShowRoot;
 
     TreeNode* m_SelectedNode;
+    TreeNode* m_LbtDownNode;
+
     TreeNode* m_DragNode;
     TreeNode* m_DropNode;
 

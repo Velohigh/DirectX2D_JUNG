@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "TreeUI.h"
 
+
+
 // ========
 // TreeNode
 // ========
@@ -43,7 +45,11 @@ void TreeNode::render_update()
     if (ImGui::TreeNodeEx(strFinalName.c_str(), flag))
     {
         // 해당 노드에 마우스 왼클릭이 발생하면 선택노드로 지정 준다.
-        if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDown(ImGuiMouseButton_::ImGuiMouseButton_Left))
+        {
+            m_Owner->m_LbtDownNode = this;
+        }
+        else if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_::ImGuiMouseButton_Left))
         {
             m_Owner->SetSelectedNode(this);
         }
@@ -218,10 +224,18 @@ TreeNode* TreeUI::AddItem(const string& _strNodeName, DWORD_PTR _Data, TreeNode*
 
 void TreeUI::SetSelectedNode(TreeNode* _Node)
 {
+    // 마우스를 누른 노드와 뗀 노드가 일치해야 함
+    if (m_LbtDownNode != _Node)
+    {
+        m_LbtDownNode = nullptr;
+        return;
+    }
+
     if (m_SelectedNode)
         m_SelectedNode->m_Hilight = false;
 
     m_SelectedNode = _Node;
+    m_LbtDownNode = nullptr;
 
     if (m_SelectedNode)
     {

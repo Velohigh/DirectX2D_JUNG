@@ -175,7 +175,7 @@ void MenuUI::AddScript(const wstring& _strScriptName)
 {
     // Outliner 와 Inspector 를 가져온다.
     OutlinerUI* outliner = (OutlinerUI*)ImGuiMgr::GetInst()->FindUI("##Outliner");
-    //InspectorUI* inspector = (InspectorUI*)ImGuiMgr::GetInst()->FindUI("##Inspector");
+    InspectorUI* inspector = (InspectorUI*)ImGuiMgr::GetInst()->FindUI("##Inspector");
 
     // 선택된 오브젝트를 가져와서 ComponentType 에 맞는 컴포넌트를 생성해서 추가한다.
     CGameObject* pSelectedObject = outliner->GetSelectedObject();
@@ -186,4 +186,6 @@ void MenuUI::AddScript(const wstring& _strScriptName)
     CScript* pScript = CScriptMgr::GetScript(_strScriptName);
 
     pSelectedObject->AddComponent(pScript);
+
+    inspector->SetTargetObject(pSelectedObject);
 }

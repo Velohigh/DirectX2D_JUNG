@@ -11,10 +11,12 @@ CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_fSpeed(100.f)
 {
+	AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Speed");
 }
 
 CPlayerScript::~CPlayerScript()
 {
+
 }
 
 void CPlayerScript::begin()

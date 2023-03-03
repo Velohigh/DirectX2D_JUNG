@@ -9,7 +9,7 @@
 #include <Engine\CTimeMgr.h>
 #include <Engine\CKeyMgr.h>
 
-#include <Engine\CCameraMoveScript.h>
+#include <Script\CCameraMoveScript.h>
 
 CEditorObjMgr::CEditorObjMgr()
 	: m_DebugShape{}
