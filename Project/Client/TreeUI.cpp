@@ -63,7 +63,7 @@ void TreeNode::render_update()
         // 해당 노드 위에서 드래그 스타트 체크
         if (ImGui::BeginDragDropSource())
         {
-            ImGui::SetDragDropPayload("PayLoad", this, sizeof(TreeNode));
+            ImGui::SetDragDropPayload(m_Owner->m_strDragDropID.c_str(), this, sizeof(TreeNode));
             ImGui::Text(m_strName.c_str());
 
             // Tree 에 드래그 노드 등록
@@ -73,14 +73,11 @@ void TreeNode::render_update()
         }
 
 
-
-
-
         // 드래그 시작 후, 드랍의 후보인 경우
         if (ImGui::BeginDragDropTarget())
         {
             // 해당 노드에서 마우스 뗀 경우, 지정한 PayLoad 키값이 일치한 경우
-            const ImGuiPayload* pPayLoad = ImGui::AcceptDragDropPayload("PayLoad");
+            const ImGuiPayload* pPayLoad = ImGui::AcceptDragDropPayload(m_Owner->m_strDragDropID.c_str());
             if (pPayLoad)
             {
                 // DropNode 를 Tree 에 알림
@@ -120,7 +117,7 @@ TreeUI::TreeUI()
     , m_DragDropInst(nullptr)
     , m_DragDropFunc(nullptr)
 {
-
+    m_strDragDropID = "PayLoad";
 }
 
 TreeUI::~TreeUI()

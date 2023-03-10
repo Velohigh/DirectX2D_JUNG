@@ -137,6 +137,7 @@ int MaterialUI::render_update()
         {
             m_eSelected = vecTexParam[i].eParam;
         }
+        pMtrl->SetTexParam((TEX_PARAM)i, pCurTex);
     }
 
     return 0;

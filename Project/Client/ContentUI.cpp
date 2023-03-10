@@ -19,7 +19,7 @@ ContentUI::ContentUI()
 	m_Tree->ShowRoot(false);
 
 	m_Tree->AddDynamic_Select(this, (UI_DELEGATE_1)&ContentUI::SetTargetToInspector);
-
+	m_Tree->SetDragDropID("Resource");
 	AddChildUI(m_Tree);
 }
 

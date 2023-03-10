@@ -40,10 +40,8 @@ private:
 
     SHADER_DOMAIN                   m_Domain;
 
-
     vector<tScalarParam>            m_vecScalarParam;
     vector<tTexParam>               m_vecTexParam;
-
 
 public:
     void CreateVertexShader(const wstring& _strFileName, const string& _strFuncName);

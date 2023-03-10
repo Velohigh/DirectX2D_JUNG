@@ -70,6 +70,7 @@ private:
     UI* m_DragDropInst;
     UI_DELEGATE_2   m_DragDropFunc;
 
+    string          m_strDragDropID;
 
 
 public:
@@ -79,6 +80,7 @@ public:
     void Clear();
     TreeNode* AddItem(const string& _strNodeName, DWORD_PTR _Data, TreeNode* _pParent = nullptr);
     void ShowRoot(bool _Show) { m_bShowRoot = _Show; }
+
     void AddDynamic_Select(UI* _UI, UI_DELEGATE_1 _MemFunc)
     {
         m_SelectInst = _UI;
@@ -90,6 +92,8 @@ public:
         m_DragDropInst = _UI;
         m_DragDropFunc = _MemFunc;
     }
+
+    void SetDragDropID(const string& _strID) { m_strDragDropID = _strID; }
 
 
 private:
