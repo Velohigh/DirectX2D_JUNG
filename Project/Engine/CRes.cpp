@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "CRes.h"
 
-CRes::CRes(RES_TYPE _type)
+CRes::CRes(RES_TYPE _type, bool _bEngine)
 	: m_Type(_type)
 	, m_iRefCount(0)
+	, m_bEngine(_bEngine)
 {
 }
 

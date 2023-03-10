@@ -4,8 +4,10 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
-CMaterial::CMaterial()
-	: CRes(RES_TYPE::MATERIAL)
+#include "CPathMgr.h"
+
+CMaterial::CMaterial(bool _bEngine)
+	: CRes(RES_TYPE::MATERIAL, _bEngine)
 	, m_Const{}
 	, m_arrTex{}
 {
@@ -144,4 +146,50 @@ void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData)
 	}
 	break;
 	}
+}
+
+// ================
+// File Save / Load
+// ================
+int CMaterial::Save(const wstring& _strRelativePath)
+{
+	if (IsEngineRes())
+		return E_FAIL;
+
+	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
+	strFilePath += _strRelativePath;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+
+	// Entity
+	SaveWString(GetName(), pFile);
+
+	// Res
+	SaveWString(GetKey(), pFile);
+
+	// Material
+	wstring strKey = m_pShader->GetKey();
+
+
+	fclose(pFile);
+}
+
+
+int CMaterial::Load(const wstring& _strFilePath)
+{
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
+
+	// Entity
+	wstring strName;
+	LoadWString(strName, pFile);
+	SetName(strName);
+
+	// Res
+	wstring strKey;
+	LoadWString(strKey, pFile);
+
+
+	fclose(pFile);
 }

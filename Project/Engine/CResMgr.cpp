@@ -328,45 +328,44 @@ void CResMgr::CreateDefaultMaterial()
 	Ptr<CMaterial> pMtrl = nullptr;
 
 	// Test Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TestShader"));
 	AddRes(L"TestMtrl", pMtrl);
 
 	// Std2D Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
 	AddRes(L"Std2DMtrl", pMtrl);
 
 	// Std2DAnim Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
 	AddRes(L"Std2DAnimMtrl", pMtrl);
 
 
 	// Std2DLight Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"Std2DLightMtrl", pMtrl);
 
 
 	// Std2DLight Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"Std2DAnimLightMtrl", pMtrl);
 
 	// DebugShape Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DebugShapeShader"));
 	AddRes(L"DebugShapeMtrl", pMtrl);
 
 	// TileMap Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"TileMapShader"));
 	AddRes(L"TileMapMtrl", pMtrl);
 
-
 	// Particle Render Material
-	pMtrl = new CMaterial;
+	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"ParticleRenderShader"));
 	AddRes(L"ParticleRenderMtrl", pMtrl);
 }

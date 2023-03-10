@@ -10,9 +10,9 @@ class CMaterial :
 {
 private:
     Ptr<CGraphicsShader>    m_pShader;
-
     tMtrlConst              m_Const;
     Ptr<CTexture>           m_arrTex[TEX_END];
+
 
 
 public:
@@ -30,15 +30,15 @@ public:
     virtual void UpdateData() override;
 
 private:
-    virtual int Load(const wstring& _strFilePath) { return S_OK; }
+    virtual int Load(const wstring& _strFilePath);
 public:
-    virtual int Save(const wstring& _strRelativePath) { return S_OK; }
+    virtual int Save(const wstring& _strRelativePath);
 
 public:
     CLONE(CMaterial);
 
 public:
-    CMaterial();
+    CMaterial(bool _bEngine = false);
     ~CMaterial();
 };
 

@@ -28,6 +28,16 @@ const char* ToString(COMPONENT_TYPE);
 const wchar_t* ToWSTring(COMPONENT_TYPE);
 
 
+// Save / Load
+void SaveWString(const wstring& _str, FILE* _File);
+void LoadWString(wstring& _str, FILE* _File);
+
+
+
+
+
+
+
 
 
 
