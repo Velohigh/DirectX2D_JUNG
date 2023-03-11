@@ -27,7 +27,7 @@ private:
 public:
     void finaltick();
     void Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _BackSize, int _FrameCount, int _FPS);
-    void CreateFolder(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS);
+    void CreateFolderAnim(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS);
 
     const tAnim2DFrm& GetCurFrame() { return m_vecFrm[m_iCurFrm];}
     int GetCurFrmCount() { return m_iCurFrm; }

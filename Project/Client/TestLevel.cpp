@@ -76,10 +76,10 @@ void CreateTestLevel()
 	pParent->Collider2D()->SetAbsolute(true);
 	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
 
-	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
-	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
-	pParent->Animator2D()->CreateFolderAnimation(L"spr_idle", L"texture\\spr_idle", 10, 16);
-	pParent->Animator2D()->Play(L"spr_idle", true);
+	//Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
+	//pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
+	pParent->Animator2D()->CreateFolderAnimation(L"texture\\spr_idle", L"texture\\spr_idle", 10, 16);
+	pParent->Animator2D()->Play(L"texture\\spr_idle", true);
 
 	SpawnGameObject(pParent, Vec3(0.f, 0.f, 500.f), 0);
 

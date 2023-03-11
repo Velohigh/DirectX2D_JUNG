@@ -26,6 +26,8 @@ private:
     Vec2    DragLT;
     Vec2    DragRB;
 
+    char    RelativePath[255];
+
     bool    m_AutoMode;
     bool    m_MenualMode;
 

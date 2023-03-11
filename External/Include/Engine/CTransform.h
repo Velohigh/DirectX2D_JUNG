@@ -31,6 +31,7 @@ public:
     void SetAbsolute(bool _Set) { m_bAbsolute = _Set; }    
     bool GetAbsolute() { return m_bAbsolute; }
 
+
     Vec3 GetRelativePos() const { return m_vRelativePos; }
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
     Vec3 GetRelativeRot() const { return m_vRelativeRot; }
