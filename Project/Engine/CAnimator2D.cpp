@@ -11,6 +11,7 @@ CAnimator2D::CAnimator2D()
 	: CComponent(COMPONENT_TYPE::ANIMATOR2D)
 	, m_pCurAnim(nullptr)
 	, m_bRepeat(false)
+	, m_bFolder(false)
 {
 }
 
@@ -36,17 +37,28 @@ void CAnimator2D::UpdateData()
 {
 	Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
 
-	const tAnim2DFrm& frm = m_pCurAnim->GetCurFrame();
-	Vec2 vBackSize = m_pCurAnim->GetBackSize();
+	if (!m_bFolder)
+	{
+		const tAnim2DFrm& frm = m_pCurAnim->GetCurFrame();
+		Vec2 vBackSize = m_pCurAnim->GetBackSize();
 
-	int iAnimUse = 1;
-	pMtrl->SetScalarParam(INT_0, &iAnimUse);
-	pMtrl->SetScalarParam(VEC2_0, &frm.LeftTopUV);
-	pMtrl->SetScalarParam(VEC2_1, &frm.SliceUV);
-	pMtrl->SetScalarParam(VEC2_2, &frm.Offset);
-	pMtrl->SetScalarParam(VEC2_3, &vBackSize);
+		int iAnimUse = 1;
+		pMtrl->SetScalarParam(INT_0, &iAnimUse);
+		pMtrl->SetScalarParam(VEC2_0, &frm.LeftTopUV);
+		pMtrl->SetScalarParam(VEC2_1, &frm.SliceUV);
+		pMtrl->SetScalarParam(VEC2_2, &frm.Offset);
+		pMtrl->SetScalarParam(VEC2_3, &vBackSize);
 
-	pMtrl->SetTexParam(TEX_0, m_pCurAnim->GetAtlasTex());
+		pMtrl->SetTexParam(TEX_0, m_pCurAnim->GetAtlasTex());
+	}
+
+	else if (m_bFolder)
+	{
+		vector<Ptr<CTexture>> vecTex = m_pCurAnim->GetFolderTex();
+
+		int CurFrmCount = m_pCurAnim->GetCurFrmCount();
+		pMtrl->SetTexParam(TEX_0, vecTex[CurFrmCount]);
+	}
 }
 
 void CAnimator2D::Clear()
@@ -87,6 +99,17 @@ void CAnimator2D::CreateAnimation(const wstring& _strAnimName
 {
 	CAnim2D* pAnim = new CAnim2D;
 	pAnim->Create(_strAnimName, _AtlasTex, _vLeftTop, _vSlice, _vBackSize, _FrameCount, _FPS);
+
+	pAnim->m_pOwner = this;
+	m_mapAnim.insert(make_pair(_strAnimName, pAnim));
+}
+
+void CAnimator2D::CreateFolderAnimation(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS)
+{
+	m_bFolder = true;
+
+	CAnim2D* pAnim = new CAnim2D;
+	pAnim->CreateFolderAnim(_strAnimName, _RelativePath, _FrameCount, _FPS);
 
 	pAnim->m_pOwner = this;
 	m_mapAnim.insert(make_pair(_strAnimName, pAnim));

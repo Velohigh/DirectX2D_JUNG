@@ -173,6 +173,8 @@ int CMaterial::Save(const wstring& _strRelativePath)
 
 
 	fclose(pFile);
+
+	return 0;
 }
 
 
@@ -192,4 +194,6 @@ int CMaterial::Load(const wstring& _strFilePath)
 
 
 	fclose(pFile);
+
+	return 0;
 }

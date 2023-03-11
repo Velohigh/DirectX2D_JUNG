@@ -11,8 +11,9 @@ class CAnimator2D :
 {
 private:
     map<wstring, CAnim2D*>  m_mapAnim;  // Animation 목록
-    CAnim2D* m_pCurAnim; // 현재 재생중인 Animation
+    CAnim2D*                m_pCurAnim; // 현재 재생중인 Animation
     bool                    m_bRepeat;  // 반복
+    bool                    m_bFolder;  // 폴더애니메이션?
 
 
 public:
@@ -25,6 +26,7 @@ public:
     CAnim2D* FindAnim(const wstring& _strName);
 
     void CreateAnimation(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _vBackSize, int _FrameCount, int _FPS);
+    void CreateFolderAnimation(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS);
 
     CLONE(CAnimator2D);
 public:

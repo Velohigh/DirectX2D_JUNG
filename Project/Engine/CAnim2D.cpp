@@ -2,12 +2,16 @@
 #include "CAnim2D.h"
 
 #include "CTimeMgr.h"
+#include "CPathMgr.h"
+#include "CResMgr.h"
 
 CAnim2D::CAnim2D()
 	: m_pOwner(nullptr)
 	, m_iCurFrm(0)
 	, m_bFinish(false)
 	, m_fTime(0.f)
+	, m_bFolderTex(false)
+	, m_fDuration(0.f)
 {
 }
 
@@ -22,17 +26,39 @@ void CAnim2D::finaltick()
 
 	m_fTime += DT;
 
-	if (m_vecFrm[m_iCurFrm].fDuration < m_fTime)
+	if (!m_bFolderTex)
 	{
-		m_fTime = m_fTime - m_vecFrm[m_iCurFrm].fDuration;
-		++m_iCurFrm;
-
-		if (m_vecFrm.size() <= m_iCurFrm)
+		if (m_vecFrm[m_iCurFrm].fDuration < m_fTime)
 		{
-			m_iCurFrm = m_vecFrm.size() - 1;
-			m_bFinish = true;
+			m_fTime = m_fTime - m_vecFrm[m_iCurFrm].fDuration;
+			++m_iCurFrm;
+
+			if (m_vecFrm.size() <= m_iCurFrm)
+			{
+				m_iCurFrm = m_vecFrm.size() - 1;
+				m_bFinish = true;
+			}
+		}
+
+	}
+
+	// 폴더 애니메이션일 경우
+	else if (m_bFolderTex)
+	{
+		if (m_fDuration < m_fTime)
+		{
+			m_fTime = m_fTime - m_fDuration;
+			++m_iCurFrm;
+
+			if (m_vecFolderTex.size() <= m_iCurFrm)
+			{
+				m_iCurFrm = m_vecFolderTex.size() - 1;
+				m_bFinish = true;
+			}
 		}
 	}
+
+
 }
 
 void CAnim2D::Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex
@@ -58,4 +84,29 @@ void CAnim2D::Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex
 
 		m_vecFrm.push_back(frm);
 	}
+}
+
+void CAnim2D::CreateFolderAnim(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS)
+{
+	m_bFolderTex = true;
+
+	SetName(_strAnimName);
+
+	wstring szPath = _RelativePath;
+
+	m_fDuration = 1.f / (float)_FPS;
+
+	for (int i = 0; i <= _FrameCount; ++i)
+	{
+		wstring Temp;
+		Temp.resize(100);
+		_itow_s(i, &Temp[0], 100, 10);
+
+		wstring FilePath = szPath + L"\\" + Temp.c_str() + L".png";
+
+		Ptr<CTexture> pTexture = CResMgr::GetInst()->Load<CTexture>(FilePath, FilePath);
+		m_vecFolderTex.push_back(pTexture);
+	}
+
+
 }
