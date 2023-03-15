@@ -107,6 +107,9 @@
     <Filter Include="UI\InspectorUI\ComponentUI\09. ScriptUI">
       <UniqueIdentifier>{33613e52-fa8f-4ca3-a2cb-3967672276ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\LevelSaveLoad">
+      <UniqueIdentifier>{8838d1d9-8c0f-4016-a8e8-2e1b8b3d2638}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -236,6 +239,9 @@
     <ClInclude Include="ScriptUI.h">
       <Filter>UI\InspectorUI\ComponentUI\09. ScriptUI</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelSaveLoad.h">
+      <Filter>Manager\LevelSaveLoad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -363,6 +369,9 @@
     </ClCompile>
     <ClCompile Include="ScriptUI.cpp">
       <Filter>UI\InspectorUI\ComponentUI\09. ScriptUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelSaveLoad.cpp">
+      <Filter>Manager\LevelSaveLoad</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -57,6 +57,9 @@ void CAnimator2D::UpdateData()
 		vector<Ptr<CTexture>> vecTex = m_pCurAnim->GetFolderTex();
 
 		int CurFrmCount = m_pCurAnim->GetCurFrmCount();
+		Vec2 Offset = vecTex[CurFrmCount]->GetOffset();
+
+		pMtrl->SetScalarParam(VEC2_2, &Offset);
 		pMtrl->SetTexParam(TEX_0, vecTex[CurFrmCount]);
 	}
 }
@@ -66,7 +69,13 @@ void CAnimator2D::Clear()
 	Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
 
 	int iAnimUse = 0;
+	Vec2 vec2 = {};
 	pMtrl->SetScalarParam(INT_0, &iAnimUse);
+	pMtrl->SetScalarParam(VEC2_0, &vec2);
+	pMtrl->SetScalarParam(VEC2_1, &vec2);
+	pMtrl->SetScalarParam(VEC2_2, &vec2);
+	pMtrl->SetScalarParam(VEC2_3, &vec2);
+
 
 	Ptr<CTexture> pTex = nullptr;
 	pMtrl->SetTexParam(TEX_0, pTex);

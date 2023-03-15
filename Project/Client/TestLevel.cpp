@@ -13,6 +13,8 @@
 #include <Script\CPlayerScript.h>
 #include <Script\CMonsterScript.h>
 
+#include "CLevelSaveLoad.h"
+
 
 
 void CreateTestLevel()
@@ -76,10 +78,9 @@ void CreateTestLevel()
 	pParent->Collider2D()->SetAbsolute(true);
 	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
 
-	//Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
-	//pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
-	pParent->Animator2D()->CreateFolderAnimation(L"texture\\spr_idle", L"texture\\spr_idle", 10, 16);
-	pParent->Animator2D()->Play(L"texture\\spr_idle", true);
+	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"Link");
+	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
+	pParent->Animator2D()->Play(L"WalkDown", true);
 
 	SpawnGameObject(pParent, Vec3(0.f, 0.f, 500.f), 0);
 
@@ -150,4 +151,21 @@ void CreateTestLevel()
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"Monster");
 
+
+	// Level 저장
+	//CLevelSaveLoad::SaveLevel(L"Level\\TestLevel.lv", pCurLevel);
+
+	// Level 불러오기
+	//CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.lv");
+
+	/*Ptr<CMaterial> pNewMtrl = new CMaterial;
+	pNewMtrl->SetShader(CResMgr::GetInst()->FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	int a = 101;
+	pNewMtrl->SetScalarParam(INT_1, &a);
+	pNewMtrl->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"PlayerTex"));
+	CResMgr::GetInst()->AddRes<CMaterial>(L"New Material", pNewMtrl);
+
+	pNewMtrl->Save(L"material\\test.mtrl");*/
+
+	//CResMgr::GetInst()->Load<CMaterial>(L"New Material", L"material\\test.mtrl");
 }

@@ -23,6 +23,7 @@ private:
     ScratchImage                        m_Image;
 
     UINT                                m_iRecentNum;
+    Vec2                                m_Offset;
 
 public:
     int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat
@@ -39,6 +40,8 @@ public:
     ComPtr<ID3D11RenderTargetView>	    GetRTV() { return m_RTV; }
     ComPtr<ID3D11DepthStencilView>	    GetDSV() { return m_DSV; }
     ComPtr<ID3D11UnorderedAccessView>   GetUAV() { return m_UAV; }
+
+	const Vec2& GetOffset() { return m_Offset; }
 
 private:
     virtual int Load(const wstring& _strFilePath) override;

@@ -6,8 +6,9 @@
 #include "CLayer.h"
 #include "CGameObject.h"
 #include "CTransform.h"
-
 #include "CRenderMgr.h"
+#include "ptr.h"
+#include "CResMgr.h"
 
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx)
 {
@@ -137,6 +138,22 @@ void LoadWString(wstring& _str, FILE* _File)
 	fread(szBuffer, sizeof(wchar_t), iLen, _File);
 
 	_str = szBuffer;
+}
+
+void SaveResRef(Ptr<CRes> _Res, FILE* _File)
+{
+	int i = 0;
+	if (nullptr == _Res)
+	{
+		fwrite(&i, sizeof(i), 1, _File);
+	}
+	else
+	{
+		i = 1;
+		fwrite(&i, sizeof(i), 1, _File);
+		SaveWString(_Res->GetKey(), _File);
+		SaveWString(_Res->GetRelativePath(), _File);
+	}
 }
 
 const wchar_t* ToWString(COMPONENT_TYPE type)
