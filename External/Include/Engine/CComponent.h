@@ -15,18 +15,22 @@ class CComponent :
     public CEntity
 {
 private:
-    CGameObject*         m_pOwner;
+    CGameObject* m_pOwner;
     const COMPONENT_TYPE m_Type;
 
 public:
     COMPONENT_TYPE GetType() { return m_Type; }
-    CGameObject* GetOwner() { return m_pOwner ; }
+    CGameObject* GetOwner() { return m_pOwner; }
 
 public:
     virtual void begin() {}
     virtual void tick() {}
     virtual void finaltick() = 0;
     virtual CComponent* Clone() = 0;
+
+public:
+    virtual void SaveToLevelFile(FILE* _File) = 0;
+    virtual void LoadFromLevelFile(FILE* _FILE) = 0;
 
 public:
     GET_OTHER_COMPONENT(Transform);

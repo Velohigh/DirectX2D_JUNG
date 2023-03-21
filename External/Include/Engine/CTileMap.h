@@ -12,7 +12,7 @@ private:
     UINT                m_iTileCountY;  // 타일 세로
     Vec2                m_vSliceSize;   // 타일 하나의 크기(UV 단위)
     vector<tTile>       m_vecTile;
-    CStructuredBuffer*  m_Buffer;
+    CStructuredBuffer* m_Buffer;
 
 public:
     virtual void finaltick() override;
@@ -21,7 +21,12 @@ public:
     void UpdateData();
 
     void SetTileCount(UINT _iXCount, UINT _iYCount);
-    void SetSliceSize(Vec2 _vSliceSize)  { m_vSliceSize = _vSliceSize; }
+    void SetSliceSize(Vec2 _vSliceSize) { m_vSliceSize = _vSliceSize; }
+
+
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
 
     CLONE(CTileMap);
 public:

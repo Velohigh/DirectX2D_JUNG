@@ -13,7 +13,6 @@ private:
     map<wstring, CAnim2D*>  m_mapAnim;  // Animation 목록
     CAnim2D*                m_pCurAnim; // 현재 재생중인 Animation
     bool                    m_bRepeat;  // 반복
-    bool                    m_bFolder;  // 폴더애니메이션?
 
 
 public:
@@ -29,6 +28,10 @@ public:
     void CreateFolderAnimation(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS);
 
     map<wstring, CAnim2D*>& GetAnimMap() { return m_mapAnim; }
+
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
 
     CLONE(CAnimator2D);
 public:

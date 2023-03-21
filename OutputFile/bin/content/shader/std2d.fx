@@ -144,7 +144,9 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
         }
         else
         {
-            vOutColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+            float2 vUV = _in.vUV;
+            vUV -= Offset;
+            vOutColor = g_tex_0.Sample(g_sam_0, vUV);
         }
     }
     else

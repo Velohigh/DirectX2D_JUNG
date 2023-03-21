@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MenuUI.h"
 
+#include "CLevelSaveLoad.h"
 #include <Engine\CEventMgr.h>
 #include <Engine\CGameObject.h>
 #include <Engine\components.h>
@@ -38,12 +39,20 @@ int MenuUI::render_update()
         {
             if (ImGui::MenuItem("Save Level"))
             {
-
+                // Level 저장
+                CLevelSaveLoad::SaveLevel(L"Level\\TestLevel.lv", CLevelMgr::GetInst()->GetCurLevel());
             }
 
             if (ImGui::MenuItem("Load Level"))
             {
+                // Level 불러오기
+                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.lv");
 
+                tEvent evn = {};
+                evn.Type = EVENT_TYPE::LEVEL_CHANGE;
+                evn.wParam = (DWORD_PTR)pLoadedLevel;
+
+                CEventMgr::GetInst()->AddEvent(evn);
             }
 
             ImGui::EndMenu();

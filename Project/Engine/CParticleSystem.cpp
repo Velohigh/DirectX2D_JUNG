@@ -16,7 +16,7 @@ CParticleSystem::CParticleSystem()
 	, m_AccTime(0.f)
 {
 	m_ModuleData.iMaxParticleCount = 1000;
-	
+
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
 	m_ModuleData.SpawnRate = 20;
 	m_ModuleData.vSpawnColor = Vec3(0.4f, 1.f, 0.4f);
@@ -24,7 +24,7 @@ CParticleSystem::CParticleSystem()
 	m_ModuleData.vSpawnScaleMax = Vec3(20.f, 20.f, 1.f);
 
 	m_ModuleData.SpawnShapeType = 0;
-	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);	
+	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);
 	m_ModuleData.Space = 0; // 시뮬레이션 좌표계
 
 	m_ModuleData.MinLifeTime = 3.f;
@@ -108,7 +108,7 @@ void CParticleSystem::finaltick()
 		m_AccTime = fTimePerCount * (fData - floor(fData));
 
 		// 버퍼에 스폰 카운트 전달
-		tRWParticleBuffer rwbuffer = { (int)fData, };		
+		tRWParticleBuffer rwbuffer = { (int)fData, };
 		m_RWBuffer->SetData(&rwbuffer);
 	}
 
@@ -145,4 +145,31 @@ void CParticleSystem::render()
 	// 파티클 버퍼 바인딩 해제
 	m_ParticleBuffer->Clear();
 	m_ModuleDataBuffer->Clear();
+}
+
+void CParticleSystem::SaveToLevelFile(FILE* _File)
+{
+	CRenderComponent::SaveToLevelFile(_File);
+
+	fwrite(&m_ModuleData, sizeof(tParticleModule), 1, _File);
+	SaveResRef(m_UpdateCS.Get(), _File);
+}
+
+void CParticleSystem::LoadFromLevelFile(FILE* _File)
+{
+	CRenderComponent::LoadFromLevelFile(_File);
+
+	fread(&m_ModuleData, sizeof(tParticleModule), 1, _File);
+
+	int i = 0;
+	fread(&i, sizeof(i), 1, _File);
+
+	if (i)
+	{
+		wstring strKey, strRelativePath;
+		LoadWString(strKey, _File);
+		LoadWString(strRelativePath, _File);
+
+		m_UpdateCS = (CParticleUpdateShader*)CResMgr::GetInst()->FindRes<CComputeShader>(strKey).Get();
+	}
 }

@@ -9,7 +9,7 @@
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
-	, m_fSpeed(100.f)
+	, m_fSpeed(0.f)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Speed");
 }
@@ -89,7 +89,22 @@ void CPlayerScript::Shoot()
 }
 
 
+
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
 {
 
+}
+
+
+
+
+
+void CPlayerScript::SaveToLevelFile(FILE* _File)
+{
+	fwrite(&m_fSpeed, sizeof(float), 1, _File);
+}
+
+void CPlayerScript::LoadFromLevelFile(FILE* _File)
+{
+	fread(&m_fSpeed, sizeof(float), 1, _File);
 }

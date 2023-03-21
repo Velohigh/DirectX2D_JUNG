@@ -83,9 +83,13 @@ void CEventMgr::tick()
 
 			break;
 		case EVENT_TYPE::LEVEL_CHANGE:
-
+		{
+			// wParam : Level Adress
+			CLevel* Level = (CLevel*)m_vecEvent[i].wParam;
+			CLevelMgr::GetInst()->ChangeLevel(Level);
 			m_LevelChanged = true;
-			break;
+		}
+		break;
 		}
 	}
 

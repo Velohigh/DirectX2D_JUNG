@@ -11,7 +11,6 @@ CAnimator2D::CAnimator2D()
 	: CComponent(COMPONENT_TYPE::ANIMATOR2D)
 	, m_pCurAnim(nullptr)
 	, m_bRepeat(false)
-	, m_bFolder(false)
 {
 }
 
@@ -36,7 +35,7 @@ void CAnimator2D::finaltick()
 void CAnimator2D::UpdateData()
 {
 	Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
-
+	bool m_bFolder = m_pCurAnim->IsFolderTex();
 	if (!m_bFolder)
 	{
 		const tAnim2DFrm& frm = m_pCurAnim->GetCurFrame();
@@ -115,11 +114,51 @@ void CAnimator2D::CreateAnimation(const wstring& _strAnimName
 
 void CAnimator2D::CreateFolderAnimation(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS)
 {
-	m_bFolder = true;
-
 	CAnim2D* pAnim = new CAnim2D;
 	pAnim->CreateFolderAnim(_strAnimName, _RelativePath, _FrameCount, _FPS);
 
 	pAnim->m_pOwner = this;
 	m_mapAnim.insert(make_pair(_strAnimName, pAnim));
+}
+
+void CAnimator2D::SaveToLevelFile(FILE* _File)
+{
+	fwrite(&m_bRepeat, sizeof(bool), 1, _File);
+
+	size_t AnimCount = m_mapAnim.size();
+	fwrite(&AnimCount, sizeof(size_t), 1, _File);
+
+	for (const auto& pair : m_mapAnim)
+	{
+		pair.second->SaveToLevelFile(_File);
+	}
+
+	wstring strCurAnimName;
+	if (nullptr != m_pCurAnim)
+	{
+		strCurAnimName = m_pCurAnim->GetName();
+	}
+	SaveWString(strCurAnimName, _File);
+}
+
+void CAnimator2D::LoadFromLevelFile(FILE* _File)
+{
+	fread(&m_bRepeat, sizeof(bool), 1, _File);
+
+	size_t AnimCount = 0;
+	fread(&AnimCount, sizeof(size_t), 1, _File);
+
+	for (size_t i = 0; i < AnimCount; ++i)
+	{
+		CAnim2D* pNewAnim = new CAnim2D;
+		pNewAnim->LoadFromLevelFile(_File);
+
+		m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
+		pNewAnim->m_pOwner = this;
+	}
+
+	wstring strCurAnimName;
+	LoadWString(strCurAnimName, _File);
+
+	m_pCurAnim = FindAnim(strCurAnimName);
 }

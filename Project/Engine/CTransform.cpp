@@ -7,12 +7,13 @@
 CTransform::CTransform()
 	: CComponent(COMPONENT_TYPE::TRANSFORM)
 	, m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
-	, m_bAbsolute(false)	
+	, m_bAbsolute(false)
 	, m_vRelativeDir{
 		  Vec3(1.f, 0.f, 0.f)
 		, Vec3(0.f, 1.f, 0.f)
-		, Vec3(0.f, 0.f, 1.f)}	
+		, Vec3(0.f, 0.f, 1.f) }
 {
+	SetName(L"Transform");
 }
 
 CTransform::~CTransform()
@@ -23,7 +24,7 @@ void CTransform::finaltick()
 {
 	m_matWorldScale = XMMatrixIdentity();
 	m_matWorldScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
-	
+
 	Matrix matRot = XMMatrixIdentity();
 	matRot = XMMatrixRotationX(m_vRelativeRot.x);
 	matRot *= XMMatrixRotationY(m_vRelativeRot.y);
@@ -31,7 +32,7 @@ void CTransform::finaltick()
 
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
-	
+
 	m_matWorld = m_matWorldScale * matRot * matTranslation;
 
 	Vec3 vDefaultDir[3] = {
@@ -63,7 +64,7 @@ void CTransform::finaltick()
 			m_matWorldScale = pParent->Transform()->m_matWorldScale;
 			m_matWorld *= pParent->Transform()->m_matWorld;
 		}
-		
+
 
 		for (int i = 0; i < 3; ++i)
 		{
@@ -85,4 +86,20 @@ void CTransform::UpdateData()
 
 	pTransformBuffer->SetData(&g_transform);
 	pTransformBuffer->UpdateData();
+}
+
+void CTransform::SaveToLevelFile(FILE* _File)
+{
+	fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
+	fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
+	fwrite(&m_vRelativeRot, sizeof(Vec3), 1, _File);
+	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
+}
+
+void CTransform::LoadFromLevelFile(FILE* _FILE)
+{
+	fread(&m_vRelativePos, sizeof(Vec3), 1, _FILE);
+	fread(&m_vRelativeScale, sizeof(Vec3), 1, _FILE);
+	fread(&m_vRelativeRot, sizeof(Vec3), 1, _FILE);
+	fread(&m_bAbsolute, sizeof(bool), 1, _FILE);
 }

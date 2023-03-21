@@ -50,6 +50,10 @@ public:
     virtual void OnOverlap(CCollider2D* _Other) {}
     virtual void EndOverlap(CCollider2D* _Other) {}
 
+public:
+    virtual void SaveToLevelFile(FILE* _File) override {}
+    virtual void LoadFromLevelFile(FILE* _FILE) override {}
+
 protected:
     void AddScriptParam(SCRIPT_PARAM eParam, void* _pData, const string& _Desc);
 

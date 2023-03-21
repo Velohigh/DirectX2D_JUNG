@@ -10,6 +10,7 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _L
 // 오브젝트 삭제
 void DestroyObject(CGameObject* _DeletObject);
 
+
 // DrawDebugShape
 void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f);
 void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f);
@@ -32,6 +33,28 @@ const wchar_t* ToWSTring(COMPONENT_TYPE);
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _File);
 
+class CRes;
+template<typename T>
+class Ptr;
+
+void SaveResRef(Ptr<CRes> _Res, FILE* _File);
+
+class CResMgr;
+template<typename T>
+void LoadResRef(Ptr<T>& _Res, FILE* _File)
+{
+	int i = 0;
+	fread(&i, sizeof(i), 1, _File);
+
+	if (i)
+	{
+		wstring strKey, strRelativePath;
+		LoadWString(strKey, _File);
+		LoadWString(strRelativePath, _File);
+
+		_Res = CResMgr::GetInst()->Load<T>(strKey, strRelativePath);
+	}
+}
 
 
 
