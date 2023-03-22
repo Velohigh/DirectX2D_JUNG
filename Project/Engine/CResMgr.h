@@ -29,8 +29,6 @@ private:
     void CreateDefaultGraphicsShader();
     void CreateDefaultComputeShader();
     void CreateDefaultMaterial();
-    void CreateDefaultPrefab();
-    void LoadDefaultTexture();   
 
 
 

@@ -2,9 +2,12 @@
 #include "ContentUI.h"
 
 #include <Engine\CResMgr.h>
+#include <Engine\CPathMgr.h>
+
 #include "TreeUI.h"
 #include "ImGuiMgr.h"
 #include "InspectorUI.h"
+
 
 
 ContentUI::ContentUI()
@@ -31,6 +34,8 @@ ContentUI::~ContentUI()
 void ContentUI::init()
 {
 	ResetContent();
+
+	Reload();
 }
 
 void ContentUI::tick()
@@ -47,6 +52,48 @@ int ContentUI::render_update()
 {
 	return 0;
 }
+
+void ContentUI::Reload()
+{
+	// Content 폴더에 있는 파일 이름들을 확인
+	m_vecResPath.clear();
+	wstring strContentPath = CPathMgr::GetInst()->GetContentPath();
+	FindFileName(strContentPath);
+
+	// 파일명으로 리소스 로딩
+	for (size_t i = 0; i < m_vecResPath.size(); ++i)
+	{
+		RES_TYPE type = GetResTypeByExt(m_vecResPath[i]);
+
+		if (type == RES_TYPE::END)
+			continue;
+
+		switch (type)
+		{
+		case RES_TYPE::MESHDATA:
+
+			break;
+		case RES_TYPE::MATERIAL:
+			CResMgr::GetInst()->Load<CMaterial>(m_vecResPath[i], m_vecResPath[i]);
+			break;
+		case RES_TYPE::PREFAB:
+
+			break;
+		case RES_TYPE::MESH:
+
+			break;
+		case RES_TYPE::TEXTURE:
+			CResMgr::GetInst()->Load<CTexture>(m_vecResPath[i], m_vecResPath[i]);
+			break;
+		case RES_TYPE::SOUND:
+
+			break;
+		}
+	}
+
+	ResetContent();
+}
+
 
 void ContentUI::ResetContent()
 {
@@ -83,4 +130,59 @@ void ContentUI::SetTargetToInspector(DWORD_PTR _SelectedNode)
 	pInspector->SetTargetResource(pSelectObject);
 }
 
+
+void ContentUI::FindFileName(const wstring& _FolderPath)
+{
+	WIN32_FIND_DATA FindData = {};
+
+	wstring FolderPath = _FolderPath + L"*.*";
+
+	HANDLE hFindHandle = FindFirstFile(FolderPath.c_str(), &FindData);
+
+	while (FindNextFile(hFindHandle, &FindData))
+	{
+		if (FindData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
+		{
+			if (!wcscmp(FindData.cFileName, L".."))
+			{
+				continue;
+			}
+
+			FindFileName(_FolderPath + FindData.cFileName + L"\\");
+			continue;
+		}
+
+		wstring strContentPath = CPathMgr::GetInst()->GetContentPath();
+		wstring RelativePath = _FolderPath + FindData.cFileName;
+		RelativePath = RelativePath.substr(strContentPath.length(), RelativePath.length() - strContentPath.length());
+
+		m_vecResPath.push_back(RelativePath);
+	}
+
+	FindClose(hFindHandle);
+}
+
+RES_TYPE ContentUI::GetResTypeByExt(const wstring& _relativepath)
+{
+	wchar_t szExt[50] = {};
+	_wsplitpath_s(_relativepath.c_str(), 0, 0, 0, 0, 0, 0, szExt, 50);
+	wstring strExt = szExt;
+
+	if (L".mdat" == strExt)
+		return RES_TYPE::MESHDATA;
+	else if (L".pref" == strExt)
+		return RES_TYPE::PREFAB;
+	else if (L".mesh" == strExt)
+		return RES_TYPE::MESH;
+	else if (L".mtrl" == strExt)
+		return RES_TYPE::MATERIAL;
+	else if (L".png" == strExt || L".jpg" == strExt
+		|| L".jpeg" == strExt || L".bmp" == strExt
+		|| L".tga" == strExt || L".dds" == strExt)
+		return RES_TYPE::TEXTURE;
+	else if (L".mp3" == strExt || L".wav" == strExt || L".oga" == strExt)
+		return RES_TYPE::SOUND;
+	else
+		return RES_TYPE::END;
+}
 

@@ -17,9 +17,6 @@ void CResMgr::init()
 	CreateDefaultGraphicsShader();
 	CreateDefaultComputeShader();
 	CreateDefaultMaterial();
-	CreateDefaultPrefab();
-
-	LoadDefaultTexture();
 }
 
 void CResMgr::tick()
@@ -368,30 +365,6 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"ParticleRenderShader"));
 	AddRes(L"ParticleRenderMtrl", pMtrl);
-}
-
-void CResMgr::CreateDefaultPrefab()
-{
-
-}
-
-void CResMgr::LoadDefaultTexture()
-{
-	Load<CTexture>(L"PlayerTex", L"texture\\Fighter.bmp");
-	Load<CTexture>(L"SmokeTex", L"texture\\smokeparticle.png");
-	Load<CTexture>(L"CharacterTex", L"texture\\Character.png");
-
-	Load<CTexture>(L"DeadCell", L"texture\\beheaded.png");
-	Load<CTexture>(L"DeadCell_N", L"texture\\beheaded_n.png");
-
-	Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
-	Load<CTexture>(L"Link", L"texture\\link.png");
-
-	// NoiseTexture
-	Load<CTexture>(L"Noise_01", L"texture\\Noise\\noise_01.png");
-	Load<CTexture>(L"Noise_02", L"texture\\Noise\\noise_02.png");
-	Load<CTexture>(L"Noise_03", L"texture\\Noise\\noise_03.jpg");
-
 }
 
 Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height

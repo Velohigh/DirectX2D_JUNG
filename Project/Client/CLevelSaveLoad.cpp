@@ -139,7 +139,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelPath)
 		// 레이어 이름
 		wstring LayerName;
 		LoadWString(LayerName, pFile);
-		pLayer->SetName(strLevelName);
+		pLayer->SetName(LayerName);
 
 		// 게임 오브젝트 개수
 		size_t objCount = 0;
