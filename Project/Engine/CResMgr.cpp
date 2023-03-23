@@ -42,7 +42,7 @@ void CResMgr::CreateDefaultMesh()
 
 	UINT idx = 0;
 
-	pMesh = new CMesh;
+	pMesh = new CMesh(true);
 	pMesh->Create(&v, 1, &idx, 1);
 	AddRes(L"PointMesh", pMesh);
 
@@ -81,7 +81,7 @@ void CResMgr::CreateDefaultMesh()
 	vecIdx.push_back(1);
 	vecIdx.push_back(2);
 
-	pMesh = new CMesh;
+	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes(L"RectMesh", pMesh);
 
@@ -92,7 +92,7 @@ void CResMgr::CreateDefaultMesh()
 	vecIdx.push_back(3);
 	vecIdx.push_back(0);
 
-	pMesh = new CMesh;
+	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes(L"RectMesh_Debug", pMesh);
 
@@ -140,7 +140,7 @@ void CResMgr::CreateDefaultMesh()
 	vecIdx.push_back(1);
 	vecIdx.push_back(Slice);
 
-	pMesh = new CMesh;
+	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes(L"CircleMesh", pMesh);
 
@@ -151,7 +151,7 @@ void CResMgr::CreateDefaultMesh()
 	}
 	vecIdx.push_back(1);
 
-	pMesh = new CMesh;
+	pMesh = new CMesh(true);
 	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
 	AddRes(L"CircleMesh_Debug", pMesh);
 
@@ -339,12 +339,10 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
 	AddRes(L"Std2DAnimMtrl", pMtrl);
 
-
 	// Std2DLight Material
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"Std2DLightMtrl", pMtrl);
-
 
 	// Std2DLight Material
 	pMtrl = new CMaterial(true);
@@ -400,4 +398,16 @@ Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Textur
 	AddRes<CTexture>(_strKey, pTex);
 
 	return pTex;
+}
+
+
+void CResMgr::DeleteRes(RES_TYPE _type, const wstring& _strKey)
+{
+	map<wstring, Ptr<CRes>>::iterator iter = m_arrRes[(UINT)_type].find(_strKey);
+
+	assert(!(iter == m_arrRes[(UINT)_type].end()));
+
+	m_arrRes[(UINT)_type].erase(iter);
+
+	m_Changed = true;
 }

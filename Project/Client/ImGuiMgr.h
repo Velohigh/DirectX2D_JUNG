@@ -23,7 +23,7 @@ private:
     HWND                m_hMainHwnd;
     map<string, UI*>    m_mapUI;
 
-
+    HANDLE              m_hObserver;
 
 public:
     void init(HWND _hWnd);
@@ -35,6 +35,7 @@ public:
 
 private:
     void CreateUI();
+    void ObserveContent();
 
     void begin();
     void tick();

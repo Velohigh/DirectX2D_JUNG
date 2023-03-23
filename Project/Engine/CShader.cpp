@@ -2,7 +2,7 @@
 #include "CShader.h"
 
 CShader::CShader(RES_TYPE _eType)
-	: CRes(_eType)
+	: CRes(_eType, true)
 {
 }
 

@@ -52,7 +52,10 @@ public:
     template<typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
 
+private:
+    void DeleteRes(RES_TYPE _type, const wstring& _strKey);
 
+    friend class CEventMgr;
 };
 
 template<typename T>

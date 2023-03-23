@@ -4,6 +4,7 @@
 #include <Engine\CDevice.h>
 #include <Engine\CLevelMgr.h>
 #include <Engine\CKeyMgr.h>
+#include <Engine\CPathMgr.h>
 
 #include <Engine\CGameObject.h>
 
@@ -13,6 +14,7 @@
 
 ImGuiMgr::ImGuiMgr()
     : m_hMainHwnd(nullptr)
+    , m_hObserver(nullptr)
 {
 
 }
@@ -66,7 +68,14 @@ void ImGuiMgr::init(HWND _hWnd)
     ImGui_ImplWin32_Init(m_hMainHwnd);
     ImGui_ImplDX11_Init(DEVICE, CONTEXT);
 
+    // Tool 용 UI 생성
     CreateUI();
+
+    // Content 폴더 감시
+    wstring strContentPath = CPathMgr::GetInst()->GetContentPath();
+    m_hObserver = FindFirstChangeNotification(strContentPath.c_str(), true
+        , FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME
+        | FILE_ACTION_REMOVED | FILE_ACTION_ADDED);
 }
 
 void ImGuiMgr::progress()
@@ -78,6 +87,9 @@ void ImGuiMgr::progress()
     finaltick();
 
     render();
+
+    // Content 폴더 변경 감시
+    ObserveContent();
 }
 
 
@@ -175,6 +187,20 @@ void ImGuiMgr::CreateUI()
     for (const auto& pair : m_mapUI)
     {
         pair.second->init();
+    }
+}
+
+void ImGuiMgr::ObserveContent()
+{
+    DWORD dwWaitStatus = WaitForSingleObject(m_hObserver, 0);
+
+    if (dwWaitStatus == WAIT_OBJECT_0)
+    {
+        // content 폴더에 변경점이 생겼다.
+        ContentUI* UI = (ContentUI*)FindUI("##Content");
+        UI->Reload();
+
+        FindNextChangeNotification(m_hObserver);
     }
 }
 

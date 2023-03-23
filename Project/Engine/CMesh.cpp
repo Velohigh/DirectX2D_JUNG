@@ -4,8 +4,8 @@
 #include "CDevice.h"
 
 
-CMesh::CMesh()
-	: CRes(RES_TYPE::MESH)
+CMesh::CMesh(bool _bEngine)
+	: CRes(RES_TYPE::MESH, _bEngine)
 	, m_tVBDesc{}
 	, m_VtxCount(0)
 	, m_tIBDesc{}

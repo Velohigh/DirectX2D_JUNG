@@ -3,6 +3,7 @@
 
 #include <Engine\CResMgr.h>
 #include <Engine\CPathMgr.h>
+#include <Engine\CEventMgr.h>
 
 #include "TreeUI.h"
 #include "ImGuiMgr.h"
@@ -33,8 +34,6 @@ ContentUI::~ContentUI()
 
 void ContentUI::init()
 {
-	ResetContent();
-
 	Reload();
 }
 
@@ -91,6 +90,30 @@ void ContentUI::Reload()
 		}
 	}
 
+
+	// 리소스의 원본파일 체크
+	for (UINT i = 0; i < UINT(RES_TYPE::END); ++i)
+	{
+		const map<wstring, Ptr<CRes>>& mapRes = CResMgr::GetInst()->GetResources((RES_TYPE)i);
+
+		for (const auto& pair : mapRes)
+		{
+			if (pair.second->IsEngineRes())
+				continue;
+
+			wstring strFilePath = strContentPath + pair.first;
+			if (!filesystem::exists(strFilePath))
+			{
+				tEvent evn = {};
+				evn.Type = EVENT_TYPE::DELETE_RESOURCE;
+				evn.wParam = (DWORD_PTR)i;
+				evn.lParam = (DWORD_PTR)pair.second.Get();
+				CEventMgr::GetInst()->AddEvent(evn);
+			}
+		}
+	}
+
+	// 트리 갱신
 	ResetContent();
 }
 

@@ -4,13 +4,13 @@ template<typename T>
 class Ptr
 {
 private:
-	T*		m_Res;
+	T* m_Res;
 
 
 public:
 	T* Get() const { return m_Res; }
 
-	T* operator -> ()
+	T* operator -> () const
 	{
 		return m_Res;
 	}
@@ -39,7 +39,7 @@ public:
 
 	bool operator == (T* _Other)
 	{
-		return m_Res == _Other;			
+		return m_Res == _Other;
 	}
 
 	bool operator != (T* _Other)

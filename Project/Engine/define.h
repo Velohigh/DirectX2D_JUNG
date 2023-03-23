@@ -207,7 +207,7 @@ enum class EVENT_TYPE
 
 	ADD_CHILD,
 
-	DELETE_RESOURCE,
+	DELETE_RESOURCE,	// wParam : RES_TYPE, lParam : Resource Adress
 
 	LEVEL_CHANGE,
 };

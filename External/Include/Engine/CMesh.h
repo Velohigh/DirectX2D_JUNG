@@ -35,6 +35,6 @@ private:
 	
 
 public:
-	CMesh();
+	CMesh(bool _bEngine = false);
 	~CMesh();
 };

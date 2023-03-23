@@ -4,6 +4,8 @@
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CGameObject.h"
+#include "CResMgr.h"
+
 
 CEventMgr::CEventMgr()
 {
@@ -79,7 +81,12 @@ void CEventMgr::tick()
 
 		break;
 		case EVENT_TYPE::DELETE_RESOURCE:
-
+			// wParam : RES_TYPE, lParam : Resource Adress
+		{
+			RES_TYPE type = (RES_TYPE)m_vecEvent[i].wParam;
+			CRes* pRes = (CRes*)m_vecEvent[i].lParam;
+			CResMgr::GetInst()->DeleteRes(type, pRes->GetKey());
+		}
 
 			break;
 		case EVENT_TYPE::LEVEL_CHANGE:

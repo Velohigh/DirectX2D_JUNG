@@ -15,6 +15,15 @@ using std::string;
 #include <typeinfo>
 #include <assert.h>
 
+
+// FileSystem
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#include <experimental/filesystem>
+using namespace std::experimental;
+using namespace std::experimental::filesystem;
+
+
+
 #include <wrl.h>
 using namespace Microsoft::WRL;
 
