@@ -297,6 +297,42 @@ void CResMgr::CreateDefaultGraphicsShader()
 	AddRes(pShader->GetKey(), pShader);
 
 
+
+	// ============================
+	// GrayShader
+	// RS_TYPE : CULL_NONE
+	// DS_TYPE : NO_TEST_NO_WRITE
+	// BS_TYPE : DEFAULT	 
+	// Domain : POSTPROCESS
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"GrayShader");
+	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayShader");
+	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_GrayShader");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+	AddRes(pShader->GetKey(), pShader);
+
+	// ============================
+	// Distortion Shader
+	// RS_TYPE : CULL_NONE
+	// DS_TYPE : NO_TEST_NO_WRITE
+	// BS_TYPE : DEFAULT	 
+	// Domain : POSTPROCESS
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"DistortionShader");
+	pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Distortion");
+	pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Distortion");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+	// Parameter
+	pShader->AddTexParam(TEX_1, "Noise Texture");
+
+	AddRes(pShader->GetKey(), pShader);
 }
 
 
@@ -363,6 +399,16 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"ParticleRenderShader"));
 	AddRes(L"ParticleRenderMtrl", pMtrl);
+
+	// GrayShader(PostProcess)
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"GrayShader"));
+	AddRes(L"GrayMtrl", pMtrl);
+
+	// DistortionShader(PostProcess)
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DistortionShader"));
+	AddRes(L"DistortionMtrl", pMtrl);
 }
 
 Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height
@@ -372,7 +418,7 @@ Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _
 
 	assert(nullptr == pTex);
 
-	pTex = new CTexture;
+	pTex = new CTexture(true);
 	if (FAILED(pTex->Create(_Width, _Height, _pixelformat, _BindFlag, _Usage)))
 	{
 		assert(nullptr);
@@ -389,7 +435,7 @@ Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Textur
 
 	assert(nullptr == pTex);
 
-	pTex = new CTexture;
+	pTex = new CTexture(true);
 	if (FAILED(pTex->Create(_Tex2D)))
 	{
 		assert(nullptr);

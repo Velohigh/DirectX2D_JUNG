@@ -21,8 +21,8 @@ private:
     vector<CGameObject*>    m_vecOpaque;
     vector<CGameObject*>    m_vecMask;
     vector<CGameObject*>    m_vecTransparent;
-    vector<CGameObject*>    m_vecPost;
     vector<CGameObject*>    m_vecUI;
+    vector<CGameObject*>    m_vecPost;
 
 
 

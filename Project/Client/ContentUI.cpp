@@ -164,7 +164,7 @@ void ContentUI::FindFileName(const wstring& _FolderPath)
 
 	while (FindNextFile(hFindHandle, &FindData))
 	{
-		if (FindData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
+		if (FindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
 			if (!wcscmp(FindData.cFileName, L".."))
 			{

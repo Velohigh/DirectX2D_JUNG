@@ -19,7 +19,7 @@
 
 void CreateTestLevel()
 {
-	return;
+	//return;
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 	pCurLevel->ChangeState(LEVEL_STATE::STOP);
@@ -148,6 +148,27 @@ void CreateTestLevel()
 	pParticleObj->AddComponent(new CParticleSystem);
 
 	SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
+
+
+	CGameObject* pPostProcess = new CGameObject;
+	pPostProcess->SetName(L"PostProcess");
+	pPostProcess->AddComponent(new CTransform);
+	pPostProcess->AddComponent(new CMeshRender);
+	pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+	SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 0);
+
+	CGameObject* pDistortion = new CGameObject;
+	pDistortion->SetName(L"Distortion");
+	pDistortion->AddComponent(new CTransform);
+	pDistortion->AddComponent(new CMeshRender);
+	pDistortion->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
+	pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+	SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);
+
+
+
 
 
 	// 충돌 시킬 레이어 짝 지정

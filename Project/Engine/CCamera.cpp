@@ -185,10 +185,13 @@ void CCamera::render()
 	render_opaque();
 	render_mask();
 	render_transparent();
+
+	// PostProcess
 	render_postprocess();
+
+	// UI
 	render_ui();
 }
-
 
 
 void CCamera::clear()
@@ -228,6 +231,7 @@ void CCamera::render_postprocess()
 {
 	for (size_t i = 0; i < m_vecPost.size(); ++i)
 	{
+		CRenderMgr::GetInst()->CopyRenderTarget();
 		m_vecPost[i]->render();
 	}
 }

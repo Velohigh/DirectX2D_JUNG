@@ -3,8 +3,8 @@
 
 #include "CDevice.h"
 
-CTexture::CTexture()
-	: CRes(RES_TYPE::TEXTURE)
+CTexture::CTexture(bool _bEngine)
+	: CRes(RES_TYPE::TEXTURE, _bEngine)
 	, m_Desc{}
 {
 }

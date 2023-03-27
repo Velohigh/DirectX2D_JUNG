@@ -47,12 +47,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // Editor 초기화
     CEditorObjMgr::GetInst()->init();
 
-    // 테스트 용 레벨 생성
-    CreateTestLevel();
-
     // ImGui 초기화
     ImGuiMgr::GetInst()->init(g_hWnd);
 
+    // 테스트 용 레벨 생성
+    CreateTestLevel();
 
     // 메세지 루프
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
@@ -77,8 +76,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             CEngine::GetInst()->progress();
 
             CEditorObjMgr::GetInst()->progress();
-
-
 
             ImGuiMgr::GetInst()->progress();
 

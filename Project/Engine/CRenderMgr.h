@@ -1,6 +1,9 @@
 #pragma once
 #include "CSingleton.h"
 
+#include "ptr.h"
+#include "CTexture.h"
+
 class CCamera;
 class CLight2D;
 class CStructuredBuffer;
@@ -20,6 +23,8 @@ private:
 
     void (CRenderMgr::* RENDER_FUNC)(void);
 
+    Ptr<CTexture>               m_RTCopyTex;
+
 
 public:
     void init();
@@ -34,13 +39,15 @@ public:
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecShapeInfo.push_back(_info); }
     vector<tDebugShapeInfo>& GetDebugShapeInfo() { return m_vecShapeInfo; }
 
-    CCamera* GetMainCam() 
-    { 
+    CCamera* GetMainCam()
+    {
         if (m_vecCam.empty())
             return nullptr;
 
         return m_vecCam[0];
     }
+
+    void CopyRenderTarget();
 
 private:
     void UpdateData();
