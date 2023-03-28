@@ -31,6 +31,7 @@ void CreateTestLevel()
 	pCurLevel->GetLayer(3)->SetName(L"Monster");
 	pCurLevel->GetLayer(4)->SetName(L"PlayerProjectile");
 	pCurLevel->GetLayer(5)->SetName(L"MonsterProjectile");
+	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
 
 
 	// Main Camera Object 생성
@@ -43,8 +44,23 @@ void CreateTestLevel()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
 	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
 
 	SpawnGameObject(pMainCam, Vec3(0.f, 0.f, 0.f), 0);
+
+	// UI cameara
+	CGameObject* pUICam = new CGameObject;
+	pUICam->SetName(L"UICamera");
+
+	pUICam->AddComponent(new CTransform);
+	pUICam->AddComponent(new CCamera);
+
+	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	pUICam->Camera()->SetCameraIndex(1);		// MainCamera 로 설정
+	pUICam->Camera()->SetLayerMask(31, true);	// 모든 레이어 체크
+
+	SpawnGameObject(pUICam, Vec3(0.f, 0.f, 0.f), 0);
+
 
 	// 광원 추가
 	CGameObject* pLightObj = new CGameObject;
@@ -150,13 +166,13 @@ void CreateTestLevel()
 	SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
-	CGameObject* pPostProcess = new CGameObject;
+	/*CGameObject* pPostProcess = new CGameObject;
 	pPostProcess->SetName(L"PostProcess");
 	pPostProcess->AddComponent(new CTransform);
 	pPostProcess->AddComponent(new CMeshRender);
 	pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
-	SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 0);
+	SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 0);*/
 
 	CGameObject* pDistortion = new CGameObject;
 	pDistortion->SetName(L"Distortion");

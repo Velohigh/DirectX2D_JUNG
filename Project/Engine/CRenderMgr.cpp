@@ -132,5 +132,4 @@ void CRenderMgr::UpdateData()
 void CRenderMgr::Clear()
 {
     m_vecLight2D.clear();
-
 }

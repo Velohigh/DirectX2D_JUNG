@@ -6,12 +6,18 @@
 #include <Engine\CGameObject.h>
 #include <Engine\components.h>
 #include <Engine\CScript.h>
+#include <Engine/CLevelMgr.h>
 
 #include <Script\CScriptMgr.h>
+
+
 
 #include "ImGuiMgr.h"
 #include "OutlinerUI.h"
 #include "InspectorUI.h"
+#include "CLevelSaveLoad.h"
+
+
 
 MenuUI::MenuUI()
     : UI("##Menu")
@@ -100,6 +106,65 @@ int MenuUI::render_update()
 
             ImGui::EndMenu();
         }
+
+        if (ImGui::BeginMenu("Level"))
+        {
+            CLevel* CurLevel = CLevelMgr::GetInst()->GetCurLevel();
+            bool PlayEnable = true;
+            bool PauseEnable = true;
+            bool StopEnable = true;
+
+            if (CurLevel->GetState() == LEVEL_STATE::PLAY)
+            {
+                PlayEnable = false;
+                PauseEnable = true;
+                StopEnable = true;
+            }
+            else if (CurLevel->GetState() == LEVEL_STATE::PAUSE)
+            {
+                PlayEnable = true;
+                PauseEnable = false;
+                StopEnable = true;
+            }
+            else if (CurLevel->GetState() == LEVEL_STATE::STOP)
+            {
+                PlayEnable = true;
+                PauseEnable = false;
+                StopEnable = false;
+            }
+
+
+
+            if (ImGui::MenuItem("Play", nullptr, nullptr, PlayEnable))
+            {
+                CLevelSaveLoad::SaveLevel(L"Level\\Temp.lv", CurLevel);
+                CurLevel->ChangeState(LEVEL_STATE::PLAY);
+            }
+            else if (ImGui::MenuItem("Pause", nullptr, nullptr, PauseEnable))
+            {
+                CurLevel->ChangeState(LEVEL_STATE::PAUSE);
+            }
+            else if (ImGui::MenuItem("Stop", nullptr, nullptr, StopEnable))
+            {
+                CurLevel->ChangeState(LEVEL_STATE::STOP);
+                CLevel* pNewLevel = CLevelSaveLoad::LoadLevel(L"Level\\Temp.lv");
+
+                tEvent evn = {};
+                evn.Type = EVENT_TYPE::LEVEL_CHANGE;
+                evn.wParam = DWORD_PTR(pNewLevel);
+                CEventMgr::GetInst()->AddEvent(evn);
+
+                // InspectorUI
+                InspectorUI* Inspector = (InspectorUI*)ImGuiMgr::GetInst()->FindUI("##Inspector");
+                Inspector->SetTargetObject(nullptr);
+            }
+
+            ImGui::EndMenu();
+        }
+
+
+
+
         ImGui::EndMainMenuBar();
     }
 

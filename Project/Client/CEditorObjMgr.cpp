@@ -70,19 +70,6 @@ void CEditorObjMgr::progress()
 
 void CEditorObjMgr::tick()
 {
-	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
-
-	if (KEY_TAP(KEY::P))
-	{
-		if (pCurLevel->GetState() == LEVEL_STATE::PLAY)
-			CLevelMgr::GetInst()->GetCurLevel()->ChangeState(LEVEL_STATE::STOP);
-		else
-			CLevelMgr::GetInst()->GetCurLevel()->ChangeState(LEVEL_STATE::PLAY);
-	}
-
-
-
-
 	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
 	{
 		m_vecEditorObj[i]->tick();

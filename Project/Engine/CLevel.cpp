@@ -79,6 +79,7 @@ void CLevel::ChangeState(LEVEL_STATE _State)
 	if (LEVEL_STATE::PLAY == m_State)
 	{
 		CRenderMgr::GetInst()->SetRenderFunc(true);
+		begin();
 	}
 	else
 	{
