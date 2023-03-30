@@ -186,6 +186,16 @@ bool CPlayerScript::IsMoveKey()
 	return false;
 }
 
+void CPlayerScript::SetSize2x()
+{
+	vector<Ptr<CTexture>> VecFolderTex = Animator2D()->GetCurAnim()->GetvecFolderTex();
+	int CurFrmCount = Animator2D()->GetCurAnim()->GetCurFrmCount();
+
+	float Width = VecFolderTex[CurFrmCount]->Width();
+	float Height = VecFolderTex[CurFrmCount]->Height();
+	Transform()->SetRelativeScale(Width*2, Height*2, 1);
+}
+
 
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
@@ -227,16 +237,16 @@ void CPlayerScript::IdleUpdate()
 	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
 	const Image* Img = m_MapColTexture->GetImage();
 
-	//// 아래쪽에 지형이 없다면 Fall상태로
-	int color = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,10 });
-	int Rcolor = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,1 });
-	if (color != RGB(0, 0, 0) && m_CurState != PlayerState::Jump &&
-		Rcolor != RGB(255, 0, 0) &&
-		Rcolor != RGB(0, 0, 0))
-	{
-		StateChange(PlayerState::Fall);
-		return;
-	}
+	////// 아래쪽에 지형이 없다면 Fall상태로
+	//int color = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,10 });
+	//int Rcolor = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,1 });
+	//if (color != RGB(0, 0, 0) && m_CurState != PlayerState::Jump &&
+	//	Rcolor != RGB(255, 0, 0) &&
+	//	Rcolor != RGB(0, 0, 0))
+	//{
+	//	StateChange(PlayerState::Fall);
+	//	return;
+	//}
 
 
 
@@ -245,6 +255,40 @@ void CPlayerScript::IdleUpdate()
 
 void CPlayerScript::IdleToRunUpdate()
 {
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Run);
+		return;
+	}
+
+	// 이동키를 안눌렀다면 Idle 상태로
+	if (false == IsMoveKey())				// 이동키를 안눌렀다면
+	{
+		StateChange(PlayerState::Idle);
+		return;
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (KEY_TAP(KEY::SPACE))		// @@@ 점프 추가.
+	{
+		StateChange(PlayerState::Jump);
+		return;
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (KEY_TAP(KEY::LSHIFT))	// @@@ 회피 추가.
+	{
+		StateChange(PlayerState::Dodge);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
 }
 
 void CPlayerScript::RunUpdate()
@@ -304,12 +348,17 @@ void CPlayerScript::IdleStart()
 {
 	Animator2D()->Play(L"texture\\player\\spr_idle", true);
 	m_MoveSpeed = 0.f;
+
+	SetSize2x();
 }
 
 void CPlayerScript::IdleToRunStart()
 {
 	Animator2D()->Play(L"texture\\player\\spr_idle_to_run", true);
 	m_MoveSpeed = 0.f;
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::RunStart()
@@ -319,8 +368,7 @@ void CPlayerScript::RunStart()
 
 	// 런 스타트 구름 이펙트
 
-
-
+	SetSize2x();
 }
 
 void CPlayerScript::RunToIdleStart()
@@ -328,11 +376,15 @@ void CPlayerScript::RunToIdleStart()
 	Animator2D()->Play(L"texture\\player\\spr_run_to_idle", true);
 	m_MoveSpeed = 100.f;
 
-
+	SetSize2x();
 }
 
 void CPlayerScript::JumpStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_jump", true);
+
+	SetSize2x();
+
 	// 점프 이펙트
 	// 점프 사운드
 
@@ -341,40 +393,84 @@ void CPlayerScript::JumpStart()
 
 void CPlayerScript::LandingStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_landing", true);
+
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::AttackStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_attack", true);
+
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::FallStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_fall", true);
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::DodgeStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_roll", true);
+
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::PlaySongStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_player_playsong", true);
+
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::HurtFlyLoopStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_hurtfly_begin", true);
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::HurtGroundStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_hurtground", true);
+
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::WallGrabStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_wallgrab", true);
+
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::FlipStart()
 {
+	Animator2D()->Play(L"texture\\player\\spr_player_flip", true);
+
+	SetSize2x();
+
 }
 
 void CPlayerScript::DeadStart()
 {
+	SetSize2x();
+
 }

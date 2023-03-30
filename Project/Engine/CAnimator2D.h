@@ -3,8 +3,7 @@
 
 #include "ptr.h"
 #include "CTexture.h"
-
-class CAnim2D;
+#include "CAnim2D.h"
 
 class CAnimator2D :
     public CComponent
@@ -28,6 +27,12 @@ public:
     void CreateFolderAnimation(const wstring& _RelativePath, int _FrameCount, float _FPS);
 
     map<wstring, CAnim2D*>& GetAnimMap() { return m_mapAnim; }
+    CAnim2D* GetCurAnim() { return m_pCurAnim; }
+
+    bool IsEndAnimation()
+    {
+        return m_pCurAnim->IsFinish();
+    }
 
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

@@ -104,7 +104,7 @@ void CreateLevel_1()
 	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
 	pParent->Animator2D()->Play(L"WalkDown", true);
 	CreatePlayerAnimation(pParent);
-	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.bmp")).Get());
+	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
 	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), 0);
 
 
@@ -173,7 +173,7 @@ void CreateLevel_1()
 
 	pBackGround->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pBackGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
-	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2.bmp"));
+	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2.png"));
 
 	SpawnGameObject(pBackGround, Vec3(900.f, -392.f, 1000.f), L"Default");
 

@@ -51,6 +51,7 @@ private:
 	void StateChange(PlayerState _State);
 	void StateUpdate();
 	bool IsMoveKey();
+	void SetSize2x();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
