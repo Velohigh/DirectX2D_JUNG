@@ -110,6 +110,9 @@
     <Filter Include="Manager\LevelSaveLoad">
       <UniqueIdentifier>{8838d1d9-8c0f-4016-a8e8-2e1b8b3d2638}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{f8fe8262-ed3f-49a9-bded-d79c42c3f746}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -232,7 +235,6 @@
     <ClInclude Include="ParamUI.h">
       <Filter>UI\Module\ParamUI</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h" />
     <ClInclude Include="MenuUI.h">
       <Filter>UI\MenuUI</Filter>
     </ClInclude>
@@ -241,6 +243,12 @@
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>Manager\LevelSaveLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="Level_1.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,7 +371,6 @@
     <ClCompile Include="ParamUI.cpp">
       <Filter>UI\Module\ParamUI</Filter>
     </ClCompile>
-    <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="MenuUI.cpp">
       <Filter>UI\MenuUI</Filter>
     </ClCompile>
@@ -372,6 +379,12 @@
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>Manager\LevelSaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Level_1.cpp">
+      <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

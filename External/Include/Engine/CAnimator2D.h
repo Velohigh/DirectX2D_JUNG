@@ -25,7 +25,7 @@ public:
     CAnim2D* FindAnim(const wstring& _strName);
 
     void CreateAnimation(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _vBackSize, int _FrameCount, int _FPS);
-    void CreateFolderAnimation(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS);
+    void CreateFolderAnimation(const wstring& _RelativePath, int _FrameCount, float _FPS);
 
     map<wstring, CAnim2D*>& GetAnimMap() { return m_mapAnim; }
 

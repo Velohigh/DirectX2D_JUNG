@@ -103,7 +103,7 @@ void CreateTestLevel()
 	SpawnGameObject(pParent, Vec3(0.f, 0.f, 500.f), 0);
 
 
-	CGameObject* pChild = new CGameObject;
+	/*CGameObject* pChild = new CGameObject;
 
 	pChild->SetName(L"Child");
 	pChild->AddComponent(new CTransform);
@@ -117,44 +117,44 @@ void CreateTestLevel()
 	pChild->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl"));
 	pChild->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\Fighter.bmp"));
 
-	pParent->AddChild(pChild);
+	pParent->AddChild(pChild);*/
 
-	// Monster
-	CGameObject* pMonster = new CGameObject;
-	pMonster->SetName(L"Monster");
+	//// Monster
+	//CGameObject* pMonster = new CGameObject;
+	//pMonster->SetName(L"Monster");
 
-	pMonster->AddComponent(new CTransform);
-	pMonster->AddComponent(new CMeshRender);
-	pMonster->AddComponent(new CCollider2D);
-	pMonster->AddComponent(new CMonsterScript);
+	//pMonster->AddComponent(new CTransform);
+	//pMonster->AddComponent(new CMeshRender);
+	//pMonster->AddComponent(new CCollider2D);
+	//pMonster->AddComponent(new CMonsterScript);
 
-	pMonster->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
-	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+	//pMonster->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
+	//pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
-	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+	//pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 
-	pMonster->Collider2D()->SetAbsolute(true);
-	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+	//pMonster->Collider2D()->SetAbsolute(true);
+	//pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 
-	SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Monster");
+	//SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Monster");
 
 
-	// TileMap Object
-	CGameObject* pTileMap = new CGameObject;
-	pTileMap->SetName(L"TileMap");
+	//// TileMap Object
+	//CGameObject* pTileMap = new CGameObject;
+	//pTileMap->SetName(L"TileMap");
 
-	pTileMap->AddComponent(new CTransform);
-	pTileMap->AddComponent(new CTileMap);
+	//pTileMap->AddComponent(new CTransform);
+	//pTileMap->AddComponent(new CTileMap);
 
-	pTileMap->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
-	pTileMap->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
+	//pTileMap->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
+	//pTileMap->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
 
-	pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\TILE.bmp"));
-	pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
-	pTileMap->TileMap()->SetTileCount(8, 8);
+	//pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\TILE.bmp"));
+	//pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
+	//pTileMap->TileMap()->SetTileCount(8, 8);
 
-	SpawnGameObject(pTileMap, Vec3(0.f, 0.f, 600.f), L"Tile");
+	//SpawnGameObject(pTileMap, Vec3(0.f, 0.f, 600.f), L"Tile");
 
 
 	// Particle Object
@@ -174,14 +174,15 @@ void CreateTestLevel()
 	pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
 	SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 0);*/
 
-	CGameObject* pDistortion = new CGameObject;
+
+	/*CGameObject* pDistortion = new CGameObject;
 	pDistortion->SetName(L"Distortion");
 	pDistortion->AddComponent(new CTransform);
 	pDistortion->AddComponent(new CMeshRender);
 	pDistortion->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
 	pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
-	SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);
+	SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);*/
 
 
 

@@ -6,6 +6,7 @@ class CCameraMoveScript :
 {
 private:
     float       m_fCamSpeed;
+    bool        m_bFollowPlayer;
 
 public:
     virtual void tick() override;

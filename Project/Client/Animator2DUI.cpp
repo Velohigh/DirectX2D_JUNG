@@ -116,7 +116,7 @@ int Animator2DUI::render_update()
         ImGui::SameLine();
         if (ImGui::Button("##CreateFolderAnim", ImVec2(18.f, 18.f)))
         {
-            GetTarget()->Animator2D()->CreateFolderAnimation(wRelativePath, wRelativePath, FrameCount, FPS);
+            GetTarget()->Animator2D()->CreateFolderAnimation(wRelativePath, FrameCount, FPS);
         }
         
         ImGui::End();

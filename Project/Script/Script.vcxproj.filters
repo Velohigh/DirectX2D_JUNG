@@ -10,6 +10,9 @@
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{3d67dc6d-021b-4b86-b729-d41e704a9834}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\PlayerScript">
+      <UniqueIdentifier>{4de5c265-49c4-47f1-840a-1fefd9313467}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -19,9 +22,6 @@
       <Filter>Script</Filter>
     </ClInclude>
     <ClInclude Include="CMonsterScript.h">
-      <Filter>Script</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
       <Filter>Script</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -36,6 +36,12 @@
     <ClInclude Include="CGravityScript.h">
       <Filter>Script</Filter>
     </ClInclude>
+    <ClInclude Include="CMainCameraScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Script\PlayerScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -45,9 +51,6 @@
       <Filter>Script</Filter>
     </ClCompile>
     <ClCompile Include="CMonsterScript.cpp">
-      <Filter>Script</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
       <Filter>Script</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -61,6 +64,12 @@
     </ClCompile>
     <ClCompile Include="CGravityScript.cpp">
       <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainCameraScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Script\PlayerScript</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

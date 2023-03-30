@@ -112,13 +112,13 @@ void CAnimator2D::CreateAnimation(const wstring& _strAnimName
 	m_mapAnim.insert(make_pair(_strAnimName, pAnim));
 }
 
-void CAnimator2D::CreateFolderAnimation(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS)
+void CAnimator2D::CreateFolderAnimation(const wstring& _RelativePath, int _FrameCount, float _FPS)
 {
 	CAnim2D* pAnim = new CAnim2D;
-	pAnim->CreateFolderAnim(_strAnimName, _RelativePath, _FrameCount, _FPS);
+	pAnim->CreateFolderAnim(_RelativePath, _RelativePath, _FrameCount, _FPS);
 
 	pAnim->m_pOwner = this;
-	m_mapAnim.insert(make_pair(_strAnimName, pAnim));
+	m_mapAnim.insert(make_pair(_RelativePath, pAnim));
 }
 
 void CAnimator2D::SaveToLevelFile(FILE* _File)

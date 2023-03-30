@@ -1,5 +1,6 @@
 #pragma once
 #include "CEntity.h"
+#include "global.h"
 
 
 class CComponent;
@@ -15,8 +16,7 @@ class CScript;
 
 #define GET_COMPONENT(Type, TYPE) C##Type* Type() const { return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::TYPE]; }
 
-
-
+class CTexture;
 class CGameObject :
     public CEntity
 {
@@ -27,6 +27,7 @@ private:
 
     CGameObject* m_Parent;
     vector<CGameObject*>    m_vecChild;
+    CTexture*               m_ColTexture;
 
     int                     m_iLayerIdx;
     bool                    m_bDead;
@@ -75,6 +76,8 @@ public:
         m_LifeTime = _fTime;
         m_bLifeSpan = true;
     }
+
+    void SetColMapTexture(CTexture* _texture) { m_ColTexture = _texture; }
 
     bool IsDead() { return m_bDead; }
     bool IsAncestor(CGameObject* _Target);

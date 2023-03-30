@@ -85,7 +85,7 @@ void CAnim2D::Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex
 	}
 }
 
-void CAnim2D::CreateFolderAnim(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, int _FPS)
+void CAnim2D::CreateFolderAnim(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, float _FPS)
 {
 	m_bFolderTex = true;
 
