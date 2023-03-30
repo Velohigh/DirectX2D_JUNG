@@ -24,12 +24,13 @@ void CPlayerScript::begin()
 	MeshRender()->GetDynamicMaterial();
 
 
-
+	StateChange(PlayerState::Idle);
 }
 
 void CPlayerScript::tick()
 {
 
+	StateUpdate();
 
 
 
@@ -176,6 +177,13 @@ void CPlayerScript::StateUpdate()
 
 bool CPlayerScript::IsMoveKey()
 {
+	// 무브키 눌렀다면 true 리턴
+	if (KEY_PRESSED(KEY::A) || 
+		KEY_PRESSED(KEY::D))
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -212,6 +220,26 @@ void CPlayerScript::IdleUpdate()
 		StateChange(PlayerState::IdleToRun);
 		return;
 	}
+
+	
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+	const Image* Img = m_MapColTexture->GetImage();
+
+	//// 아래쪽에 지형이 없다면 Fall상태로
+	int color = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,10 });
+	int Rcolor = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,1 });
+	if (color != RGB(0, 0, 0) && m_CurState != PlayerState::Jump &&
+		Rcolor != RGB(255, 0, 0) &&
+		Rcolor != RGB(0, 0, 0))
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+
+
 
 }
 

@@ -130,6 +130,8 @@ int CTexture::Load(const wstring& _strFilePath)
 		return E_FAIL;
 	}
 
+	m_pImage = m_Image.GetImage(0, 0, 0);
+
 	hr = CreateShaderResourceView(DEVICE
 		, m_Image.GetImages()
 		, m_Image.GetImageCount()

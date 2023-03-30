@@ -33,7 +33,7 @@ class CPlayerScript :
 {
 private:
 	PlayerDir	m_CurDir = PlayerDir::Right;
-	PlayerState	m_CurState = PlayerState::Idle;
+	PlayerState	m_CurState = PlayerState::END;
 	float		m_StateTime[(UINT)(PlayerState::END)] = {};
 
 

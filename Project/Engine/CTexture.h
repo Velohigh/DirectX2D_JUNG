@@ -21,6 +21,7 @@ private:
 
     D3D11_TEXTURE2D_DESC                m_Desc;
     ScratchImage                        m_Image;
+    const Image*                        m_pImage;
 
     UINT                                m_iRecentNum;
     Vec2                                m_Offset;
@@ -40,6 +41,7 @@ public:
     ComPtr<ID3D11RenderTargetView>	    GetRTV() { return m_RTV; }
     ComPtr<ID3D11DepthStencilView>	    GetDSV() { return m_DSV; }
     ComPtr<ID3D11UnorderedAccessView>   GetUAV() { return m_UAV; }
+    const Image* GetImage() { return m_pImage; }
 
 	const Vec2& GetOffset() { return m_Offset; }
 
@@ -55,6 +57,23 @@ public:
     void Clear();
     static void Clear(int _iRegisterNum);
     void Clear_CS(bool _bShaderRes);
+
+public:
+    int GetPixelColor(int x, int y)
+    {
+        uint8_t* pixel = m_pImage->pixels + (y * m_pImage->rowPitch) + (x * 4);
+        uint8_t r = pixel[0];
+        uint8_t g = pixel[1];
+        uint8_t b = pixel[2];
+        uint8_t a = pixel[3];
+
+        return RGB(r, g, b);
+    }
+
+    int GetPixelColor(Vec2 _vector)
+    {
+        return GetPixelColor((int)_vector.x, (int)_vector.y);
+    }
 
 
 private:

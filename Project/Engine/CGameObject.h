@@ -27,7 +27,7 @@ private:
 
     CGameObject* m_Parent;
     vector<CGameObject*>    m_vecChild;
-    CTexture*               m_ColTexture;
+    CTexture*               m_MapColTexture;
 
     int                     m_iLayerIdx;
     bool                    m_bDead;
@@ -77,7 +77,8 @@ public:
         m_bLifeSpan = true;
     }
 
-    void SetColMapTexture(CTexture* _texture) { m_ColTexture = _texture; }
+    void SetColMapTexture(CTexture* _texture) { m_MapColTexture = _texture; }
+    CTexture* GetColMapTexture() { return m_MapColTexture; }
 
     bool IsDead() { return m_bDead; }
     bool IsAncestor(CGameObject* _Target);
