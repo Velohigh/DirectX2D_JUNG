@@ -61,6 +61,16 @@ public:
 public:
     int GetPixelColor(int x, int y)
     {
+        // 맵 바깥의 Pixel 을 달라고 하면 검은색(갈수 없는곳) 을 리턴한다.
+        if (0 > x || 0 > y)
+        {
+            return RGB(0, 0, 0);
+        }
+
+        if (Width() <= x || Height() <= y)
+        {
+            return RGB(0, 0, 0);
+        }
         uint8_t* pixel = m_pImage->pixels + (y * m_pImage->rowPitch) + (x * 4);
         uint8_t r = pixel[0];
         uint8_t g = pixel[1];

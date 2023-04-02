@@ -42,9 +42,13 @@ void CMainCameraScript::tick()
 	}
  
 	if (vCameraPos.y + (Resolution.y / 2.f) >= 0.f)
+	{
 		vCameraPos.y = -(Resolution.y / 2.f);
+	}
 	else if (vCameraPos.y - (Resolution.y / 2.f) <= -m_vMapsize.y)
+	{
 		vCameraPos.y = -m_vMapsize.y + (Resolution.y / 2.f);
+	}
 
 
 

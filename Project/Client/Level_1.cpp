@@ -78,7 +78,7 @@ void CreateLevel_1()
 
 	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
 	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
-	pLightObj->Light2D()->SetRadius(500.f);
+	pLightObj->Light2D()->SetRadius(20000.f);
 
 	SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
 

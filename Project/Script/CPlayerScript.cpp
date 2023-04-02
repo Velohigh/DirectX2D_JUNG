@@ -9,7 +9,7 @@
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
-	, m_MoveSpeed(400.f)
+	, m_MoveSpeed(50.f)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MoveSpeed, "Speed");
 }
@@ -30,6 +30,7 @@ void CPlayerScript::begin()
 void CPlayerScript::tick()
 {
 
+	DirAnimationCheck();
 	StateUpdate();
 
 
@@ -64,6 +65,49 @@ void CPlayerScript::Shoot()
 
 	// 레벨에 추가
 	SpawnGameObject(pCloneMissile, vMissilePos, L"PlayerProjectile");
+}
+
+void CPlayerScript::DirAnimationCheck()
+{
+	PlayerDir CheckDir = m_CurDir;
+
+	Vec3 Rot = Transform()->GetRelativeRot();
+
+
+	if (m_CurState != PlayerState::Attack && m_CurState != PlayerState::Dodge &&
+		m_CurState != PlayerState::Dead && m_CurState != PlayerState::HurtFlyLoop &&
+		m_CurState != PlayerState::HurtGround &&
+		m_CurState != PlayerState::WallGrab &&
+		m_CurState != PlayerState::Flip)
+	{
+
+		if (KEY_PRESSED(KEY::D))
+		{
+			CheckDir = PlayerDir::Right;
+		}
+
+		else if (KEY_PRESSED(KEY::A))
+		{
+			CheckDir = PlayerDir::Left;
+		}
+
+		if (CheckDir != m_CurDir)
+		{
+			m_CurDir = CheckDir;
+		}
+	}
+
+	if (m_CurDir == PlayerDir::Right)
+	{
+		Rot = Vec3(Rot.x, 0.f, Rot.z);
+	}
+	else if (m_CurDir == PlayerDir::Left)
+	{
+		Rot = Vec3(Rot.x, 3.1415926535f, Rot.z);
+	}
+
+
+	Transform()->SetRelativeRot(Rot);
 }
 
 void CPlayerScript::StateChange(PlayerState _State)
@@ -196,6 +240,33 @@ void CPlayerScript::SetSize2x()
 	Transform()->SetRelativeScale(Width*2, Height*2, 1);
 }
 
+void CPlayerScript::MoveDir(const Vec2& Dir)
+{
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	m_Pos += Dir * m_MoveSpeed * DT;
+
+	Transform()->SetRelativePos(m_Pos.x, m_Pos.y, m_Pos3.z);
+}
+
+void CPlayerScript::MoveValue(const Vector2& MoveValue)
+{
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+
+	m_Pos += MoveValue * DT/*m_TimeScale*/;
+
+	Transform()->SetRelativePos(MoveValue.x, MoveValue.y, m_Pos3.z);
+
+}
+
+void CPlayerScript::SetPos(const Vector2& Pos)
+{
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Transform()->SetRelativePos(Pos.x, Pos.y, m_Pos3.z);
+
+}
+
 
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
@@ -234,20 +305,47 @@ void CPlayerScript::IdleUpdate()
 	
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
 	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
 	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
-	const Image* Img = m_MapColTexture->GetImage();
 
-	////// 아래쪽에 지형이 없다면 Fall상태로
-	//int color = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,10 });
-	//int Rcolor = m_MapColTexture->GetPixelColor(m_Pos + Vec2{ 0,1 });
-	//if (color != RGB(0, 0, 0) && m_CurState != PlayerState::Jump &&
-	//	Rcolor != RGB(255, 0, 0) &&
-	//	Rcolor != RGB(0, 0, 0))
+	//// 아래쪽에 지형이 없다면 Fall상태로
+	int color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vec2{ 0,10 });
+	int Rcolor = m_MapColTexture->GetPixelColor(m_PosYReverse + Vec2{ 0,1 });
+	if (color != RGB(0, 0, 0) && m_CurState != PlayerState::Jump &&
+		Rcolor != RGB(255, 0, 0) &&
+		Rcolor != RGB(0, 0, 0))
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (Rcolor == RGB(255, 0, 0) &&
+		KEY_TAP(KEY::S))
+	{
+		SetPos(m_Pos + Vector2{ 0, 4 });
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (KEY_TAP(KEY::SPACE))		// @@@ 점프 추가.
+	{
+		StateChange(PlayerState::Jump);
+		return;
+	}
+
+	//// 공격키를 누르면 공격상태로
+	//if (KEY_TAP(KEY::LBTN))
 	//{
-	//	StateChange(PlayerState::Fall);
+	//	StateChange(PlayerState::Attack);
 	//	return;
 	//}
 
+	// 회피
+	if (KEY_TAP(KEY::LSHIFT))	// @@@ 회피 추가.
+	{
+		StateChange(PlayerState::Dodge);
+		return;
+	}
 
 
 
@@ -255,6 +353,7 @@ void CPlayerScript::IdleUpdate()
 
 void CPlayerScript::IdleToRunUpdate()
 {
+	// 애니메이션 종료후 Run 모션으로
 	if (true == Animator2D()->IsEndAnimation())
 	{
 		StateChange(PlayerState::Run);
@@ -289,14 +388,240 @@ void CPlayerScript::IdleToRunUpdate()
 		return;
 	}
 
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color[5] = {};
+	for (int i = 1; i <= 5; ++i)
+	{
+		color[i - 1] = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,(float)i });
+	}
+	if (color[0] != RGB(0, 0, 0) && color[0] != RGB(255, 0, 0) &&
+		color[1] != RGB(0, 0, 0) &&
+		color[2] != RGB(0, 0, 0) &&
+		color[3] != RGB(0, 0, 0) &&
+		color[4] != RGB(0, 0, 0) &&
+		m_CurState != PlayerState::Jump)
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color[0] == RGB(255, 0, 0) &&
+		KEY_TAP(KEY::S))
+	{
+		SetPos(m_Pos + Vector2{ 0, -4 });
+	}
+
+	m_MoveDir = Vector2{ 0,0 };
+
+	if (KEY_PRESSED(KEY::A))
+	{
+		m_MoveDir = Vector2{ -1.f, 0.f };
+	}
+
+	if (KEY_PRESSED(KEY::D))
+	{
+		m_MoveDir = Vector2{ 1.f, 0.f };
+	}
+
+	MapCollisionCheckMoveGround();
 }
 
 void CPlayerScript::RunUpdate()
 {
+	m_StateTime[static_cast<int>(PlayerState::Run)] += DT;
+
+	// 이동키를 안누르면 Idle 상태로
+	if (false == IsMoveKey())
+	{
+		StateChange(PlayerState::RunToIdle);
+		return;
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (KEY_TAP(KEY::SPACE))		// @@@ 점프 추가.
+	{
+		StateChange(PlayerState::Jump);
+		return;
+	}
+
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color[10] = {};
+	for (int i = 1; i <= 10; ++i)
+	{
+		color[i - 1] = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,(float)i });
+	}
+	if (color[0] != RGB(0, 0, 0) && color[0] != RGB(255, 0, 0) &&
+		color[1] != RGB(0, 0, 0) &&
+		color[2] != RGB(0, 0, 0) &&
+		color[3] != RGB(0, 0, 0) &&
+		color[4] != RGB(0, 0, 0) &&
+		color[5] != RGB(0, 0, 0) &&
+		color[6] != RGB(0, 0, 0) &&
+		color[7] != RGB(0, 0, 0) &&
+		color[8] != RGB(0, 0, 0) &&
+		color[9] != RGB(0, 0, 0) &&
+		m_CurState != PlayerState::Jump)
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color[0] == RGB(255, 0, 0) &&
+		KEY_TAP(KEY::S))
+	{
+		SetPos(m_Pos + Vector2{ 0, -4 });
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (KEY_TAP(KEY::LSHIFT))	// @@@ 회피 추가.
+	{
+		StateChange(PlayerState::Dodge);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+
+	m_MoveDir = Vector2{ 0.f, 0.f };
+
+	if (KEY_PRESSED(KEY::A))
+	{
+		m_MoveDir = Vector2{ -1.f, 0.f };
+	}
+
+	if (KEY_PRESSED(KEY::D))
+	{
+		m_MoveDir = Vector2{ 1.f, 0.f };
+	}
+
+	MapCollisionCheckMoveGround();
+
 }
 
 void CPlayerScript::RunToIdleUpdate()
 {
+	// 이동키를 누르면 Run 상태로
+	if (true == IsMoveKey())
+	{
+		StateChange(PlayerState::IdleToRun);
+		return;
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (KEY_TAP(KEY::SPACE))		// @@@ 점프 추가.
+	{
+		StateChange(PlayerState::Jump);
+		return;
+	}
+
+	// 이동키를 안누르고, 애니메이션이 끝까지 재생되면 Idle 상태로
+	if (false == IsMoveKey() &&
+		true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Idle);
+		return;
+	}
+
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color[10] = {};
+	for (int i = 1; i <= 10; ++i)
+	{
+		color[i - 1] = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,(float)i });
+	}
+	if (color[0] != RGB(0, 0, 0) && color[0] != RGB(255, 0, 0) &&
+		color[1] != RGB(0, 0, 0) &&
+		color[2] != RGB(0, 0, 0) &&
+		color[3] != RGB(0, 0, 0) &&
+		color[4] != RGB(0, 0, 0) &&
+		color[5] != RGB(0, 0, 0) &&
+		color[6] != RGB(0, 0, 0) &&
+		color[7] != RGB(0, 0, 0) &&
+		color[8] != RGB(0, 0, 0) &&
+		color[9] != RGB(0, 0, 0) &&
+		m_CurState != PlayerState::Jump)
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color[0] == RGB(255, 0, 0) &&
+		KEY_TAP(KEY::S))
+	{
+		SetPos(m_Pos + Vector2{ 0, -4 });
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (KEY_TAP(KEY::LSHIFT))	// @@@ 회피 추가.
+	{
+		StateChange(PlayerState::Dodge);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+	// 이동키를 안누르고, 애니메이션이 끝까지 재생되면 Idle 상태로
+	if (false == IsMoveKey() &&
+		true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Idle);
+		return;
+	}
+	else if (false == IsMoveKey() &&
+		false == Animator2D()->IsEndAnimation())
+	{
+		Vector2 MoveDir = Vector2{ 0.f,0.f };
+
+		if (m_CurDir == PlayerDir::Left)
+		{
+			MoveDir = Vector2{ -1.f,0.f };
+		}
+
+		else if (m_CurDir == PlayerDir::Right)
+		{
+			MoveDir = Vector2{ 1.f,0.f };
+		}
+
+		MapCollisionCheckMoveGround();
+	}
+
+	// 멈추는중에 다시 이동키를 누르면
+	if (true == IsMoveKey())
+	{
+		StateChange(PlayerState::IdleToRun);
+		return;
+	}
+
 }
 
 void CPlayerScript::JumpUpdate()
@@ -472,5 +797,149 @@ void CPlayerScript::FlipStart()
 void CPlayerScript::DeadStart()
 {
 	SetSize2x();
+
+}
+
+
+void CPlayerScript::MapCollisionCheckMoveGround()
+{
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosyReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		Vector2 NextPos = m_PosyReverse + (Vec2{ 0.f,m_MoveDir.y } * DT * m_MoveSpeed);
+		Vector2 CheckPos = NextPos + Vector2{ 0,0 };	// 미래 위치의 발기준 색상
+		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
+
+		int Color = m_MapColTexture->GetPixelColor(CheckPos);
+		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
+		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor &&
+			RGB(255, 0, 255) != Color &&
+			RGB(255, 0, 255) != TopRightColor &&
+			RGB(255, 0, 255) != TopLeftColor)
+		{
+			MoveDir(Vector2{ 0.f, -m_MoveDir.y });
+		}
+	}
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		Vector2 NextPos = m_PosyReverse + (Vec2{ m_MoveDir.x,0.f } * DT * m_MoveSpeed);
+		Vector2 CheckPos = NextPos + Vec2{ 0.f,0.f };	// 미래 위치의 발기준 색상
+		Vector2 CheckPosTopRight = NextPos + Vec2{ 18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 CheckPosTopLeft = NextPos + Vec2{ -18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 ForDownPos = m_PosyReverse + Vec2{ 0.f, 1.f };	// 발 아래 색상
+
+		int CurColor = m_MapColTexture->GetPixelColor(m_Pos);
+		int ForDownColor = m_MapColTexture->GetPixelColor(ForDownPos);
+		int Color = m_MapColTexture->GetPixelColor(CheckPos);
+		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
+		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
+
+
+		// 항상 땅에 붙어있기
+		if (RGB(0, 0, 0) != ForDownColor && RGB(255, 0, 0) != ForDownColor)
+		{
+			SetPos(Vector2{ m_Pos.x, m_Pos.y - 1.f });
+		}
+
+		// 계단 올라가기
+		while (RGB(0, 0, 0) == Color &&
+			TopRightColor != RGB(0, 0, 0) && TopLeftColor != RGB(0, 0, 0))
+		{
+			CheckPos.y -= 1.0f;
+			Color = m_MapColTexture->GetPixelColor(CheckPos);
+			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.0f });
+		}
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor &&
+			RGB(255, 0, 255) != Color &&
+			RGB(255, 0, 255) != TopRightColor &&
+			RGB(255, 0, 255) != TopLeftColor)
+		{
+			MoveDir(Vector2{ m_MoveDir.x,0.f });
+		}
+	}
+
+
+}
+
+void CPlayerScript::MapCollisionCheckMoveAir()
+{
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosyReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		Vector2 NextPos = m_PosyReverse + (Vector2{ 0.f,m_MoveDir.y } * DT);
+		Vector2 CheckPos = NextPos + Vector2{ 0,0 };	// 미래 위치의 발기준 색상
+		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 CheckPosCenterRight = NextPos + Vector2{ 18,-20 };	// 몸중앙 색상
+		Vector2 CheckPosCenterLeft = NextPos + Vector2{ -18,-20 };	// 몸중앙 색상
+
+		int Color = m_MapColTexture->GetPixelColor(CheckPos);
+		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
+		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
+		int CenterRightColor = m_MapColTexture->GetPixelColor(CheckPosCenterRight);
+		int CenterLeftColor = m_MapColTexture->GetPixelColor(CheckPosCenterLeft);
+
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor &&
+			RGB(0, 0, 0) != CenterRightColor &&
+			RGB(0, 0, 0) != CenterLeftColor &&
+			RGB(255, 0, 255) != Color &&
+			RGB(255, 0, 255) != TopRightColor &&
+			RGB(255, 0, 255) != TopLeftColor &&
+			RGB(255, 0, 255) != CenterRightColor &&
+			RGB(255, 0, 255) != CenterLeftColor)
+		{
+			MoveValue(Vector2{ 0.f , -m_MoveDir.y });
+		}
+	}
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		Vector2 NextPos = m_PosyReverse + (Vector2{ m_MoveDir.x,0.f } * DT);
+		Vector2 CheckPos = NextPos + Vector2{ 0.f, 0.f };	// 미래 위치의 발기준 색상
+		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
+		Vector2 CheckPosCenterRight = NextPos + Vector2{ 18,-20 };	// 몸중앙 색상
+		Vector2 CheckPosCenterLeft = NextPos + Vector2{ -18,-20 };	// 몸중앙 색상
+
+		int Color = m_MapColTexture->GetPixelColor(CheckPos);
+		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
+		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
+		int CenterRightColor = m_MapColTexture->GetPixelColor(CheckPosCenterRight);
+		int CenterLeftColor = m_MapColTexture->GetPixelColor(CheckPosCenterLeft);
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor &&
+			RGB(0, 0, 0) != CenterRightColor &&
+			RGB(0, 0, 0) != CenterLeftColor &&
+			RGB(255, 0, 255) != Color &&
+			RGB(255, 0, 255) != TopRightColor &&
+			RGB(255, 0, 255) != TopLeftColor &&
+			RGB(255, 0, 255) != CenterRightColor &&
+			RGB(255, 0, 255) != CenterLeftColor)
+		{
+			MoveValue(Vector2{ m_MoveDir.x,0.f });
+		}
+	}
 
 }

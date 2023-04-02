@@ -36,7 +36,7 @@ private:
 	PlayerState	m_CurState = PlayerState::END;
 	float		m_StateTime[(UINT)(PlayerState::END)] = {};
 
-
+	Vec2		m_MoveDir;
     float       m_MoveSpeed;
 
 public:
@@ -48,10 +48,14 @@ public:
 private:
     void Shoot();
 
+	void DirAnimationCheck();
 	void StateChange(PlayerState _State);
 	void StateUpdate();
 	bool IsMoveKey();
 	void SetSize2x();
+	void MoveDir(const Vec2& Dir);
+	void MoveValue(const Vector2& MoveValue);  //Move();
+	void SetPos(const Vector2& Pos);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
@@ -94,5 +98,10 @@ private:
 	void WallGrabStart();
 	void FlipStart();
 	void DeadStart();
+
+private:
+	// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+	void MapCollisionCheckMoveGround();
+	void MapCollisionCheckMoveAir();
 };
 
