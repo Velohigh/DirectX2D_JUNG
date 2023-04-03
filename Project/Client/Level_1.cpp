@@ -144,6 +144,26 @@ void CreateLevel_1()
 
 	SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Monster");
 
+	// Mouse
+	CGameObject* pMouse = new CGameObject;
+	pMouse->SetName(L"Mouse");
+
+	pMouse->AddComponent(new CTransform);
+	pMouse->AddComponent(new CMeshRender);
+	pMouse->AddComponent(new CCollider2D);
+
+	pMouse->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
+	pMouse->Transform()->SetRelativeScale(Vec3(25.f, 25.f, 1.f));
+
+	pMouse->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pMouse->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"MouseDMtrl"));
+	pMouse->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\spr_cursor.png"));
+
+	pMouse->Collider2D()->SetAbsolute(true);
+	pMouse->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+
+	SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Mouse");
+
 
 	//// TileMap Object
 	//CGameObject* pTileMap = new CGameObject;

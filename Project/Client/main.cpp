@@ -50,8 +50,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // ImGui 초기화
     ImGuiMgr::GetInst()->init(g_hWnd);
 
-    // 테스트 용 레벨 생성
+    // 레벨 생성
     CreateLevel_1();
+    _G_HWND = g_hWnd;
 
     // 메세지 루프
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));

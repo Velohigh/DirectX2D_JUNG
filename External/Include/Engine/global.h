@@ -52,3 +52,5 @@ typedef Vector4 Vec4;
 #include "func.h"
 
 #include "CSingleton.h"
+
+HWND _G_HWND = {};

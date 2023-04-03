@@ -5,7 +5,6 @@ tTransform g_transform = {};
 tGlobal GlobalData = {};
 
 
-
 extern const char* RES_TYPE_STR[(UINT)RES_TYPE::END] =
 {
 	"MESHDATA",

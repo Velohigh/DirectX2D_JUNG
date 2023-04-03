@@ -680,7 +680,7 @@ void CPlayerScript::IdleStart()
 void CPlayerScript::IdleToRunStart()
 {
 	Animator2D()->Play(L"texture\\player\\spr_idle_to_run", true);
-	m_MoveSpeed = 0.f;
+	m_MoveSpeed = 200.f;
 
 	SetSize2x();
 
@@ -690,10 +690,11 @@ void CPlayerScript::RunStart()
 {
 	Animator2D()->Play(L"texture\\player\\spr_run", true);
 	m_MoveSpeed = 450.f;
-
-	// 런 스타트 구름 이펙트
-
 	SetSize2x();
+
+	// 런 스타트 구름 이펙트 추가
+	// 런 스타트 사운드 추가
+
 }
 
 void CPlayerScript::RunToIdleStart()
@@ -706,30 +707,42 @@ void CPlayerScript::RunToIdleStart()
 
 void CPlayerScript::JumpStart()
 {
-	Animator2D()->Play(L"texture\\player\\spr_jump", true);
+	// 점프 이펙트 추가
+	// 점프 사운드 추가
 
+	Animator2D()->Play(L"texture\\player\\spr_jump", true);
 	SetSize2x();
 
-	// 점프 이펙트
-	// 점프 사운드
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Transform()->SetRelativePos(m_Pos3.x, m_Pos3.y +4.f, m_Pos3.z);
 
+	m_MoveDir *= m_MoveSpeed;
+	m_MoveDir += Vec2(0.f, 1.f) * m_JumpPower;
+
+	m_StateTime[(UINT)PlayerState::Jump] = 0.f;
+	m_IsLongJump = false;
 
 }
 
 void CPlayerScript::LandingStart()
 {
+	// 착지 이펙트 추가
+	// 착지 사운드 추가
+
 	Animator2D()->Play(L"texture\\player\\spr_landing", true);
-
-
 	SetSize2x();
+	m_MoveDir = Vec2(0.f, 0.f);
+	m_MoveSpeed = 0.f;
+	m_AttackCount = 0;
 
 }
 
 void CPlayerScript::AttackStart()
 {
+	// 어택 사운드 추가
+	// 어택 이펙트 추가
+
 	Animator2D()->Play(L"texture\\player\\spr_attack", true);
-
-
 	SetSize2x();
 
 }

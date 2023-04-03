@@ -48,6 +48,7 @@ public:
 	void Present()	{ m_SwapChain->Present(0, 0); }
 
 	Vec2 GetRenderResolution() { return m_vRenderResolution; }
+	HWND GetHwnd() { return m_hWnd; }
 
 private:
 	int CreateSwapChain();

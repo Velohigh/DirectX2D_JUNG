@@ -36,6 +36,11 @@ private:
 	PlayerState	m_CurState = PlayerState::END;
 	float		m_StateTime[(UINT)(PlayerState::END)] = {};
 
+	float		m_JumpPower = 330.f;
+	float		m_LongJumpPower = 2050.f;
+	bool		m_IsLongJump = false;
+
+	int			m_AttackCount = 0;
 	Vec2		m_MoveDir;
     float       m_MoveSpeed;
 
