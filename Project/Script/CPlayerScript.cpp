@@ -314,7 +314,7 @@ void CPlayerScript::IdleUpdate()
 	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
 	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
 
-	//// 아래쪽에 지형이 없다면 Fall상태로
+	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vec2{ 0,10 });
 	int Rcolor = m_MapColTexture->GetPixelColor(m_PosYReverse + Vec2{ 0,1 });
 	if (color != RGB(0, 0, 0) && m_CurState != PlayerState::Jump &&
@@ -752,7 +752,8 @@ void CPlayerScript::LandingUpdate()
 	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
 	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
 
-	int temp = m_MapColTexture->GetPixelColor(Vec2(636, 386));
+	// 충돌맵 이미지 색상 디버그용
+	//int temp = m_MapColTexture->GetPixelColor(Vec2(1785, 254));
 
 	if (true == Animator2D()->IsEndAnimation())
 	{

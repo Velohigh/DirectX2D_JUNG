@@ -77,9 +77,9 @@ public:
         const size_t pixelSize = m_pImage->slicePitch / Height();
 
         uint8_t* pixel = m_pImage->pixels + (y * m_pImage->rowPitch) + (x * 4);
-        uint8_t r = pixel[0];
+        uint8_t b = pixel[0];
         uint8_t g = pixel[1];
-        uint8_t b = pixel[2];
+        uint8_t r = pixel[2];
         uint8_t a = pixel[3];
 
         return RGB((int)r, (int)g, (int)b);
