@@ -3,6 +3,7 @@
 
 tTransform g_transform = {};
 tGlobal GlobalData = {};
+HWND _G_HWND = {};
 
 
 extern const char* RES_TYPE_STR[(UINT)RES_TYPE::END] =

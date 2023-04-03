@@ -44,6 +44,8 @@ public:
     const Image* GetImage() { return m_pImage; }
 
 	const Vec2& GetOffset() { return m_Offset; }
+    void SetOffset(float _x, float _y) { m_Offset = Vec2(_x, _y); }
+    void SetOffset(Vec2 _vec2) { m_Offset = _vec2; }
 
 private:
     virtual int Load(const wstring& _strFilePath) override;
@@ -61,13 +63,29 @@ public:
 public:
     int GetPixelColor(int x, int y)
     {
-        uint8_t* pixel = m_pImage->pixels + (y * m_pImage->rowPitch) + (x * 4);
+        //// 맵 바깥의 Pixel 을 달라고 하면 검은색(갈수 없는곳) 을 리턴한다.
+        if (x < 0 || y < 0)
+        {
+            return RGB(0, 0, 0);
+        }
+
+        if (x >= Width() || y >= Height())
+        {
+            return RGB(0, 0, 0);
+        }
+        const uint8_t* pixels = m_pImage->pixels;
+        const size_t pixelSize = m_pImage->slicePitch / Height();
+
+        uint8_t* pixel = m_pImage->pixels + (y * m_pImage->rowPitch) + (x * pixelSize);
         uint8_t r = pixel[0];
         uint8_t g = pixel[1];
         uint8_t b = pixel[2];
         uint8_t a = pixel[3];
 
-        return RGB(r, g, b);
+        if (r == 255)
+            int a = 0;
+
+        return RGB((int)r, (int)g, (int)b);
     }
 
     int GetPixelColor(Vec2 _vector)

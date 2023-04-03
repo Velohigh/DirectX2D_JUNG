@@ -19,10 +19,38 @@ void CMouseScript::tick()
 	m_MousePos.y = (float)ptMouse.y;
 
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 Resolution = GlobalData.Resolution;
 
-	Transform()->SetRelativePos(m_MousePos.x, m_MousePos.y, m_Pos3.z);
+	Transform()->SetRelativePos(m_MousePos.x - (Resolution.x/2), -m_MousePos.y + (Resolution.y/2), m_Pos3.z);
 
+	// 화면 안에 커서가 있으면 안보이게
+	RECT	rc = {};
+	GetClientRect(_G_HWND, &rc);
 
+	if (rc.left <= ptMouse.x && ptMouse.x <= rc.right &&
+		rc.top <= ptMouse.y && ptMouse.y <= rc.bottom)
+	{
+		if (m_ShowCursor)
+		{
+			m_ShowCursor = false;
+			ShowCursor(FALSE);
+		}
+	}
+
+	else
+	{
+		if (!m_ShowCursor)
+		{
+			m_ShowCursor = true;
+			ShowCursor(TRUE);
+		}
+	}
+}
+
+void CMouseScript::begin()
+{
+	ShowCursor(FALSE);
+	m_ShowCursor = false;
 }
 
 CMouseScript::CMouseScript()

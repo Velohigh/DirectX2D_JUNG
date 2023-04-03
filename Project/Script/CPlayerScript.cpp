@@ -39,6 +39,7 @@ void CPlayerScript::tick()
 
 
 
+
 	//if (KEY_PRESSED(KEY::Z))
 	//{
 	//	Vec3 vRot = Transform()->GetRelativeRot();
@@ -256,7 +257,7 @@ void CPlayerScript::MoveValue(const Vector2& MoveValue)
 
 	m_Pos += MoveValue * DT/*m_TimeScale*/;
 
-	Transform()->SetRelativePos(MoveValue.x, MoveValue.y, m_Pos3.z);
+	Transform()->SetRelativePos(m_Pos.x, m_Pos.y, m_Pos3.z);
 
 }
 
@@ -264,6 +265,11 @@ void CPlayerScript::SetPos(const Vector2& Pos)
 {
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
 	Transform()->SetRelativePos(Pos.x, Pos.y, m_Pos3.z);
+
+}
+
+void CPlayerScript::SetPivot()
+{
 
 }
 
@@ -626,10 +632,189 @@ void CPlayerScript::RunToIdleUpdate()
 
 void CPlayerScript::JumpUpdate()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 점프키를 오래 누르면 더 높게 뛴다.
+	m_StateTime[static_cast<int>(PlayerState::Jump)] += DT;
+
+	if (m_StateTime[static_cast<int>(PlayerState::Jump)] > 0.f &&
+		m_StateTime[static_cast<int>(PlayerState::Jump)] <= 0.15f &&
+		KEY_PRESSED(KEY::SPACE))
+	{
+		m_MoveDir += Vector2{ 0.f, 1.f } * DT * m_LongJumpPower;
+	}
+
+
+	m_MoveDir += Vector2{ 0.f, -1.f } * DT * 1500.f;
+
+	// y이동량이 일정이하로 떨어지면 Fall 상태로
+	Vector2 TempY = { 0.f ,m_MoveDir.y };
+	if (30.0f >= TempY.Length())
+	{
+		m_MoveDir.y = 0;
+		//MoveDir.Normal2D();
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+
+	if (KEY_TAP(KEY::S))
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 공중에서 키누르면 해당방향으로 가속도
+	if (KEY_PRESSED(KEY::A))
+	{
+		m_MoveDir += Vector2{ -1.f, 0.f } * DT * 2000.f;
+		Vector2 TempX = { m_MoveDir.x,0.f };
+
+		if (TempX.Length() >= 450.f)
+		{
+			TempX.Normalize();
+			TempX *= 450.f;
+			m_MoveDir.x = TempX.x;
+		}
+	}
+	if (KEY_PRESSED(KEY::D))
+	{
+		m_MoveDir += Vector2{ 1.f, 0.f } * DT * 2000.f;
+		Vector2 TempX = { m_MoveDir.x,0.f };
+
+		if (TempX.Length() >= 450.f)
+		{
+			TempX.Normalize();
+			TempX *= 450.f;
+			m_MoveDir.x = TempX.x;
+		}
+	}
+
+	// 검은 땅에 닿지않고 벽에 부딪힐경우 wallgrab
+	int Color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,1.f });
+	int LCColor = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ -20,-35 });
+	int RCColor = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 20,-35 });
+
+	if (Color != RGB(0, 0, 0))
+	{
+		if (LCColor == RGB(255, 0, 255))
+		{
+			m_CurDir = PlayerDir::Left;
+			m_Gravity = 10.0f;
+			StateChange(PlayerState::WallGrab);
+			return;
+		}
+		else if (RCColor == RGB(255, 0, 255))
+		{
+			m_CurDir = PlayerDir::Right;
+			m_Gravity = 10.0f;
+			StateChange(PlayerState::WallGrab);
+			return;
+		}
+	}
+
+
+
+	// 검은 땅에 닿을 경우 착지
+	Color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0,1 });
+	if (RGB(0, 0, 0) == Color)
+	{
+		m_Gravity = 10.0f;
+		m_MoveDir.Normalize();
+
+		//Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
+		//NewEffect->SetPosition(GetPosition());
+
+		StateChange(PlayerState::Landing);
+		return;
+	}
+
+
+	MapCollisionCheckMoveAir();
+
 }
 
 void CPlayerScript::LandingUpdate()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+	int temp = m_MapColTexture->GetPixelColor(Vec2(636, 386));
+
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Idle);
+		return;
+	}
+
+	// 이동키를 누르면 IdleToRun 상태로
+	if (true == IsMoveKey())
+	{
+		StateChange(PlayerState::IdleToRun);
+		return;
+	}
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color[5] = {};
+	for (int i = 1; i <= 5; ++i)
+	{
+		color[i - 1] = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,(float)i });
+	}
+	if (color[0] != RGB(0, 0, 0) && color[0] != RGB(255, 0, 0) &&
+		color[1] != RGB(0, 0, 0) &&
+		color[2] != RGB(0, 0, 0) &&
+		color[3] != RGB(0, 0, 0) &&
+		color[4] != RGB(0, 0, 0) &&
+		m_CurState != PlayerState::Jump)
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color[0] == RGB(255, 0, 0) &&
+		KEY_TAP(KEY::S))
+	{
+		SetPos(m_Pos + Vector2{ 0, -4 });
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (KEY_TAP(KEY::LSHIFT))	// @@@ 회피 추가.
+	{
+		StateChange(PlayerState::Dodge);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+
+	// 점프키를 누르면 Jump 상태로
+	if (KEY_TAP(KEY::SPACE))		// @@@ 점프 추가.
+	{
+		StateChange(PlayerState::Jump);
+		return;
+	}
+
+
+
 }
 
 void CPlayerScript::AttackUpdate()
@@ -638,6 +823,96 @@ void CPlayerScript::AttackUpdate()
 
 void CPlayerScript::FallUpdate()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 검은 땅에 닿지않고 분홍벽에 부딪힐경우 wallgrab
+	int Color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0,1 });
+	int LCColor = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ -20,-35 });
+	int RCColor = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 20,-35 });
+
+	if (Color != RGB(0, 0, 0))
+	{
+		if (LCColor == RGB(255, 0, 255))
+		{
+			m_CurDir = PlayerDir::Left;
+			m_Gravity = 10.0f;
+			StateChange(PlayerState::WallGrab);
+			return;
+		}
+		else if (RCColor == RGB(255, 0, 255))
+		{
+			m_CurDir = PlayerDir::Right;
+			m_Gravity = 10.0f;
+			StateChange(PlayerState::WallGrab);
+			return;
+		}
+	}
+
+
+	// 땅에 닿을경우 착지상태로
+	// 공중에 뜬 상태일경우 중력영향을 받는다.
+	// 중력 가속도에 따른 낙하 속도.
+	{
+		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+		int Color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,1.f });
+		m_Gravity += m_GravityAccel * DT;
+		if (RGB(0, 0, 0) == Color || RGB(255, 0, 0) == Color)	// 땅에 닿을 경우 
+		{
+			m_Gravity = 10.0f;
+			m_MoveDir.Normalize();
+
+
+			StateChange(PlayerState::Landing);
+			return;
+		}
+		MoveValue(Vector2{ 0.f, -1.f } * m_Gravity);
+	}
+
+
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+	if (KEY_PRESSED(KEY::A))
+	{
+		m_MoveDir += Vector2{ -1.f, 0.f } * DT * 2000.f;
+		Vector2 TempX = { m_MoveDir.x, 0.f };
+
+		if (TempX.Length() >= 450.f)
+		{
+			TempX.Normalize();
+			TempX *= 450.f;
+			m_MoveDir.x = TempX.x;
+		}
+	}
+	if (KEY_PRESSED(KEY::D))
+	{
+		m_MoveDir += Vector2{ 1.f, 0.f } * DT * 2000.f;
+		Vector2 TempX = { m_MoveDir.x, 0.f };
+
+		if (TempX.Length() >= 450.f)
+		{
+			TempX.Normalize();
+			TempX *= 450.f;
+			m_MoveDir.x = TempX.x;
+		}
+	}
+
+	if (KEY_PRESSED(KEY::S))
+	{
+		m_MoveDir += Vector2{ 0.f , -1.f } * DT * 4000;
+	}
+
+	MapCollisionCheckMoveAir();
+
 }
 
 void CPlayerScript::DodgeUpdate()
@@ -896,7 +1171,7 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		Vector2 NextPos = m_PosyReverse + (Vector2{ 0.f,m_MoveDir.y } * DT);
+		Vector2 NextPos = m_PosyReverse + (Vector2{ 0.f, m_MoveDir.y } * DT);
 		Vector2 CheckPos = NextPos + Vector2{ 0,0 };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
@@ -921,7 +1196,7 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 			RGB(255, 0, 255) != CenterRightColor &&
 			RGB(255, 0, 255) != CenterLeftColor)
 		{
-			MoveValue(Vector2{ 0.f , -m_MoveDir.y });
+			MoveValue(Vector2{ 0.f , m_MoveDir.y });
 		}
 	}
 

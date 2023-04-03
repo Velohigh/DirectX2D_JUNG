@@ -13,6 +13,7 @@
 #include <Script\CPlayerScript.h>
 #include <Script\CMonsterScript.h>
 #include <Script\CMainCameraScript.h>
+#include <Script\CMouseScript.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -76,9 +77,10 @@ void CreateLevel_1()
 	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
 
-	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
 	pLightObj->Light2D()->SetRadius(20000.f);
+
 
 	SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
 
@@ -151,9 +153,11 @@ void CreateLevel_1()
 	pMouse->AddComponent(new CTransform);
 	pMouse->AddComponent(new CMeshRender);
 	pMouse->AddComponent(new CCollider2D);
+	pMouse->AddComponent(new CMouseScript);
 
 	pMouse->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
-	pMouse->Transform()->SetRelativeScale(Vec3(25.f, 25.f, 1.f));
+	pMouse->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
+
 
 	pMouse->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pMouse->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"MouseDMtrl"));
@@ -162,7 +166,7 @@ void CreateLevel_1()
 	pMouse->Collider2D()->SetAbsolute(true);
 	pMouse->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 
-	SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Mouse");
+	SpawnGameObject(pMouse, Vec3(0.f, 0.f, 100.f), L"ViewPort UI");
 
 
 	//// TileMap Object
@@ -198,13 +202,13 @@ void CreateLevel_1()
 	SpawnGameObject(pBackGround, Vec3(900.f, -392.f, 1000.f), L"Default");
 
 
-	// Particle Object
-	CGameObject* pParticleObj = new CGameObject;
-	pParticleObj->SetName(L"ParticleObject");
-	pParticleObj->AddComponent(new CTransform);
-	pParticleObj->AddComponent(new CParticleSystem);
+	//// Particle Object
+	//CGameObject* pParticleObj = new CGameObject;
+	//pParticleObj->SetName(L"ParticleObject");
+	//pParticleObj->AddComponent(new CTransform);
+	//pParticleObj->AddComponent(new CParticleSystem);
 
-	SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
+	//SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
 	/*CGameObject* pPostProcess = new CGameObject;
@@ -215,14 +219,14 @@ void CreateLevel_1()
 	pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
 	SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 0);*/
 
-	CGameObject* pDistortion = new CGameObject;
-	pDistortion->SetName(L"Distortion");
-	pDistortion->AddComponent(new CTransform);
-	pDistortion->AddComponent(new CMeshRender);
-	pDistortion->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
-	pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
-	SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);
+	//CGameObject* pDistortion = new CGameObject;
+	//pDistortion->SetName(L"Distortion");
+	//pDistortion->AddComponent(new CTransform);
+	//pDistortion->AddComponent(new CMeshRender);
+	//pDistortion->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
+	//pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+	//SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);
 
 
 
@@ -250,6 +254,7 @@ void CreatePlayerAnimation(CGameObject* _player)
 	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_wallgrab", 1, 1.f);
 	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_player_flip", 11, 14.2857f);
 
+	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_character", 1, 1.f);
 
 
 

@@ -118,10 +118,10 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
        
-    if (g_vec4_0.x == 3.14f)
-    {
-        return float4(1.f, 0.f, 0.f, 1.f);
-    }
+    //if (g_vec4_0.x == 3.14f)
+    //{
+    //    return float4(1.f, 0.f, 0.f, 1.f);
+    //}
     
     if (g_btex_0)
     {
@@ -138,15 +138,15 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
             }
             else
             {
-                vOutColor = float4(1.f, 1.f, 0.f, 1.f);
-                //discard;
+                //vOutColor = float4(1.f, 1.f, 0.f, 1.f);
+                discard;
             }
         }
         else
         {
             float2 vUV = _in.vUV;
             vUV -= Offset;
-            vOutColor = g_tex_0.Sample(g_sam_0, vUV);
+            vOutColor = g_tex_0.Sample(g_sam_1, vUV);
         }
     }
     else
@@ -176,8 +176,8 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
     
     if (0.f == vOutColor.a)
     {
-        return float4(1.f, 0.f, 1.f, 1.f);
-        //discard;
+        //return float4(1.f, 0.f, 1.f, 1.f);
+        discard;
     }
      
     

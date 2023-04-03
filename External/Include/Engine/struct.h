@@ -199,6 +199,6 @@ struct tGlobal
 };
 
 extern tGlobal GlobalData;
-
+extern HWND _G_HWND;
 
 
