@@ -16,6 +16,12 @@
     <Filter Include="Script\MouseScript">
       <UniqueIdentifier>{383bfaa9-11d7-427f-84ae-a26bc9d50715}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Monster">
+      <UniqueIdentifier>{c363f152-db50-4b43-8bca-1160cdf4c4b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Monster\GruntScript">
+      <UniqueIdentifier>{a865b29e-a1cf-494b-9734-10c43c06b737}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -48,6 +54,9 @@
     <ClInclude Include="CMouseScript.h">
       <Filter>Script\MouseScript</Filter>
     </ClInclude>
+    <ClInclude Include="CGruntScript.h">
+      <Filter>Script\Monster\GruntScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -79,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="CMouseScript.cpp">
       <Filter>Script\MouseScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CGruntScript.cpp">
+      <Filter>Script\Monster\GruntScript</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

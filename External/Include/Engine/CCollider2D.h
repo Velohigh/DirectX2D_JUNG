@@ -18,6 +18,10 @@ public:
     virtual void finaltick() override;
 
 public:
+    Vec3 GetOffsetPos() const { return m_vOffsetPos; }
+    Vec3 GetOffsetScale() const { return m_vOffsetScale; }
+    bool GetAbsolute() const { return m_bAbsolute; }
+
     void SetOffsetPos(Vec2 _vOffsetPos) { m_vOffsetPos = Vec3(_vOffsetPos.x, _vOffsetPos.y, 0.f); }
     void SetOffsetScale(Vec2 _vOffsetScale) { m_vOffsetScale = Vec3(_vOffsetScale.x, _vOffsetScale.y, 1.f); }
     void SetAbsolute(bool _bSet) { m_bAbsolute = _bSet; }

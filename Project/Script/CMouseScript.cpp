@@ -33,7 +33,7 @@ void CMouseScript::tick()
 		if (m_ShowCursor)
 		{
 			m_ShowCursor = false;
-			ShowCursor(FALSE);
+			//ShowCursor(FALSE);
 		}
 	}
 
@@ -42,14 +42,21 @@ void CMouseScript::tick()
 		if (!m_ShowCursor)
 		{
 			m_ShowCursor = true;
-			ShowCursor(TRUE);
+			//ShowCursor(TRUE);
 		}
 	}
+
+	// 카메라 위치에 따른 마우스 좌표 계산
+	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurLevel();
+	Vec3 CameraPos = CurLevel->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+
+	ComputeWorldMousePos(Vec2(CameraPos.x, CameraPos.y));
+
 }
 
 void CMouseScript::begin()
 {
-	ShowCursor(FALSE);
+	//ShowCursor(FALSE);
 	m_ShowCursor = false;
 }
 

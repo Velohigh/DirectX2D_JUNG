@@ -106,6 +106,14 @@ void CAnim2D::CreateFolderAnim(const wstring& _strAnimName, const wstring& _Rela
 		wstring FilePath = szPath + L"\\" + Temp.c_str() + L".png";
 
 		Ptr<CTexture> pTexture = CResMgr::GetInst()->Load<CTexture>(FilePath, FilePath);
+		
+		
+		float _width = pTexture->Width();
+		float _height = pTexture->Height();
+
+		pTexture->SetOffset(0.f, -_height*2.f);
+		pTexture->SetBackSize(200.f, 200.f);
+
 		m_vecFolderTex.push_back(pTexture);
 	}
 

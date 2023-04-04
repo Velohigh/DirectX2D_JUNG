@@ -14,6 +14,7 @@
 #include <Script\CMonsterScript.h>
 #include <Script\CMainCameraScript.h>
 #include <Script\CMouseScript.h>
+#include <Script\CGruntScript.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -100,15 +101,14 @@ void CreateLevel_1()
 	pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
 
 	pParent->Collider2D()->SetAbsolute(true);
-	pParent->Collider2D()->SetOffsetScale(Vec2(150.f, 150.f));
+	pParent->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
 
 	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\link.png");
 	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
 	pParent->Animator2D()->Play(L"WalkDown", true);
 	CreatePlayerAnimation(pParent);
 	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
-	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), 0);
-
+	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"Player");
 
 	/*CGameObject* pChild = new CGameObject;
 
@@ -135,7 +135,6 @@ void CreateLevel_1()
 	pMonster->AddComponent(new CCollider2D);
 	pMonster->AddComponent(new CMonsterScript);
 
-	pMonster->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
 	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
 	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
@@ -164,9 +163,28 @@ void CreateLevel_1()
 	pMouse->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\spr_cursor.png"));
 
 	pMouse->Collider2D()->SetAbsolute(true);
-	pMouse->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+	pMouse->Collider2D()->SetOffsetScale(Vec2(35.f, 35.f));
 
 	SpawnGameObject(pMouse, Vec3(0.f, 0.f, 100.f), L"ViewPort UI");
+
+	// Grunt_1
+	CGameObject* pGrunt = new CGameObject;
+	pGrunt->SetName(L"Grunt");
+
+	pGrunt->AddComponent(new CTransform);
+	pGrunt->AddComponent(new CMeshRender);
+	pGrunt->AddComponent(new CCollider2D);
+	pGrunt->AddComponent(new CGruntScript);
+
+	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
+
+	pGrunt->Collider2D()->SetAbsolute(true);
+	pGrunt->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+	CreateGruntAnimation(pGrunt);
+	SpawnGameObject(pGrunt, Vec3(500.f, 500.f, 100.f), L"Monster");
 
 
 	//// TileMap Object
@@ -257,5 +275,17 @@ void CreatePlayerAnimation(CGameObject* _player)
 	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_character", 1, 1.f);
 
 
+
+}
+
+void CreateGruntAnimation(CGameObject* _Grunt)
+{
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_idle", 8, 9.1f);
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_walk", 10, 14.2857f);
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_run", 10, 14.2857f);
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_attack", 8, 14.2857f);
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_turn", 8, 16.6667f);
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_hurtfly", 2, 2.5f);
+	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_hurtground", 16, 16.6667f);
 
 }

@@ -212,10 +212,10 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
 
 	// Param
-	pShader->AddScalarParam(INT_1, "Test Int");
-	pShader->AddScalarParam(FLOAT_0, "Test Float");
-	pShader->AddScalarParam(VEC2_0, "Test Vec2");
-	pShader->AddScalarParam(VEC4_0, "Test Vec4");
+	pShader->AddScalarParam(VEC2_0, "LeftTop");
+	pShader->AddScalarParam(VEC2_1, "Slice");
+	pShader->AddScalarParam(VEC2_2, "Offset");
+	pShader->AddScalarParam(VEC2_3, "BackSize");
 
 	pShader->AddTexParam(TEX_0, "Output Texture 1");
 	pShader->AddTexParam(TEX_1, "Output Texture 2");
@@ -414,6 +414,12 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DShader"));
 	AddRes(L"MouseDMtrl", pMtrl);
+
+	// GruntMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"GruntMtrl", pMtrl);
+
 
 }
 

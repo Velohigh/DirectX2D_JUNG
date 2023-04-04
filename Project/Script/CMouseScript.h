@@ -15,6 +15,13 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+public:
+    Vector2 GetMouseWorldPos() { return m_MouseWorldPos; }
+
+    void ComputeWorldMousePos(const Vec2& _CameraPos)
+    {
+        m_MouseWorldPos = m_MousePos + _CameraPos;
+    }
 private:
     CLONE(CMouseScript);
 public:

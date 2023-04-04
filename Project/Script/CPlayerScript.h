@@ -53,6 +53,9 @@ public:
 
     virtual void BeginOverlap(CCollider2D* _Other) override;
 
+public:
+	PlayerState GetState() { return m_CurState; }
+
 private:
     void Shoot();
 

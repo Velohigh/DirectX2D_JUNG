@@ -25,6 +25,7 @@ private:
 
     UINT                                m_iRecentNum;
     Vec2                                m_Offset;
+    Vec2                                m_BackSize;
 
 public:
     int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat
@@ -46,6 +47,8 @@ public:
 	const Vec2& GetOffset() { return m_Offset; }
     void SetOffset(float _x, float _y) { m_Offset = Vec2(_x, _y); }
     void SetOffset(Vec2 _vec2) { m_Offset = _vec2; }
+    void SetBackSize(float _x, float _y) { m_BackSize = Vec2(_x, _y); }
+    void SetBackSize(Vec2 _vec2) { m_BackSize = _vec2; }
 
 private:
     virtual int Load(const wstring& _strFilePath) override;

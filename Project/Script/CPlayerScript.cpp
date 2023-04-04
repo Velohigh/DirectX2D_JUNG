@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "CPlayerScript.h"
+#include "CMouseScript.h"
 
 #include <Engine\CMeshRender.h>
 #include <Engine\CMaterial.h>
+#include <Engine\CLevelMgr.h>
 
 #include "CMissileScript.h"
 
+Vector2 g_AttackDir = Vector2{ 0.f , 0.f };
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -238,7 +241,9 @@ void CPlayerScript::SetSize2x()
 
 	float Width = VecFolderTex[CurFrmCount]->Width();
 	float Height = VecFolderTex[CurFrmCount]->Height();
-	Transform()->SetRelativeScale(Width*2, Height*2, 1);
+	Transform()->SetRelativeScale(Width * 2, Height * 2, 1);
+	//Transform()->SetRelativeScale(1, 1, 1);
+
 }
 
 void CPlayerScript::MoveDir(const Vec2& Dir)
@@ -255,7 +260,10 @@ void CPlayerScript::MoveValue(const Vector2& MoveValue)
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
 	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
 
-	m_Pos += MoveValue * DT/*m_TimeScale*/;
+	m_Pos += MoveValue /*m_TimeScale*/;
+
+	if (MoveValue.Length() <= 0.001f)
+		int ab = 0;
 
 	Transform()->SetRelativePos(m_Pos.x, m_Pos.y, m_Pos3.z);
 
@@ -329,7 +337,7 @@ void CPlayerScript::IdleUpdate()
 	if (Rcolor == RGB(255, 0, 0) &&
 		KEY_TAP(KEY::S))
 	{
-		SetPos(m_Pos + Vector2{ 0, 4 });
+		SetPos(m_Pos + Vector2{ 0, -4 });
 	}
 
 	// 점프키를 누르면 Jump 상태로
@@ -339,12 +347,12 @@ void CPlayerScript::IdleUpdate()
 		return;
 	}
 
-	//// 공격키를 누르면 공격상태로
-	//if (KEY_TAP(KEY::LBTN))
-	//{
-	//	StateChange(PlayerState::Attack);
-	//	return;
-	//}
+	// 공격키를 누르면 공격상태로
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
 
 	// 회피
 	if (KEY_TAP(KEY::LSHIFT))	// @@@ 회피 추가.
@@ -679,8 +687,9 @@ void CPlayerScript::JumpUpdate()
 	if (KEY_PRESSED(KEY::A))
 	{
 		m_MoveDir += Vector2{ -1.f, 0.f } * DT * 2000.f;
+		
+		// 공중에서 최대 가속도 제한
 		Vector2 TempX = { m_MoveDir.x,0.f };
-
 		if (TempX.Length() >= 450.f)
 		{
 			TempX.Normalize();
@@ -808,7 +817,7 @@ void CPlayerScript::LandingUpdate()
 
 
 	// 점프키를 누르면 Jump 상태로
-	if (KEY_TAP(KEY::SPACE))		// @@@ 점프 추가.
+	if (KEY_TAP(KEY::SPACE))		
 	{
 		StateChange(PlayerState::Jump);
 		return;
@@ -820,6 +829,22 @@ void CPlayerScript::LandingUpdate()
 
 void CPlayerScript::AttackUpdate()
 {
+	//// 플레이어 공격이 끝나면 플레이어 공격 충돌체 제거
+	//if (true == Animator2D()->IsEndAnimation() &&
+	//	m_PlayerAttackCollision != nullptr)
+	//{
+	//	m_PlayerAttackCollision->SetActive(false);
+	//	m_PlayerAttackCollision = nullptr;
+	//}
+
+	// 공격 끝날시 Fall 상태로
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	MapCollisionCheckMoveAir();
 }
 
 void CPlayerScript::FallUpdate()
@@ -870,7 +895,7 @@ void CPlayerScript::FallUpdate()
 			StateChange(PlayerState::Landing);
 			return;
 		}
-		MoveValue(Vector2{ 0.f, -1.f } * m_Gravity);
+		MoveValue(Vector2{ 0.f, -1.f } * m_Gravity * DT);
 	}
 
 
@@ -918,6 +943,59 @@ void CPlayerScript::FallUpdate()
 
 void CPlayerScript::DodgeUpdate()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 이펙트 생성
+
+	// 닷지 종료시 RunToIdle 상태로
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::RunToIdle);
+		return;
+	}
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color[10] = {};
+	for (int i = 1; i <= 10; ++i)
+	{
+		color[i - 1] = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,(float)i });
+	}
+	if (color[0] != RGB(0, 0, 0) && color[0] != RGB(255, 0, 0) &&
+		color[1] != RGB(0, 0, 0) &&
+		color[2] != RGB(0, 0, 0) &&
+		color[3] != RGB(0, 0, 0) &&
+		color[4] != RGB(0, 0, 0) &&
+		color[5] != RGB(0, 0, 0) &&
+		color[6] != RGB(0, 0, 0) &&
+		color[7] != RGB(0, 0, 0) &&
+		color[8] != RGB(0, 0, 0) &&
+		color[9] != RGB(0, 0, 0) &&
+		m_CurState != PlayerState::Jump)
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (KEY_TAP(KEY::SPACE))
+	{
+		StateChange(PlayerState::Jump);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+	MapCollisionCheckMoveGround();
+
 }
 
 void CPlayerScript::PlaySongUpdate()
@@ -1015,11 +1093,63 @@ void CPlayerScript::LandingStart()
 
 void CPlayerScript::AttackStart()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+	CLevel* CurLevel = CLevelMgr::GetInst()->GetCurLevel();
+
+	Vec3 MousePos = CurLevel->FindParentObjectByName(L"Mouse")->Transform()->GetRelativePos();
+	Vec3 MainCamPos = CurLevel->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+	Vec3 MouseWorldPos3 = MousePos + MainCamPos;
+	Vec2 MouseWorldPos = Vec2(MouseWorldPos3.x, MouseWorldPos3.y);
+
 	// 어택 사운드 추가
 	// 어택 이펙트 추가
 
+	// 공격 방향은 마우스 방향 고정
+	if (MouseWorldPos.x >= (m_Pos + Vector2{ 0.f, -35.f }).x)
+	{
+		m_CurDir = PlayerDir::Right;
+	}
+	else if (MouseWorldPos.x < (m_Pos + Vector2{ 0.f, -35.f }).x)
+	{
+		m_CurDir = PlayerDir::Left;
+	}
+
 	Animator2D()->Play(L"texture\\player\\spr_attack", true);
 	SetSize2x();
+
+	// 플레이어->마우스 방향 벡터 획득
+	Vector2 AttackDir = MouseWorldPos - (m_Pos + Vector2{ 0,-35 });
+	AttackDir.Normalize();
+
+	// 전역 변수에 공격방향 저장.
+	g_AttackDir = AttackDir;
+
+	// 공격 판정 충돌체 추가@@@
+
+	m_MoveDir = Vector2{ 0.f, 0.f };
+	// 공중에서 최초 한번의 공격일때만 y축 전진성을 부여한다.
+	if (m_AttackCount <= 0)
+	{
+		m_MoveDir = AttackDir * 540.f;
+		++m_AttackCount;
+	}
+	else if (m_AttackCount >= 1)
+	{
+		// 플레이어는 2회 공격이후 y축 이동 제한, 공중 무한 날기 방지용
+		if (AttackDir.y > 0)
+		{
+			m_MoveDir = Vector2{ AttackDir.x, 0.f } *540.f;
+		}
+		else
+		{
+			m_MoveDir = Vector2{ AttackDir.x, AttackDir.y } *540.f;
+		}
+	}
+	m_Gravity = 10.f;	// 공격 후 중력 초기화
+
 
 }
 
@@ -1033,9 +1163,20 @@ void CPlayerScript::FallStart()
 
 void CPlayerScript::DodgeStart()
 {
+	// 닷지 사운드
+
+	m_StateTime[(UINT)PlayerState::Dodge] = 0.f;
+
+
+	// 점프 후 착지시 방향벡터가 0이 되는순간에 구르기할시 제자리에서 구르기 방지.
+	if (m_CurDir == PlayerDir::Right)
+		m_MoveDir = Vec2{ 1.f, 0.f };
+	else if (m_CurDir == PlayerDir::Left)
+		m_MoveDir = Vec2{ -1.f, 0.f };
+
+
 	Animator2D()->Play(L"texture\\player\\spr_roll", true);
-
-
+	m_MoveSpeed = 680.f;
 	SetSize2x();
 
 }
@@ -1197,7 +1338,7 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 			RGB(255, 0, 255) != CenterRightColor &&
 			RGB(255, 0, 255) != CenterLeftColor)
 		{
-			MoveValue(Vector2{ 0.f , m_MoveDir.y });
+			MoveValue(Vector2(0.f , m_MoveDir.y) * DT);
 		}
 	}
 
@@ -1227,8 +1368,9 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 			RGB(255, 0, 255) != CenterRightColor &&
 			RGB(255, 0, 255) != CenterLeftColor)
 		{
-			MoveValue(Vector2{ m_MoveDir.x,0.f });
+			MoveValue(Vector2(m_MoveDir.x, 0.f) * DT);
 		}
 	}
+
 
 }
