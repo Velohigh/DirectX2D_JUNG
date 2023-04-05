@@ -32,6 +32,7 @@ class CPlayerScript :
 	public CScript
 {
 private:
+	CLevel* m_Level;
 	PlayerDir	m_CurDir = PlayerDir::Right;
 	PlayerState	m_CurState = PlayerState::END;
 	float		m_StateTime[(UINT)(PlayerState::END)] = {};
@@ -45,37 +46,42 @@ private:
 
 	int			m_AttackCount = 0;
 	Vec2		m_MoveDir;
-    float       m_MoveSpeed;
+	float       m_MoveSpeed;
+	Vec2		m_AttackDir;
+
 
 public:
-    virtual void begin() override;
-    virtual void tick() override;
+	virtual void begin() override;
+	virtual void tick() override;
 
-    virtual void BeginOverlap(CCollider2D* _Other) override;
+	virtual void BeginOverlap(CCollider2D* _Other) override;
 
 public:
 	PlayerState GetState() { return m_CurState; }
+	Vec2 GetAttackDir() { return m_AttackDir; }
 
 private:
-    void Shoot();
+	void Shoot();
 
 	void DirAnimationCheck();
 	void StateChange(PlayerState _State);
 	void StateUpdate();
+
 	bool IsMoveKey();
 	void SetSize2x();
+
 	void MoveDir(const Vec2& Dir);
 	void MoveValue(const Vector2& MoveValue);  //Move();
 	void SetPos(const Vector2& Pos);
 	void SetPivot();
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _FILE) override;
-    CLONE(CPlayerScript);
+	virtual void SaveToLevelFile(FILE* _File) override;
+	virtual void LoadFromLevelFile(FILE* _FILE) override;
+	CLONE(CPlayerScript);
 public:
-    CPlayerScript();
-    ~CPlayerScript();
+	CPlayerScript();
+	~CPlayerScript();
 
 private:
 	void IdleUpdate();

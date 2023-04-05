@@ -30,8 +30,8 @@ void CreateLevel_1()
 	// Layer 이름설정
 	pCurLevel->GetLayer(0)->SetName(L"Default");
 	pCurLevel->GetLayer(1)->SetName(L"Tile");
-	pCurLevel->GetLayer(2)->SetName(L"Player");
-	pCurLevel->GetLayer(3)->SetName(L"Monster");
+	pCurLevel->GetLayer(2)->SetName(L"PlayerHitBox");
+	pCurLevel->GetLayer(3)->SetName(L"MonsterHitBox");
 	pCurLevel->GetLayer(4)->SetName(L"PlayerProjectile");
 	pCurLevel->GetLayer(5)->SetName(L"MonsterProjectile");
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
@@ -100,50 +100,36 @@ void CreateLevel_1()
 	pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
 
+	Vec2 _Resolution = GlobalData.Resolution;
 	pParent->Collider2D()->SetAbsolute(true);
 	pParent->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+	//pParent->Collider2D()->SetOffsetPos(Vec2( -_Resolution.x/2.f, _Resolution.y/2.f + 35.f));
 
 	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\link.png");
 	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
 	pParent->Animator2D()->Play(L"WalkDown", true);
 	CreatePlayerAnimation(pParent);
 	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
-	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"Player");
+	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"PlayerHitBox");
 
-	/*CGameObject* pChild = new CGameObject;
+	//// Monster
+	//CGameObject* pMonster = new CGameObject;
+	//pMonster->SetName(L"Monster");
 
-	pChild->SetName(L"Child");
-	pChild->AddComponent(new CTransform);
-	pChild->AddComponent(new CMeshRender);
+	//pMonster->AddComponent(new CTransform);
+	//pMonster->AddComponent(new CMeshRender);
+	//pMonster->AddComponent(new CCollider2D);
+	//pMonster->AddComponent(new CMonsterScript);
 
-	pChild->Transform()->SetAbsolute(true);
-	pChild->Transform()->SetRelativePos(200.f, 0.f, 0.f);
-	pChild->Transform()->SetRelativeScale(100.f, 100.f, 1.f);
+	//pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
-	pChild->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pChild->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DLightMtrl"));
-	pChild->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\Fighter.bmp"));
+	//pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 
-	pParent->AddChild(pChild);*/
+	//pMonster->Collider2D()->SetAbsolute(true);
+	//pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 
-	// Monster
-	CGameObject* pMonster = new CGameObject;
-	pMonster->SetName(L"Monster");
-
-	pMonster->AddComponent(new CTransform);
-	pMonster->AddComponent(new CMeshRender);
-	pMonster->AddComponent(new CCollider2D);
-	pMonster->AddComponent(new CMonsterScript);
-
-	pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
-
-	pMonster->Collider2D()->SetAbsolute(true);
-	pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
-
-	SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"Monster");
+	//SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"MonsterHitBox");
 
 	// Mouse
 	CGameObject* pMouse = new CGameObject;
@@ -170,10 +156,10 @@ void CreateLevel_1()
 	// Grunt_1
 	CGameObject* pGrunt = new CGameObject;
 	pGrunt->SetName(L"Grunt");
-
 	pGrunt->AddComponent(new CTransform);
 	pGrunt->AddComponent(new CMeshRender);
 	pGrunt->AddComponent(new CCollider2D);
+	pGrunt->AddComponent(new CAnimator2D);
 	pGrunt->AddComponent(new CGruntScript);
 
 	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
@@ -182,26 +168,13 @@ void CreateLevel_1()
 	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
 
 	pGrunt->Collider2D()->SetAbsolute(true);
-	pGrunt->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+	pGrunt->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+	pGrunt->Collider2D()->SetOffsetPos(Vec2(-_Resolution.x / 2.f, _Resolution.y / 2.f + 35.f));
+
 	CreateGruntAnimation(pGrunt);
-	SpawnGameObject(pGrunt, Vec3(500.f, 500.f, 100.f), L"Monster");
-
-
-	//// TileMap Object
-	//CGameObject* pTileMap = new CGameObject;
-	//pTileMap->SetName(L"TileMap");
-
-	//pTileMap->AddComponent(new CTransform);
-	//pTileMap->AddComponent(new CTileMap);
-
-	//pTileMap->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
-	//pTileMap->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 1.f));
-
-	//pTileMap->TileMap()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\TILE.bmp"));
-	//pTileMap->TileMap()->SetSliceSize(Vec2(0.125f, 0.166f));
-	//pTileMap->TileMap()->SetTileCount(8, 8);
-
-	//SpawnGameObject(pTileMap, Vec3(0.f, 0.f, 600.f), L"Tile");
+	pGrunt->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
+	pGrunt->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
+	SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
 
 	// BackGround Object
 	CGameObject* pBackGround = new CGameObject;
@@ -251,7 +224,7 @@ void CreateLevel_1()
 
 
 	// 충돌 시킬 레이어 짝 지정
-	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"Monster");
+	CCollisionMgr::GetInst()->LayerCheck(L"PlayerHitBox", L"MonsterHitBox");
 }
 
 void CreatePlayerAnimation(CGameObject* _player)

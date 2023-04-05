@@ -8,13 +8,13 @@
 
 #include "CMissileScript.h"
 
-Vector2 g_AttackDir = Vector2{ 0.f , 0.f };
-
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_MoveSpeed(50.f)
 {
 	AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MoveSpeed, "Speed");
+	AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
+	AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LongJumpPower, "LongJumpPower");
 }
 
 CPlayerScript::~CPlayerScript()
@@ -24,6 +24,7 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
+	m_Level = CLevelMgr::GetInst()->GetCurLevel();
 	MeshRender()->GetDynamicMaterial();
 
 
@@ -32,14 +33,13 @@ void CPlayerScript::begin()
 
 void CPlayerScript::tick()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
 
 	DirAnimationCheck();
 	StateUpdate();
 
-
-
-
-
+	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
 
 
 
@@ -73,6 +73,7 @@ void CPlayerScript::Shoot()
 
 void CPlayerScript::DirAnimationCheck()
 {
+	return;
 	PlayerDir CheckDir = m_CurDir;
 
 	Vec3 Rot = Transform()->GetRelativeRot();
@@ -226,7 +227,7 @@ void CPlayerScript::StateUpdate()
 bool CPlayerScript::IsMoveKey()
 {
 	// 무브키 눌렀다면 true 리턴
-	if (KEY_PRESSED(KEY::A) || 
+	if (KEY_PRESSED(KEY::A) ||
 		KEY_PRESSED(KEY::D))
 	{
 		return true;
@@ -316,7 +317,7 @@ void CPlayerScript::IdleUpdate()
 		return;
 	}
 
-	
+
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
 	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
 	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
@@ -653,11 +654,11 @@ void CPlayerScript::JumpUpdate()
 		m_StateTime[static_cast<int>(PlayerState::Jump)] <= 0.15f &&
 		KEY_PRESSED(KEY::SPACE))
 	{
-		m_MoveDir += Vector2{ 0.f, 1.f } * DT * m_LongJumpPower;
+		m_MoveDir += Vector2{ 0.f, 1.f } *DT * m_LongJumpPower;
 	}
 
 
-	m_MoveDir += Vector2{ 0.f, -1.f } * DT * 1500.f;
+	m_MoveDir += Vector2{ 0.f, -1.f } *DT * 1500.f;
 
 	// y이동량이 일정이하로 떨어지면 Fall 상태로
 	Vector2 TempY = { 0.f ,m_MoveDir.y };
@@ -686,8 +687,8 @@ void CPlayerScript::JumpUpdate()
 	// 공중에서 키누르면 해당방향으로 가속도
 	if (KEY_PRESSED(KEY::A))
 	{
-		m_MoveDir += Vector2{ -1.f, 0.f } * DT * 2000.f;
-		
+		m_MoveDir += Vector2{ -1.f, 0.f } *DT * 2000.f;
+
 		// 공중에서 최대 가속도 제한
 		Vector2 TempX = { m_MoveDir.x,0.f };
 		if (TempX.Length() >= 450.f)
@@ -699,7 +700,7 @@ void CPlayerScript::JumpUpdate()
 	}
 	if (KEY_PRESSED(KEY::D))
 	{
-		m_MoveDir += Vector2{ 1.f, 0.f } * DT * 2000.f;
+		m_MoveDir += Vector2{ 1.f, 0.f } *DT * 2000.f;
 		Vector2 TempX = { m_MoveDir.x,0.f };
 
 		if (TempX.Length() >= 450.f)
@@ -817,7 +818,7 @@ void CPlayerScript::LandingUpdate()
 
 
 	// 점프키를 누르면 Jump 상태로
-	if (KEY_TAP(KEY::SPACE))		
+	if (KEY_TAP(KEY::SPACE))
 	{
 		StateChange(PlayerState::Jump);
 		return;
@@ -895,7 +896,7 @@ void CPlayerScript::FallUpdate()
 			StateChange(PlayerState::Landing);
 			return;
 		}
-		MoveValue(Vector2{ 0.f, -1.f } * m_Gravity * DT);
+		MoveValue(Vector2{ 0.f, -1.f } *m_Gravity * DT);
 	}
 
 
@@ -909,7 +910,7 @@ void CPlayerScript::FallUpdate()
 
 	if (KEY_PRESSED(KEY::A))
 	{
-		m_MoveDir += Vector2{ -1.f, 0.f } * DT * 2000.f;
+		m_MoveDir += Vector2{ -1.f, 0.f } *DT * 2000.f;
 		Vector2 TempX = { m_MoveDir.x, 0.f };
 
 		if (TempX.Length() >= 450.f)
@@ -921,7 +922,7 @@ void CPlayerScript::FallUpdate()
 	}
 	if (KEY_PRESSED(KEY::D))
 	{
-		m_MoveDir += Vector2{ 1.f, 0.f } * DT * 2000.f;
+		m_MoveDir += Vector2{ 1.f, 0.f } *DT * 2000.f;
 		Vector2 TempX = { m_MoveDir.x, 0.f };
 
 		if (TempX.Length() >= 450.f)
@@ -934,7 +935,7 @@ void CPlayerScript::FallUpdate()
 
 	if (KEY_PRESSED(KEY::S))
 	{
-		m_MoveDir += Vector2{ 0.f , -1.f } * DT * 4000;
+		m_MoveDir += Vector2{ 0.f , -1.f } *DT * 4000;
 	}
 
 	MapCollisionCheckMoveAir();
@@ -1068,7 +1069,7 @@ void CPlayerScript::JumpStart()
 	SetSize2x();
 
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
-	Transform()->SetRelativePos(m_Pos3.x, m_Pos3.y +4.f, m_Pos3.z);
+	Transform()->SetRelativePos(m_Pos3.x, m_Pos3.y + 4.f, m_Pos3.z);
 
 	m_MoveDir *= m_MoveSpeed;
 	m_MoveDir += Vec2(0.f, 1.f) * m_JumpPower;
@@ -1124,8 +1125,8 @@ void CPlayerScript::AttackStart()
 	Vector2 AttackDir = MouseWorldPos - (m_Pos + Vector2{ 0,-35 });
 	AttackDir.Normalize();
 
-	// 전역 변수에 공격방향 저장.
-	g_AttackDir = AttackDir;
+	// 공격방향 저장.
+	m_AttackDir = AttackDir;
 
 	// 공격 판정 충돌체 추가@@@
 
@@ -1240,7 +1241,7 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		Vector2 NextPos = m_PosyReverse + (Vec2{ 0.f,m_MoveDir.y } * DT * m_MoveSpeed);
+		Vector2 NextPos = m_PosyReverse + (Vec2{ 0.f,m_MoveDir.y } *DT * m_MoveSpeed);
 		Vector2 CheckPos = NextPos + Vector2{ 0,0 };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
@@ -1262,7 +1263,7 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		Vector2 NextPos = m_PosyReverse + (Vec2{ m_MoveDir.x,0.f } * DT * m_MoveSpeed);
+		Vector2 NextPos = m_PosyReverse + (Vec2{ m_MoveDir.x,0.f } *DT * m_MoveSpeed);
 		Vector2 CheckPos = NextPos + Vec2{ 0.f,0.f };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vec2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vec2{ -18,-70 };	// 미래 위치의 머리기준 색상
@@ -1313,7 +1314,7 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		Vector2 NextPos = m_PosyReverse + (Vector2{ 0.f, m_MoveDir.y } * DT);
+		Vector2 NextPos = m_PosyReverse + (Vector2{ 0.f, m_MoveDir.y } *DT);
 		Vector2 CheckPos = NextPos + Vector2{ 0,0 };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
@@ -1338,13 +1339,13 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 			RGB(255, 0, 255) != CenterRightColor &&
 			RGB(255, 0, 255) != CenterLeftColor)
 		{
-			MoveValue(Vector2(0.f , m_MoveDir.y) * DT);
+			MoveValue(Vector2(0.f, m_MoveDir.y) * DT);
 		}
 	}
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		Vector2 NextPos = m_PosyReverse + (Vector2{ m_MoveDir.x,0.f } * DT);
+		Vector2 NextPos = m_PosyReverse + (Vector2{ m_MoveDir.x,0.f } *DT);
 		Vector2 CheckPos = NextPos + Vector2{ 0.f, 0.f };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
