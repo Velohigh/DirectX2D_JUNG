@@ -97,7 +97,7 @@ void CreateLevel_1()
 
 	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
-	pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
 	pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
 
 	Vec2 _Resolution = GlobalData.Resolution;
@@ -164,7 +164,7 @@ void CreateLevel_1()
 
 	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
-	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
 	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
 
 	pGrunt->Collider2D()->SetAbsolute(true);
