@@ -16,6 +16,7 @@ private:
 
     Matrix  m_matWorldScale;    // 월드 크기 행렬
     Matrix  m_matWorldRotation; // 월드 회전 행렬
+    Matrix  m_matWorldAbsoluteTrans; // 월드 회전 행렬
     Matrix  m_matWorld; // 크기, 회전, 이동 정보를 합쳐놓음
 
 
@@ -43,6 +44,7 @@ public:
 
     const Matrix& GetWorldScaleMat() { return m_matWorldScale; }
     const Matrix& GetWorldRotationMat() { return m_matWorldRotation; }
+    const Matrix& GetWorldAbsoluteTrans() { return m_matWorldAbsoluteTrans; }
     const Matrix& GetWorldMat() const { return m_matWorld; }
 
     void SetWorldMat(const Matrix& _mat) { m_matWorld = _mat; }

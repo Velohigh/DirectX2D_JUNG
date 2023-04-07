@@ -1212,10 +1212,11 @@ void CPlayerScript::AttackStart()
 	// 어택 이펙트 추가
 	{
 		CGameObject* pAttackSlash = new CGameObject;
-		pAttackSlash->SetName(L"LandCloud");
+		pAttackSlash->SetName(L"Slash");
 		pAttackSlash->AddComponent(new CTransform);
 		pAttackSlash->AddComponent(new CMeshRender);
 		pAttackSlash->AddComponent(new CAnimator2D);
+		pAttackSlash->AddComponent(new CCollider2D);
 		pAttackSlash->AddComponent(new CSlashScript);
 
 		pAttackSlash->Transform()->SetRelativeScale(212.f, 64.f, 1.f);
@@ -1226,7 +1227,7 @@ void CPlayerScript::AttackStart()
 		pAttackSlash->Animator2D()->Create_Effect_Animation();
 		pAttackSlash->Animator2D()->Play(L"texture\\effect\\spr_slash", false);
 
-		SpawnGameObject(pAttackSlash, Transform()->GetRelativePos(), L"Default");
+		SpawnGameObject(pAttackSlash, Transform()->GetRelativePos(), L"PlayerProjectile");
 	}
 
 	// 공격 방향은 마우스 방향 고정

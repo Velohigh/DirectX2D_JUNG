@@ -35,6 +35,10 @@ void CTransform::finaltick()
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
 	m_matWorld = m_matWorldScale * matRot * matTranslation;
+	Matrix matScaleInv = XMMatrixInverse(nullptr, m_matWorldScale);
+	Matrix matRotationInv = XMMatrixInverse(nullptr, m_matWorldRotation);
+
+	m_matWorldAbsoluteTrans = matScaleInv * m_matWorldScale * matRotationInv * m_matWorldRotation * matTranslation;
 
 	Vec3 vDefaultDir[3] = {
 		  Vec3(1.f, 0.f, 0.f)

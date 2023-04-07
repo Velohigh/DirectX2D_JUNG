@@ -41,6 +41,18 @@ void CSlashScript::begin()
 	}
 
 
+	Vec3 PlayerPos = m_Owner->Transform()->GetRelativePos();
+	PlayerPos += Vec3(0.f, 35.f, 0.f);
+	Vec2 AttackPos = m_vAttackDir * 66.f;
+
+	Collider2D()->SetAbsolute(true);
+	Collider2D()->SetOffsetScale(Vec2(76.f, 76.f));
+	//Collider2D()->SetOffsetPos(AttackPos);
+	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+	Collider2D()->SetOffsetPos(Vec2(AttackPos.x-CameraPos.x, AttackPos.y-CameraPos.y + 35.f));
+
+
+
 }
 
 void CSlashScript::tick()
@@ -57,5 +69,9 @@ void CSlashScript::tick()
 		Transform()->SetRelativePos(PlayerPos);
 	}
 	
+	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+	Vec2 AttackPos = m_vAttackDir * 66.f;
+	Collider2D()->SetOffsetPos(Vec2(AttackPos.x - CameraPos.x, AttackPos.y - CameraPos.y));
+
 }
 

@@ -28,13 +28,13 @@ void CCollider2D::finaltick()
 	m_matCollider2D *= XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
 
 	const Matrix& matWorld = Transform()->GetWorldMat();
+	const Matrix& matWorldAbsoluteTrans = Transform()->GetWorldAbsoluteTrans();
 
 	if (m_bAbsolute)
 	{
-		Matrix matParentScaleInv = XMMatrixInverse(nullptr, Transform()->GetWorldScaleMat());
-		Matrix matParentRotationInv = XMMatrixInverse(nullptr, Transform()->GetWorldRotationMat());
+		//Matrix matParentScaleInv = XMMatrixInverse(nullptr, Transform()->GetWorldScaleMat());
 		//m_matCollider2D = m_matCollider2D * matParentScaleInv * matWorld;
-		m_matCollider2D = m_matCollider2D * matParentScaleInv * matParentRotationInv * matWorld;
+		m_matCollider2D = m_matCollider2D * matWorldAbsoluteTrans;
 	}
 	else
 	{
