@@ -147,7 +147,6 @@ float4 PS_Std2DLight(VS_Light_OUT _in) : SV_Target
             // 폴더애니메이션 사용시
             float2 vUV = _in.vUV;
             //vUV -= Offset;
-            //vUV -= float2(100.f, 100.f);
             vOutColor = g_tex_0.Sample(g_sam_0, vUV);
         }
     }

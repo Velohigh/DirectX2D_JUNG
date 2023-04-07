@@ -33,6 +33,9 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\OutputFile\Project\Engine\CShader.cpp"
 
 
+#include "D:\AR43_JUNG\DirectX_JUNG\OutputFile\Project\Engine\CSound.cpp"
+
+
 #include "D:\AR43_JUNG\DirectX_JUNG\OutputFile\Project\Engine\CStructuredBuffer.cpp"
 
 

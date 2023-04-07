@@ -145,6 +145,12 @@
     <ClInclude Include="CParticleUpdateShader.h">
       <Filter>Source\08. ShaderCode\Compute\ParticleUpdate</Filter>
     </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>Source\07. Resource\6. Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontMgr.h">
+      <Filter>Source\03. Manager\10. FontMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -272,6 +278,12 @@
     </ClCompile>
     <ClCompile Include="CParticleUpdateShader.cpp">
       <Filter>Source\08. ShaderCode\Compute\ParticleUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>Source\07. Resource\6. Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontMgr.cpp">
+      <Filter>Source\03. Manager\10. FontMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,6 +421,12 @@
     </Filter>
     <Filter Include="Source\08. ShaderCode\Compute\ParticleUpdate">
       <UniqueIdentifier>{12834beb-ba3f-4987-aee4-cf905f38179d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07. Resource\6. Sound">
+      <UniqueIdentifier>{5f438349-f8a7-4d3d-83a6-7125f3b914c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03. Manager\10. FontMgr">
+      <UniqueIdentifier>{f3c8b393-60b9-428a-85a1-edc451634999}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

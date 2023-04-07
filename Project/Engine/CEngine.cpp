@@ -10,6 +10,7 @@
 #include "CCollisionMgr.h"
 #include "CRenderMgr.h"
 #include "CEventMgr.h"
+#include "CFontMgr.h"
 
 
 CEngine::CEngine()
@@ -45,10 +46,17 @@ int CEngine::init(HWND _hWnd, UINT _iWidth, UINT _iHeight)
 
 	// Manager ÃÊ±âÈ­
 	CPathMgr::GetInst()->init();
+
 	CKeyMgr::GetInst()->init();
+
 	CTimeMgr::GetInst()->init();
+
 	CResMgr::GetInst()->init();
+
 	CRenderMgr::GetInst()->init();
+
+	CFontMgr::GetInst()->init();
+
 	CLevelMgr::GetInst()->init();		
 
 	return S_OK;
@@ -76,7 +84,7 @@ void CEngine::tick()
 
 void CEngine::render()
 {
-	CTimeMgr::GetInst()->render();
-	
 	CRenderMgr::GetInst()->render();	
+	
+	CTimeMgr::GetInst()->render();
 }

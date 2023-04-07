@@ -20,6 +20,9 @@
 void CreateTestLevel()
 {
 	//return;
+	Ptr<CSound> pSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\BGM_Stage1.wav");
+	pSound->Play(1, 0.5f, false);
+
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 	pCurLevel->ChangeState(LEVEL_STATE::STOP);

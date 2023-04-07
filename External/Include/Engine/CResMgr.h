@@ -8,6 +8,7 @@
 #include "CComputeShader.h"
 #include "CMaterial.h"
 #include "CPrefab.h"
+#include "CSound.h"
 
 #include "CPathMgr.h"
 
@@ -25,6 +26,7 @@ public:
     void tick();
 
 private:
+    void InitSound();
     void CreateDefaultMesh();
     void CreateDefaultGraphicsShader();
     void CreateDefaultComputeShader();
@@ -65,7 +67,7 @@ RES_TYPE GetResType()
     //const type_info& meshdata = typeid(CMeshData);
     const type_info& material = typeid(CMaterial);
     const type_info& texture = typeid(CTexture);
-    //const type_info& sound = typeid(CSound);
+    const type_info& sound = typeid(CSound);
     const type_info& prefab = typeid(CPrefab);
     const type_info& gs = typeid(CGraphicsShader);
     const type_info& cs = typeid(CComputeShader);
@@ -82,7 +84,8 @@ RES_TYPE GetResType()
         return RES_TYPE::MATERIAL;
     if (typeid(T).hash_code() == prefab.hash_code())
         return RES_TYPE::PREFAB;
-
+    if (typeid(T).hash_code() == sound.hash_code())
+        return RES_TYPE::SOUND;
 
     return RES_TYPE::END;
 }

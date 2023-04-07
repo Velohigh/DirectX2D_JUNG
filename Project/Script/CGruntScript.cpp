@@ -20,6 +20,13 @@ void CGruntScript::begin()
 
 	m_Level = CLevelMgr::GetInst()->GetCurLevel();
 
+	// 충돌체 추가
+	//Collider2D()->
+	//	= AddCollider<CColliderBox>("Body");
+	//Box->SetExtent(36.f, 70.f);
+	//Box->SetOffset(0.f, -35.f);
+	//Box->SetCollisionProfile("MonsterHitBox");
+
 
 
 }
@@ -140,6 +147,17 @@ void CGruntScript::StateUpdate()
 
 }
 
+void CGruntScript::SetSize2x()
+{
+	vector<Ptr<CTexture>> VecFolderTex = Animator2D()->GetCurAnim()->GetvecFolderTex();
+	int CurFrmCount = Animator2D()->GetCurAnim()->GetCurFrmCount();
+
+	float Width = VecFolderTex[CurFrmCount]->Width();
+	float Height = VecFolderTex[CurFrmCount]->Height();
+	Transform()->SetRelativeScale(Width * 2, Height * 2, 1);
+	//Transform()->SetRelativeScale(1, 1, 1);
+
+}
 
 void CGruntScript::IdleStart()
 {
@@ -147,7 +165,7 @@ void CGruntScript::IdleStart()
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
 	SetSpeed(0.f);
 
-
+	SetSize2x();
 }
 
 void CGruntScript::WalkStart()
@@ -156,6 +174,7 @@ void CGruntScript::WalkStart()
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_walk", true);
 	SetSpeed(80.f);
 
+	SetSize2x();
 }
 
 void CGruntScript::TurnStart()
@@ -164,7 +183,7 @@ void CGruntScript::TurnStart()
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_turn", true);
 	SetSpeed(0.f);
 
-
+	SetSize2x();
 }
 
 void CGruntScript::RunStart()
@@ -173,13 +192,17 @@ void CGruntScript::RunStart()
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_run", true);
 	SetSpeed(0.f);
 
+	SetSize2x();
 	// Enemy_Follow 이펙트
+
 }
 
 void CGruntScript::AttackStart()
 {
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_attack", true);
 	SetSpeed(0.f);
+	SetSize2x();
+
 }
 
 void CGruntScript::HurtGroundStart()
@@ -189,16 +212,25 @@ void CGruntScript::HurtGroundStart()
 	m_StateTime[static_cast<int>(ObjState::HurtGround)] = 0.f;
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_hurtground", false);
 
+	SetSize2x();
+
 }
 
 void CGruntScript::HurtFlyStart()
 {
+
+	SetSize2x();
+
 }
 
 void CGruntScript::DeadStart()
 {
+
+	SetSize2x();
+
 }
 
+// StateUpdate
 void CGruntScript::IdleUpdate()
 {
 }

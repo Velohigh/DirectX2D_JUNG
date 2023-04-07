@@ -33,6 +33,9 @@
 #include "D:\AR43_JUNG\DirectX_JUNG\OutputFile\Project\Engine\CEventMgr.cpp"
 
 
+#include "D:\AR43_JUNG\DirectX_JUNG\OutputFile\Project\Engine\CFontMgr.cpp"
+
+
 #include "D:\AR43_JUNG\DirectX_JUNG\OutputFile\Project\Engine\CGameObject.cpp"
 
 
