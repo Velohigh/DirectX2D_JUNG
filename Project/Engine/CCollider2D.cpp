@@ -32,7 +32,9 @@ void CCollider2D::finaltick()
 	if (m_bAbsolute)
 	{
 		Matrix matParentScaleInv = XMMatrixInverse(nullptr, Transform()->GetWorldScaleMat());
-		m_matCollider2D = m_matCollider2D * matParentScaleInv * matWorld;
+		Matrix matParentRotationInv = XMMatrixInverse(nullptr, Transform()->GetWorldRotationMat());
+		//m_matCollider2D = m_matCollider2D * matParentScaleInv * matWorld;
+		m_matCollider2D = m_matCollider2D * matParentScaleInv * matParentRotationInv * matWorld;
 	}
 	else
 	{

@@ -78,7 +78,6 @@ void CPlayerScript::Shoot()
 
 void CPlayerScript::DirAnimationCheck()
 {
-	return;
 	PlayerDir CheckDir = m_CurDir;
 
 	Vec3 Rot = Transform()->GetRelativeRot();
@@ -110,10 +109,15 @@ void CPlayerScript::DirAnimationCheck()
 	if (m_CurDir == PlayerDir::Right)
 	{
 		Rot = Vec3(Rot.x, 0.f, Rot.z);
+
 	}
 	else if (m_CurDir == PlayerDir::Left)
 	{
-		Rot = Vec3(Rot.x, 3.1415926535f, Rot.z);
+		Rot = Vec3(Rot.x, XM_PI, Rot.z);
+		//Vec3 OffsetPos = Collider2D()->GetOffsetPos();
+		//Collider2D()->SetOffsetPos(Vec2(OffsetPos.x, OffsetPos.y));
+		//int a = 0;
+		//Collider2D()->SetOffsetPos()
 	}
 
 

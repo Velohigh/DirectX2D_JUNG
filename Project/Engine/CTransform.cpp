@@ -30,8 +30,9 @@ void CTransform::finaltick()
 	matRot *= XMMatrixRotationY(m_vRelativeRot.y);
 	matRot *= XMMatrixRotationZ(m_vRelativeRot.z);
 
-	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
+	m_matWorldRotation = matRot;	// 추가코드
 
+	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
 	m_matWorld = m_matWorldScale * matRot * matTranslation;
 
