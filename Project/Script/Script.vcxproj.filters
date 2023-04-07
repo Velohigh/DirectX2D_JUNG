@@ -22,6 +22,21 @@
     <Filter Include="Script\Monster\GruntScript">
       <UniqueIdentifier>{a865b29e-a1cf-494b-9734-10c43c06b737}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Effect">
+      <UniqueIdentifier>{f1a64c92-376f-4a07-a43f-9177fb0fd197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\DustCloud">
+      <UniqueIdentifier>{006e59f2-3c32-4a75-b7a4-e9d68dfc3a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\JumpCloud">
+      <UniqueIdentifier>{c31d1014-579c-4598-9253-be808508514d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\LandCloud">
+      <UniqueIdentifier>{289a21ef-9be6-413f-9bbd-3c53699f7858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\Slash">
+      <UniqueIdentifier>{8b6b50ff-07a9-4f2c-b2f1-f53272404c86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -57,6 +72,18 @@
     <ClInclude Include="CGruntScript.h">
       <Filter>Script\Monster\GruntScript</Filter>
     </ClInclude>
+    <ClInclude Include="CDustCloudScript.h">
+      <Filter>Script\Effect\DustCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="CJumpCloudScript.h">
+      <Filter>Script\Effect\JumpCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="CLandCloudScript.h">
+      <Filter>Script\Effect\LandCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="CSlashScript.h">
+      <Filter>Script\Effect\Slash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -91,6 +118,18 @@
     </ClCompile>
     <ClCompile Include="CGruntScript.cpp">
       <Filter>Script\Monster\GruntScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CDustCloudScript.cpp">
+      <Filter>Script\Effect\DustCloud</Filter>
+    </ClCompile>
+    <ClCompile Include="CJumpCloudScript.cpp">
+      <Filter>Script\Effect\JumpCloud</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandCloudScript.cpp">
+      <Filter>Script\Effect\LandCloud</Filter>
+    </ClCompile>
+    <ClCompile Include="CSlashScript.cpp">
+      <Filter>Script\Effect\Slash</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,12 +1,17 @@
 #include "pch.h"
 #include "CPlayerScript.h"
 #include "CMouseScript.h"
+#include <random>
 
 #include <Engine\CMeshRender.h>
 #include <Engine\CMaterial.h>
 #include <Engine\CLevelMgr.h>
 
 #include "CMissileScript.h"
+#include "CDustCloudScript.h"
+#include "CJumpCloudScript.h"
+#include "CLandCloudScript.h"
+#include "CSlashScript.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -243,8 +248,6 @@ void CPlayerScript::SetSize2x()
 	float Width = VecFolderTex[CurFrmCount]->Width();
 	float Height = VecFolderTex[CurFrmCount]->Height();
 	Transform()->SetRelativeScale(Width * 2, Height * 2, 1);
-	//Transform()->SetRelativeScale(1, 1, 1);
-
 }
 
 void CPlayerScript::MoveDir(const Vec2& Dir)
@@ -1048,7 +1051,38 @@ void CPlayerScript::RunStart()
 	SetSize2x();
 
 	// 런 스타트 구름 이펙트 추가
+	for (int i = 0; i < 7; ++i)
+	{
+		CGameObject* pDustCloud = new CGameObject;
+		pDustCloud->SetName(L"DustCloud");
+		pDustCloud->AddComponent(new CTransform);
+		pDustCloud->AddComponent(new CMeshRender);
+		pDustCloud->AddComponent(new CAnimator2D);
+		pDustCloud->AddComponent(new CDustCloudScript);
+
+		pDustCloud->Transform()->SetRelativeScale(38.f, 38.f, 1.f);
+
+		pDustCloud->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pDustCloud->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DustCloudMtrl"));
+
+		pDustCloud->Animator2D()->Create_Effect_Animation();
+		pDustCloud->Animator2D()->Play(L"texture\\effect\\spr_dustcloud", false);
+		
+
+		SpawnGameObject(pDustCloud, Transform()->GetRelativePos(), L"Default");
+
+		if (m_CurDir == PlayerDir::Right)
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(0);
+		else if (m_CurDir == PlayerDir::Left)
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(1);
+	}
+	 
 	// 런 스타트 사운드 추가
+	Ptr<CSound> pRunSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_prerun.wav");
+	pRunSound->Play(1, 0.35f, true);
+
+
+
 
 }
 
@@ -1063,7 +1097,26 @@ void CPlayerScript::RunToIdleStart()
 void CPlayerScript::JumpStart()
 {
 	// 점프 이펙트 추가
+	CGameObject* pJumpCloud = new CGameObject;
+	pJumpCloud->SetName(L"JumpCloud");
+	pJumpCloud->AddComponent(new CTransform);
+	pJumpCloud->AddComponent(new CMeshRender);
+	pJumpCloud->AddComponent(new CAnimator2D);
+	pJumpCloud->AddComponent(new CJumpCloudScript);
+
+	pJumpCloud->Transform()->SetRelativeScale(64.f, 102.f, 1.f);
+
+	pJumpCloud->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	pJumpCloud->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"JumpCloudMtrl"));
+
+	pJumpCloud->Animator2D()->Create_Effect_Animation();
+	pJumpCloud->Animator2D()->Play(L"texture\\effect\\spr_jumpcloud", false);
+
+	SpawnGameObject(pJumpCloud, Transform()->GetRelativePos(), L"Default");
+	
 	// 점프 사운드 추가
+	Ptr<CSound> pJumpSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_jump.wav");
+	pJumpSound->Play(1, 0.65f, true);
 
 	Animator2D()->Play(L"texture\\player\\spr_jump", true);
 	SetSize2x();
@@ -1081,8 +1134,31 @@ void CPlayerScript::JumpStart()
 
 void CPlayerScript::LandingStart()
 {
-	// 착지 이펙트 추가
+	{
+		// 착지 이펙트 추가
+		CGameObject* pLandCloud = new CGameObject;
+		pLandCloud->SetName(L"LandCloud");
+		pLandCloud->AddComponent(new CTransform);
+		pLandCloud->AddComponent(new CMeshRender);
+		pLandCloud->AddComponent(new CAnimator2D);
+		pLandCloud->AddComponent(new CLandCloudScript);
+
+		pLandCloud->Transform()->SetRelativeScale(100.f, 28.f, 1.f);
+
+		pLandCloud->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+		pLandCloud->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"LandCloudMtrl"));
+
+		pLandCloud->Animator2D()->Create_Effect_Animation();
+		pLandCloud->Animator2D()->Play(L"texture\\effect\\spr_landcloud", false);
+
+		SpawnGameObject(pLandCloud, Transform()->GetRelativePos(), L"Default");
+	}
+
+	
 	// 착지 사운드 추가
+	Ptr<CSound> pLandingSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_land.wav");
+	pLandingSound->Play(1, 1.f, true);
+
 
 	Animator2D()->Play(L"texture\\player\\spr_landing", true);
 	SetSize2x();
@@ -1106,7 +1182,48 @@ void CPlayerScript::AttackStart()
 	Vec2 MouseWorldPos = Vec2(MouseWorldPos3.x, MouseWorldPos3.y);
 
 	// 어택 사운드 추가
+	std::random_device rd;  // 시드값을 얻기 위한 random_device 생성.
+	std::mt19937 gen(rd());  // random_device 를 통해 난수 생성 엔진을 초기화 한다.
+	std::uniform_int_distribution<int> IntRange(0, 2);  // 0 부터 99 까지 균등하게 나타나는 난수열을 생성하기 위해 균등 분포 정의.
+	int Num = IntRange(gen);
+
+	// 어택 사운드 랜덤 재생
+	if (Num == 0)
+	{
+		Ptr<CSound> pAttackSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_slash_1.wav");
+		pAttackSound->Play(1, 0.9f, true);
+	}
+	else if (Num == 1)
+	{
+		Ptr<CSound> pAttackSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_slash_2.wav");
+		pAttackSound->Play(1, 0.9f, true);
+	}
+	else if (Num == 2)
+	{
+		Ptr<CSound> pAttackSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_slash_3.wav");
+		pAttackSound->Play(1, 0.9f, true);
+	}
+
+
 	// 어택 이펙트 추가
+	{
+		CGameObject* pAttackSlash = new CGameObject;
+		pAttackSlash->SetName(L"LandCloud");
+		pAttackSlash->AddComponent(new CTransform);
+		pAttackSlash->AddComponent(new CMeshRender);
+		pAttackSlash->AddComponent(new CAnimator2D);
+		pAttackSlash->AddComponent(new CSlashScript);
+
+		pAttackSlash->Transform()->SetRelativeScale(212.f, 64.f, 1.f);
+
+		pAttackSlash->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pAttackSlash->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SlashMtrl"));
+
+		pAttackSlash->Animator2D()->Create_Effect_Animation();
+		pAttackSlash->Animator2D()->Play(L"texture\\effect\\spr_slash", false);
+
+		SpawnGameObject(pAttackSlash, Transform()->GetRelativePos(), L"Default");
+	}
 
 	// 공격 방향은 마우스 방향 고정
 	if (MouseWorldPos.x >= (m_Pos + Vector2{ 0.f, -35.f }).x)
@@ -1122,7 +1239,7 @@ void CPlayerScript::AttackStart()
 	SetSize2x();
 
 	// 플레이어->마우스 방향 벡터 획득
-	Vector2 AttackDir = MouseWorldPos - (m_Pos + Vector2{ 0,-35 });
+	Vector2 AttackDir = MouseWorldPos - (m_Pos + Vector2{ 0, 35 });
 	AttackDir.Normalize();
 
 	// 공격방향 저장.

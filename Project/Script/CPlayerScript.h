@@ -45,8 +45,9 @@ private:
 	bool		m_IsLongJump = false;
 
 	int			m_AttackCount = 0;
-	Vec2		m_MoveDir;
-	float       m_MoveSpeed;
+
+	Vec2		m_MoveDir;		// 이동 방향 벡터
+	float       m_MoveSpeed;	// 이동 속도
 	Vec2		m_AttackDir;
 
 

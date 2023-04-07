@@ -25,11 +25,13 @@ enum class ObjState
 class CGruntScript :
 	public CScript
 {
+
+
 private:
 	ObjDir		m_PreDir;	// 이전에 바라보고있던 방향
 	ObjDir		m_CurDir;	// 현재 바라보는 방향
 	ObjState	m_CurState;	// 현재 상태
-	CLevel* m_Level;	// 속한 레벨
+	CLevel*		m_Level;	// 속한 레벨
 	float		m_StateTime[static_cast<int>(ObjState::END)];	// 해당 상태가 되고 지난 시간
 
 	float		m_MoveSpeed;	// 이동속도

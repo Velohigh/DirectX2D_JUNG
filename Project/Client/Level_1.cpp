@@ -108,7 +108,7 @@ void CreateLevel_1()
 	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\link.png");
 	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
 	pParent->Animator2D()->Play(L"WalkDown", true);
-	CreatePlayerAnimation(pParent);
+	pParent->Animator2D()->Create_Player_Animation();
 	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
 	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"PlayerHitBox");
 
@@ -171,7 +171,7 @@ void CreateLevel_1()
 	pGrunt->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
 	pGrunt->Collider2D()->SetOffsetPos(Vec2(-_Resolution.x / 2.f, _Resolution.y / 2.f + 35.f));
 
-	CreateGruntAnimation(pGrunt);
+	pGrunt->Animator2D()->Create_Grunt_Animation();
 	pGrunt->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
 	pGrunt->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
 	SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
@@ -224,41 +224,6 @@ void CreateLevel_1()
 
 
 	// 충돌 시킬 레이어 짝 지정
-	CCollisionMgr::GetInst()->LayerCheck(L"PlayerHitBox", L"MonsterHitBox");
-}
-
-void CreatePlayerAnimation(CGameObject* _player)
-{
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_idle", 11, 10.f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_idle_to_run", 4, 25.f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run", 10, 14.2857f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run_to_idle", 5, 14.28f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_jump", 4, 11.428f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_fall", 4, 11.428f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_attack", 7, 35.714f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_landing", 5, 16.667f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_roll", 7, 22.222f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_player_playsong", 31, 8.857f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtfly_begin", 2, 14.2857f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtfly_loop", 4, 14.2857f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtground", 6, 10.909f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_wallgrab", 1, 1.f);
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_player_flip", 11, 14.2857f);
-
-	_player->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_character", 1, 1.f);
-
-
-
-}
-
-void CreateGruntAnimation(CGameObject* _Grunt)
-{
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_idle", 8, 9.1f);
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_walk", 10, 14.2857f);
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_run", 10, 14.2857f);
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_attack", 8, 14.2857f);
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_turn", 8, 16.6667f);
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_hurtfly", 2, 2.5f);
-	_Grunt->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_hurtground", 16, 16.6667f);
-
+	CCollisionMgr::GetInst()->LayerCheck(L"PlayerProjectile", L"MonsterHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerHitBox");
 }

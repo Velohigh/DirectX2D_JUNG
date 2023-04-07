@@ -2,6 +2,7 @@
 #include "CResMgr.h"
 
 #include "CPathMgr.h"
+#include "CGameObject.h"
 
 CResMgr::CResMgr()
 {
@@ -491,6 +492,26 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"GruntMtrl", pMtrl);
 
+	// DustCloudMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"DustCloudMtrl", pMtrl);
+
+	// JumpCloudMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"JumpCloudMtrl", pMtrl);
+
+	// LandCloudMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"LandCloudMtrl", pMtrl);
+
+	// SlashMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"SlashMtrl", pMtrl);
+
 
 }
 
@@ -540,3 +561,6 @@ void CResMgr::DeleteRes(RES_TYPE _type, const wstring& _strKey)
 
 	m_Changed = true;
 }
+
+
+

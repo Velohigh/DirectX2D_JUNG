@@ -37,6 +37,10 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
+public:
+    void Create_Player_Animation();
+    void Create_Grunt_Animation();
+    void Create_Effect_Animation();
 
     CLONE(CAnimator2D);
 public:

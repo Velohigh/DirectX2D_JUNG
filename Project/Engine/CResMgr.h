@@ -12,7 +12,7 @@
 
 #include "CPathMgr.h"
 
-
+class CGameObject;
 class CResMgr :
     public CSingleton<CResMgr>
 {
@@ -31,6 +31,7 @@ private:
     void CreateDefaultGraphicsShader();
     void CreateDefaultComputeShader();
     void CreateDefaultMaterial();
+
 
 
 

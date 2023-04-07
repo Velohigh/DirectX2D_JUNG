@@ -162,3 +162,44 @@ void CAnimator2D::LoadFromLevelFile(FILE* _File)
 
 	m_pCurAnim = FindAnim(strCurAnimName);
 }
+
+void CAnimator2D::Create_Player_Animation()
+{
+	this->CreateFolderAnimation(L"texture\\player\\spr_idle", 11, 10.f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_idle_to_run", 4, 25.f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run", 10, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run_to_idle", 5, 14.28f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_jump", 4, 11.428f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_fall", 4, 11.428f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_attack", 7, 35.714f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_landing", 5, 16.667f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_roll", 7, 22.222f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_player_playsong", 31, 8.857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtfly_begin", 2, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtfly_loop", 4, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtground", 6, 10.909f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_wallgrab", 1, 1.f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_player_flip", 11, 14.2857f);
+
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_character", 1, 1.f);
+}
+
+void CAnimator2D::Create_Grunt_Animation()
+{
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_idle", 8, 9.1f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_walk", 10, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_run", 10, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_attack", 8, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_turn", 8, 16.6667f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_hurtfly", 2, 2.5f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\grunt\\spr_grunt_hurtground", 16, 16.6667f);
+
+}
+
+void CAnimator2D::Create_Effect_Animation()
+{
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_dustcloud", 7, 16.6667f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_jumpcloud", 4, 16.6667f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_landcloud", 7, 16.6667f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_slash", 5, 25.5102f);
+}

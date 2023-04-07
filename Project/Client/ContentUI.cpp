@@ -203,7 +203,7 @@ RES_TYPE ContentUI::GetResTypeByExt(const wstring& _relativepath)
 		|| L".jpeg" == strExt || L".bmp" == strExt
 		|| L".tga" == strExt || L".dds" == strExt)
 		return RES_TYPE::TEXTURE;
-	else if (L".mp3" == strExt || L".wav" == strExt || L".oga" == strExt)
+	else if (L".mp3" == strExt || L".wav" == strExt || L".ogg" == strExt)
 		return RES_TYPE::SOUND;
 	else
 		return RES_TYPE::END;
