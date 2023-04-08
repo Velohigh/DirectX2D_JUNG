@@ -32,6 +32,8 @@ void CreateLevel_1()
 	pCurLevel->GetLayer(3)->SetName(L"MonsterHitBox");
 	pCurLevel->GetLayer(4)->SetName(L"PlayerProjectile");
 	pCurLevel->GetLayer(5)->SetName(L"MonsterProjectile");
+	pCurLevel->GetLayer(6)->SetName(L"MonsterView");
+	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
 
 
@@ -115,14 +117,14 @@ void CreateLevel_1()
 	//pMonster->SetName(L"Monster");
 
 	//pMonster->AddComponent(new CTransform);
-	//pMonster->AddComponent(new CMeshRender);
+	////pMonster->AddComponent(new CMeshRender);
 	//pMonster->AddComponent(new CCollider2D);
 	//pMonster->AddComponent(new CMonsterScript);
 
 	//pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
 
-	//pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+	////pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	////pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 
 	//pMonster->Collider2D()->SetAbsolute(true);
 	//pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
@@ -222,4 +224,6 @@ void CreateLevel_1()
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"PlayerProjectile", L"MonsterHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"PlayerHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterAttackRange", L"PlayerHitBox");
 }

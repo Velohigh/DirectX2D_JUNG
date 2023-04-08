@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CScriptMgr.h"
 
+#include "CAttackRangeScript.h"
 #include "CBloodAnimation2Script.h"
 #include "CBloodAnimationScript.h"
 #include "CCameraMoveScript.h"
@@ -8,6 +9,7 @@
 #include "CEnemy_FollowScript.h"
 #include "CGravityScript.h"
 #include "CGruntScript.h"
+#include "CGruntSlashScript.h"
 #include "CJumpCloudScript.h"
 #include "CLandCloudScript.h"
 #include "CMainCameraScript.h"
@@ -16,9 +18,11 @@
 #include "CMouseScript.h"
 #include "CPlayerScript.h"
 #include "CSlashScript.h"
+#include "CViewScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
+	_vec.push_back(L"CAttackRangeScript");
 	_vec.push_back(L"CBloodAnimation2Script");
 	_vec.push_back(L"CBloodAnimationScript");
 	_vec.push_back(L"CCameraMoveScript");
@@ -26,6 +30,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEnemy_FollowScript");
 	_vec.push_back(L"CGravityScript");
 	_vec.push_back(L"CGruntScript");
+	_vec.push_back(L"CGruntSlashScript");
 	_vec.push_back(L"CJumpCloudScript");
 	_vec.push_back(L"CLandCloudScript");
 	_vec.push_back(L"CMainCameraScript");
@@ -34,10 +39,13 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMouseScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CSlashScript");
+	_vec.push_back(L"CViewScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
+	if (L"CAttackRangeScript" == _strScriptName)
+		return new CAttackRangeScript;
 	if (L"CBloodAnimation2Script" == _strScriptName)
 		return new CBloodAnimation2Script;
 	if (L"CBloodAnimationScript" == _strScriptName)
@@ -52,6 +60,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CGravityScript;
 	if (L"CGruntScript" == _strScriptName)
 		return new CGruntScript;
+	if (L"CGruntSlashScript" == _strScriptName)
+		return new CGruntSlashScript;
 	if (L"CJumpCloudScript" == _strScriptName)
 		return new CJumpCloudScript;
 	if (L"CLandCloudScript" == _strScriptName)
@@ -68,6 +78,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerScript;
 	if (L"CSlashScript" == _strScriptName)
 		return new CSlashScript;
+	if (L"CViewScript" == _strScriptName)
+		return new CViewScript;
 	return nullptr;
 }
 
@@ -75,6 +87,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
+	case (UINT)SCRIPT_TYPE::ATTACKRANGESCRIPT:
+		return new CAttackRangeScript;
+		break;
 	case (UINT)SCRIPT_TYPE::BLOODANIMATION2SCRIPT:
 		return new CBloodAnimation2Script;
 		break;
@@ -95,6 +110,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::GRUNTSCRIPT:
 		return new CGruntScript;
+		break;
+	case (UINT)SCRIPT_TYPE::GRUNTSLASHSCRIPT:
+		return new CGruntSlashScript;
 		break;
 	case (UINT)SCRIPT_TYPE::JUMPCLOUDSCRIPT:
 		return new CJumpCloudScript;
@@ -120,6 +138,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::SLASHSCRIPT:
 		return new CSlashScript;
 		break;
+	case (UINT)SCRIPT_TYPE::VIEWSCRIPT:
+		return new CViewScript;
+		break;
 	}
 	return nullptr;
 }
@@ -128,6 +149,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
+	case SCRIPT_TYPE::ATTACKRANGESCRIPT:
+		return L"CAttackRangeScript";
+		break;
+
 	case SCRIPT_TYPE::BLOODANIMATION2SCRIPT:
 		return L"CBloodAnimation2Script";
 		break;
@@ -154,6 +179,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::GRUNTSCRIPT:
 		return L"CGruntScript";
+		break;
+
+	case SCRIPT_TYPE::GRUNTSLASHSCRIPT:
+		return L"CGruntSlashScript";
 		break;
 
 	case SCRIPT_TYPE::JUMPCLOUDSCRIPT:
@@ -186,6 +215,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::SLASHSCRIPT:
 		return L"CSlashScript";
+		break;
+
+	case SCRIPT_TYPE::VIEWSCRIPT:
+		return L"CViewScript";
 		break;
 
 	}

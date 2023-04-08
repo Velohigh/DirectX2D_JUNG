@@ -1,3 +1,4 @@
+CAttackRangeScript
 CBloodAnimation2Script
 CBloodAnimationScript
 CCameraMoveScript
@@ -5,6 +6,7 @@ CDustCloudScript
 CEnemy_FollowScript
 CGravityScript
 CGruntScript
+CGruntSlashScript
 CJumpCloudScript
 CLandCloudScript
 CMainCameraScript
@@ -13,3 +15,4 @@ CMonsterScript
 CMouseScript
 CPlayerScript
 CSlashScript
+CViewScript

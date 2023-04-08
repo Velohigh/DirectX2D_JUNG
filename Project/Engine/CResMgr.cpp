@@ -527,6 +527,11 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"BloodAnim2Mtrl", pMtrl);
 
+	// GruntSlashMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"GruntSlashMtrl", pMtrl);
+
 
 }
 

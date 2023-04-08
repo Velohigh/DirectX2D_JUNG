@@ -24,6 +24,9 @@ private:
 	bool		m_bEffect_EnemyFollow = false;	// 플레이어 발견시 이펙트 생성
 	bool		m_bPatrol;						// 정찰 행동 여부
 
+	CGameObject* m_ViewCollider;				// 시야 충돌체
+	CGameObject* m_AttackRangeCollider;			// 공격범위 충돌체
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -37,6 +40,7 @@ public:
 	void SetPos(Vec2 _vec2);
 	void SetDir(ObjDir _Dir) { m_CurDir = _Dir; }
 	ObjState GetState() { return m_CurState; }
+	ObjDir GetDir() { return m_CurDir; }
 	void SetSpeed(float _Speed) { m_MoveSpeed = _Speed; }
 
 private:
@@ -47,11 +51,11 @@ public:
 
 private:
 	void SetSize2x();	// 사이즈를 원본 이미지의 2배로 지정
+	void MoveDir(const Vec2& Dir);
+	void MoveValue(const Vector2& MoveValue);  //Move();
 	virtual void BeginOverlap(CCollider2D* _Other);
 	virtual void OnOverlap(CCollider2D* _Other);
 	virtual void EndOverlap(CCollider2D* _Other);
-	void MoveDir(const Vec2& Dir);
-	void MoveValue(const Vector2& MoveValue);  //Move();
 
 private:
 	///////////////////////////////

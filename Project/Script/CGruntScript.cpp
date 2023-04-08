@@ -5,6 +5,9 @@
 #include "CEnemy_FollowScript.h"
 #include "CBloodAnimationScript.h"
 #include "CBloodAnimation2Script.h"
+#include "CViewScript.h"
+#include "CAttackRangeScript.h"
+#include "CGruntSlashScript.h"
 #include <random>
 
 CGruntScript::CGruntScript()
@@ -15,6 +18,11 @@ CGruntScript::CGruntScript()
 
 CGruntScript::~CGruntScript()
 {
+	//if (nullptr != m_ViewCollider)
+	//{
+	//	delete m_ViewCollider;
+	//	m_ViewCollider = nullptr;
+	//}
 }
 
 void CGruntScript::begin()
@@ -25,12 +33,33 @@ void CGruntScript::begin()
 
 	m_Level = CLevelMgr::GetInst()->GetCurLevel();
 
-	// 충돌체 추가
-	//Collider2D()->
-	//	= AddCollider<CColliderBox>("Body");
-	//Box->SetExtent(36.f, 70.f);
-	//Box->SetOffset(0.f, -35.f);
-	//Box->SetCollisionProfile("MonsterHitBox");
+	// 시야 충돌체 추가
+	m_ViewCollider = new CGameObject;
+	m_ViewCollider->SetName(L"ViewCollider");
+	m_ViewCollider->AddComponent(new CTransform);
+	m_ViewCollider->AddComponent(new CCollider2D);
+	m_ViewCollider->AddComponent(new CViewScript);
+
+	m_ViewCollider->Transform()->SetRelativeScale(500.f, 100.f, 1.f);
+	m_ViewCollider->Collider2D()->SetAbsolute(true);
+	m_ViewCollider->Collider2D()->SetOffsetScale(Vec2(500.f, 100.f));
+	m_ViewCollider->GetScript<CViewScript>()->SetOwner(GetOwner());
+
+	SpawnGameObject(m_ViewCollider, Vec3(Transform()->GetRelativePos()), L"MonsterView");
+
+	// 공격 범위 충돌체 추가
+	m_AttackRangeCollider = new CGameObject;
+	m_AttackRangeCollider->SetName(L"AttackRangeCollider");
+	m_AttackRangeCollider->AddComponent(new CTransform);
+	m_AttackRangeCollider->AddComponent(new CCollider2D);
+	m_AttackRangeCollider->AddComponent(new CViewScript);
+
+	m_AttackRangeCollider->Transform()->SetRelativeScale(140.f, 140.f, 1.f);
+	m_AttackRangeCollider->Collider2D()->SetAbsolute(true);
+	m_AttackRangeCollider->Collider2D()->SetOffsetScale(Vec2(140.f, 100.f));
+	m_AttackRangeCollider->GetScript<CViewScript>()->SetOwner(GetOwner());
+
+	SpawnGameObject(m_AttackRangeCollider, Vec3(Transform()->GetRelativePos()), L"MonsterAttackRange");
 
 
 
@@ -54,9 +83,21 @@ void CGruntScript::tick()
 		StateUpdate();
 	}
 
-	// 시야 충돌체등 추가
-
+	// 시야 충돌체 위치 지정
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+	if (m_CurDir == ObjDir::Right)
+	{
+		m_ViewCollider->Collider2D()->SetOffsetPos(-CameraPos.x + 250.f, -CameraPos.y + 50.f);
+	}
+	else if (m_CurDir == ObjDir::Left)
+	{
+		m_ViewCollider->Collider2D()->SetOffsetPos(-CameraPos.x -250.f, -CameraPos.y + 50.f);
+	}
+
+	// 공격 범위 충돌체 위치 지정
+	m_AttackRangeCollider->Collider2D()->SetOffsetPos(-CameraPos.x, -CameraPos.y + 40.f);
+		
+	// HitBox 충돌체 위치 지정  ㅡ
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
 
 
@@ -176,7 +217,8 @@ void CGruntScript::BeginOverlap(CCollider2D* _Other)
 	// 플레이어 공격에 맞으면 날아간다.
 	if (m_CurState == ObjState::Idle
 		|| m_CurState == ObjState::Walk
-		|| m_CurState == ObjState::Turn)
+		|| m_CurState == ObjState::Turn
+		|| m_CurState == ObjState::Attack)
 	{
 		StateChange(ObjState::HurtFly);
 		return;
@@ -285,6 +327,30 @@ void CGruntScript::AttackStart()
 	Animator2D()->Play(L"texture\\grunt\\spr_grunt_attack", true);
 	SetSpeed(0.f);
 	SetSize2x();
+
+	// GruntSlash 이펙트 추가
+	CGameObject* pGruntSlash = new CGameObject;
+	pGruntSlash->SetName(L"GruntSlash");
+	pGruntSlash->AddComponent(new CTransform);
+	pGruntSlash->AddComponent(new CMeshRender);
+	pGruntSlash->AddComponent(new CAnimator2D);
+	pGruntSlash->AddComponent(new CCollider2D);
+	pGruntSlash->AddComponent(new CGruntSlashScript);
+
+	pGruntSlash->Transform()->SetRelativeScale(128.f, 128.f, 1.f);
+
+	pGruntSlash->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pGruntSlash->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntSlashMtrl"));
+
+	pGruntSlash->Animator2D()->Create_Effect_Animation();
+	pGruntSlash->Animator2D()->Play(L"texture\\effect\\spr_gruntslash", false);
+
+	SpawnGameObject(pGruntSlash, Transform()->GetRelativePos(), L"MonsterProjectile");
+
+	// Swing 사운드
+	Ptr<CSound> pSwingSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\swing.wav");
+	pSwingSound->Play(1, 0.8f, true);
+
 
 	//
 }
@@ -591,6 +657,30 @@ void CGruntScript::RunUpdate()
 
 void CGruntScript::AttackUpdate()
 {
+	// 플레이어 사망상태면 Idle 상태로
+	PlayerState PState = m_Level->FindParentObjectByName(L"Player")->GetScript<CPlayerScript>()->GetState();
+	if (PlayerState::Dead == PState)
+	{
+		StateChange(ObjState::Idle);
+		return;
+	}
+
+	// 플레이어 공격에 맞으면 사망 BeginOverlap
+
+	// 공격 모션이 끝나면 다시 Run 상태로
+	//if (true == Animator2D()->IsEndAnimation())
+	//{
+	//	if (m_AttackCollider != nullptr)
+	//	{
+	//		m_AttackCollider->SetActive(false);
+	//		m_AttackCollider = nullptr;
+	//	}
+
+	//	StateChange(ObjState::Run);
+	//	return;
+	//}
+
+
 }
 
 void CGruntScript::HurtGroundUpdate()

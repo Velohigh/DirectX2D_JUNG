@@ -178,6 +178,7 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAttackRangeScript.h" />
     <ClInclude Include="CBloodAnimation2Script.h" />
     <ClInclude Include="CBloodAnimationScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -185,6 +186,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEnemy_FollowScript.h" />
     <ClInclude Include="CGravityScript.h" />
     <ClInclude Include="CGruntScript.h" />
+    <ClInclude Include="CGruntSlashScript.h" />
     <ClInclude Include="CJumpCloudScript.h" />
     <ClInclude Include="CLandCloudScript.h" />
     <ClInclude Include="CMainCameraScript.h" />
@@ -194,10 +196,12 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSlashScript.h" />
+    <ClInclude Include="CViewScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAttackRangeScript.cpp" />
     <ClCompile Include="CBloodAnimation2Script.cpp" />
     <ClCompile Include="CBloodAnimationScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -205,6 +209,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEnemy_FollowScript.cpp" />
     <ClCompile Include="CGravityScript.cpp" />
     <ClCompile Include="CGruntScript.cpp" />
+    <ClCompile Include="CGruntSlashScript.cpp" />
     <ClCompile Include="CJumpCloudScript.cpp" />
     <ClCompile Include="CLandCloudScript.cpp" />
     <ClCompile Include="CMainCameraScript.cpp" />
@@ -214,6 +219,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSlashScript.cpp" />
+    <ClCompile Include="CViewScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

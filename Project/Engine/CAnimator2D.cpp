@@ -205,4 +205,5 @@ void CAnimator2D::Create_Effect_Animation()
 	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_enemy_follow", 2, 25.5102f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_effect_bloodanimation", 6, 15.f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_effect_bloodanimation2", 10, 15.f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_gruntslash", 5, 14.2857f);
 }

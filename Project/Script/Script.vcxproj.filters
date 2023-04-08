@@ -46,6 +46,9 @@
     <Filter Include="Script\Effect\BloodAnimation2">
       <UniqueIdentifier>{1186d041-3d02-4314-afd5-46adf9bb7318}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Effect\GruntSlash">
+      <UniqueIdentifier>{6d2ce46c-5694-4c7d-8b71-3d35fadfd949}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -102,6 +105,15 @@
     <ClInclude Include="CBloodAnimation2Script.h">
       <Filter>Script\Effect\BloodAnimation2</Filter>
     </ClInclude>
+    <ClInclude Include="CGruntSlashScript.h">
+      <Filter>Script\Effect\GruntSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="CViewScript.h">
+      <Filter>Script\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CAttackRangeScript.h">
+      <Filter>Script\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -157,6 +169,15 @@
     </ClCompile>
     <ClCompile Include="CBloodAnimation2Script.cpp">
       <Filter>Script\Effect\BloodAnimation2</Filter>
+    </ClCompile>
+    <ClCompile Include="CGruntSlashScript.cpp">
+      <Filter>Script\Effect\GruntSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CViewScript.cpp">
+      <Filter>Script\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttackRangeScript.cpp">
+      <Filter>Script\Monster</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

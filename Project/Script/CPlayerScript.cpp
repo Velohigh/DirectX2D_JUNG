@@ -1287,6 +1287,14 @@ void CPlayerScript::FallStart()
 void CPlayerScript::DodgeStart()
 {
 	// 닷지 사운드
+	{
+		Ptr<CSound> pDodgeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_roll.wav");
+		pDodgeSound->Play(1, 0.4f, true);
+
+		Ptr<CSound> pDodgeSound_Real = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_roll_real.wav");
+		pDodgeSound_Real->Play(1, 0.74f, true);
+	}
+
 
 	m_StateTime[(UINT)PlayerState::Dodge] = 0.f;
 
