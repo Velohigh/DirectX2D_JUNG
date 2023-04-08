@@ -512,6 +512,21 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"SlashMtrl", pMtrl);
 
+	// EnemyFollowMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"EnemyFollowMtrl", pMtrl);
+
+	// BloodAnimMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"BloodAnimMtrl", pMtrl);
+
+	// BloodAnim2Material
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"BloodAnim2Mtrl", pMtrl);
+
 
 }
 

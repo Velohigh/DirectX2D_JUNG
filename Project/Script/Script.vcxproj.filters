@@ -37,6 +37,15 @@
     <Filter Include="Script\Effect\Slash">
       <UniqueIdentifier>{8b6b50ff-07a9-4f2c-b2f1-f53272404c86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Effect\Enemy_Follow">
+      <UniqueIdentifier>{b10b99ed-ce88-48c0-8306-4254fe81b741}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\BloodAnimation">
+      <UniqueIdentifier>{8fff742c-99c3-4949-b014-911617b0f1a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\BloodAnimation2">
+      <UniqueIdentifier>{1186d041-3d02-4314-afd5-46adf9bb7318}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -84,6 +93,15 @@
     <ClInclude Include="CSlashScript.h">
       <Filter>Script\Effect\Slash</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemy_FollowScript.h">
+      <Filter>Script\Effect\Enemy_Follow</Filter>
+    </ClInclude>
+    <ClInclude Include="CBloodAnimationScript.h">
+      <Filter>Script\Effect\BloodAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="CBloodAnimation2Script.h">
+      <Filter>Script\Effect\BloodAnimation2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -130,6 +148,15 @@
     </ClCompile>
     <ClCompile Include="CSlashScript.cpp">
       <Filter>Script\Effect\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy_FollowScript.cpp">
+      <Filter>Script\Effect\Enemy_Follow</Filter>
+    </ClCompile>
+    <ClCompile Include="CBloodAnimationScript.cpp">
+      <Filter>Script\Effect\BloodAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="CBloodAnimation2Script.cpp">
+      <Filter>Script\Effect\BloodAnimation2</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

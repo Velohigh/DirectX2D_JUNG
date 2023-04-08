@@ -244,10 +244,10 @@
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>Manager\LevelSaveLoad</Filter>
     </ClInclude>
-    <ClInclude Include="Level_1.h">
+    <ClInclude Include="TestLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h">
+    <ClInclude Include="CLevel_1.h">
       <Filter>Level</Filter>
     </ClInclude>
   </ItemGroup>
@@ -383,7 +383,7 @@
     <ClCompile Include="TestLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
-    <ClCompile Include="Level_1.cpp">
+    <ClCompile Include="CLevel_1.cpp">
       <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>

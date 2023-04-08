@@ -267,3 +267,24 @@ enum class PARTICLE_MODULE
 
 	END,
 };
+
+enum class ObjDir
+{
+	Left,
+	Right,
+	End
+};
+
+enum class ObjState
+{
+	Idle,
+	Walk,
+	Turn,
+	Run,
+	Attack,
+	HurtGround,
+	HurtFly,
+	KnockDown,
+	Dead,
+	END
+};

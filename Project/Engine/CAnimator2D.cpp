@@ -167,12 +167,12 @@ void CAnimator2D::Create_Player_Animation()
 {
 	this->CreateFolderAnimation(L"texture\\player\\spr_idle", 11, 10.f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_idle_to_run", 4, 25.f);
-	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run", 10, 14.2857f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run", 10, 14.2857f);	// 0.07초 간격
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_run_to_idle", 5, 14.28f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_jump", 4, 11.428f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_fall", 4, 11.428f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_attack", 7, 35.714f);
-	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_landing", 5, 16.667f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_landing", 5, 16.667f);	// 0.06초 간격
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_roll", 7, 22.222f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_player_playsong", 31, 8.857f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\player\\spr_hurtfly_begin", 2, 14.2857f);
@@ -202,4 +202,7 @@ void CAnimator2D::Create_Effect_Animation()
 	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_jumpcloud", 4, 16.6667f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_landcloud", 7, 16.6667f);
 	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_slash", 5, 25.5102f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_enemy_follow", 2, 25.5102f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_effect_bloodanimation", 6, 15.f);
+	this->Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_effect_bloodanimation2", 10, 15.f);
 }

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CMainCameraScript.h"
+#include <random>
 
 
 CMainCameraScript::CMainCameraScript()
@@ -51,7 +52,7 @@ void CMainCameraScript::tick()
 	}
 
 
-
+	CameraShakeEffect();
 	Transform()->SetRelativePos(vCameraPos);
 }
 
@@ -63,4 +64,50 @@ void CMainCameraScript::SetMapsize(Vec2 _Size)
 void CMainCameraScript::SetFollowPlayer(bool _bool)
 {
 	m_bFollowPlayer = _bool;
+}
+
+void CMainCameraScript::CameraShakeEffect()
+{
+	if (m_bCameraShakeOn)
+	{
+		m_fCameraShakeTime = 0.f;
+		m_bCameraShakeOn = true;
+	}
+
+	if (m_fCameraShakeTime < 0.15f)
+	{
+		// 시드값을 얻기 위한 random_device 생성.
+		std::random_device rd;
+		// random_device 를 통해 난수 생성 엔진을 초기화 한다.
+		std::mt19937 gen(rd());
+		// 0 부터 99 까지 균등하게 나타나는 난수열을 생성하기 위해 균등 분포 정의.
+		std::uniform_int_distribution<int> IntRange(-30, 30);
+		int Value = IntRange(gen);
+
+		m_vCameraShakeValue = Vector2{ (float)Value,(float)Value };
+		m_fCameraShakeTime += DT;
+		Vec3 m_Pos3 = Transform()->GetRelativePos();
+		Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+		SetPos(m_Pos + m_vCameraShakeValue);
+
+	}
+
+	// 화면 흔들림 해제
+	else if (m_fCameraShakeTime >= 0.15f)
+	{
+		m_bCameraShakeOn = false;
+	}
+
+
+}
+
+void CMainCameraScript::SetCameraShakeOn(bool _bool)
+{
+	m_bCameraShakeOn = _bool;
+}
+
+void CMainCameraScript::SetPos(Vec2 _vec2)
+{
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Transform()->SetRelativePos(_vec2.x, _vec2.y, m_Pos3.z);
 }

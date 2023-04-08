@@ -29,9 +29,6 @@ private:
     vector<CGameObject*>    m_vecChild;
     CTexture*               m_MapColTexture;
 
-    Vec2		m_PrevPos;		// 이전 프레임 위치
-    Vec2		m_Move;			// 이동량 (현재 프레임 위치 - 과거 프레임 위치)
-
     int                     m_iLayerIdx;
     bool                    m_bDead;
     float                   m_LifeTime;

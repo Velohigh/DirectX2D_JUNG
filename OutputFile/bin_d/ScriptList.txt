@@ -1,5 +1,8 @@
+CBloodAnimation2Script
+CBloodAnimationScript
 CCameraMoveScript
 CDustCloudScript
+CEnemy_FollowScript
 CGravityScript
 CGruntScript
 CJumpCloudScript

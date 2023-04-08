@@ -106,9 +106,6 @@ void CGameObject::tick()
 
 void CGameObject::finaltick()
 {
-	m_Move = Transform()->GetRelativePos() - m_PrevPos;
-
-
 	if (m_bLifeSpan)
 	{
 		m_CurLifeTime += DT;
@@ -141,9 +138,6 @@ void CGameObject::render()
 {
 	if (nullptr != m_RenderCom)
 		m_RenderCom->render();
-
-	m_PrevPos = Transform()->GetRelativePos();
-
 }
 
 void CGameObject::AddComponent(CComponent* _Component)

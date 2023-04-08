@@ -1363,7 +1363,7 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		Vector2 NextPos = m_PosyReverse + (Vec2{ 0.f,m_MoveDir.y } *DT * m_MoveSpeed);
+		Vector2 NextPos = m_PosyReverse + (Vec2{ 0.f,-m_MoveDir.y } *DT * m_MoveSpeed);
 		Vector2 CheckPos = NextPos + Vector2{ 0,0 };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상
@@ -1379,7 +1379,7 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 			RGB(255, 0, 255) != TopRightColor &&
 			RGB(255, 0, 255) != TopLeftColor)
 		{
-			MoveDir(Vector2{ 0.f, -m_MoveDir.y });
+			MoveDir(Vector2{ 0.f, m_MoveDir.y });
 		}
 	}
 

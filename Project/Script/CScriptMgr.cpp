@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "CScriptMgr.h"
 
+#include "CBloodAnimation2Script.h"
+#include "CBloodAnimationScript.h"
 #include "CCameraMoveScript.h"
 #include "CDustCloudScript.h"
+#include "CEnemy_FollowScript.h"
 #include "CGravityScript.h"
 #include "CGruntScript.h"
 #include "CJumpCloudScript.h"
@@ -16,8 +19,11 @@
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
+	_vec.push_back(L"CBloodAnimation2Script");
+	_vec.push_back(L"CBloodAnimationScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CDustCloudScript");
+	_vec.push_back(L"CEnemy_FollowScript");
 	_vec.push_back(L"CGravityScript");
 	_vec.push_back(L"CGruntScript");
 	_vec.push_back(L"CJumpCloudScript");
@@ -32,10 +38,16 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
+	if (L"CBloodAnimation2Script" == _strScriptName)
+		return new CBloodAnimation2Script;
+	if (L"CBloodAnimationScript" == _strScriptName)
+		return new CBloodAnimationScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CDustCloudScript" == _strScriptName)
 		return new CDustCloudScript;
+	if (L"CEnemy_FollowScript" == _strScriptName)
+		return new CEnemy_FollowScript;
 	if (L"CGravityScript" == _strScriptName)
 		return new CGravityScript;
 	if (L"CGruntScript" == _strScriptName)
@@ -63,11 +75,20 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
+	case (UINT)SCRIPT_TYPE::BLOODANIMATION2SCRIPT:
+		return new CBloodAnimation2Script;
+		break;
+	case (UINT)SCRIPT_TYPE::BLOODANIMATIONSCRIPT:
+		return new CBloodAnimationScript;
+		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
 		break;
 	case (UINT)SCRIPT_TYPE::DUSTCLOUDSCRIPT:
 		return new CDustCloudScript;
+		break;
+	case (UINT)SCRIPT_TYPE::ENEMY_FOLLOWSCRIPT:
+		return new CEnemy_FollowScript;
 		break;
 	case (UINT)SCRIPT_TYPE::GRAVITYSCRIPT:
 		return new CGravityScript;
@@ -107,12 +128,24 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
+	case SCRIPT_TYPE::BLOODANIMATION2SCRIPT:
+		return L"CBloodAnimation2Script";
+		break;
+
+	case SCRIPT_TYPE::BLOODANIMATIONSCRIPT:
+		return L"CBloodAnimationScript";
+		break;
+
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
 		break;
 
 	case SCRIPT_TYPE::DUSTCLOUDSCRIPT:
 		return L"CDustCloudScript";
+		break;
+
+	case SCRIPT_TYPE::ENEMY_FOLLOWSCRIPT:
+		return L"CEnemy_FollowScript";
 		break;
 
 	case SCRIPT_TYPE::GRAVITYSCRIPT:

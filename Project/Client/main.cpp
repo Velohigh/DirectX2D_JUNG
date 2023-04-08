@@ -6,11 +6,12 @@
 
 #include <Engine\CDevice.h>
 #include "CEditorObjMgr.h"
+#include <Engine\CTimeMgr.h>
 
 // ImGui
 #include "ImGuiMgr.h"
 
-#include "Level_1.h"
+#include "CLevel_1.h"
 
 // 전역 변수:
 HINSTANCE   hInst;                                // 현재 인스턴스입니다.
@@ -60,6 +61,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     while (true)
     {
+
+
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             if (WM_QUIT == msg.message)
@@ -74,6 +77,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         else
         {
+            CTimeMgr::GetInst()->tick();
+
+            //// 1초당 144 프레임으로 제한
+            //if (DT < 1.0f / 144.0f)
+            //{
+            //    continue;
+            //}
+
+
+
             CEngine::GetInst()->progress();
 
             CEditorObjMgr::GetInst()->progress();

@@ -19,7 +19,6 @@ private:
     Matrix  m_matWorldAbsoluteTrans; // 월드 회전 행렬
     Matrix  m_matWorld; // 크기, 회전, 이동 정보를 합쳐놓음
 
-
 public:
     void SetRelativePos(Vec3 _vPos) { m_vRelativePos = _vPos; }
     void SetRelativeScale(Vec3 _vScale) { m_vRelativeScale = _vScale; }
