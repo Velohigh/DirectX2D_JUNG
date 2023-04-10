@@ -7,15 +7,19 @@ class CGruntScript :
 {
 private:
 	ObjDir		m_PreDir;	// 이전에 바라보고있던 방향
-	ObjDir		m_CurDir = ObjDir::Right;	// 현재 바라보는 방향
-	ObjState	m_CurState;	// 현재 상태
+	ObjDir		m_CurDir = ObjDir::End;	// 현재 바라보는 방향
+	ObjState	m_CurState;		// 현재 상태
+	ObjState	m_BeginState;	// 시작 상태
 	CLevel*		m_Level;	// 속한 레벨
 	float		m_StateTime[static_cast<int>(ObjState::END)];	// 해당 상태가 되고 지난 시간
 
+	Vec2		m_Move;			// 이동량
+	Vec3		m_PrePos;		// 이전 프레임 위치
+	Vec3		m_CurPos;
 	Vec2		m_MoveDir;		// 이동방향
 	float		m_MoveSpeed;	// 이동속도
-	float		m_Gravity = 1000.f;		//  중력 계수
-	float		m_GravityAccel = 2000.f;		// 중력가속도
+	float		m_Gravity;		//  중력 계수
+	float		m_GravityAccel;		// 중력가속도
 
 	Vec2		m_EnemyAttackDir;
 
@@ -23,6 +27,9 @@ private:
 	
 	bool		m_bEffect_EnemyFollow = false;	// 플레이어 발견시 이펙트 생성
 	bool		m_bPatrol;						// 정찰 행동 여부
+	bool		m_bViewColliderOn;				// 시야 범위 충돌체 작동
+	bool		m_bAttackRangeOn;				// 공격 범위 충돌체 작동
+	bool		m_bHitBoxOn;					// 히트 박스 충돌체 작동
 
 	CGameObject* m_ViewCollider;				// 시야 충돌체
 	CGameObject* m_AttackRangeCollider;			// 공격범위 충돌체
@@ -39,9 +46,15 @@ public:
 public:
 	void SetPos(Vec2 _vec2);
 	void SetDir(ObjDir _Dir) { m_CurDir = _Dir; }
+	void SetState(ObjState _State) { m_CurState = _State; }
+	void SetBeginState(ObjState _State) { m_BeginState = _State; }
 	ObjState GetState() { return m_CurState; }
 	ObjDir GetDir() { return m_CurDir; }
 	void SetSpeed(float _Speed) { m_MoveSpeed = _Speed; }
+	void SetPatrol(bool _bool, float _Time = 4.f) { m_bPatrol = _bool; m_fPatrolTime = _Time; }
+	void SetViewColliderOn(bool _bool) { m_bViewColliderOn = _bool; }
+	void SetAttackRangeOn(bool _bool) { m_bAttackRangeOn = _bool; }
+	void SetHitBoxOn(bool _bool) { m_bHitBoxOn = _bool; }
 
 private:
 	CLONE(CGruntScript);

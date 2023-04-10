@@ -1,6 +1,7 @@
 CAttackRangeScript
 CBloodAnimation2Script
 CBloodAnimationScript
+CBloodSplaterScript
 CCameraMoveScript
 CDustCloudScript
 CEnemy_FollowScript

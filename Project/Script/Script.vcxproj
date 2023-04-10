@@ -181,6 +181,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackRangeScript.h" />
     <ClInclude Include="CBloodAnimation2Script.h" />
     <ClInclude Include="CBloodAnimationScript.h" />
+    <ClInclude Include="CBloodSplaterScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CDustCloudScript.h" />
     <ClInclude Include="CEnemy_FollowScript.h" />
@@ -204,6 +205,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAttackRangeScript.cpp" />
     <ClCompile Include="CBloodAnimation2Script.cpp" />
     <ClCompile Include="CBloodAnimationScript.cpp" />
+    <ClCompile Include="CBloodSplaterScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CDustCloudScript.cpp" />
     <ClCompile Include="CEnemy_FollowScript.cpp" />

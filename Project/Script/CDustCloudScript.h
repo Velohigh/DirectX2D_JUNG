@@ -6,13 +6,6 @@
 class CDustCloudScript :
 	public CScript
 {
-	enum class ObjDir
-	{
-		Left,
-		Right,
-		End
-	};
-
 private:
 	ObjDir		m_PreDir;	// 이전에 바라보고있던 방향
 	ObjDir		m_CurDir;	// 현재 바라보는 방향
@@ -35,7 +28,7 @@ private:
 
 public:
 	void SetSpeed(float _Speed) { m_MoveSpeed = _Speed; }
-	void SetDir(int _Dir) { m_CurDir = (ObjDir)_Dir; }
+	void SetDir(ObjDir _Dir) { m_CurDir = _Dir; }
 
 private:
 	CLONE(CDustCloudScript);

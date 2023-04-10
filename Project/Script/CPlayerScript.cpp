@@ -34,6 +34,16 @@ void CPlayerScript::begin()
 
 
 	StateChange(PlayerState::Idle);
+
+	m_Gravity = 10.f;		// 플레이어 중력 계수
+	m_GravityAccel = 2000.f;		// 중력가속도
+
+
+	m_JumpPower = 330.f;
+	m_LongJumpPower = 2050.f;
+	m_IsLongJump = false;
+
+	m_AttackCount = 0;
 }
 
 void CPlayerScript::tick()
@@ -535,6 +545,31 @@ void CPlayerScript::RunUpdate()
 		m_MoveDir = Vector2{ 1.f, 0.f };
 	}
 
+	// 달리기 소리
+	if (3 == Animator2D()->GetCurAnim()->GetCurFrmCount()
+		&& m_bRun1SoundOn == false)
+	{
+		Ptr<CSound> pRunSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_running_2.wav");
+		pRunSound->Play(1, 0.6f, true);
+		m_bRun1SoundOn = true;
+	}
+	if (8 == Animator2D()->GetCurAnim()->GetCurFrmCount()
+		&& m_bRun2SoundOn == false)
+	{
+		Ptr<CSound> pRunSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_running_2.wav");
+		pRunSound->Play(1, 0.6f, true);
+		m_bRun2SoundOn = true;
+	}
+
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		m_bRun1SoundOn = false;
+		m_bRun2SoundOn = false;
+	}
+
+
+
+
 	MapCollisionCheckMoveGround();
 
 }
@@ -957,7 +992,36 @@ void CPlayerScript::DodgeUpdate()
 	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
 
 
-	// 이펙트 생성
+	// 닷지 이펙트 생성
+	m_StateTime[(UINT)PlayerState::Dodge] += DT;
+	if (0.01f <= m_StateTime[(UINT)PlayerState::Dodge])
+	{
+		m_StateTime[static_cast<int>(PlayerState::Dodge)] = 0.f;
+
+		CGameObject* pDustCloud = new CGameObject;
+		pDustCloud->SetName(L"DustCloud");
+		pDustCloud->AddComponent(new CTransform);
+		pDustCloud->AddComponent(new CMeshRender);
+		pDustCloud->AddComponent(new CAnimator2D);
+		pDustCloud->AddComponent(new CDustCloudScript);
+
+		pDustCloud->Transform()->SetRelativeScale(38.f, 38.f, 1.f);
+
+		pDustCloud->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pDustCloud->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DustCloudMtrl"));
+
+		pDustCloud->Animator2D()->Create_Effect_Animation();
+		pDustCloud->Animator2D()->Play(L"texture\\effect\\spr_dustcloud", false);
+
+
+		SpawnGameObject(pDustCloud, Transform()->GetRelativePos(), L"Default");
+
+		if (m_CurDir == PlayerDir::Right)
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(ObjDir::Left);
+		else if (m_CurDir == PlayerDir::Left)
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(ObjDir::Right);
+
+	}
 
 	// 닷지 종료시 RunToIdle 상태로
 	if (true == Animator2D()->IsEndAnimation())
@@ -1076,9 +1140,9 @@ void CPlayerScript::RunStart()
 		SpawnGameObject(pDustCloud, Transform()->GetRelativePos(), L"Default");
 
 		if (m_CurDir == PlayerDir::Right)
-			pDustCloud->GetScript<CDustCloudScript>()->SetDir(0);
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(ObjDir::Left);
 		else if (m_CurDir == PlayerDir::Left)
-			pDustCloud->GetScript<CDustCloudScript>()->SetDir(1);
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(ObjDir::Right);
 	}
 	 
 	// 런 스타트 사운드 추가
@@ -1086,7 +1150,8 @@ void CPlayerScript::RunStart()
 	pRunSound->Play(1, 0.35f, true);
 
 
-
+	m_bRun1SoundOn = false;
+	m_bRun1SoundOn = false;
 
 }
 
@@ -1250,7 +1315,7 @@ void CPlayerScript::AttackStart()
 	// 공격방향 저장.
 	m_AttackDir = AttackDir;
 
-	// 공격 판정 충돌체 추가@@@
+	// 공격 판정 충돌체 추가 (SlashScript에 추가)
 
 	m_MoveDir = Vector2{ 0.f, 0.f };
 	// 공중에서 최초 한번의 공격일때만 y축 전진성을 부여한다.
@@ -1288,11 +1353,11 @@ void CPlayerScript::DodgeStart()
 {
 	// 닷지 사운드
 	{
-		Ptr<CSound> pDodgeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_roll.wav");
-		pDodgeSound->Play(1, 0.4f, true);
-
 		Ptr<CSound> pDodgeSound_Real = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_roll_real.wav");
 		pDodgeSound_Real->Play(1, 0.74f, true);
+
+		Ptr<CSound> pDodgeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_player_roll.wav");
+		pDodgeSound->Play(1, 0.4f, true);
 	}
 
 

@@ -4,6 +4,7 @@
 #include "CAttackRangeScript.h"
 #include "CBloodAnimation2Script.h"
 #include "CBloodAnimationScript.h"
+#include "CBloodSplaterScript.h"
 #include "CCameraMoveScript.h"
 #include "CDustCloudScript.h"
 #include "CEnemy_FollowScript.h"
@@ -25,6 +26,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CAttackRangeScript");
 	_vec.push_back(L"CBloodAnimation2Script");
 	_vec.push_back(L"CBloodAnimationScript");
+	_vec.push_back(L"CBloodSplaterScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CDustCloudScript");
 	_vec.push_back(L"CEnemy_FollowScript");
@@ -50,6 +52,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBloodAnimation2Script;
 	if (L"CBloodAnimationScript" == _strScriptName)
 		return new CBloodAnimationScript;
+	if (L"CBloodSplaterScript" == _strScriptName)
+		return new CBloodSplaterScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CDustCloudScript" == _strScriptName)
@@ -95,6 +99,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::BLOODANIMATIONSCRIPT:
 		return new CBloodAnimationScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BLOODSPLATERSCRIPT:
+		return new CBloodSplaterScript;
 		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
@@ -159,6 +166,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::BLOODANIMATIONSCRIPT:
 		return L"CBloodAnimationScript";
+		break;
+
+	case SCRIPT_TYPE::BLOODSPLATERSCRIPT:
+		return L"CBloodSplaterScript";
 		break;
 
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:

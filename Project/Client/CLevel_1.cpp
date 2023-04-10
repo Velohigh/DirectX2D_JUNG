@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CLevel_1.h"
+#include <Engine\CPrefab.h>
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
@@ -9,6 +10,7 @@
 
 #include <Engine\CResMgr.h>
 #include <Engine\CCollisionMgr.h>
+
 
 #include <Script\CPlayerScript.h>
 #include <Script\CMonsterScript.h>
@@ -21,8 +23,10 @@
 void CreateLevel_1()
 {
 	//return;
+	CreateGruntPrefab();
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
+	pCurLevel->SetName(L"Stage_1");
 	pCurLevel->ChangeState(LEVEL_STATE::STOP);
 
 	// Layer 이름설정
@@ -112,25 +116,6 @@ void CreateLevel_1()
 	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
 	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"PlayerHitBox");
 
-	//// Monster
-	//CGameObject* pMonster = new CGameObject;
-	//pMonster->SetName(L"Monster");
-
-	//pMonster->AddComponent(new CTransform);
-	////pMonster->AddComponent(new CMeshRender);
-	//pMonster->AddComponent(new CCollider2D);
-	//pMonster->AddComponent(new CMonsterScript);
-
-	//pMonster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	////pMonster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	////pMonster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
-
-	//pMonster->Collider2D()->SetAbsolute(true);
-	//pMonster->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
-
-	//SpawnGameObject(pMonster, Vec3(0.f, 250.f, 100.f), L"MonsterHitBox");
-
 	// Mouse
 	CGameObject* pMouse = new CGameObject;
 	pMouse->SetName(L"Mouse");
@@ -153,28 +138,21 @@ void CreateLevel_1()
 
 	SpawnGameObject(pMouse, Vec3(0.f, 0.f, 100.f), L"ViewPort UI");
 
-	// Grunt_1
-	CGameObject* pGrunt = new CGameObject;
-	pGrunt->SetName(L"Grunt");
-	pGrunt->AddComponent(new CTransform);
-	pGrunt->AddComponent(new CMeshRender);
-	pGrunt->AddComponent(new CCollider2D);
-	pGrunt->AddComponent(new CAnimator2D);
-	pGrunt->AddComponent(new CGruntScript);
+	{
+		// Grunt_2	2층 정찰
+		CGameObject* pGrunt = CreateGrunt();
+		pGrunt->GetScript<CGruntScript>()->SetDir(ObjDir::Right);
+		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Walk);
+		pGrunt->GetScript<CGruntScript>()->SetPatrol(true, 4.f);
+		SpawnGameObject(pGrunt, Vec3(1054, -383, 500.f), L"MonsterHitBox");
 
-	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+		// Grunt_2	2층 방안
+		pGrunt = CreateGrunt();
+		pGrunt->GetScript<CGruntScript>()->SetDir(ObjDir::Right);
+		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Idle);
+		SpawnGameObject(pGrunt, Vec3(338, -383, 500.f), L"MonsterHitBox");
 
-	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
-	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
-
-	pGrunt->Collider2D()->SetAbsolute(true);
-	pGrunt->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
-	pGrunt->Collider2D()->SetOffsetPos(Vec2(-_Resolution.x / 2.f, _Resolution.y / 2.f + 35.f));
-
-	pGrunt->Animator2D()->Create_Grunt_Animation();
-	pGrunt->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
-	pGrunt->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
-	SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
+	}
 
 	// BackGround Object
 	CGameObject* pBackGround = new CGameObject;
@@ -226,4 +204,59 @@ void CreateLevel_1()
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"PlayerHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterAttackRange", L"PlayerHitBox");
+}
+
+void CreateGruntPrefab()
+{
+	// 그런트 프리팹 등록
+	CGameObject* pGrunt = new CGameObject;
+	pGrunt->SetName(L"Grunt");
+	pGrunt->AddComponent(new CTransform);
+	pGrunt->AddComponent(new CMeshRender);
+	pGrunt->AddComponent(new CCollider2D);
+	pGrunt->AddComponent(new CAnimator2D);
+	pGrunt->AddComponent(new CGruntScript);
+
+	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
+
+	pGrunt->Collider2D()->SetAbsolute(true);
+	pGrunt->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+
+	pGrunt->Animator2D()->Create_Grunt_Animation();
+	pGrunt->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
+	//SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
+
+	Ptr<CPrefab> GruntPrefab = new CPrefab;
+	GruntPrefab->RegisterProtoObject(pGrunt);
+	CResMgr::GetInst()->AddRes<CPrefab>(L"GruntPrefab", GruntPrefab);
+}
+
+CGameObject* CreateGrunt()
+{
+	// 그런트 크리에이트
+	CGameObject* pGrunt = new CGameObject;
+	pGrunt->SetName(L"Grunt");
+	pGrunt->AddComponent(new CTransform);
+	pGrunt->AddComponent(new CMeshRender);
+	pGrunt->AddComponent(new CCollider2D);
+	pGrunt->AddComponent(new CAnimator2D);
+	pGrunt->AddComponent(new CGruntScript);
+
+	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
+
+	pGrunt->Collider2D()->SetAbsolute(true);
+	pGrunt->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+
+	pGrunt->Animator2D()->Create_Grunt_Animation();
+	pGrunt->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
+	//SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
+
+	return pGrunt;
+
 }

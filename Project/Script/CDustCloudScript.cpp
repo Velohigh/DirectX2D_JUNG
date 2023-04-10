@@ -16,7 +16,7 @@ void CDustCloudScript::begin()
 	// 외부 디바이스 설정값으로 랜덤값을 받아온다.
 	std::random_device rd;
 	std::mt19937_64 mt_(rd());	// 랜덤값으로 시드를 생성한다.
-	std::uniform_int_distribution<int> IntRange(80, 220);	// 범위 지정
+	std::uniform_int_distribution<int> IntRange(80, 320);	// 범위 지정
 	m_MoveSpeed = static_cast<float>(IntRange(mt_));
 	std::uniform_real_distribution<float> FloatRange(0, 0.7f);
 	m_MoveDir = Vector2{ 0.f,-FloatRange(mt_) };

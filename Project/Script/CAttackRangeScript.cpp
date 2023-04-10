@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAttackRangeScript.h"
+#include "CGruntScript.h"
 
 CAttackRangeScript::CAttackRangeScript()
 	: CScript((UINT)SCRIPT_TYPE::ATTACKRANGESCRIPT)
@@ -27,14 +28,17 @@ void CAttackRangeScript::tick()
 
 void CAttackRangeScript::BeginOverlap(CCollider2D* _Other)
 {
+	m_Owner->GetScript<CGruntScript>()->SetAttackRangeOn(true);
 }
 
 void CAttackRangeScript::OnOverlap(CCollider2D* _Other)
 {
+	m_Owner->GetScript<CGruntScript>()->SetAttackRangeOn(true);
 }
 
 void CAttackRangeScript::EndOverlap(CCollider2D* _Other)
 {
+	m_Owner->GetScript<CGruntScript>()->SetAttackRangeOn(false);
 }
 
 

@@ -34,13 +34,16 @@ void CViewScript::tick()
 
 void CViewScript::BeginOverlap(CCollider2D* _Other)
 {
+	m_Owner->GetScript<CGruntScript>()->SetViewColliderOn(true);
 }
 
 void CViewScript::OnOverlap(CCollider2D* _Other)
 {
+	m_Owner->GetScript<CGruntScript>()->SetViewColliderOn(true);
 }
 
 void CViewScript::EndOverlap(CCollider2D* _Other)
 {
+	m_Owner->GetScript<CGruntScript>()->SetViewColliderOn(false);
 }
 

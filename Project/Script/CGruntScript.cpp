@@ -13,6 +13,7 @@
 CGruntScript::CGruntScript()
 	: CScript((UINT)SCRIPT_TYPE::GRUNTSCRIPT)
 	, m_CurState(ObjState::END)
+	, m_CurDir(ObjDir::End)
 {
 }
 
@@ -29,9 +30,26 @@ void CGruntScript::begin()
 {
 	MeshRender()->GetDynamicMaterial();
 
-	StateChange(ObjState::Idle);
-
 	m_Level = CLevelMgr::GetInst()->GetCurLevel();
+	wstring LevelName = m_Level->GetName();
+
+	// 충돌맵 설정
+	if (LevelName == L"Stage_1")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+	else if (LevelName == L"Stage_2")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage2_bg_collision.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+	else if (LevelName == L"Stage_3")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_collision.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+
 
 	// 시야 충돌체 추가
 	m_ViewCollider = new CGameObject;
@@ -52,16 +70,27 @@ void CGruntScript::begin()
 	m_AttackRangeCollider->SetName(L"AttackRangeCollider");
 	m_AttackRangeCollider->AddComponent(new CTransform);
 	m_AttackRangeCollider->AddComponent(new CCollider2D);
-	m_AttackRangeCollider->AddComponent(new CViewScript);
+	m_AttackRangeCollider->AddComponent(new CAttackRangeScript);
 
 	m_AttackRangeCollider->Transform()->SetRelativeScale(140.f, 140.f, 1.f);
 	m_AttackRangeCollider->Collider2D()->SetAbsolute(true);
 	m_AttackRangeCollider->Collider2D()->SetOffsetScale(Vec2(140.f, 100.f));
-	m_AttackRangeCollider->GetScript<CViewScript>()->SetOwner(GetOwner());
+	m_AttackRangeCollider->GetScript<CAttackRangeScript>()->SetOwner(GetOwner());
 
 	SpawnGameObject(m_AttackRangeCollider, Vec3(Transform()->GetRelativePos()), L"MonsterAttackRange");
 
+	m_Gravity = 1000.f;
+	m_GravityAccel = 2000.f;
 
+	if (m_BeginState != ObjState::END)
+		StateChange(m_BeginState);
+
+	SetSize2x();
+
+	m_bViewColliderOn = false;				// 시야 범위 충돌체
+	m_bAttackRangeOn = false;				// 공격 범위 충돌체
+	m_bHitBoxOn = false;					// 히트 박스 충돌체
+	m_bEffect_EnemyFollow = false;
 
 }
 
@@ -70,6 +99,8 @@ void CGruntScript::tick()
 	CGameObject* Player = m_Level->FindParentObjectByName(L"Player");
 	if (nullptr == Player)
 		return;
+
+	m_PrePos = Transform()->GetRelativePos();
 
 	CPlayerScript* PlayerScript = Player->GetScript<CPlayerScript>();
 	if (PlayerScript->GetState() == PlayerState::Dead &&
@@ -82,24 +113,25 @@ void CGruntScript::tick()
 		DirAnimationCheck();
 		StateUpdate();
 	}
+	m_CurPos = Transform()->GetRelativePos();
+
+	// 이동량
+	m_Move = Vec2(m_PrePos.x - m_CurPos.x, m_PrePos.y - m_CurPos.y);
 
 	// 시야 충돌체 위치 지정
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
 	if (m_CurDir == ObjDir::Right)
-	{
 		m_ViewCollider->Collider2D()->SetOffsetPos(-CameraPos.x + 250.f, -CameraPos.y + 50.f);
-	}
 	else if (m_CurDir == ObjDir::Left)
-	{
 		m_ViewCollider->Collider2D()->SetOffsetPos(-CameraPos.x -250.f, -CameraPos.y + 50.f);
-	}
 
 	// 공격 범위 충돌체 위치 지정
 	m_AttackRangeCollider->Collider2D()->SetOffsetPos(-CameraPos.x, -CameraPos.y + 40.f);
 		
-	// HitBox 충돌체 위치 지정  ㅡ
+	// HitBox 충돌체 위치 지정
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
 
+	m_PrePos = m_CurPos;
 
 }
 
@@ -208,29 +240,21 @@ void CGruntScript::SetSize2x()
 	float Width = VecFolderTex[CurFrmCount]->Width();
 	float Height = VecFolderTex[CurFrmCount]->Height();
 	Transform()->SetRelativeScale(Width * 2, Height * 2, 1);
-	//Transform()->SetRelativeScale(1, 1, 1);
-
 }
 
 void CGruntScript::BeginOverlap(CCollider2D* _Other)
 {
-	// 플레이어 공격에 맞으면 날아간다.
-	if (m_CurState == ObjState::Idle
-		|| m_CurState == ObjState::Walk
-		|| m_CurState == ObjState::Turn
-		|| m_CurState == ObjState::Attack)
-	{
-		StateChange(ObjState::HurtFly);
-		return;
-	}
+	m_bHitBoxOn = true;
 }
 
 void CGruntScript::OnOverlap(CCollider2D* _Other)
 {
+	m_bHitBoxOn = true;
 }
 
 void CGruntScript::EndOverlap(CCollider2D* _Other)
 {
+	m_bHitBoxOn = false;
 }
 
 void CGruntScript::MoveDir(const Vec2& Dir)
@@ -290,13 +314,13 @@ void CGruntScript::TurnStart()
 void CGruntScript::RunStart()
 {
 	m_StateTime[(int)ObjState::Run] = 0.f;
-	Animator2D()->Play(L"texture\\grunt\\spr_grunt_run", true);
+	Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
 	SetSpeed(0.f);
 
 	SetSize2x();
 
 	// Enemy_Follow 이펙트 추가
-	if (!m_bEffect_EnemyFollow)
+	if (m_bEffect_EnemyFollow == false)
 	{
 		CGameObject* pEnemyFollow = new CGameObject;
 		pEnemyFollow->SetName(L"EnemyFollow");
@@ -307,16 +331,16 @@ void CGruntScript::RunStart()
 
 		pEnemyFollow->Transform()->SetRelativeScale(34.f, 40.f, 1.f);
 
-		pEnemyFollow->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+		pEnemyFollow->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 		pEnemyFollow->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"EnemyFollowMtrl"));
 
 		pEnemyFollow->Animator2D()->Create_Effect_Animation();
-		pEnemyFollow->Animator2D()->Play(L"texture\\effect\\spr_enemy_follow", false);
+		pEnemyFollow->Animator2D()->Play(L"texture\\effect\\spr_enemy_follow", true);
 
 		pEnemyFollow->GetScript<CEnemy_FollowScript>()->SetOwner(GetOwner());
 
 		SpawnGameObject(pEnemyFollow, Transform()->GetRelativePos() + Vec3(0.f, 80.f, 0.f), L"Default");
-		m_bEffect_EnemyFollow = !m_bEffect_EnemyFollow;
+		m_bEffect_EnemyFollow = true;
 	}
 
 	//
@@ -344,6 +368,12 @@ void CGruntScript::AttackStart()
 
 	pGruntSlash->Animator2D()->Create_Effect_Animation();
 	pGruntSlash->Animator2D()->Play(L"texture\\effect\\spr_gruntslash", false);
+	pGruntSlash->GetScript<CGruntSlashScript>()->SetOwner(GetOwner());
+
+	if(m_CurDir == ObjDir::Right)
+		pGruntSlash->GetScript<CGruntSlashScript>()->SetDir(ObjDir::Right);
+	else if (m_CurDir == ObjDir::Left)
+		pGruntSlash->GetScript<CGruntSlashScript>()->SetDir(ObjDir::Left);
 
 	SpawnGameObject(pGruntSlash, Transform()->GetRelativePos(), L"MonsterProjectile");
 
@@ -364,7 +394,7 @@ void CGruntScript::HurtGroundStart()
 		pBloodAnimation->AddComponent(new CTransform);
 		pBloodAnimation->AddComponent(new CMeshRender);
 		pBloodAnimation->AddComponent(new CAnimator2D);
-		pBloodAnimation->AddComponent(new CEnemy_FollowScript);
+		pBloodAnimation->AddComponent(new CBloodAnimation2Script);
 
 		pBloodAnimation->Transform()->SetRelativeScale(80.f, 79.f, 1.f);
 
@@ -374,7 +404,12 @@ void CGruntScript::HurtGroundStart()
 		pBloodAnimation->Animator2D()->Create_Effect_Animation();
 		pBloodAnimation->Animator2D()->Play(L"texture\\effect\\spr_effect_bloodanimation2", false);
 
-		pBloodAnimation->GetScript<CEnemy_FollowScript>()->SetOwner(GetOwner());
+		pBloodAnimation->GetScript<CBloodAnimation2Script>()->SetOwner(GetOwner());
+		if (m_CurDir == ObjDir::Right)
+			pBloodAnimation->GetScript<CBloodAnimation2Script>()->SetDir(ObjDir::Left);
+		else if (m_CurDir == ObjDir::Left)
+			pBloodAnimation->GetScript<CBloodAnimation2Script>()->SetDir(ObjDir::Right);
+
 
 		SpawnGameObject(pBloodAnimation, Transform()->GetRelativePos() + Vec3(0.f, 80.f, 0.f), L"Default");
 	}
@@ -554,9 +589,19 @@ void CGruntScript::IdleUpdate()
 		return;
 	}
 
-	// 플레이어 공격에 맞으면 사망 (BeginOverlap 구현)
+	// 플레이어 공격에 맞으면 사망 (BeginOverlap)
+	if (m_bHitBoxOn)
+	{
+		StateChange(ObjState::HurtFly);
+		return;
+	}
 
-	// 플레이어 발견시 Run 상태로 쫓아오는것 추가
+	// 플레이어 발견시 Run 상태로 쫓아오는것 추가 (ViewCollider)
+	if (m_bViewColliderOn)
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
 	// 시야에 동료가 Run 상태이면 플레이어를 쫓아온다.
 
@@ -573,7 +618,13 @@ void CGruntScript::WalkUpdate()
 		return;
 	}
 
-	// 플레이어 공격에 맞으면 사망 (BeginOverlap 구현)
+	// 플레이어 공격에 맞으면 사망 (BeginOverlap)
+	if (m_bHitBoxOn)
+	{
+		StateChange(ObjState::HurtFly);
+		return;
+	}
+
 
 	// 좌우 이동
 	if (m_CurDir == ObjDir::Right)
@@ -585,9 +636,15 @@ void CGruntScript::WalkUpdate()
 		m_MoveDir = Vector2{ -1.f, 0.f };
 	}
 
-	// 플레이어 발견시 Run 상태로 쫓아온다.
+	// 플레이어 발견시 Run 상태로 쫓아온다. (ViewCollider에 구현)
+	if (m_bViewColliderOn)
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
-	// 시야에 동료가 Run상태이면 플레이어를 쫓아온다..
+
+	// 시야에 동료가 Chasing 상태이면 플레이어를 쫓아온다..
 
 	MapCollisionCheckMoveGround();
 
@@ -610,6 +667,12 @@ void CGruntScript::TurnUpdate()
 	}
 
 	// 플레이어 공격에 맞으면 사망 BeginOverlap
+	if (m_bHitBoxOn)
+	{
+		StateChange(ObjState::HurtFly);
+		return;
+	}
+
 
 }
 
@@ -625,7 +688,7 @@ void CGruntScript::RunUpdate()
 
 	if (m_StateTime[(int)ObjState::Run] >= 0.22f)
 	{
-		Animator2D()->Play(L"spr_grunt_run", true);
+		Animator2D()->Play(L"texture\\grunt\\spr_grunt_run", true);
 		SetSpeed(360.f);
 
 
@@ -635,7 +698,12 @@ void CGruntScript::RunUpdate()
 		else if (PlayerPos.x < m_Pos.x)
 			SetDir(ObjDir::Left);
 
-		// 플레이어가 일정범위에 들어오면 공격 추가
+		// 플레이어가 일정범위에 들어오면 공격 (AttackRangeScript)
+		if (m_bAttackRangeOn)
+		{
+			StateChange(ObjState::Attack);
+			return;
+		}
 
 		// 좌우 이동
 		if (m_CurDir == ObjDir::Right)
@@ -651,6 +719,12 @@ void CGruntScript::RunUpdate()
 	}
 
 	// 플레이어 공격에 맞으면 사망 BeginOverlap
+	if (m_bHitBoxOn)
+	{
+		StateChange(ObjState::HurtFly);
+		return;
+	}
+
 
 	MapCollisionCheckMoveGround();
 }
@@ -665,20 +739,20 @@ void CGruntScript::AttackUpdate()
 		return;
 	}
 
-	// 플레이어 공격에 맞으면 사망 BeginOverlap
+	// 플레이어 공격에 맞으면 사망 (BeginOverlap)
+	if (m_bHitBoxOn)
+	{
+		StateChange(ObjState::HurtFly);
+		return;
+	}
+
 
 	// 공격 모션이 끝나면 다시 Run 상태로
-	//if (true == Animator2D()->IsEndAnimation())
-	//{
-	//	if (m_AttackCollider != nullptr)
-	//	{
-	//		m_AttackCollider->SetActive(false);
-	//		m_AttackCollider = nullptr;
-	//	}
-
-	//	StateChange(ObjState::Run);
-	//	return;
-	//}
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
 
 }
@@ -688,8 +762,6 @@ void CGruntScript::HurtGroundUpdate()
 	// 쓰러지는 모션이 끝나면, 사망 상태로
 	if (true == Animator2D()->IsEndAnimation())
 	{
-		//FindCollider("Box")->SetActive(false);
-		//SetEnable(false);
 		StateChange(ObjState::Dead);
 		return;
 	}
@@ -721,7 +793,8 @@ void CGruntScript::HurtFlyUpdate()
 		m_Gravity += m_GravityAccel * DT;
 		if (m_MoveDir.y < 0.f)	// 떨어질때만
 		{
-			if (RGB(0, 0, 0) == RColor || RGB(255, 0, 0) == RColor)	// 땅에 닿을 경우, y
+			if (RGB(0, 0, 0) == RColor || RGB(255, 0, 0) == RColor
+				|| m_Move.y == 0.f)	// 땅에 닿을 경우, y 이동량이 0 일경우
 			{
 				StateChange(ObjState::HurtGround);
 				return;
@@ -736,6 +809,7 @@ void CGruntScript::HurtFlyUpdate()
 
 void CGruntScript::DeadUpdate()
 {
+	return;
 }
 
 

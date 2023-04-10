@@ -9,8 +9,6 @@ CBloodAnimationScript::CBloodAnimationScript()
 
 CBloodAnimationScript::~CBloodAnimationScript()
 {
-	if (nullptr != m_Level)
-		m_Level = nullptr;
 }
 
 void CBloodAnimationScript::begin()

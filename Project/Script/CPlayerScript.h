@@ -37,19 +37,21 @@ private:
 	PlayerState	m_CurState = PlayerState::END;
 	float		m_StateTime[(UINT)(PlayerState::END)] = {};
 
-	float		m_Gravity = 10.f;		// 플레이어 중력 계수
-	float		m_GravityAccel = 2000.f;		// 중력가속도
+	float		m_Gravity;		// 플레이어 중력 계수
+	float		m_GravityAccel;		// 중력가속도
 
-	float		m_JumpPower = 330.f;
-	float		m_LongJumpPower = 2050.f;
-	bool		m_IsLongJump = false;
+	float		m_JumpPower;
+	float		m_LongJumpPower;
+	bool		m_IsLongJump;
 
-	int			m_AttackCount = 0;
+	int			m_AttackCount;
 
 	Vec2		m_MoveDir;		// 이동 방향 벡터
 	float       m_MoveSpeed;	// 이동 속도
 	Vec2		m_AttackDir;
 
+	bool		m_bRun1SoundOn = false;	// Run 사운드 재생여부
+	bool		m_bRun2SoundOn = false;	// Run 사운드 재생여부
 
 public:
 	virtual void begin() override;
