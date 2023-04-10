@@ -428,7 +428,7 @@ void CGruntScript::WalkUpdate()
 	}
 
 
-	// 시야에 동료가 Chasing 상태이면 플레이어를 쫓아온다..
+	// 시야에 동료가 Chasing 상태이면 플레이어를 쫓아온다.. 비구현
 
 	MapCollisionCheckMoveGround();
 

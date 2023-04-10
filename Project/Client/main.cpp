@@ -12,6 +12,7 @@
 #include "ImGuiMgr.h"
 
 #include "CLevel_1.h"
+#include "CLevel_2.h"
 
 // 전역 변수:
 HINSTANCE   hInst;                                // 현재 인스턴스입니다.
@@ -52,7 +53,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGuiMgr::GetInst()->init(g_hWnd);
 
     // 레벨 생성
-    CreateLevel_1();
+    CreateLevel_2();
     _G_HWND = g_hWnd;
 
     // 메세지 루프

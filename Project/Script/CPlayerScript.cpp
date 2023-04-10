@@ -32,8 +32,27 @@ void CPlayerScript::begin()
 	m_Level = CLevelMgr::GetInst()->GetCurLevel();
 	MeshRender()->GetDynamicMaterial();
 
-
 	StateChange(PlayerState::Idle);
+
+
+	// 충돌맵 설정
+	wstring LevelName = m_Level->GetName();
+	if (LevelName == L"Stage_1")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+	else if (LevelName == L"Stage_2")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage2_bg_collision.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+	else if (LevelName == L"Stage_3")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_collision.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+
 
 	m_Gravity = 10.f;		// 플레이어 중력 계수
 	m_GravityAccel = 2000.f;		// 중력가속도
@@ -49,9 +68,16 @@ void CPlayerScript::begin()
 void CPlayerScript::tick()
 {
 	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	m_PrePos = Transform()->GetRelativePos();
+
 
 	DirAnimationCheck();
 	StateUpdate();
+	m_CurPos = Transform()->GetRelativePos();
+
+	// 이동량
+	m_Move = Vec2(m_PrePos.x - m_CurPos.x, m_PrePos.y - m_CurPos.y);
+
 
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
@@ -1084,10 +1110,166 @@ void CPlayerScript::HurtGroundUpdate()
 
 void CPlayerScript::WallGrabUpdate()
 {
+	// 점프키를 누르면 플립상태로
+	if (KEY_TAP(KEY::SPACE))
+	{
+		if (m_CurDir == PlayerDir::Left)
+			m_CurDir = PlayerDir::Right;
+		else if (m_CurDir == PlayerDir::Right)
+			m_CurDir = PlayerDir::Left;
+
+		StateChange(PlayerState::Flip);
+		return;
+	}
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosyReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 땅에 닿을경우 착지상태로
+	// 공중에 뜬 상태일경우 중력영향을 받는다.
+	// 중력 가속도에 따른 낙하 속도.
+	{
+		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+		int Color = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 0.f,1.f });
+		m_Gravity += (m_GravityAccel / 3.f) * DT;
+		if (RGB(0, 0, 0) == Color || RGB(255, 0, 0) == Color)	// 땅에 닿을 경우 
+		{
+			m_Gravity = 10.0f;
+			m_MoveDir.Normalize();
+
+
+			StateChange(PlayerState::Landing);
+			return;
+		}
+		MoveValue(Vector2{ 0.f, -1.f } *m_Gravity * DT);
+	}
+
+	// 월그랩 구름 이펙트 생성
+	m_StateTime[static_cast<int>(PlayerState::WallGrab)] += DT;
+	if (0.02f <= m_StateTime[static_cast<int>(PlayerState::WallGrab)] &&
+		m_Move.Length() >= 0.48f)
+	{
+		CGameObject* pDustCloud = new CGameObject;
+		pDustCloud->SetName(L"DustCloud");
+		pDustCloud->AddComponent(new CTransform);
+		pDustCloud->AddComponent(new CMeshRender);
+		pDustCloud->AddComponent(new CAnimator2D);
+		pDustCloud->AddComponent(new CDustCloudScript);
+
+		pDustCloud->Transform()->SetRelativeScale(38.f, 38.f, 1.f);
+
+		pDustCloud->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pDustCloud->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DustCloudMtrl"));
+
+		pDustCloud->Animator2D()->Create_Effect_Animation();
+		pDustCloud->Animator2D()->Play(L"texture\\effect\\spr_dustcloud", false);
+
+		if (m_CurDir == PlayerDir::Right)
+		{
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(ObjDir::Left);
+			SpawnGameObject(pDustCloud, Transform()->GetRelativePos() + Vec3(18.f, +65.f, 0.f), L"Default");
+		}
+		else if (m_CurDir == PlayerDir::Left)
+		{
+			pDustCloud->GetScript<CDustCloudScript>()->SetDir(ObjDir::Right);
+			SpawnGameObject(pDustCloud, Transform()->GetRelativePos() + Vec3(-18.f, +65.f, 0.f), L"Default");
+		}
+
+		m_StateTime[static_cast<int>(PlayerState::WallGrab)] = 0.f;
+	}
+
+
+	// 땅에 닿지않고 벽에 안부딪힐경우 Fall
+	int Color = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 0,1 });
+	int LCColor = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ -20,-35 });
+	int RCColor = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 20,-35 });
+
+	if (Color != RGB(0, 0, 0))
+	{
+		if (LCColor != RGB(255, 0, 255) &&
+			RCColor != RGB(255, 0, 255))
+		{
+			//m_Gravity = 10.0f;
+			StateChange(PlayerState::Fall);
+			return;
+		}
+	}
+	MapCollisionCheckMoveAir();
+
 }
 
 void CPlayerScript::FlipUpdate()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosyReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	m_StateTime[(int)PlayerState::Flip] += DT;
+
+	// 공격
+	if (KEY_TAP(KEY::LBTN))
+	{
+		StateChange(PlayerState::Attack);
+		return;
+	}
+
+	// 검은 땅에 닿지않고 벽에 부딪힐경우 Flip
+	int Color = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 0,1 });
+	int LCColor = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ -20,-35 });
+	int RCColor = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 20,-35 });
+
+	if (m_StateTime[(int)PlayerState::Flip] >= 0.1f)
+	{
+		if (Color != RGB(0, 0, 0) &&
+			LCColor == RGB(255, 0, 255) ||
+			RCColor == RGB(255, 0, 255))
+		{
+			m_Gravity = 10.0f;
+
+			StateChange(PlayerState::WallGrab);
+			return;
+		}
+	}
+
+	// 땅에 닿을경우 착지상태로
+	// 공중에 뜬 상태일경우 중력영향을 받는다.
+	// 중력 가속도에 따른 낙하 속도.
+	{
+		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+		int Color = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 0.f,1.f });
+		m_Gravity += m_GravityAccel * DT;
+		if (RGB(0, 0, 0) == Color || RGB(255, 0, 0) == Color)	// 땅에 닿을 경우 
+		{
+			m_Gravity = 10.0f;
+			m_MoveDir.Normalize();
+
+
+			StateChange(PlayerState::Landing);
+			return;
+		}
+		MoveValue(Vector2{ 0.f, 1.f } *m_Gravity * DT);
+	}
+
+	// 애니메이션 끝나면 Fall상태로
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Fall);
+		return;
+	}
+
+	MapCollisionCheckMoveAir();
 }
 
 void CPlayerScript::DeadUpdate()
@@ -1405,18 +1587,58 @@ void CPlayerScript::HurtGroundStart()
 
 void CPlayerScript::WallGrabStart()
 {
-	Animator2D()->Play(L"texture\\player\\spr_wallgrab", true);
 
 
 	SetSize2x();
 
+	// 그랩 월 사운드 재생
+	Ptr<CSound> pWallGrabSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\grabwall.wav");
+	pWallGrabSound->Play(1, 1.f, true);
+
+
+	m_StateTime[static_cast<int>(PlayerState::WallGrab)] = 0.f;
+	Animator2D()->Play(L"texture\\player\\spr_wallgrab", true);
+
+
+	m_MoveDir /= 2.f;
+	m_AttackCount = 0;
 }
 
 void CPlayerScript::FlipStart()
 {
-	Animator2D()->Play(L"texture\\player\\spr_player_flip", true);
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+
 
 	SetSize2x();
+
+	// 벽점프 사운드
+	Ptr<CSound> pWallJumpSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\walljump.wav");
+	pWallJumpSound->Play(1, 1.f, true);
+
+	// 플립시 중력값 초기화
+	m_Gravity = 10.f;
+
+	m_StateTime[static_cast<int>(PlayerState::Flip)] = 0.f;
+	if (m_CurDir == PlayerDir::Left)
+	{
+		SetPos(m_Pos + Vector2{ -3.f, 0.f });
+		m_CurDir = PlayerDir::Left;
+	}
+	else if (m_CurDir == PlayerDir::Right)
+	{
+		SetPos(m_Pos + Vector2{ 3.f, 0.f });
+		m_CurDir = PlayerDir::Right;
+	}
+	Animator2D()->Play(L"texture\\player\\spr_player_flip", true);
+
+
+	if (m_CurDir == PlayerDir::Right)
+		m_MoveDir = Vector2{ 1.f, 0.6f } *750;
+	else if (m_CurDir == PlayerDir::Left)
+		m_MoveDir = Vector2{ -1.f, 0.6f } *750;
+
+
 
 }
 
@@ -1465,8 +1687,8 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 		Vector2 ForDownPos = m_PosyReverse + Vec2{ 0.f, 1.f };	// 발 아래 색상
 
 		int CurColor = m_MapColTexture->GetPixelColor(m_Pos);
-		int ForDownColor = m_MapColTexture->GetPixelColor(ForDownPos);
-		int Color = m_MapColTexture->GetPixelColor(CheckPos);
+		int ForDownColor = m_MapColTexture->GetPixelColor(ForDownPos);	// 발 아래 색상
+		int Color = m_MapColTexture->GetPixelColor(CheckPos);	// 미래 위치의 발기준 색상
 		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
 		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
 
@@ -1474,7 +1696,7 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 		// 항상 땅에 붙어있기
 		if (RGB(0, 0, 0) != ForDownColor && RGB(255, 0, 0) != ForDownColor)
 		{
-			SetPos(Vector2{ m_Pos.x, m_Pos.y - 1.f });
+			SetPos(Vector2{ m_Pos.x, m_Pos.y - 2.f });
 		}
 
 		// 계단 올라가기

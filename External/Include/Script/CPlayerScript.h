@@ -46,6 +46,10 @@ private:
 
 	int			m_AttackCount;
 
+	Vec2		m_Move;			// 이동량
+	Vec3		m_PrePos;		// 이전 프레임 위치
+	Vec3		m_CurPos;
+
 	Vec2		m_MoveDir;		// 이동 방향 벡터
 	float       m_MoveSpeed;	// 이동 속도
 	Vec2		m_AttackDir;

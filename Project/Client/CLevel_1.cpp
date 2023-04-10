@@ -19,6 +19,7 @@
 #include <Script\CGruntScript.h>
 
 #include "CLevelSaveLoad.h"
+#include "CLevel_2.h"
 
 void CreateLevel_1()
 {
@@ -26,7 +27,7 @@ void CreateLevel_1()
 	CreateGruntPrefab();
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
-	pCurLevel->SetName(L"Stage_1");
+	pCurLevel->SetName(L"Stage_2");
 	pCurLevel->ChangeState(LEVEL_STATE::STOP);
 
 	// Layer 이름설정
@@ -113,7 +114,6 @@ void CreateLevel_1()
 	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
 	pParent->Animator2D()->Play(L"WalkDown", true);
 	pParent->Animator2D()->Create_Player_Animation();
-	pParent->SetColMapTexture((CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_ColMap.png")).Get());
 	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"PlayerHitBox");
 
 	// Mouse
@@ -162,13 +162,12 @@ void CreateLevel_1()
 	pBackGround->AddComponent(new CMeshRender);
 
 	pBackGround->Transform()->SetRelativeScale(Vec3(1800.f, 784.f, 1.f));
-	//pBackGround->Transform()->SetRelativePos(Vec3(900.f, 392.f, 600.f));
 
 	pBackGround->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pBackGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
 	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2.png"));
 
-	SpawnGameObject(pBackGround, Vec3(900.f, -392.f, 1000.f), L"Default");
+	SpawnGameObject(pBackGround, Vec3(900.f, -392.f, 1000.f), L"Default");	//스테이지1 생성위치
 
 
 	//// Particle Object

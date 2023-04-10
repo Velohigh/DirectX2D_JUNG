@@ -250,6 +250,9 @@
     <ClInclude Include="CLevel_1.h">
       <Filter>Level</Filter>
     </ClInclude>
+    <ClInclude Include="CLevel_2.h">
+      <Filter>Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -384,6 +387,9 @@
       <Filter>Level</Filter>
     </ClCompile>
     <ClCompile Include="CLevel_1.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel_2.cpp">
       <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
