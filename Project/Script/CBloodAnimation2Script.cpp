@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CBloodAnimation2Script.h"
+#include "CMonsterScript.h"
 
 CBloodAnimation2Script::CBloodAnimation2Script()
 	: CScript((UINT)SCRIPT_TYPE::BLOODANIMATION2SCRIPT)

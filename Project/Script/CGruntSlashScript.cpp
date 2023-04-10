@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CGruntSlashScript.h"
+#include "CMonsterScript.h"
 #include "CGruntScript.h"
 
 CGruntSlashScript::CGruntSlashScript()
@@ -24,9 +25,9 @@ void CGruntSlashScript::tick()
 		Destroy();
 	}
 	// 그런트가 사망상태이면 공격 이펙트 파괴
-	if (m_Owner->GetScript<CGruntScript>()->GetState() == ObjState::HurtFly
-		|| m_Owner->GetScript<CGruntScript>()->GetState() == ObjState::HurtGround
-		|| m_Owner->GetScript<CGruntScript>()->GetState() == ObjState::Dead)
+	if (m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::HurtFly
+		|| m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::HurtGround
+		|| m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::Dead)
 	{
 		Destroy();
 	}

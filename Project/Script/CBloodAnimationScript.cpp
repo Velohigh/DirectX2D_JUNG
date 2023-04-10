@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CBloodAnimationScript.h"
 #include "CGruntScript.h"
+#include "CMonsterScript.h"
 
 CBloodAnimationScript::CBloodAnimationScript()
 	: CScript((UINT)SCRIPT_TYPE::BLOODANIMATIONSCRIPT)
@@ -38,7 +39,7 @@ void CBloodAnimationScript::tick()
 
 	Transform()->SetRelativePos(OwnerPos);
 
-	if (m_Owner->GetScript<CGruntScript>()->GetState() != ObjState::HurtFly)
+	if (m_Owner->GetScript<CMonsterScript>()->GetState() != ObjState::HurtFly)
 	{
 		Destroy();
 	}

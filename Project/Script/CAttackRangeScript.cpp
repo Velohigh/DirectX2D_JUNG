@@ -28,17 +28,17 @@ void CAttackRangeScript::tick()
 
 void CAttackRangeScript::BeginOverlap(CCollider2D* _Other)
 {
-	m_Owner->GetScript<CGruntScript>()->SetAttackRangeOn(true);
+	m_Owner->GetScript<CMonsterScript>()->SetAttackRangeOn(true);
 }
 
 void CAttackRangeScript::OnOverlap(CCollider2D* _Other)
 {
-	m_Owner->GetScript<CGruntScript>()->SetAttackRangeOn(true);
+	m_Owner->GetScript<CMonsterScript>()->SetAttackRangeOn(true);
 }
 
 void CAttackRangeScript::EndOverlap(CCollider2D* _Other)
 {
-	m_Owner->GetScript<CGruntScript>()->SetAttackRangeOn(false);
+	m_Owner->GetScript<CMonsterScript>()->SetAttackRangeOn(false);
 }
 
 

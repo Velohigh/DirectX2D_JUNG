@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CViewScript.h"
 #include "CGruntScript.h"
+#include "CMonsterScript.h"
 
 CViewScript::CViewScript()
 	: CScript((UINT)SCRIPT_TYPE::VIEWSCRIPT)
@@ -34,16 +35,16 @@ void CViewScript::tick()
 
 void CViewScript::BeginOverlap(CCollider2D* _Other)
 {
-	m_Owner->GetScript<CGruntScript>()->SetViewColliderOn(true);
+	m_Owner->GetScript<CMonsterScript>()->SetViewColliderOn(true);
 }
 
 void CViewScript::OnOverlap(CCollider2D* _Other)
 {
-	m_Owner->GetScript<CGruntScript>()->SetViewColliderOn(true);
+	m_Owner->GetScript<CMonsterScript>()->SetViewColliderOn(true);
 }
 
 void CViewScript::EndOverlap(CCollider2D* _Other)
 {
-	m_Owner->GetScript<CGruntScript>()->SetViewColliderOn(false);
+	m_Owner->GetScript<CMonsterScript>()->SetViewColliderOn(false);
 }
 

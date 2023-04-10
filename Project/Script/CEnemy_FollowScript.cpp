@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CEnemy_FollowScript.h"
+#include "CMonsterScript.h"
 #include "CGruntScript.h"
 
 CEnemy_FollowScript::CEnemy_FollowScript()
@@ -20,9 +21,9 @@ void CEnemy_FollowScript::begin()
 void CEnemy_FollowScript::tick()
 {
 	// 몬스터 사망시 오브젝트 파괴
-	if (m_Owner->GetScript<CGruntScript>()->GetState() == ObjState::HurtFly
-		|| m_Owner->GetScript<CGruntScript>()->GetState() == ObjState::HurtGround
-		|| m_Owner->GetScript<CGruntScript>()->GetState() == ObjState::Dead)
+	if (m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::HurtFly
+		|| m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::HurtGround
+		|| m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::Dead)
 	{
 		Destroy();
 	}

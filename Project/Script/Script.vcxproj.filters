@@ -52,15 +52,15 @@
     <Filter Include="Script\Effect\BloodSplater">
       <UniqueIdentifier>{61e50bca-844c-4962-84f0-b474a4f87c07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Monster\Collider">
+      <UniqueIdentifier>{787d3df0-54e5-4d48-a9e7-22d51bf885f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Script</Filter>
     </ClInclude>
     <ClInclude Include="CMissileScript.h">
-      <Filter>Script</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonsterScript.h">
       <Filter>Script</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -111,14 +111,17 @@
     <ClInclude Include="CGruntSlashScript.h">
       <Filter>Script\Effect\GruntSlash</Filter>
     </ClInclude>
-    <ClInclude Include="CViewScript.h">
+    <ClInclude Include="CBloodSplaterScript.h">
+      <Filter>Script\Effect\BloodSplater</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterScript.h">
       <Filter>Script\Monster</Filter>
     </ClInclude>
     <ClInclude Include="CAttackRangeScript.h">
-      <Filter>Script\Monster</Filter>
+      <Filter>Script\Monster\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="CBloodSplaterScript.h">
-      <Filter>Script\Effect\BloodSplater</Filter>
+    <ClInclude Include="CViewScript.h">
+      <Filter>Script\Monster\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +129,6 @@
       <Filter>Script</Filter>
     </ClCompile>
     <ClCompile Include="CMissileScript.cpp">
-      <Filter>Script</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterScript.cpp">
       <Filter>Script</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -179,14 +179,17 @@
     <ClCompile Include="CGruntSlashScript.cpp">
       <Filter>Script\Effect\GruntSlash</Filter>
     </ClCompile>
-    <ClCompile Include="CViewScript.cpp">
+    <ClCompile Include="CBloodSplaterScript.cpp">
+      <Filter>Script\Effect\BloodSplater</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterScript.cpp">
       <Filter>Script\Monster</Filter>
     </ClCompile>
     <ClCompile Include="CAttackRangeScript.cpp">
-      <Filter>Script\Monster</Filter>
+      <Filter>Script\Monster\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="CBloodSplaterScript.cpp">
-      <Filter>Script\Effect\BloodSplater</Filter>
+    <ClCompile Include="CViewScript.cpp">
+      <Filter>Script\Monster\Collider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
