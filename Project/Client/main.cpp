@@ -53,7 +53,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGuiMgr::GetInst()->init(g_hWnd);
 
     // 레벨 생성
-    CreateLevel_2();
+    CreateLevel_1();
+    //CreateLevel_2();
     _G_HWND = g_hWnd;
 
     // 메세지 루프

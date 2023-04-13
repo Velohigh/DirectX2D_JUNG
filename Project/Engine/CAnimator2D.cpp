@@ -196,6 +196,20 @@ void CAnimator2D::Create_Grunt_Animation()
 
 }
 
+void CAnimator2D::Create_Pomp_Animation()
+{
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_idle", 8, 9.1f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_walk", 10, 14.2857f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_run", 10, 14.2857f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_attack", 6, 14.2857f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_turn", 6, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_hurtfly", 2, 4.f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_hurtground", 15, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\pomp\\spr_pomp_knockdown", 22, 14.2857f);
+
+
+}
+
 void CAnimator2D::Create_Effect_Animation()
 {
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_dustcloud", 7, 16.6667f);
@@ -205,5 +219,8 @@ void CAnimator2D::Create_Effect_Animation()
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_enemy_follow", 2, 2.5f);
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_effect_bloodanimation", 6, 15.f);
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_effect_bloodanimation2", 10, 15.f);
-	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_gruntslash", 5, 14.2857f);
+	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_gruntslash", 5, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_enemy_bikeslash", 4, 25.f);	// 공격이펙트 빠르게 (pomp 용)
+	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_reflect", 5, 16.6667f);
+
 }

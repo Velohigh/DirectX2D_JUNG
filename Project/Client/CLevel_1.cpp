@@ -17,6 +17,7 @@
 #include <Script\CMainCameraScript.h>
 #include <Script\CMouseScript.h>
 #include <Script\CGruntScript.h>
+#include <Script\CPompScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -27,7 +28,7 @@ void CreateLevel_1()
 	CreateGruntPrefab();
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
-	pCurLevel->SetName(L"Stage_2");
+	pCurLevel->SetName(L"Stage_1");
 	pCurLevel->ChangeState(LEVEL_STATE::STOP);
 
 	// Layer 이름설정
@@ -146,11 +147,11 @@ void CreateLevel_1()
 		pGrunt->GetScript<CGruntScript>()->SetPatrol(true, 4.f);
 		SpawnGameObject(pGrunt, Vec3(1054, -383, 500.f), L"MonsterHitBox");
 
-		// Grunt_2	2층 방안
-		pGrunt = CreateGrunt();
-		pGrunt->GetScript<CGruntScript>()->SetDir(ObjDir::Right);
-		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Idle);
-		SpawnGameObject(pGrunt, Vec3(338, -383, 500.f), L"MonsterHitBox");
+		// Pomp_2	2층 방안
+		CGameObject* pPomp = CreatePomp();
+		pPomp->GetScript<CPompScript>()->SetDir(ObjDir::Right);
+		pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
+		SpawnGameObject(pPomp, Vec3(338, -383, 500.f), L"MonsterHitBox");
 
 	}
 
@@ -257,5 +258,29 @@ CGameObject* CreateGrunt()
 	//SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
 
 	return pGrunt;
+}
 
+CGameObject* CreatePomp()
+{
+	// Pomp 크리에이트
+	CGameObject* pPomp = new CGameObject;
+	pPomp->SetName(L"Pomp");
+	pPomp->AddComponent(new CTransform);
+	pPomp->AddComponent(new CMeshRender);
+	pPomp->AddComponent(new CCollider2D);
+	pPomp->AddComponent(new CAnimator2D);
+	pPomp->AddComponent(new CPompScript);
+
+	pPomp->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pPomp->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	pPomp->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"PompMtrl"));
+
+	pPomp->Collider2D()->SetAbsolute(true);
+	pPomp->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+
+	pPomp->Animator2D()->Create_Pomp_Animation();
+	pPomp->Animator2D()->Play(L"texture\\pomp\\spr_pomp_idle", true);
+
+	return pPomp;
 }

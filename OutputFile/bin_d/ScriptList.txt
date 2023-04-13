@@ -1,9 +1,11 @@
 CAttackRangeScript
+CBikeSlashScript
 CBloodAnimation2Script
 CBloodAnimationScript
 CBloodSplaterScript
 CCameraMoveScript
 CDustCloudScript
+CEffectScript
 CEnemy_FollowScript
 CGravityScript
 CGruntScript
@@ -15,5 +17,7 @@ CMissileScript
 CMonsterScript
 CMouseScript
 CPlayerScript
+CPompScript
+CReflectScript
 CSlashScript
 CViewScript

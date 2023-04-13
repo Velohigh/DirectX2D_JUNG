@@ -51,6 +51,7 @@ void CMonsterScript::begin()
 	m_bAttackRangeOn = false;				// 공격 범위 충돌체
 	m_bHitBoxOn = false;					// 히트 박스 충돌체
 	m_bEffect_EnemyFollow = false;
+	m_bAttackOn = false;
 
 }
 
@@ -97,6 +98,7 @@ void CMonsterScript::tick()
 
 void CMonsterScript::DirAnimationCheck()
 {
+	// 바라보는 방향에 따라 좌우 반전
 	Vec3 Rot = Transform()->GetRelativeRot();
 
 	if (m_PreDir != m_CurDir)
@@ -143,6 +145,9 @@ void CMonsterScript::StateChange(ObjState _State)
 		case ObjState::HurtFly:
 			HurtFlyStart();
 			break;
+		case ObjState::KnockDown:
+			KnockDownStart();
+			break;
 		case ObjState::Dead:
 			DeadStart();
 			break;
@@ -177,6 +182,9 @@ void CMonsterScript::StateUpdate()
 		break;
 	case ObjState::HurtFly:
 		HurtFlyUpdate();
+		break;
+	case ObjState::KnockDown:
+		KnockDownUpdate();
 		break;
 	case ObjState::Dead:
 		DeadUpdate();

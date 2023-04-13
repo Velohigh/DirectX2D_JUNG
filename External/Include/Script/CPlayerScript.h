@@ -65,7 +65,10 @@ public:
 
 public:
 	PlayerState GetState() { return m_CurState; }
-	Vec2 GetAttackDir() { return m_AttackDir; }
+	Vec2& GetAttackDir() { return m_AttackDir; }
+	Vec2& GetMoveDir() { return m_MoveDir; }
+
+	void SetMoveDir(Vec2 _vec2) { m_MoveDir = _vec2; }
 
 private:
 	void Shoot();

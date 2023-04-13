@@ -2,11 +2,13 @@
 #include "CScriptMgr.h"
 
 #include "CAttackRangeScript.h"
+#include "CBikeSlashScript.h"
 #include "CBloodAnimation2Script.h"
 #include "CBloodAnimationScript.h"
 #include "CBloodSplaterScript.h"
 #include "CCameraMoveScript.h"
 #include "CDustCloudScript.h"
+#include "CEffectScript.h"
 #include "CEnemy_FollowScript.h"
 #include "CGravityScript.h"
 #include "CGruntScript.h"
@@ -18,17 +20,21 @@
 #include "CMonsterScript.h"
 #include "CMouseScript.h"
 #include "CPlayerScript.h"
+#include "CPompScript.h"
+#include "CReflectScript.h"
 #include "CSlashScript.h"
 #include "CViewScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CAttackRangeScript");
+	_vec.push_back(L"CBikeSlashScript");
 	_vec.push_back(L"CBloodAnimation2Script");
 	_vec.push_back(L"CBloodAnimationScript");
 	_vec.push_back(L"CBloodSplaterScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CDustCloudScript");
+	_vec.push_back(L"CEffectScript");
 	_vec.push_back(L"CEnemy_FollowScript");
 	_vec.push_back(L"CGravityScript");
 	_vec.push_back(L"CGruntScript");
@@ -40,6 +46,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterScript");
 	_vec.push_back(L"CMouseScript");
 	_vec.push_back(L"CPlayerScript");
+	_vec.push_back(L"CPompScript");
+	_vec.push_back(L"CReflectScript");
 	_vec.push_back(L"CSlashScript");
 	_vec.push_back(L"CViewScript");
 }
@@ -48,6 +56,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CAttackRangeScript" == _strScriptName)
 		return new CAttackRangeScript;
+	if (L"CBikeSlashScript" == _strScriptName)
+		return new CBikeSlashScript;
 	if (L"CBloodAnimation2Script" == _strScriptName)
 		return new CBloodAnimation2Script;
 	if (L"CBloodAnimationScript" == _strScriptName)
@@ -58,6 +68,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CDustCloudScript" == _strScriptName)
 		return new CDustCloudScript;
+	if (L"CEffectScript" == _strScriptName)
+		return new CEffectScript;
 	if (L"CEnemy_FollowScript" == _strScriptName)
 		return new CEnemy_FollowScript;
 	if (L"CGravityScript" == _strScriptName)
@@ -80,6 +92,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMouseScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
+	if (L"CPompScript" == _strScriptName)
+		return new CPompScript;
+	if (L"CReflectScript" == _strScriptName)
+		return new CReflectScript;
 	if (L"CSlashScript" == _strScriptName)
 		return new CSlashScript;
 	if (L"CViewScript" == _strScriptName)
@@ -93,6 +109,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::ATTACKRANGESCRIPT:
 		return new CAttackRangeScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BIKESLASHSCRIPT:
+		return new CBikeSlashScript;
 		break;
 	case (UINT)SCRIPT_TYPE::BLOODANIMATION2SCRIPT:
 		return new CBloodAnimation2Script;
@@ -108,6 +127,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::DUSTCLOUDSCRIPT:
 		return new CDustCloudScript;
+		break;
+	case (UINT)SCRIPT_TYPE::EFFECTSCRIPT:
+		return new CEffectScript;
 		break;
 	case (UINT)SCRIPT_TYPE::ENEMY_FOLLOWSCRIPT:
 		return new CEnemy_FollowScript;
@@ -142,6 +164,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
 		break;
+	case (UINT)SCRIPT_TYPE::POMPSCRIPT:
+		return new CPompScript;
+		break;
+	case (UINT)SCRIPT_TYPE::REFLECTSCRIPT:
+		return new CReflectScript;
+		break;
 	case (UINT)SCRIPT_TYPE::SLASHSCRIPT:
 		return new CSlashScript;
 		break;
@@ -158,6 +186,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 	{
 	case SCRIPT_TYPE::ATTACKRANGESCRIPT:
 		return L"CAttackRangeScript";
+		break;
+
+	case SCRIPT_TYPE::BIKESLASHSCRIPT:
+		return L"CBikeSlashScript";
 		break;
 
 	case SCRIPT_TYPE::BLOODANIMATION2SCRIPT:
@@ -178,6 +210,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::DUSTCLOUDSCRIPT:
 		return L"CDustCloudScript";
+		break;
+
+	case SCRIPT_TYPE::EFFECTSCRIPT:
+		return L"CEffectScript";
 		break;
 
 	case SCRIPT_TYPE::ENEMY_FOLLOWSCRIPT:
@@ -222,6 +258,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::PLAYERSCRIPT:
 		return L"CPlayerScript";
+		break;
+
+	case SCRIPT_TYPE::POMPSCRIPT:
+		return L"CPompScript";
+		break;
+
+	case SCRIPT_TYPE::REFLECTSCRIPT:
+		return L"CReflectScript";
 		break;
 
 	case SCRIPT_TYPE::SLASHSCRIPT:

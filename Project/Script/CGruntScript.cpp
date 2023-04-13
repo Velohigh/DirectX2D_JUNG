@@ -136,34 +136,7 @@ void CGruntScript::AttackStart()
 	SetSpeed(0.f);
 	SetSize2x();
 
-	// GruntSlash 이펙트 추가
-	CGameObject* pGruntSlash = new CGameObject;
-	pGruntSlash->SetName(L"GruntSlash");
-	pGruntSlash->AddComponent(new CTransform);
-	pGruntSlash->AddComponent(new CMeshRender);
-	pGruntSlash->AddComponent(new CAnimator2D);
-	pGruntSlash->AddComponent(new CCollider2D);
-	pGruntSlash->AddComponent(new CGruntSlashScript);
 
-	pGruntSlash->Transform()->SetRelativeScale(128.f, 128.f, 1.f);
-
-	pGruntSlash->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pGruntSlash->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntSlashMtrl"));
-
-	pGruntSlash->Animator2D()->Create_Effect_Animation();
-	pGruntSlash->Animator2D()->Play(L"texture\\effect\\spr_gruntslash", false);
-	pGruntSlash->GetScript<CGruntSlashScript>()->SetOwner(GetOwner());
-
-	if(m_CurDir == ObjDir::Right)
-		pGruntSlash->GetScript<CGruntSlashScript>()->SetDir(ObjDir::Right);
-	else if (m_CurDir == ObjDir::Left)
-		pGruntSlash->GetScript<CGruntSlashScript>()->SetDir(ObjDir::Left);
-
-	SpawnGameObject(pGruntSlash, Transform()->GetRelativePos(), L"MonsterProjectile");
-
-	// Swing 사운드
-	Ptr<CSound> pSwingSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\swing.wav");
-	pSwingSound->Play(1, 0.8f, true);
 
 
 	//
@@ -534,9 +507,46 @@ void CGruntScript::AttackUpdate()
 	// 공격 모션이 끝나면 다시 Run 상태로
 	if (true == Animator2D()->IsEndAnimation())
 	{
+		SetAttackOn(false);
 		StateChange(ObjState::Run);
 		return;
 	}
+
+	if (m_bAttackOn == false
+		&& Animator2D()->GetCurAnim()->GetCurFrmCount() == 2)
+	{
+		// GruntSlash 이펙트 추가
+		CGameObject* pGruntSlash = new CGameObject;
+		pGruntSlash->SetName(L"GruntSlash");
+		pGruntSlash->AddComponent(new CTransform);
+		pGruntSlash->AddComponent(new CMeshRender);
+		pGruntSlash->AddComponent(new CAnimator2D);
+		pGruntSlash->AddComponent(new CCollider2D);
+		pGruntSlash->AddComponent(new CGruntSlashScript);
+
+		pGruntSlash->Transform()->SetRelativeScale(128.f, 128.f, 1.f);
+
+		pGruntSlash->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pGruntSlash->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntSlashMtrl"));
+
+		pGruntSlash->Animator2D()->Create_Effect_Animation();
+		pGruntSlash->Animator2D()->Play(L"texture\\effect\\spr_gruntslash", false);
+		pGruntSlash->GetScript<CGruntSlashScript>()->SetOwner(GetOwner());
+
+		if (m_CurDir == ObjDir::Right)
+			pGruntSlash->GetScript<CGruntSlashScript>()->SetDir(ObjDir::Right);
+		else if (m_CurDir == ObjDir::Left)
+			pGruntSlash->GetScript<CGruntSlashScript>()->SetDir(ObjDir::Left);
+
+		SpawnGameObject(pGruntSlash, Transform()->GetRelativePos(), L"MonsterProjectile");
+		SetAttackOn(true);
+
+		// Swing 사운드
+		Ptr<CSound> pSwingSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\swing.wav");
+		pSwingSound->Play(1, 0.8f, true);
+
+	}
+
 
 
 }

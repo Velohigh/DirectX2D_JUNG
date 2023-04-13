@@ -24,11 +24,12 @@ protected:
 
 	float		m_fPatrolTime;	// 순찰시간
 
-	bool		m_bEffect_EnemyFollow = false;	// 플레이어 발견시 이펙트 생성
+	bool		m_bEffect_EnemyFollow;			// 플레이어 발견시 이펙트 생성
 	bool		m_bPatrol;						// 정찰 행동 여부
 	bool		m_bViewColliderOn;				// 시야 범위 충돌체 작동
 	bool		m_bAttackRangeOn;				// 공격 범위 충돌체 작동
 	bool		m_bHitBoxOn;					// 히트 박스 충돌체 작동
+	bool		m_bAttackOn;						// 공격 충돌체 활성화
 
 	CGameObject* m_ViewCollider;				// 시야 충돌체
 	CGameObject* m_AttackRangeCollider;			// 공격범위 충돌체
@@ -55,6 +56,7 @@ public:
 	void SetViewColliderOn(bool _bool) { m_bViewColliderOn = _bool; }
 	void SetAttackRangeOn(bool _bool) { m_bAttackRangeOn = _bool; }
 	void SetHitBoxOn(bool _bool) { m_bHitBoxOn = _bool; }
+	void SetAttackOn(bool _bool) { m_bAttackOn = _bool; }
 
 protected:
 	void SetSize2x();	// 사이즈를 원본 이미지의 2배로 지정
@@ -80,6 +82,7 @@ protected:
 	virtual void AttackStart() {};
 	virtual void HurtGroundStart() {};
 	virtual void HurtFlyStart() {};
+	virtual void KnockDownStart() {};
 	virtual void DeadStart() {};
 
 
@@ -90,6 +93,7 @@ protected:
 	virtual void AttackUpdate() {};
 	virtual void HurtGroundUpdate() {};
 	virtual void HurtFlyUpdate() {};
+	virtual void KnockDownUpdate() {};
 	virtual void DeadUpdate() {};
 
 protected:

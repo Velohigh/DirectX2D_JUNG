@@ -55,6 +55,15 @@
     <Filter Include="Script\Monster\Collider">
       <UniqueIdentifier>{787d3df0-54e5-4d48-a9e7-22d51bf885f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Monster\PompScript">
+      <UniqueIdentifier>{d273f89d-2f50-4615-9adb-aec2ac231ecd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\BikeSlash">
+      <UniqueIdentifier>{1ee3138a-7b09-440a-a795-a39c4f9170a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\Reflect">
+      <UniqueIdentifier>{e77ff3f8-7363-4000-b908-e8daeaee180d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -123,6 +132,18 @@
     <ClInclude Include="CViewScript.h">
       <Filter>Script\Monster\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="CPompScript.h">
+      <Filter>Script\Monster\PompScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CBikeSlashScript.h">
+      <Filter>Script\Effect\BikeSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="CReflectScript.h">
+      <Filter>Script\Effect\Reflect</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffectScript.h">
+      <Filter>Script\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -190,6 +211,18 @@
     </ClCompile>
     <ClCompile Include="CViewScript.cpp">
       <Filter>Script\Monster\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CPompScript.cpp">
+      <Filter>Script\Monster\PompScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CBikeSlashScript.cpp">
+      <Filter>Script\Effect\BikeSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CReflectScript.cpp">
+      <Filter>Script\Effect\Reflect</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffectScript.cpp">
+      <Filter>Script\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
