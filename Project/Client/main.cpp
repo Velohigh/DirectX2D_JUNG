@@ -79,7 +79,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         else
         {
-            CTimeMgr::GetInst()->tick();
 
             //// 1초당 144 프레임으로 제한
             //if (DT < 1.0f / 144.0f)
