@@ -337,6 +337,29 @@ void CPlayerScript::SlowModeIn()
 	if (KEY_TAP(KEY::Q))
 	{
 		CTimeMgr::GetInst()->SetTimeScale(0.2f);
+
+		// SlowMode 용 배경 텍스쳐 지정
+		if (m_Level->GetName() == L"Stage_1")
+		{
+			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_slow.png"));
+		}
+		else if (m_Level->GetName() == L"Stage_2")
+		{
+			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage2_bg_render_slow.png"));
+		}
+		else if (m_Level->GetName() == L"Stage_3")
+		{
+			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_render_slow.png"));
+		}
+
+
+		// SlowModeIn 사운드 재생
+		Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_in.mp3");
+		pSlowModeSound->Play(1, 1.f, true);
+
 	}
 }
 
@@ -345,6 +368,30 @@ void CPlayerScript::SlowModeOut()
 	if (KEY_RELEASE(KEY::Q))
 	{
 		CTimeMgr::GetInst()->SetTimeScale(1.f);
+
+		// SlowMode 용 배경 텍스쳐 지정
+		if (m_Level->GetName() == L"Stage_1")
+		{
+			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2.png"));
+		}
+		else if (m_Level->GetName() == L"Stage_2")
+		{
+			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage2_bg_render.png"));
+		}
+		else if (m_Level->GetName() == L"Stage_3")
+		{
+			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_render.png"));
+		}
+
+
+		// SlowModeOut 사운드 재생
+		Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_out.mp3");
+		pSlowModeSound->Play(1, 1.f, true);
+
+
 	}
 }
 
