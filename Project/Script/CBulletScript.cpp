@@ -66,6 +66,16 @@ void CBulletScript::tick()
 	if(Collider2D() != nullptr)
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y));
 
+	// 이동방향으로 이미지 회전
+	Vec2 vRight = { 1.f , 0.f };
+	float Angle = m_MoveDir.Dot(vRight);
+	Angle = acosf(Angle);
+
+	if(m_MoveDir.y <0.f)
+	Angle = 2 * XM_PI - Angle;
+
+	Vec3 m_Rot = Transform()->GetRelativeRot();
+	Transform()->SetRelativeRot(m_Rot.x, m_Rot.y, Angle);
 
 }
 
@@ -132,6 +142,7 @@ void CBulletScript::BeginOverlap(CCollider2D* _Other)
 		pBullet->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BulletMtrl"));
 
 		pBullet->Collider2D()->SetAbsolute(true);
+		pBullet->Collider2D()->SetOffsetScale(Vec2(10.f, 10.f));
 
 		pBullet->Animator2D()->Create_Effect_Animation();
 		pBullet->Animator2D()->Play(L"texture\\effect\\spr_bullet", false);

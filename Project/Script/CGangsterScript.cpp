@@ -570,6 +570,7 @@ void CGangsterScript::AttackUpdate()
 		pBullet->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BulletMtrl"));
 
 		pBullet->Collider2D()->SetAbsolute(true);
+		pBullet->Collider2D()->SetOffsetScale(Vec2(10.f, 10.f));
 
 		pBullet->Animator2D()->Create_Effect_Animation();
 		pBullet->Animator2D()->Play(L"texture\\effect\\spr_bullet", false);
