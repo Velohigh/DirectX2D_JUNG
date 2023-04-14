@@ -560,15 +560,16 @@ void CGangsterScript::AttackUpdate()
 		pBullet->SetName(L"Bullet");
 		pBullet->AddComponent(new CTransform);
 		pBullet->AddComponent(new CMeshRender);
+		pBullet->AddComponent(new CCollider2D);
 		pBullet->AddComponent(new CAnimator2D);
 		pBullet->AddComponent(new CBulletScript);
 
 		pBullet->Transform()->SetRelativeScale(48.f, 2.f, 1.f);
 
-
-
 		pBullet->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 		pBullet->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BulletMtrl"));
+
+		pBullet->Collider2D()->SetAbsolute(true);
 
 		pBullet->Animator2D()->Create_Effect_Animation();
 		pBullet->Animator2D()->Play(L"texture\\effect\\spr_bullet", false);

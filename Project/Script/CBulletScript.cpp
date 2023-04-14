@@ -61,6 +61,12 @@ void CBulletScript::tick()
 		Destroy();
 	}
 
+	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
+	// 충돌체 위치 지정
+	if(Collider2D() != nullptr)
+	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y));
+
+
 }
 
 
@@ -115,15 +121,17 @@ void CBulletScript::BeginOverlap(CCollider2D* _Other)
 		pBullet->SetName(L"Bullet");
 		pBullet->AddComponent(new CTransform);
 		pBullet->AddComponent(new CMeshRender);
+		pBullet->AddComponent(new CCollider2D);
 		pBullet->AddComponent(new CAnimator2D);
 		pBullet->AddComponent(new CBulletScript);
 
-		pBullet->Transform()->SetRelativeScale(28.f, 28.f, 1.f);
-
+		pBullet->Transform()->SetRelativeScale(48.f, 2.f, 1.f);
 		pBullet->Transform()->SetRelativePos(m_Pos3);
 
 		pBullet->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 		pBullet->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BulletMtrl"));
+
+		pBullet->Collider2D()->SetAbsolute(true);
 
 		pBullet->Animator2D()->Create_Effect_Animation();
 		pBullet->Animator2D()->Play(L"texture\\effect\\spr_bullet", false);
