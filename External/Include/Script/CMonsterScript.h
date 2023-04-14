@@ -57,6 +57,7 @@ public:
 	void SetAttackRangeOn(bool _bool) { m_bAttackRangeOn = _bool; }
 	void SetHitBoxOn(bool _bool) { m_bHitBoxOn = _bool; }
 	void SetAttackOn(bool _bool) { m_bAttackOn = _bool; }
+	void SetEnemyAttackDir(Vec2 _vec2) { m_EnemyAttackDir = _vec2; }
 
 protected:
 	void SetSize2x();	// 사이즈를 원본 이미지의 2배로 지정

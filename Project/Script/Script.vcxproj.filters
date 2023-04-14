@@ -64,6 +64,12 @@
     <Filter Include="Script\Effect\Reflect">
       <UniqueIdentifier>{e77ff3f8-7363-4000-b908-e8daeaee180d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Monster\GangsterScript">
+      <UniqueIdentifier>{b432eee3-24d3-4258-ba30-71d069ff8e15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Effect\Bullet">
+      <UniqueIdentifier>{ae8e8e89-e2b8-4645-91ed-ab31d295cc36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -144,6 +150,12 @@
     <ClInclude Include="CEffectScript.h">
       <Filter>Script\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="CGangsterScript.h">
+      <Filter>Script\Monster\GangsterScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletScript.h">
+      <Filter>Script\Effect\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -223,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="CEffectScript.cpp">
       <Filter>Script\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CGangsterScript.cpp">
+      <Filter>Script\Monster\GangsterScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletScript.cpp">
+      <Filter>Script\Effect\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

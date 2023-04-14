@@ -210,6 +210,17 @@ void CAnimator2D::Create_Pomp_Animation()
 
 }
 
+void CAnimator2D::Create_Gangster_Animation()
+{
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsteridle", 8, 9.1f);
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsteraim", 1, 1.f);
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsterhurtground", 14, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsterhurtfly", 2, 4.f);
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsterrun", 10, 14.2857f);
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsterturn", 6, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\gangster\\spr_gangsterwalk", 8, 14.2857f);
+}
+
 void CAnimator2D::Create_Effect_Animation()
 {
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_dustcloud", 7, 16.6667f);
@@ -222,5 +233,9 @@ void CAnimator2D::Create_Effect_Animation()
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_gruntslash", 5, 16.6667f);
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_enemy_bikeslash", 4, 25.f);	// 공격이펙트 빠르게 (pomp 용)
 	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_reflect", 5, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_gunspark", 6, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_fire", 6, 16.6667f);
+	Animator2D()->CreateFolderAnimation(L"texture\\effect\\spr_bullet", 1, 1.f);
+
 
 }

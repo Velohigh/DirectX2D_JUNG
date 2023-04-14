@@ -1,6 +1,8 @@
 #pragma once
 #include <Engine\CScript.h>
 
+
+// 가장 범용적인 이펙트 클래스
 class CEffectScript :
 	public CScript
 {

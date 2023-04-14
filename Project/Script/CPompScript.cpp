@@ -370,6 +370,8 @@ void CPompScript::KnockDownStart()
 	Vec2 PlayerMoveDir = m_Level->FindParentObjectByName(L"Player")->GetScript<CPlayerScript>()->GetMoveDir();
 	m_Level->FindParentObjectByName(L"Player")->GetScript<CPlayerScript>()->SetMoveDir((PlayerMoveDir * -1.f) + Vec2(0.f, 200.f));
 
+	SetSize2x();
+
 }
 
 void CPompScript::DeadStart()

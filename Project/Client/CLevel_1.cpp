@@ -18,6 +18,7 @@
 #include <Script\CMouseScript.h>
 #include <Script\CGruntScript.h>
 #include <Script\CPompScript.h>
+#include <Script\CGangsterScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -147,11 +148,18 @@ void CreateLevel_1()
 		pGrunt->GetScript<CGruntScript>()->SetPatrol(true, 4.f);
 		SpawnGameObject(pGrunt, Vec3(1054, -383, 500.f), L"MonsterHitBox");
 
-		// Pomp_2	2층 방안
-		CGameObject* pPomp = CreatePomp();
-		pPomp->GetScript<CPompScript>()->SetDir(ObjDir::Right);
-		pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
-		SpawnGameObject(pPomp, Vec3(338, -383, 500.f), L"MonsterHitBox");
+		//// Pomp_2	2층 방안
+		//CGameObject* pPomp = CreatePomp();
+		//pPomp->GetScript<CPompScript>()->SetDir(ObjDir::Right);
+		//pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
+		//SpawnGameObject(pPomp, Vec3(338, -383, 500.f), L"MonsterHitBox");
+
+		// Gangster	2층 방안
+		CGameObject* pGangster = CreateGangster();
+		pGangster->GetScript<CGangsterScript>()->SetDir(ObjDir::Right);
+		pGangster->GetScript<CGangsterScript>()->SetBeginState(ObjState::Idle);
+		SpawnGameObject(pGangster, Vec3(338, -383, 500.f), L"MonsterHitBox");
+
 
 	}
 
@@ -202,6 +210,7 @@ void CreateLevel_1()
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"PlayerProjectile", L"MonsterHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerProjectile");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"PlayerHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterAttackRange", L"PlayerHitBox");
 }
@@ -283,4 +292,29 @@ CGameObject* CreatePomp()
 	pPomp->Animator2D()->Play(L"texture\\pomp\\spr_pomp_idle", true);
 
 	return pPomp;
+}
+
+CGameObject* CreateGangster()
+{
+	// Gangster 크리에이트
+	CGameObject* pGangster = new CGameObject;
+	pGangster->SetName(L"Gangster");
+	pGangster->AddComponent(new CTransform);
+	pGangster->AddComponent(new CMeshRender);
+	pGangster->AddComponent(new CCollider2D);
+	pGangster->AddComponent(new CAnimator2D);
+	pGangster->AddComponent(new CGangsterScript);
+
+	pGangster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pGangster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	pGangster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GangsterMtrl"));
+
+	pGangster->Collider2D()->SetAbsolute(true);
+	pGangster->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+
+	pGangster->Animator2D()->Create_Gangster_Animation();
+	pGangster->Animator2D()->Play(L"texture\\gangster\\spr_gangsteridle", true);
+
+	return pGangster;
 }

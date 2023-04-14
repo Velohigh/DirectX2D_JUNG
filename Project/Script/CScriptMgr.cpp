@@ -6,10 +6,12 @@
 #include "CBloodAnimation2Script.h"
 #include "CBloodAnimationScript.h"
 #include "CBloodSplaterScript.h"
+#include "CBulletScript.h"
 #include "CCameraMoveScript.h"
 #include "CDustCloudScript.h"
 #include "CEffectScript.h"
 #include "CEnemy_FollowScript.h"
+#include "CGangsterScript.h"
 #include "CGravityScript.h"
 #include "CGruntScript.h"
 #include "CGruntSlashScript.h"
@@ -32,10 +34,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBloodAnimation2Script");
 	_vec.push_back(L"CBloodAnimationScript");
 	_vec.push_back(L"CBloodSplaterScript");
+	_vec.push_back(L"CBulletScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CDustCloudScript");
 	_vec.push_back(L"CEffectScript");
 	_vec.push_back(L"CEnemy_FollowScript");
+	_vec.push_back(L"CGangsterScript");
 	_vec.push_back(L"CGravityScript");
 	_vec.push_back(L"CGruntScript");
 	_vec.push_back(L"CGruntSlashScript");
@@ -64,6 +68,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBloodAnimationScript;
 	if (L"CBloodSplaterScript" == _strScriptName)
 		return new CBloodSplaterScript;
+	if (L"CBulletScript" == _strScriptName)
+		return new CBulletScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CDustCloudScript" == _strScriptName)
@@ -72,6 +78,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEffectScript;
 	if (L"CEnemy_FollowScript" == _strScriptName)
 		return new CEnemy_FollowScript;
+	if (L"CGangsterScript" == _strScriptName)
+		return new CGangsterScript;
 	if (L"CGravityScript" == _strScriptName)
 		return new CGravityScript;
 	if (L"CGruntScript" == _strScriptName)
@@ -122,6 +130,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::BLOODSPLATERSCRIPT:
 		return new CBloodSplaterScript;
 		break;
+	case (UINT)SCRIPT_TYPE::BULLETSCRIPT:
+		return new CBulletScript;
+		break;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
 		break;
@@ -133,6 +144,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::ENEMY_FOLLOWSCRIPT:
 		return new CEnemy_FollowScript;
+		break;
+	case (UINT)SCRIPT_TYPE::GANGSTERSCRIPT:
+		return new CGangsterScript;
 		break;
 	case (UINT)SCRIPT_TYPE::GRAVITYSCRIPT:
 		return new CGravityScript;
@@ -204,6 +218,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CBloodSplaterScript";
 		break;
 
+	case SCRIPT_TYPE::BULLETSCRIPT:
+		return L"CBulletScript";
+		break;
+
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
 		break;
@@ -218,6 +236,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::ENEMY_FOLLOWSCRIPT:
 		return L"CEnemy_FollowScript";
+		break;
+
+	case SCRIPT_TYPE::GANGSTERSCRIPT:
+		return L"CGangsterScript";
 		break;
 
 	case SCRIPT_TYPE::GRAVITYSCRIPT:

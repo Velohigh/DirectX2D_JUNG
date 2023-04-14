@@ -52,16 +52,17 @@ private:
 
 	Vec2		m_MoveDir;		// 이동 방향 벡터
 	float       m_MoveSpeed;	// 이동 속도
-	Vec2		m_AttackDir;
+	Vec2		m_AttackDir;	// 내 공격 방향
+	Vec2		m_EnemyAttackDir;	// 적의 공격 방향
 
-	bool		m_bRun1SoundOn = false;	// Run 사운드 재생여부
-	bool		m_bRun2SoundOn = false;	// Run 사운드 재생여부
+	bool		m_bRun1SoundOn;	// Run 사운드 재생여부
+	bool		m_bRun2SoundOn;	// Run 사운드 재생여부
+	bool		m_bHitOn;				// 공격 받았는지 여부
 
 public:
 	virtual void begin() override;
 	virtual void tick() override;
 
-	virtual void BeginOverlap(CCollider2D* _Other) override;
 
 public:
 	PlayerState GetState() { return m_CurState; }
@@ -69,6 +70,8 @@ public:
 	Vec2& GetMoveDir() { return m_MoveDir; }
 
 	void SetMoveDir(Vec2 _vec2) { m_MoveDir = _vec2; }
+	void SetEnemyAttackDir(Vec2 _vec2) { m_EnemyAttackDir = _vec2; }
+	void SetHitOn(bool _bool) { m_bHitOn = _bool; }
 
 private:
 	void Shoot();
@@ -92,6 +95,10 @@ public:
 public:
 	CPlayerScript();
 	~CPlayerScript();
+
+private:
+	virtual void BeginOverlap(CCollider2D* _Other) override;
+
 
 private:
 	void IdleUpdate();

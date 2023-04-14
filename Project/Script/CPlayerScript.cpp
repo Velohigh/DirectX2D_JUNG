@@ -63,6 +63,12 @@ void CPlayerScript::begin()
 	m_IsLongJump = false;
 
 	m_AttackCount = 0;
+
+
+	m_bRun1SoundOn = false;		// Run 사운드 재생여부
+	m_bRun2SoundOn = false;		// Run 사운드 재생여부
+	m_bHitOn = false;			// 공격 받았는지 여부
+
 }
 
 void CPlayerScript::tick()
@@ -329,6 +335,19 @@ void CPlayerScript::SetPivot()
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
 {
+
+	if (m_bHitOn == true)
+	{
+		// 플레이어가 사망 상태가 아니고 , 구르기 판정이 아닐떄 히트판정
+		if (m_CurState != PlayerState::HurtFlyLoop &&
+			m_CurState != PlayerState::HurtGround &&
+			m_CurState != PlayerState::Dead &&
+			m_CurState != PlayerState::Dodge)
+		{
+			StateChange(PlayerState::HurtFlyLoop);
+			return;
+		}
+	}
 
 }
 
@@ -899,12 +918,6 @@ void CPlayerScript::LandingUpdate()
 void CPlayerScript::AttackUpdate()
 {
 	//// 플레이어 공격이 끝나면 플레이어 공격 충돌체 제거
-	//if (true == Animator2D()->IsEndAnimation() &&
-	//	m_PlayerAttackCollision != nullptr)
-	//{
-	//	m_PlayerAttackCollision->SetActive(false);
-	//	m_PlayerAttackCollision = nullptr;
-	//}
 
 	// 공격 끝날시 Fall 상태로
 	if (true == Animator2D()->IsEndAnimation())

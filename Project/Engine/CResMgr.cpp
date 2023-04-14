@@ -170,6 +170,58 @@ void CResMgr::CreateDefaultMesh()
 	vecVtx.clear();
 	vecIdx.clear();
 
+	// =============
+	// RectMesh_PivotRight »ý¼º
+	// =============
+	// 0 --- 1 
+	// |  \  |
+	// 3 --- 2
+	v.vPos = Vec3(0.f, 0.5f, 0.f);
+	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
+	v.vUV = Vec2(0.f, 0.f);
+	vecVtx.push_back(v);
+
+	v.vPos = Vec3(1.f, 0.5f, 0.f);
+	v.vColor = Vec4(0.f, 1.f, 0.f, 1.f);
+	v.vUV = Vec2(1.f, 0.f);
+	vecVtx.push_back(v);
+
+	v.vPos = Vec3(1.f, -0.5f, 0.f);
+	v.vColor = Vec4(0.f, 0.f, 1.f, 1.f);
+	v.vUV = Vec2(1.f, 1.f);
+	vecVtx.push_back(v);
+
+	v.vPos = Vec3(0.f, -0.5f, 0.f);
+	v.vColor = Vec4(0.f, 0.f, 0.f, 1.f);
+	v.vUV = Vec2(0.f, 1.f);
+	vecVtx.push_back(v);
+
+	vecIdx.push_back(0);
+	vecIdx.push_back(2);
+	vecIdx.push_back(3);
+
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
+	vecIdx.push_back(2);
+
+	pMesh = new CMesh(true);
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddRes(L"RectMesh_PivotRight", pMesh);
+
+	vecIdx.clear();
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
+	vecIdx.push_back(2);
+	vecIdx.push_back(3);
+	vecIdx.push_back(0);
+
+	pMesh = new CMesh(true);
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddRes(L"RectMesh_Debug_PivotRight", pMesh);
+
+	vecVtx.clear();
+	vecIdx.clear();
+
 
 
 	// ===========
@@ -497,6 +549,10 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"PompMtrl", pMtrl);
 
+	// GangsterMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"GangsterMtrl", pMtrl);
 
 	// DustCloudMaterial
 	pMtrl = new CMaterial(true);
@@ -547,6 +603,22 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"ReflectMtrl", pMtrl);
+
+	// GunSparkMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"GunSparkMtrl", pMtrl);
+
+	// GunfireMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"GunfireMtrl", pMtrl);
+
+	// BulletMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"BulletMtrl", pMtrl);
+
 
 
 }

@@ -41,6 +41,7 @@ public:
     void Create_Player_Animation();
     void Create_Grunt_Animation();
     void Create_Pomp_Animation();
+    void Create_Gangster_Animation();
     void Create_Effect_Animation();
 
     CLONE(CAnimator2D);

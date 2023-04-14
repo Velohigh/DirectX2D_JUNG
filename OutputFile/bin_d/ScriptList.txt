@@ -3,10 +3,12 @@ CBikeSlashScript
 CBloodAnimation2Script
 CBloodAnimationScript
 CBloodSplaterScript
+CBulletScript
 CCameraMoveScript
 CDustCloudScript
 CEffectScript
 CEnemy_FollowScript
+CGangsterScript
 CGravityScript
 CGruntScript
 CGruntSlashScript

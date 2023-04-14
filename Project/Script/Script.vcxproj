@@ -183,10 +183,12 @@ call CodeGen.exe</Command>
     <ClInclude Include="CBloodAnimation2Script.h" />
     <ClInclude Include="CBloodAnimationScript.h" />
     <ClInclude Include="CBloodSplaterScript.h" />
+    <ClInclude Include="CBulletScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CDustCloudScript.h" />
     <ClInclude Include="CEffectScript.h" />
     <ClInclude Include="CEnemy_FollowScript.h" />
+    <ClInclude Include="CGangsterScript.h" />
     <ClInclude Include="CGravityScript.h" />
     <ClInclude Include="CGruntScript.h" />
     <ClInclude Include="CGruntSlashScript.h" />
@@ -211,10 +213,12 @@ call CodeGen.exe</Command>
     <ClCompile Include="CBloodAnimation2Script.cpp" />
     <ClCompile Include="CBloodAnimationScript.cpp" />
     <ClCompile Include="CBloodSplaterScript.cpp" />
+    <ClCompile Include="CBulletScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CDustCloudScript.cpp" />
     <ClCompile Include="CEffectScript.cpp" />
     <ClCompile Include="CEnemy_FollowScript.cpp" />
+    <ClCompile Include="CGangsterScript.cpp" />
     <ClCompile Include="CGravityScript.cpp" />
     <ClCompile Include="CGruntScript.cpp" />
     <ClCompile Include="CGruntSlashScript.cpp" />
