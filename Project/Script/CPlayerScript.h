@@ -98,7 +98,8 @@ public:
 
 private:
 	virtual void BeginOverlap(CCollider2D* _Other) override;
-
+	void SlowModeIn();
+	void SlowModeOut();
 
 private:
 	void IdleUpdate();

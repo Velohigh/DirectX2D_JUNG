@@ -77,8 +77,9 @@ public:
         m_bLifeSpan = true;
     }
 
-    void SetColMapTexture(CTexture* _texture) { m_MapColTexture = _texture; }
     CTexture* GetColMapTexture() { return m_MapColTexture; }
+
+    void SetColMapTexture(CTexture* _texture) { m_MapColTexture = _texture; }
 
     bool IsDead() { return m_bDead; }
     bool IsAncestor(CGameObject* _Target);

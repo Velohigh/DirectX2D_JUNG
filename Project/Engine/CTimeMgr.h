@@ -14,12 +14,19 @@ private:
 	float			m_fDeltaTime;
 	float			m_fTime;
 
+	float			m_TimeScale;	// 시간 배속 배율
+
+
+
 public:
 	void init();
 	void tick();
 	void render();
 
 public:
-	float GetDeltaTime() { return m_fDeltaTime; }
+	float GetDeltaTime() { return m_fDeltaTime * m_TimeScale; }
+	
+	float const GetTimeScale() { return m_TimeScale; }
+	void SetTimeScale(float _Scale) { m_TimeScale = _Scale; }
 };
 

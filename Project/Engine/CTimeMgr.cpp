@@ -12,6 +12,7 @@ CTimeMgr::CTimeMgr()
 	, m_iCallCount(0)
 	, m_fDeltaTime(0.f)
 	, m_fTime(0.f)
+	, m_TimeScale(1.f)
 {
 
 }
@@ -30,6 +31,8 @@ void CTimeMgr::init()
 
 	QueryPerformanceCounter(&m_llCurCount);
 	QueryPerformanceCounter(&m_llPrevCount);
+
+	m_TimeScale = 1.f;
 }
 
 void CTimeMgr::tick()

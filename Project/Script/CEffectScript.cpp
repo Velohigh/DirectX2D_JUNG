@@ -14,6 +14,7 @@ CEffectScript::~CEffectScript()
 void CEffectScript::begin()
 {
 	m_Level = CLevelMgr::GetInst()->GetCurLevel();
+	DT;
 }
 
 void CEffectScript::tick()

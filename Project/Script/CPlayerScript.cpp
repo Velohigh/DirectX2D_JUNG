@@ -88,7 +88,8 @@ void CPlayerScript::tick()
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
 
-
+	SlowModeIn();
+	SlowModeOut();
 
 	//if (KEY_PRESSED(KEY::Z))
 	//{
@@ -331,6 +332,21 @@ void CPlayerScript::SetPivot()
 
 }
 
+void CPlayerScript::SlowModeIn()
+{
+	if (KEY_TAP(KEY::Q))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(0.2f);
+	}
+}
+
+void CPlayerScript::SlowModeOut()
+{
+	if (KEY_RELEASE(KEY::Q))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(1.f);
+	}
+}
 
 
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
@@ -1121,6 +1137,7 @@ void CPlayerScript::HurtGroundUpdate()
 {
 }
 
+
 void CPlayerScript::WallGrabUpdate()
 {
 	// 점프키를 누르면 플립상태로
@@ -1220,6 +1237,8 @@ void CPlayerScript::WallGrabUpdate()
 	MapCollisionCheckMoveAir();
 
 }
+
+
 
 void CPlayerScript::FlipUpdate()
 {
