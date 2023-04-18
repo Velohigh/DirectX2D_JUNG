@@ -1,4 +1,5 @@
 CAttackRangeScript
+CBatteryScript
 CBikeSlashScript
 CBloodAnimation2Script
 CBloodAnimationScript
@@ -22,4 +23,6 @@ CPlayerScript
 CPompScript
 CReflectScript
 CSlashScript
+CTimerScript
+CUIScript
 CViewScript

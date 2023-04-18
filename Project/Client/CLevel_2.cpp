@@ -175,7 +175,8 @@ void CreateLevel_2()
 	//SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
-	/*CGameObject* pPostProcess = new CGameObject;
+	/*CGameObject* p
+	cess = new CGameObject;
 	pPostProcess->SetName(L"PostProcess");
 	pPostProcess->AddComponent(new CTransform);
 	pPostProcess->AddComponent(new CMeshRender);

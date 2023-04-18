@@ -71,6 +71,20 @@ void CRenderMgr::render_play()
         m_vecCam[i]->SortObject();
         m_vecCam[i]->render();
     }
+
+    //// 역 재생을 위한 텍스쳐 저장 @@@
+    //Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
+    //Ptr<CTexture> pNewCopyTex = CResMgr::GetInst()->CreateTexture(L"NewCopyTex"
+    //    , (UINT)vResolution.x, (UINT)vResolution.y
+    //    , DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE
+    //    , D3D11_USAGE_DEFAULT);
+
+    //// 렌더타겟을 들고와서 복사한다.
+    //Ptr<CTexture> pRTTex = CResMgr::GetInst()->FindRes<CTexture>(L"RenderTargetTex");
+    //CONTEXT->CopyResource(pNewCopyTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+
+    //// vector 에 넣는다.
+    //m_vecTex.push_back(pNewCopyTex);
 }
 
 void CRenderMgr::render_editor()

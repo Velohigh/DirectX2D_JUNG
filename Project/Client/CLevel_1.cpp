@@ -19,6 +19,7 @@
 #include <Script\CGruntScript.h>
 #include <Script\CPompScript.h>
 #include <Script\CGangsterScript.h>
+#include <Script\CUIScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -27,6 +28,10 @@ void CreateLevel_1()
 {
 	//return;
 	CreateGruntPrefab();
+
+	// ¹è°æÀ½ Àç»ý
+	Ptr<CSound> pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_youwillneverknow.ogg");
+	pBGM->Play(999, 1.f, true);
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 	pCurLevel->SetName(L"Stage_1");
@@ -141,25 +146,39 @@ void CreateLevel_1()
 	SpawnGameObject(pMouse, Vec3(0.f, 0.f, 100.f), L"ViewPort UI");
 
 	{
-		// Grunt_2	2Ãþ Á¤Âû
+		// Grunt_1	2Ãþ Á¤Âû
 		CGameObject* pGrunt = CreateGrunt();
-		pGrunt->GetScript<CGruntScript>()->SetDir(ObjDir::Right);
+		pGrunt->GetScript<CGruntScript>()->SetBeginDir(ObjDir::Right);
 		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Walk);
 		pGrunt->GetScript<CGruntScript>()->SetPatrol(true, 4.f);
 		SpawnGameObject(pGrunt, Vec3(1054, -383, 500.f), L"MonsterHitBox");
+
+		// Grunt_2	2Ãþ ¹æ¾È
+		pGrunt = CreateGrunt();
+		pGrunt->GetScript<CGruntScript>()->SetBeginDir(ObjDir::Right);
+		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Idle);
+		SpawnGameObject(pGrunt, Vec3(338, -383, 500.f), L"MonsterHitBox");
+
 
 		//// Pomp_2	2Ãþ ¹æ¾È
 		//CGameObject* pPomp = CreatePomp();
 		//pPomp->GetScript<CPompScript>()->SetDir(ObjDir::Right);
 		//pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
 		//SpawnGameObject(pPomp, Vec3(338, -383, 500.f), L"MonsterHitBox");
+	}
 
-		// Gangster	2Ãþ ¹æ¾È
+	{
+		// °»½ºÅÍ 2Ãþ ¹æ¾È
 		CGameObject* pGangster = CreateGangster();
-		pGangster->GetScript<CGangsterScript>()->SetDir(ObjDir::Right);
+		pGangster->GetScript<CGangsterScript>()->SetBeginDir(ObjDir::Left);
 		pGangster->GetScript<CGangsterScript>()->SetBeginState(ObjState::Idle);
-		SpawnGameObject(pGangster, Vec3(338, -383, 500.f), L"MonsterHitBox");
+		SpawnGameObject(pGangster, Vec3(545, -383, 500.f), L"MonsterHitBox");
 
+		// ÆûÇÁ 1Ãþ
+		CGameObject* pPomp = CreatePomp();
+		pPomp->GetScript<CPompScript>()->SetBeginDir(ObjDir::Right);
+		pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
+		SpawnGameObject(pPomp, Vec3(530, -671, 500.f), L"MonsterHitBox");
 
 	}
 
@@ -178,7 +197,24 @@ void CreateLevel_1()
 
 	SpawnGameObject(pBackGround, Vec3(900.f, -392.f, 1000.f), L"Default");	//½ºÅ×ÀÌÁö1 »ý¼ºÀ§Ä¡
 
+	// UI
+	CGameObject* pUI = new CGameObject;
+	pUI->SetName(L"UI");
 
+	pUI->AddComponent(new CTransform);
+	pUI->AddComponent(new CMeshRender);
+	pUI->AddComponent(new CUIScript);
+
+	pUI->Transform()->SetRelativePos(Vec3(GlobalData.Resolution.x/2.f, GlobalData.Resolution.y/2.f, 100.f));
+	pUI->Transform()->SetRelativeScale(Vec3(1280.f, 46.f, 1.f));
+
+	pUI->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pUI->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"UIMtrl"));
+	pUI->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\hud_collapse.png"));
+
+	SpawnGameObject(pUI, Vec3(0, 360.f -42.f, 100.f), L"ViewPort UI");
+
+	
 	//// Particle Object
 	//CGameObject* pParticleObj = new CGameObject;
 	//pParticleObj->SetName(L"ParticleObject");
@@ -212,6 +248,7 @@ void CreateLevel_1()
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerProjectile");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"PlayerHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"MonsterHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterAttackRange", L"PlayerHitBox");
 }
 

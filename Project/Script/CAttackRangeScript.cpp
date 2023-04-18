@@ -19,6 +19,9 @@ void CAttackRangeScript::begin()
 
 void CAttackRangeScript::tick()
 {
+	//if (m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::HurtFly)
+	//	Destroy();
+
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
 	Vec3 OwnerPos = m_Owner->Transform()->GetRelativePos();
 	//OwnerPos += Vec3(0.f, 35.f, 0.f);

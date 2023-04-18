@@ -59,6 +59,8 @@ private:
 	bool		m_bRun2SoundOn;	// Run 사운드 재생여부
 	bool		m_bHitOn;				// 공격 받았는지 여부
 
+	bool		m_IsSlowMode;	// 슬로우 모드인지 여부
+
 public:
 	virtual void begin() override;
 	virtual void tick() override;
@@ -68,6 +70,7 @@ public:
 	PlayerState GetState() { return m_CurState; }
 	Vec2& GetAttackDir() { return m_AttackDir; }
 	Vec2& GetMoveDir() { return m_MoveDir; }
+	bool& GetIsSlowMode() { return m_IsSlowMode; }
 
 	void SetMoveDir(Vec2 _vec2) { m_MoveDir = _vec2; }
 	void SetEnemyAttackDir(Vec2 _vec2) { m_EnemyAttackDir = _vec2; }

@@ -8,7 +8,10 @@ protected:
 	ObjDir		m_PreDir;	// 이전에 바라보고있던 방향
 	ObjDir		m_CurDir = ObjDir::End;	// 현재 바라보는 방향
 	ObjState	m_CurState;		// 현재 상태
+
 	ObjState	m_BeginState;	// 시작 상태
+	ObjDir		m_BeginDir;		// 시작 방향
+
 	CLevel*		m_Level;	// 속한 레벨
 	float		m_StateTime[static_cast<int>(ObjState::END)];	// 해당 상태가 되고 지난 시간
 
@@ -27,6 +30,8 @@ protected:
 	bool		m_bEffect_EnemyFollow;			// 플레이어 발견시 이펙트 생성
 	bool		m_bPatrol;						// 정찰 행동 여부
 	bool		m_bViewColliderOn;				// 시야 범위 충돌체 작동
+	bool		m_bViewColliderOn_Monster;		// 시야 범위 충돌체 작동
+
 	bool		m_bAttackRangeOn;				// 공격 범위 충돌체 작동
 	bool		m_bHitBoxOn;					// 히트 박스 충돌체 작동
 	bool		m_bAttackOn;						// 공격 충돌체 활성화
@@ -49,11 +54,13 @@ public:
 	void SetDir(ObjDir _Dir) { m_CurDir = _Dir; }
 	void SetState(ObjState _State) { m_CurState = _State; }
 	void SetBeginState(ObjState _State) { m_BeginState = _State; }
+	void SetBeginDir(ObjDir _Dir) { m_BeginDir = _Dir; }
 	ObjState GetState() { return m_CurState; }
 	ObjDir GetDir() { return m_CurDir; }
 	void SetSpeed(float _Speed) { m_MoveSpeed = _Speed; }
 	void SetPatrol(bool _bool, float _Time = 4.f) { m_bPatrol = _bool; m_fPatrolTime = _Time; }
 	void SetViewColliderOn(bool _bool) { m_bViewColliderOn = _bool; }
+	void SetViewColliderOn_Monster(bool _bool) { m_bViewColliderOn_Monster = _bool; }
 	void SetAttackRangeOn(bool _bool) { m_bAttackRangeOn = _bool; }
 	void SetHitBoxOn(bool _bool) { m_bHitBoxOn = _bool; }
 	void SetAttackOn(bool _bool) { m_bAttackOn = _bool; }

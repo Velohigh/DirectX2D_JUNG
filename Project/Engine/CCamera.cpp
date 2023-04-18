@@ -194,6 +194,9 @@ void CCamera::render()
 	render_mask();
 	render_transparent();
 
+	// 시간 되돌리기(역재생) 을 위한 저장 @@@
+	
+
 	// PostProcess
 	render_postprocess();
 

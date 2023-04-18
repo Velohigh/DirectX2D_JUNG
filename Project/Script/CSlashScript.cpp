@@ -57,7 +57,16 @@ void CSlashScript::begin()
 
 void CSlashScript::tick()
 {
+	// 애니메이션 재생이 끝나면 삭제
 	if (Animator2D()->IsEndAnimation() == true)
+	{
+		Destroy();
+	}
+
+	// 플레이어가 사망 상태가 되면 삭제
+	if (m_Owner->GetScript<CPlayerScript>()->GetState() == PlayerState::HurtFlyLoop
+		|| m_Owner->GetScript<CPlayerScript>()->GetState() == PlayerState::HurtGround
+		|| m_Owner->GetScript<CPlayerScript>()->GetState() == PlayerState::Dead)
 	{
 		Destroy();
 	}

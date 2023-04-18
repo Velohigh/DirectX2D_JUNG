@@ -358,7 +358,12 @@ void CGangsterScript::IdleUpdate()
 		return;
 	}
 
-	// 시야에 동료가 Run 상태이면 플레이어를 쫓아온다.
+	// 시야에 동료가 Run, Dead 상태이면 플레이어를 쫓아온다.
+	if (m_bViewColliderOn_Monster)
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
 
 }
@@ -398,8 +403,12 @@ void CGangsterScript::WalkUpdate()
 		return;
 	}
 
-
-	// 시야에 동료가 Chasing 상태이면 플레이어를 쫓아온다.. 비구현
+	// 시야에 동료가 Run, Dead 상태이면 플레이어를 쫓아온다.
+	if (m_bViewColliderOn_Monster)
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
 	MapCollisionCheckMoveGround();
 
@@ -441,7 +450,7 @@ void CGangsterScript::RunUpdate()
 
 	m_StateTime[(int)ObjState::Run] += DT;
 
-	if (m_StateTime[(int)ObjState::Run] >= 0.19f)
+	if (m_StateTime[(int)ObjState::Run] >= 0.27f)
 	{
 		Animator2D()->Play(L"texture\\gangster\\spr_gangsterrun", true);
 		SetSpeed(320.f);

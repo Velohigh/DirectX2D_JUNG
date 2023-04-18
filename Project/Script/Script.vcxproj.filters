@@ -70,6 +70,15 @@
     <Filter Include="Script\Effect\Bullet">
       <UniqueIdentifier>{ae8e8e89-e2b8-4645-91ed-ab31d295cc36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\UIScript">
+      <UniqueIdentifier>{7aaf15b9-6b30-4d51-ae38-2c26ab776b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\UIScript\BatteryScript">
+      <UniqueIdentifier>{74fa9bba-1fc1-4e8f-bedf-0f690cfe79d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\UIScript\TimerScript">
+      <UniqueIdentifier>{e8febf70-959a-4636-8f65-9c8bbeb2e58d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -156,6 +165,15 @@
     <ClInclude Include="CBulletScript.h">
       <Filter>Script\Effect\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="CUIScript.h">
+      <Filter>Script\UIScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CBatteryScript.h">
+      <Filter>Script\UIScript\BatteryScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimerScript.h">
+      <Filter>Script\UIScript\TimerScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -241,6 +259,15 @@
     </ClCompile>
     <ClCompile Include="CBulletScript.cpp">
       <Filter>Script\Effect\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIScript.cpp">
+      <Filter>Script\UIScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CBatteryScript.cpp">
+      <Filter>Script\UIScript\BatteryScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimerScript.cpp">
+      <Filter>Script\UIScript\TimerScript</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

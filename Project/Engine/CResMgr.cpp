@@ -619,6 +619,16 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"BulletMtrl", pMtrl);
 
+	// UIMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"UIMtrl", pMtrl);
+
+	// BatteryMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"BatteryMtrl", pMtrl);
+
 
 
 }

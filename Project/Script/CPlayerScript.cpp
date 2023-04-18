@@ -360,6 +360,7 @@ void CPlayerScript::SlowModeIn()
 		Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_in.mp3");
 		pSlowModeSound->Play(1, 1.f, true);
 
+		m_IsSlowMode = true;
 	}
 }
 
@@ -391,7 +392,7 @@ void CPlayerScript::SlowModeOut()
 		Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_out.mp3");
 		pSlowModeSound->Play(1, 1.f, true);
 
-
+		m_IsSlowMode = false;
 	}
 }
 
@@ -1133,8 +1134,8 @@ void CPlayerScript::DodgeUpdate()
 	}
 
 	// 아래쪽에 지형이 없다면 Fall상태로
-	int color[10] = {};
-	for (int i = 1; i <= 10; ++i)
+	int color[20] = {};
+	for (int i = 1; i <= 20; ++i)
 	{
 		color[i - 1] = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,(float)i });
 	}
@@ -1148,6 +1149,16 @@ void CPlayerScript::DodgeUpdate()
 		color[7] != RGB(0, 0, 0) &&
 		color[8] != RGB(0, 0, 0) &&
 		color[9] != RGB(0, 0, 0) &&
+		color[10] != RGB(0, 0, 0) &&
+		color[11] != RGB(0, 0, 0) &&
+		color[12] != RGB(0, 0, 0) &&
+		color[13] != RGB(0, 0, 0) &&
+		color[14] != RGB(0, 0, 0) &&
+		color[15] != RGB(0, 0, 0) &&
+		color[16] != RGB(0, 0, 0) &&
+		color[17] != RGB(0, 0, 0) &&
+		color[18] != RGB(0, 0, 0) &&
+		color[19] != RGB(0, 0, 0) &&
 		m_CurState != PlayerState::Jump)
 	{
 		StateChange(PlayerState::Fall);
@@ -1338,7 +1349,7 @@ void CPlayerScript::FlipUpdate()
 			StateChange(PlayerState::Landing);
 			return;
 		}
-		MoveValue(Vector2{ 0.f, 1.f } *m_Gravity * DT);
+		MoveValue(Vector2{ 0.f, -1.f } *m_Gravity * DT);
 	}
 
 	// 애니메이션 끝나면 Fall상태로
@@ -1605,8 +1616,8 @@ void CPlayerScript::AttackStart()
 void CPlayerScript::FallStart()
 {
 	Animator2D()->Play(L"texture\\player\\spr_fall", true);
-
 	SetSize2x();
+
 
 }
 
@@ -1649,18 +1660,41 @@ void CPlayerScript::PlaySongStart()
 
 void CPlayerScript::HurtFlyLoopStart()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+
+	// 적 공격 방향에 맞춰 날아갈 준비
+	m_MoveDir = m_EnemyAttackDir;
+
+	if (m_EnemyAttackDir.x > 0)
+	{
+		m_CurDir = PlayerDir::Left;
+	}
+	else if (m_EnemyAttackDir.x < 0)
+	{
+		m_CurDir = PlayerDir::Right;
+	}
+
+	SetPos(m_Pos + Vector2{ 0.f, 3.f });
+
+	// 공격 판정이 남아있으면 사망시 삭제 (SlashScript 에 구현)
+
+	// 히트시 화면 흔들림
+
+	// 사망 소리
+	Ptr<CSound> pDeadSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\dead.wav");
+	pDeadSound->Play(1, 1.f, true);
+
 	Animator2D()->Play(L"texture\\player\\spr_hurtfly_begin", true);
-
 	SetSize2x();
-
 }
 
 void CPlayerScript::HurtGroundStart()
 {
 	Animator2D()->Play(L"texture\\player\\spr_hurtground", true);
-
-
 	SetSize2x();
+
+	m_MoveSpeed = 0.f;
 
 }
 
@@ -1668,7 +1702,6 @@ void CPlayerScript::WallGrabStart()
 {
 
 
-	SetSize2x();
 
 	// 그랩 월 사운드 재생
 	Ptr<CSound> pWallGrabSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\grabwall.wav");
@@ -1677,6 +1710,7 @@ void CPlayerScript::WallGrabStart()
 
 	m_StateTime[static_cast<int>(PlayerState::WallGrab)] = 0.f;
 	Animator2D()->Play(L"texture\\player\\spr_wallgrab", true);
+	SetSize2x();
 
 
 	m_MoveDir /= 2.f;
@@ -1689,7 +1723,6 @@ void CPlayerScript::FlipStart()
 	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
 
 
-	SetSize2x();
 
 	// 벽점프 사운드
 	Ptr<CSound> pWallJumpSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\walljump.wav");
@@ -1710,12 +1743,13 @@ void CPlayerScript::FlipStart()
 		m_CurDir = PlayerDir::Right;
 	}
 	Animator2D()->Play(L"texture\\player\\spr_player_flip", true);
+	SetSize2x();
 
 
 	if (m_CurDir == PlayerDir::Right)
-		m_MoveDir = Vector2{ 1.f, 0.6f } *750;
+		m_MoveDir = Vector2{ 1.f, 0.7f } * 750;
 	else if (m_CurDir == PlayerDir::Left)
-		m_MoveDir = Vector2{ -1.f, 0.6f } *750;
+		m_MoveDir = Vector2{ -1.f, 0.7f } * 750;
 
 
 
@@ -1765,7 +1799,7 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 		Vector2 CheckPosTopLeft = NextPos + Vec2{ -18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 ForDownPos = m_PosyReverse + Vec2{ 0.f, 1.f };	// 발 아래 색상
 
-		int CurColor = m_MapColTexture->GetPixelColor(m_Pos);
+		int CurColor = m_MapColTexture->GetPixelColor(m_PosyReverse);
 		int ForDownColor = m_MapColTexture->GetPixelColor(ForDownPos);	// 발 아래 색상
 		int Color = m_MapColTexture->GetPixelColor(CheckPos);	// 미래 위치의 발기준 색상
 		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
@@ -1784,8 +1818,9 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 		{
 			CheckPos.y -= 1.0f;
 			Color = m_MapColTexture->GetPixelColor(CheckPos);
-			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.0f });
+			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.5f });
 		}
+
 
 		if (RGB(0, 0, 0) != Color &&
 			RGB(0, 0, 0) != TopRightColor &&
@@ -1843,7 +1878,6 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
 		Vector2 NextPos = m_PosyReverse + (Vector2{ m_MoveDir.x,0.f } *DT);
-		//Vector2 NextPos = m_PosyReverse + (m_MoveDir * DT);
 		Vector2 CheckPos = NextPos + Vector2{ 0.f, 0.f };	// 미래 위치의 발기준 색상
 		Vector2 CheckPosTopRight = NextPos + Vector2{ 18,-70 };	// 미래 위치의 머리기준 색상
 		Vector2 CheckPosTopLeft = NextPos + Vector2{ -18,-70 };	// 미래 위치의 머리기준 색상

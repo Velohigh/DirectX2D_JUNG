@@ -11,8 +11,8 @@ private:
 	LARGE_INTEGER	m_llFrequency;
 
 	UINT			m_iCallCount;
-	float			m_fDeltaTime;
-	float			m_fTime;
+	float			m_fDeltaTime;	// 프레임 간격 시간
+	float			m_fTime;		// 누적 시간
 
 	float			m_TimeScale;	// 시간 배속 배율
 

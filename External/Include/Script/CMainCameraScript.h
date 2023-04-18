@@ -23,6 +23,7 @@ public:
 
     void SetCameraShakeOn(bool _bool);
     void SetPos(Vec2 _vec2);
+    void SetPos(Vec3 _vec3);
 
 private:
     void CameraShakeEffect();

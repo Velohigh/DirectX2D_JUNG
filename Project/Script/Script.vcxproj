@@ -179,6 +179,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAttackRangeScript.h" />
+    <ClInclude Include="CBatteryScript.h" />
     <ClInclude Include="CBikeSlashScript.h" />
     <ClInclude Include="CBloodAnimation2Script.h" />
     <ClInclude Include="CBloodAnimationScript.h" />
@@ -203,12 +204,15 @@ call CodeGen.exe</Command>
     <ClInclude Include="CReflectScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSlashScript.h" />
+    <ClInclude Include="CTimerScript.h" />
+    <ClInclude Include="CUIScript.h" />
     <ClInclude Include="CViewScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAttackRangeScript.cpp" />
+    <ClCompile Include="CBatteryScript.cpp" />
     <ClCompile Include="CBikeSlashScript.cpp" />
     <ClCompile Include="CBloodAnimation2Script.cpp" />
     <ClCompile Include="CBloodAnimationScript.cpp" />
@@ -233,6 +237,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CReflectScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSlashScript.cpp" />
+    <ClCompile Include="CTimerScript.cpp" />
+    <ClCompile Include="CUIScript.cpp" />
     <ClCompile Include="CViewScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

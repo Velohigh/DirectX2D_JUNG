@@ -24,6 +24,7 @@ private:
     void (CRenderMgr::* RENDER_FUNC)(void);
 
     Ptr<CTexture>               m_RTCopyTex;
+    vector<Ptr<CTexture>>       m_vecTex;
 
 
 public:

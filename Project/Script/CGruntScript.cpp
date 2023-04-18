@@ -360,8 +360,12 @@ void CGruntScript::IdleUpdate()
 		return;
 	}
 
-	// 시야에 동료가 Run 상태이면 플레이어를 쫓아온다.
-
+	// 시야에 동료가 Run, Dead 상태이면 플레이어를 쫓아온다.
+	if (m_bViewColliderOn_Monster)
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
 }
 
@@ -401,7 +405,12 @@ void CGruntScript::WalkUpdate()
 	}
 
 
-	// 시야에 동료가 Chasing 상태이면 플레이어를 쫓아온다.. 비구현
+	// 시야에 동료가 Run, Dead 상태이면 플레이어를 쫓아온다.
+	if (m_bViewColliderOn_Monster)
+	{
+		StateChange(ObjState::Run);
+		return;
+	}
 
 	MapCollisionCheckMoveGround();
 
@@ -443,7 +452,7 @@ void CGruntScript::RunUpdate()
 
 	m_StateTime[(int)ObjState::Run] += DT;
 
-	if (m_StateTime[(int)ObjState::Run] >= 0.22f)
+	if (m_StateTime[(int)ObjState::Run] >= 0.34f)
 	{
 		Animator2D()->Play(L"texture\\grunt\\spr_grunt_run", true);
 		SetSpeed(360.f);

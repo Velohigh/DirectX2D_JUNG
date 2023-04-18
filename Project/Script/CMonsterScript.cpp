@@ -42,6 +42,13 @@ void CMonsterScript::begin()
 	m_Gravity = 1000.f;
 	m_GravityAccel = 2000.f;
 
+	if (m_BeginDir != ObjDir::End)
+	{
+		m_PreDir = ObjDir::End;
+		m_CurDir = m_BeginDir;
+		DirAnimationCheck();
+	}
+
 	if (m_BeginState != ObjState::END)
 		StateChange(m_BeginState);
 
@@ -213,17 +220,20 @@ void CMonsterScript::SetSize2x()
 
 void CMonsterScript::BeginOverlap(CCollider2D* _Other)
 {
-	m_bHitBoxOn = true;
+	if(_Other->GetOwner()->GetName() == L"Slash")
+		m_bHitBoxOn = true;
 }
 
 void CMonsterScript::OnOverlap(CCollider2D* _Other)
 {
-	m_bHitBoxOn = true;
+	if (_Other->GetOwner()->GetName() == L"Slash")
+		m_bHitBoxOn = true;
 }
 
 void CMonsterScript::EndOverlap(CCollider2D* _Other)
 {
-	m_bHitBoxOn = false;
+	if (_Other->GetOwner()->GetName() == L"Slash")
+		m_bHitBoxOn = false;
 }
 
 void CMonsterScript::MoveDir(const Vec2& Dir)
@@ -241,9 +251,6 @@ void CMonsterScript::MoveValue(const Vector2& MoveValue)
 	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
 
 	m_Pos += MoveValue /*m_TimeScale*/;
-
-	if (MoveValue.Length() <= 0.001f)
-		int ab = 0;
 
 	Transform()->SetRelativePos(m_Pos.x, m_Pos.y, m_Pos3.z);
 
@@ -420,7 +427,7 @@ void CMonsterScript::MapCollisionCheckMoveGroundDie()
 			RGB(255, 0, 255) != TopRightColor &&
 			RGB(255, 0, 255) != TopLeftColor)
 		{
-			MoveDir(Vector2{ 0.f, m_MoveDir.y });
+			MoveValue(Vector2{ 0.f, m_MoveDir.y } * DT);
 		}
 	}
 
@@ -438,22 +445,6 @@ void CMonsterScript::MapCollisionCheckMoveGroundDie()
 		int TopRightColor = m_MapColTexture->GetPixelColor(CheckPosTopRight);
 		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
 
-
-		// 항상 땅에 붙어있기
-		if (RGB(0, 0, 0) != ForDownColor && RGB(255, 0, 0) != ForDownColor)
-		{
-			SetPos(Vector2{ m_Pos.x, m_Pos.y - 1.f });
-		}
-
-		// 계단 올라가기
-		while (RGB(0, 0, 0) == Color &&
-			TopRightColor != RGB(0, 0, 0) && TopLeftColor != RGB(0, 0, 0))
-		{
-			CheckPos.y -= 1.0f;
-			Color = m_MapColTexture->GetPixelColor(CheckPos);
-			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.0f });
-		}
-
 		if (RGB(0, 0, 0) != Color &&
 			RGB(0, 0, 0) != TopRightColor &&
 			RGB(0, 0, 0) != TopLeftColor &&
@@ -461,7 +452,7 @@ void CMonsterScript::MapCollisionCheckMoveGroundDie()
 			RGB(255, 0, 255) != TopRightColor &&
 			RGB(255, 0, 255) != TopLeftColor)
 		{
-			MoveDir(Vector2{ m_MoveDir.x,0.f });
+			MoveValue(Vector2{ m_MoveDir.x,0.f } * DT);
 		}
 	}
 

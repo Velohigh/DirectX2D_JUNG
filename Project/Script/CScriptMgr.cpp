@@ -2,6 +2,7 @@
 #include "CScriptMgr.h"
 
 #include "CAttackRangeScript.h"
+#include "CBatteryScript.h"
 #include "CBikeSlashScript.h"
 #include "CBloodAnimation2Script.h"
 #include "CBloodAnimationScript.h"
@@ -25,11 +26,14 @@
 #include "CPompScript.h"
 #include "CReflectScript.h"
 #include "CSlashScript.h"
+#include "CTimerScript.h"
+#include "CUIScript.h"
 #include "CViewScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CAttackRangeScript");
+	_vec.push_back(L"CBatteryScript");
 	_vec.push_back(L"CBikeSlashScript");
 	_vec.push_back(L"CBloodAnimation2Script");
 	_vec.push_back(L"CBloodAnimationScript");
@@ -53,6 +57,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPompScript");
 	_vec.push_back(L"CReflectScript");
 	_vec.push_back(L"CSlashScript");
+	_vec.push_back(L"CTimerScript");
+	_vec.push_back(L"CUIScript");
 	_vec.push_back(L"CViewScript");
 }
 
@@ -60,6 +66,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CAttackRangeScript" == _strScriptName)
 		return new CAttackRangeScript;
+	if (L"CBatteryScript" == _strScriptName)
+		return new CBatteryScript;
 	if (L"CBikeSlashScript" == _strScriptName)
 		return new CBikeSlashScript;
 	if (L"CBloodAnimation2Script" == _strScriptName)
@@ -106,6 +114,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CReflectScript;
 	if (L"CSlashScript" == _strScriptName)
 		return new CSlashScript;
+	if (L"CTimerScript" == _strScriptName)
+		return new CTimerScript;
+	if (L"CUIScript" == _strScriptName)
+		return new CUIScript;
 	if (L"CViewScript" == _strScriptName)
 		return new CViewScript;
 	return nullptr;
@@ -117,6 +129,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::ATTACKRANGESCRIPT:
 		return new CAttackRangeScript;
+		break;
+	case (UINT)SCRIPT_TYPE::BATTERYSCRIPT:
+		return new CBatteryScript;
 		break;
 	case (UINT)SCRIPT_TYPE::BIKESLASHSCRIPT:
 		return new CBikeSlashScript;
@@ -187,6 +202,12 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::SLASHSCRIPT:
 		return new CSlashScript;
 		break;
+	case (UINT)SCRIPT_TYPE::TIMERSCRIPT:
+		return new CTimerScript;
+		break;
+	case (UINT)SCRIPT_TYPE::UISCRIPT:
+		return new CUIScript;
+		break;
 	case (UINT)SCRIPT_TYPE::VIEWSCRIPT:
 		return new CViewScript;
 		break;
@@ -200,6 +221,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 	{
 	case SCRIPT_TYPE::ATTACKRANGESCRIPT:
 		return L"CAttackRangeScript";
+		break;
+
+	case SCRIPT_TYPE::BATTERYSCRIPT:
+		return L"CBatteryScript";
 		break;
 
 	case SCRIPT_TYPE::BIKESLASHSCRIPT:
@@ -292,6 +317,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::SLASHSCRIPT:
 		return L"CSlashScript";
+		break;
+
+	case SCRIPT_TYPE::TIMERSCRIPT:
+		return L"CTimerScript";
+		break;
+
+	case SCRIPT_TYPE::UISCRIPT:
+		return L"CUIScript";
 		break;
 
 	case SCRIPT_TYPE::VIEWSCRIPT:
