@@ -58,17 +58,17 @@ void CTimeMgr::tick()
 
 void CTimeMgr::render()
 {
-	// 1초에 한번
-	static wchar_t szBuff[256] = {};
+	//// 1초에 한번
+	//static wchar_t szBuff[256] = {};
 
-	if (1.f <= m_fTime)
-	{
-		swprintf_s(szBuff, L"FPS : %d, DT : %f", m_iCallCount, m_fDeltaTime);
-		//SetWindowText(CEngine::GetInst()->GetMainWnd(), szBuff);	
+	//if (1.f <= m_fTime)
+	//{
+	//	swprintf_s(szBuff, L"FPS : %d, DT : %f", m_iCallCount, m_fDeltaTime);
+	//	//SetWindowText(CEngine::GetInst()->GetMainWnd(), szBuff);	
 
-		m_fTime = 0.f;
-		m_iCallCount = 0;
-	}
+	//	m_fTime = 0.f;
+	//	m_iCallCount = 0;
+	//}
 
-	CFontMgr::GetInst()->DrawFont(szBuff, 10, 20, 16, FONT_RGBA(255, 0, 0, 255));
+	//CFontMgr::GetInst()->DrawFont(szBuff, 10, 20, 16, FONT_RGBA(255, 0, 0, 255));
 }

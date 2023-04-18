@@ -37,7 +37,12 @@ private:
 	PlayerState	m_CurState = PlayerState::END;
 	float		m_StateTime[(UINT)(PlayerState::END)] = {};
 
-	float		m_Gravity;		// 플레이어 중력 계수
+	float		m_fBattery;		// 배터리 양
+	float		m_BatteryRechargeTime;	// 배터리 재충전 시간
+	float		m_BatteryPushTime;		// 누른 시간
+
+
+	float		m_Gravity;			// 플레이어 중력 계수
 	float		m_GravityAccel;		// 중력가속도
 
 	float		m_JumpPower;
@@ -71,6 +76,7 @@ public:
 	Vec2& GetAttackDir() { return m_AttackDir; }
 	Vec2& GetMoveDir() { return m_MoveDir; }
 	bool& GetIsSlowMode() { return m_IsSlowMode; }
+	float& GetBattery() { return m_fBattery; }
 
 	void SetMoveDir(Vec2 _vec2) { m_MoveDir = _vec2; }
 	void SetEnemyAttackDir(Vec2 _vec2) { m_EnemyAttackDir = _vec2; }

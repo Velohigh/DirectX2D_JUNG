@@ -20,6 +20,8 @@
 #include <Script\CPompScript.h>
 #include <Script\CGangsterScript.h>
 #include <Script\CUIScript.h>
+#include <Script\CBatteryScript.h>
+#include <Script\CTimerScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -212,7 +214,39 @@ void CreateLevel_1()
 	pUI->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"UIMtrl"));
 	pUI->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\hud_collapse.png"));
 
-	SpawnGameObject(pUI, Vec3(0, 360.f -42.f, 100.f), L"ViewPort UI");
+	SpawnGameObject(pUI, Vec3(0, 360.f -42.f, 200.f), L"ViewPort UI");
+
+	// UI_Battery
+	CGameObject* pBattery = new CGameObject;
+	pBattery->SetName(L"UI_Battery");
+
+	pBattery->AddComponent(new CTransform);
+	pBattery->AddComponent(new CMeshRender);
+	pBattery->AddComponent(new CBatteryScript);
+
+	pBattery->Transform()->SetRelativeScale(Vec3(110.f, 20.f, 1.f));
+
+	pBattery->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
+	pBattery->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BatteryMtrl"));
+	pBattery->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_battery.png"));
+
+	SpawnGameObject(pBattery, Vec3(-617.f, 318.f, 100.f), L"ViewPort UI");
+
+	// UI_Timer
+	CGameObject* pTimer = new CGameObject;
+	pTimer->SetName(L"UI_Timer");
+
+	pTimer->AddComponent(new CTransform);
+	pTimer->AddComponent(new CMeshRender);
+	pTimer->AddComponent(new CTimerScript);
+
+	pTimer->Transform()->SetRelativeScale(Vec3(188.f, 22.f, 1.f));
+
+	pTimer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pTimer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TimerMtrl"));
+	pTimer->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_timer.png"));
+
+	SpawnGameObject(pTimer, Vec3(5.f, 324.f, 100.f), L"ViewPort UI");
 
 	
 	//// Particle Object

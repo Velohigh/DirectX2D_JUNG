@@ -629,6 +629,10 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"BatteryMtrl", pMtrl);
 
+	// TimerMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"TimerMtrl", pMtrl);
 
 
 }

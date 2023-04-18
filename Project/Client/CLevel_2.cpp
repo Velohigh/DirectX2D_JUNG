@@ -11,6 +11,11 @@
 #include <Script\CMainCameraScript.h>
 #include <Script\CMouseScript.h>
 #include <Script\CGruntScript.h>
+#include <Script\CPompScript.h>
+#include <Script\CGangsterScript.h>
+#include <Script\CUIScript.h>
+#include <Script\CBatteryScript.h>
+#include <Script\CTimerScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -53,18 +58,54 @@ void CreateLevel_2()
 
 	SpawnGameObject(pMainCam, Vec3(0.f, 0.f, 0.f), 0);
 
-	// UI cameara
-	CGameObject* pUICam = new CGameObject;
-	pUICam->SetName(L"UICamera");
+	// UI
+	CGameObject* pUI = new CGameObject;
+	pUI->SetName(L"UI");
 
-	pUICam->AddComponent(new CTransform);
-	pUICam->AddComponent(new CCamera);
+	pUI->AddComponent(new CTransform);
+	pUI->AddComponent(new CMeshRender);
+	pUI->AddComponent(new CUIScript);
 
-	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-	pUICam->Camera()->SetCameraIndex(1);		// SubCamera 로 설정
-	pUICam->Camera()->SetLayerMask(31, true);	// 모든 레이어 체크
+	pUI->Transform()->SetRelativePos(Vec3(GlobalData.Resolution.x / 2.f, GlobalData.Resolution.y / 2.f, 100.f));
+	pUI->Transform()->SetRelativeScale(Vec3(1280.f, 46.f, 1.f));
 
-	SpawnGameObject(pUICam, Vec3(0.f, 0.f, 0.f), 0);
+	pUI->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pUI->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"UIMtrl"));
+	pUI->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\hud_collapse.png"));
+
+	SpawnGameObject(pUI, Vec3(0, 360.f - 42.f, 200.f), L"ViewPort UI");
+
+	// UI_Battery
+	CGameObject* pBattery = new CGameObject;
+	pBattery->SetName(L"UI_Battery");
+
+	pBattery->AddComponent(new CTransform);
+	pBattery->AddComponent(new CMeshRender);
+	pBattery->AddComponent(new CBatteryScript);
+
+	pBattery->Transform()->SetRelativeScale(Vec3(110.f, 20.f, 1.f));
+
+	pBattery->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pBattery->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BatteryMtrl"));
+	pBattery->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_battery.png"));
+
+	SpawnGameObject(pBattery, Vec3(-561.f, 318.f, 100.f), L"ViewPort UI");
+
+	// UI_Timer
+	CGameObject* pTimer = new CGameObject;
+	pTimer->SetName(L"UI_Timer");
+
+	pTimer->AddComponent(new CTransform);
+	pTimer->AddComponent(new CMeshRender);
+	pTimer->AddComponent(new CTimerScript);
+
+	pTimer->Transform()->SetRelativeScale(Vec3(188.f, 22.f, 1.f));
+
+	pTimer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pTimer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TimerMtrl"));
+	pTimer->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_timer.png"));
+
+	SpawnGameObject(pTimer, Vec3(5.f, 324.f, 100.f), L"ViewPort UI");
 
 
 	// 광원 추가

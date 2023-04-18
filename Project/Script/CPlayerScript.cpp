@@ -57,6 +57,11 @@ void CPlayerScript::begin()
 	m_Gravity = 10.f;		// 플레이어 중력 계수
 	m_GravityAccel = 2000.f;		// 중력가속도
 
+	m_fBattery = 1;				// 배터리 양 1이 최대
+	m_BatteryRechargeTime = 0;	// 배터리 재충전 시간
+	m_BatteryPushTime = 0;		// 누른 시간
+
+
 
 	m_JumpPower = 330.f;
 	m_LongJumpPower = 2050.f;
@@ -334,40 +339,76 @@ void CPlayerScript::SetPivot()
 
 void CPlayerScript::SlowModeIn()
 {
+
 	if (KEY_TAP(KEY::Q))
 	{
-		CTimeMgr::GetInst()->SetTimeScale(0.2f);
-
-		// SlowMode 용 배경 텍스쳐 지정
-		if (m_Level->GetName() == L"Stage_1")
+		// 배터리 잔량이 0 이하라면 바로 종료.
+		if (m_fBattery <= 0)
 		{
-			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
-				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_slow.png"));
+			SlowModeOut();
+			return;
 		}
-		else if (m_Level->GetName() == L"Stage_2")
+		
+		// 배터리 잔량이 있을경우 작동
+		else if (m_fBattery > 0)
 		{
-			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
-				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage2_bg_render_slow.png"));
+
+			CTimeMgr::GetInst()->SetTimeScale(0.2f);
+
+			// SlowMode 용 배경 텍스쳐 지정
+			if (m_Level->GetName() == L"Stage_1")
+			{
+				m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+					SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2_slow.png"));
+			}
+			else if (m_Level->GetName() == L"Stage_2")
+			{
+				m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+					SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage2_bg_render_slow.png"));
+			}
+			else if (m_Level->GetName() == L"Stage_3")
+			{
+				m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
+					SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_render_slow.png"));
+			}
+
+
+			// SlowModeIn 사운드 재생
+			Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_in.mp3");
+			pSlowModeSound->Play(1, 1.f, true);
+
+			m_IsSlowMode = true;
 		}
-		else if (m_Level->GetName() == L"Stage_3")
-		{
-			m_Level->FindParentObjectByName(L"BackGround")->MeshRender()->GetMaterial()->
-				SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_render_slow.png"));
-		}
-
-
-		// SlowModeIn 사운드 재생
-		Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_in.mp3");
-		pSlowModeSound->Play(1, 1.f, true);
-
-		m_IsSlowMode = true;
 	}
+
+	if (KEY_PRESSED(KEY::Q))
+	{
+		// 배터리 잔량이 0 이하라면 바로 종료.
+		if (m_fBattery <= 0)
+		{
+			SlowModeOut();
+			return;
+		}
+
+
+		m_BatteryPushTime += DT;
+		m_fBattery -= DT;
+	}
+	else
+	{
+		if(m_fBattery < 1.f)
+			m_fBattery += DT * 0.1f;
+	}
+
 }
 
 void CPlayerScript::SlowModeOut()
 {
 	if (KEY_RELEASE(KEY::Q))
 	{
+		if(m_BatteryPushTime != 0.f)
+			m_BatteryPushTime = 0.f;
+
 		CTimeMgr::GetInst()->SetTimeScale(1.f);
 
 		// SlowMode 용 배경 텍스쳐 지정

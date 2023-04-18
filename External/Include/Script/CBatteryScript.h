@@ -6,7 +6,7 @@ class CBatteryScript :
 private:
     CLevel*         m_Level;
     CGameObject*    m_Owner;
-
+    Vec3            m_Size;
 
 public:
     virtual void begin() override;
