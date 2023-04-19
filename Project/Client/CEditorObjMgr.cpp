@@ -13,6 +13,7 @@
 
 CEditorObjMgr::CEditorObjMgr()
 	: m_DebugShape{}
+	, m_DebugShapeOn(false)
 {
 
 }
@@ -61,6 +62,10 @@ void CEditorObjMgr::progress()
 	m_DebugShapeInfo.insert(m_DebugShapeInfo.end(), vecInfo.begin(), vecInfo.end());
 	vecInfo.clear();
 
+	if (KEY_TAP(KEY::P))
+	{
+		m_DebugShapeOn != m_DebugShapeOn;
+	}
 
 	tick();
 
@@ -83,56 +88,58 @@ void CEditorObjMgr::tick()
 
 void CEditorObjMgr::render()
 {
-	for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
-	{
-		m_vecEditorObj[i]->render();
-	}
 
-
-
-	// DebugShape Render
-	CGameObjectEx* pShapeObj = nullptr;
-
-	vector<tDebugShapeInfo>::iterator iter = m_DebugShapeInfo.begin();
-	for (; iter != m_DebugShapeInfo.end();)
-	{
-		switch (iter->eShape)
+		for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
 		{
-		case SHAPE_TYPE::RECT:
-			pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::RECT];
-			break;
-		case SHAPE_TYPE::CIRCLE:
-			pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE];
-			break;
-		case SHAPE_TYPE::CUBE:
-			break;
-		case SHAPE_TYPE::SPHERE:
-			break;
+			m_vecEditorObj[i]->render();
 		}
 
-		if (iter->matWorld != XMMatrixIdentity())
+
+
+		// DebugShape Render
+		CGameObjectEx* pShapeObj = nullptr;
+
+		vector<tDebugShapeInfo>::iterator iter = m_DebugShapeInfo.begin();
+		for (; iter != m_DebugShapeInfo.end();)
 		{
-			pShapeObj->Transform()->SetWorldMat(iter->matWorld);
-		}
-		else
-		{
-			pShapeObj->Transform()->SetRelativePos(iter->vWorldPos);
-			pShapeObj->Transform()->SetRelativeScale(iter->vWorldScale);
-			pShapeObj->Transform()->SetRelativeRot(iter->vWorldRotation);
-			pShapeObj->finaltick();
+			switch (iter->eShape)
+			{
+			case SHAPE_TYPE::RECT:
+				pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::RECT];
+				break;
+			case SHAPE_TYPE::CIRCLE:
+				pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE];
+				break;
+			case SHAPE_TYPE::CUBE:
+				break;
+			case SHAPE_TYPE::SPHERE:
+				break;
+			}
+
+			if (iter->matWorld != XMMatrixIdentity())
+			{
+				pShapeObj->Transform()->SetWorldMat(iter->matWorld);
+			}
+			else
+			{
+				pShapeObj->Transform()->SetRelativePos(iter->vWorldPos);
+				pShapeObj->Transform()->SetRelativeScale(iter->vWorldScale);
+				pShapeObj->Transform()->SetRelativeRot(iter->vWorldRotation);
+				pShapeObj->finaltick();
+			}
+
+			pShapeObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, &iter->vColor);
+			pShapeObj->render();
+
+			iter->fCurTime += DT;
+			if (iter->fMaxTime < iter->fCurTime)
+			{
+				iter = m_DebugShapeInfo.erase(iter);
+			}
+			else
+			{
+				++iter;
+			}
 		}
 
-		pShapeObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, &iter->vColor);
-		pShapeObj->render();
-
-		iter->fCurTime += DT;
-		if (iter->fMaxTime < iter->fCurTime)
-		{
-			iter = m_DebugShapeInfo.erase(iter);
-		}
-		else
-		{
-			++iter;
-		}
-	}
 }

@@ -6,6 +6,7 @@ class CTimerScript :
 private:
     CLevel*         m_Level;
     CGameObject*    m_Owner;
+    Vec3            m_Size;
 
 
 public:

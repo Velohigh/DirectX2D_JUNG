@@ -61,6 +61,7 @@ void CPlayerScript::begin()
 	m_BatteryRechargeTime = 0;	// 배터리 재충전 시간
 	m_BatteryPushTime = 0;		// 누른 시간
 
+	m_Timer = 60.f;				// 제한시간
 
 
 	m_JumpPower = 330.f;
@@ -94,14 +95,12 @@ void CPlayerScript::tick()
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
 
 	SlowModeIn();
-	SlowModeOut();
+	//SlowModeOut();
 
-	//if (KEY_PRESSED(KEY::Z))
-	//{
-	//	Vec3 vRot = Transform()->GetRelativeRot();
-	//	vRot.z += DT * XM_PI;
-	//	Transform()->SetRelativeRot(vRot);
-	//}
+	// 제한시간 감소
+	if(m_Timer > 0.f)
+		m_Timer -= DT;
+
 
 	//Transform()->SetRelativePos(vCurPos);
 
@@ -350,7 +349,7 @@ void CPlayerScript::SlowModeIn()
 		}
 		
 		// 배터리 잔량이 있을경우 작동
-		else if (m_fBattery > 0)
+		else if (m_fBattery > 0.1f)
 		{
 
 			CTimeMgr::GetInst()->SetTimeScale(0.2f);
@@ -396,16 +395,19 @@ void CPlayerScript::SlowModeIn()
 	}
 	else
 	{
+		// 배터리 재충전
 		if(m_fBattery < 1.f)
 			m_fBattery += DT * 0.1f;
 	}
 
+	if (KEY_RELEASE(KEY::Q))
+	{
+		SlowModeOut();
+	}
 }
 
 void CPlayerScript::SlowModeOut()
 {
-	if (KEY_RELEASE(KEY::Q))
-	{
 		if(m_BatteryPushTime != 0.f)
 			m_BatteryPushTime = 0.f;
 
@@ -431,10 +433,9 @@ void CPlayerScript::SlowModeOut()
 
 		// SlowModeOut 사운드 재생
 		Ptr<CSound> pSlowModeSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\slow_out.mp3");
-		pSlowModeSound->Play(1, 1.f, true);
+		pSlowModeSound->Play(1, 1.f, false);
 
 		m_IsSlowMode = false;
-	}
 }
 
 
@@ -1847,11 +1848,27 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 		int TopLeftColor = m_MapColTexture->GetPixelColor(CheckPosTopLeft);
 
 
-		// 항상 땅에 붙어있기
+		//// 항상 땅에 붙어있기_땅과 아무리 멀리떨어져있어도 반복문으로 세팅.
+		//while (1)
+		//{
+		//	if (RGB(0, 0, 0) != ForDownColor && RGB(255, 0, 0) != ForDownColor)
+		//	{
+		//		SetPos(Vector2{ m_Pos.x, m_Pos.y - 1.f });
+		//		m_Pos3 = Transform()->GetRelativePos();
+		//		m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+		//		ForDownPos.y += 1.f;
+		//		ForDownColor = m_MapColTexture->GetPixelColor(ForDownPos);
+		//	}
+		//	else
+		//		break;
+		//}
+
+		// 항상 땅쪽으로 중력
 		if (RGB(0, 0, 0) != ForDownColor && RGB(255, 0, 0) != ForDownColor)
 		{
-			SetPos(Vector2{ m_Pos.x, m_Pos.y - 2.f });
+			SetPos(Vector2{ m_Pos.x, m_Pos.y - 3.f });
 		}
+
 
 		// 계단 올라가기
 		while (RGB(0, 0, 0) == Color &&
@@ -1859,7 +1876,11 @@ void CPlayerScript::MapCollisionCheckMoveGround()
 		{
 			CheckPos.y -= 1.0f;
 			Color = m_MapColTexture->GetPixelColor(CheckPos);
-			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.5f });
+			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.0f });
+			m_Pos3 = Transform()->GetRelativePos();
+			m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+			ForDownPos.y += 1.f;
+
 		}
 
 

@@ -12,6 +12,8 @@ private:
 	CGameObjectEx*			m_DebugShape[(UINT)SHAPE_TYPE::END];
 	vector<tDebugShapeInfo> m_DebugShapeInfo;
 
+	bool					m_DebugShapeOn;
+
 public:
 	void init();
 	void progress();

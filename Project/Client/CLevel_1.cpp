@@ -58,8 +58,7 @@ void CreateLevel_1()
 	pMainCam->AddComponent(new CTransform);
 	pMainCam->AddComponent(new CCamera);
 	pMainCam->AddComponent(new CMainCameraScript);
-	CMainCameraScript* pScript = pMainCam->GetScript<CMainCameraScript>();
-	pScript->SetMapsize(Vec2(1800.f, 784.f));
+	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(1800.f, 784.f));
 
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
@@ -161,12 +160,6 @@ void CreateLevel_1()
 		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Idle);
 		SpawnGameObject(pGrunt, Vec3(338, -383, 500.f), L"MonsterHitBox");
 
-
-		//// Pomp_2	2층 방안
-		//CGameObject* pPomp = CreatePomp();
-		//pPomp->GetScript<CPompScript>()->SetDir(ObjDir::Right);
-		//pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
-		//SpawnGameObject(pPomp, Vec3(338, -383, 500.f), L"MonsterHitBox");
 	}
 
 	{
@@ -242,11 +235,27 @@ void CreateLevel_1()
 
 	pTimer->Transform()->SetRelativeScale(Vec3(188.f, 22.f, 1.f));
 
-	pTimer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pTimer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
 	pTimer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TimerMtrl"));
 	pTimer->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_timer.png"));
 
-	SpawnGameObject(pTimer, Vec3(5.f, 324.f, 100.f), L"ViewPort UI");
+	SpawnGameObject(pTimer, Vec3(-89.f, 324.f, 100.f), L"ViewPort UI");
+
+	// UI_Katana
+	CGameObject* pKatana = new CGameObject;
+	pKatana->SetName(L"UI_Katana");
+
+	pKatana->AddComponent(new CTransform);
+	pKatana->AddComponent(new CMeshRender);
+
+	pKatana->Transform()->SetRelativeScale(Vec3(40.f, 40.f, 1.f));
+
+	pKatana->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
+	pKatana->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"KatanaMtrl"));
+	pKatana->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\spr_katanaicons.png"));
+
+	SpawnGameObject(pKatana, Vec3(507.f, 318.f, 100.f), L"ViewPort UI");
+
 
 	
 	//// Particle Object

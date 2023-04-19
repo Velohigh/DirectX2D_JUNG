@@ -303,7 +303,7 @@ void CMonsterScript::MapCollisionCheckMoveGround()
 		// 항상 땅에 붙어있기
 		if (RGB(0, 0, 0) != ForDownColor && RGB(255, 0, 0) != ForDownColor)
 		{
-			SetPos(Vector2{ m_Pos.x, m_Pos.y - 1.f });
+			SetPos(Vector2{ m_Pos.x, m_Pos.y - 2.f });
 		}
 
 		// 계단 올라가기

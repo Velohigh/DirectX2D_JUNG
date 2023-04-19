@@ -634,6 +634,12 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
 	AddRes(L"TimerMtrl", pMtrl);
 
+	// KatanaMaterial
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std2DLightShader"));
+	AddRes(L"KatanaMtrl", pMtrl);
+
+
 
 }
 

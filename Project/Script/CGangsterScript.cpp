@@ -48,7 +48,7 @@ void CGangsterScript::begin()
 
 	m_AttackRangeCollider->Transform()->SetRelativeScale(140.f, 140.f, 1.f);
 	m_AttackRangeCollider->Collider2D()->SetAbsolute(true);
-	m_AttackRangeCollider->Collider2D()->SetOffsetScale(Vec2(1000.f, 120.f));
+	m_AttackRangeCollider->Collider2D()->SetOffsetScale(Vec2(1000.f, 300.f));
 	m_AttackRangeCollider->GetScript<CAttackRangeScript>()->SetOwner(GetOwner());
 
 	SpawnGameObject(m_AttackRangeCollider, Vec3(Transform()->GetRelativePos()), L"MonsterAttackRange");

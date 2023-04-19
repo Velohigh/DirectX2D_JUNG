@@ -41,6 +41,8 @@ private:
 	float		m_BatteryRechargeTime;	// 배터리 재충전 시간
 	float		m_BatteryPushTime;		// 누른 시간
 
+	float		m_Timer;		// 제한시간
+
 
 	float		m_Gravity;			// 플레이어 중력 계수
 	float		m_GravityAccel;		// 중력가속도
@@ -77,6 +79,7 @@ public:
 	Vec2& GetMoveDir() { return m_MoveDir; }
 	bool& GetIsSlowMode() { return m_IsSlowMode; }
 	float& GetBattery() { return m_fBattery; }
+	float& GetTimer() { return m_Timer; }
 
 	void SetMoveDir(Vec2 _vec2) { m_MoveDir = _vec2; }
 	void SetEnemyAttackDir(Vec2 _vec2) { m_EnemyAttackDir = _vec2; }
