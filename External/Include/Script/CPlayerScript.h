@@ -85,6 +85,11 @@ public:
 	void SetEnemyAttackDir(Vec2 _vec2) { m_EnemyAttackDir = _vec2; }
 	void SetHitOn(bool _bool) { m_bHitOn = _bool; }
 
+
+
+
+
+
 private:
 	void Shoot();
 
@@ -98,7 +103,6 @@ private:
 	void MoveDir(const Vec2& Dir);
 	void MoveValue(const Vector2& MoveValue);  //Move();
 	void SetPos(const Vector2& Pos);
-	void SetPivot();
 
 public:
 	virtual void SaveToLevelFile(FILE* _File) override;
@@ -153,3 +157,11 @@ private:
 	void MapCollisionCheckMoveAir();
 };
 
+// 리셋 스테이지
+void ResetStage_1();
+void ResetStage_2();
+void ResetStage_3();
+
+CGameObject* CreateGrunt();
+CGameObject* CreatePomp();
+CGameObject* CreateGangster();

@@ -202,6 +202,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPompScript.h" />
     <ClInclude Include="CReflectScript.h" />
+    <ClInclude Include="CRewinderScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSlashScript.h" />
     <ClInclude Include="CTimerScript.h" />
@@ -235,6 +236,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPompScript.cpp" />
     <ClCompile Include="CReflectScript.cpp" />
+    <ClCompile Include="CRewinderScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSlashScript.cpp" />
     <ClCompile Include="CTimerScript.cpp" />

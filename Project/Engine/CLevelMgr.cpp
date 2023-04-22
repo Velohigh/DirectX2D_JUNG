@@ -31,6 +31,7 @@ void CLevelMgr::tick()
 	}
 
 	m_pCurLevel->finaltick();
+
 }
 
 

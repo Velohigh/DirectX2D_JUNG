@@ -22,6 +22,7 @@
 #include <Script\CUIScript.h>
 #include <Script\CBatteryScript.h>
 #include <Script\CTimerScript.h>
+#include <Script\CRewinderScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -29,15 +30,16 @@
 void CreateLevel_1()
 {
 	//return;
-	CreateGruntPrefab();
+	//CreateGruntPrefab();
 
 	// 배경음 재생
 	Ptr<CSound> pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_youwillneverknow.ogg");
-	pBGM->Play(999, 1.f, true);
+	pBGM->Play(999, 0.9f, true);
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 	pCurLevel->SetName(L"Stage_1");
-	pCurLevel->ChangeState(LEVEL_STATE::STOP);
+	pCurLevel->ChangeState(LEVEL_STATE::PLAY);
+	pCurLevel->SetBgm(pBGM.Get());
 
 	// Layer 이름설정
 	pCurLevel->GetLayer(0)->SetName(L"Default");
@@ -49,6 +51,7 @@ void CreateLevel_1()
 	pCurLevel->GetLayer(6)->SetName(L"MonsterView");
 	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
+
 
 
 	// Main Camera Object 생성
@@ -256,6 +259,8 @@ void CreateLevel_1()
 
 	SpawnGameObject(pKatana, Vec3(507.f, 318.f, 100.f), L"ViewPort UI");
 
+	//CreateLevel_2();
+	//return;
 
 	
 	//// Particle Object
@@ -283,6 +288,25 @@ void CreateLevel_1()
 	//pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	//pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
 	//SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);
+
+	// 리와인더 애니메이션
+	CGameObject* pRewinder = new CGameObject;
+	pRewinder->SetName(L"Rewinder");
+	pRewinder->AddComponent(new CTransform);
+	pRewinder->AddComponent(new CMeshRender);
+	pRewinder->AddComponent(new CAnimator2D);
+	pRewinder->AddComponent(new CRewinderScript);
+
+	pRewinder->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pRewinder->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
+
+	// 임시로 재생
+	pRewinder->Animator2D()->Create_Grunt_Animation();
+	pRewinder->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
+
+	SpawnGameObject(pRewinder, Vec3(0.f, 0.f, 30.f), L"ViewPort UI");
+
+
 
 
 
@@ -323,78 +347,4 @@ void CreateGruntPrefab()
 	CResMgr::GetInst()->AddRes<CPrefab>(L"GruntPrefab", GruntPrefab);
 }
 
-CGameObject* CreateGrunt()
-{
-	// 그런트 크리에이트
-	CGameObject* pGrunt = new CGameObject;
-	pGrunt->SetName(L"Grunt");
-	pGrunt->AddComponent(new CTransform);
-	pGrunt->AddComponent(new CMeshRender);
-	pGrunt->AddComponent(new CCollider2D);
-	pGrunt->AddComponent(new CAnimator2D);
-	pGrunt->AddComponent(new CGruntScript);
 
-	pGrunt->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	pGrunt->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
-	pGrunt->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GruntMtrl"));
-
-	pGrunt->Collider2D()->SetAbsolute(true);
-	pGrunt->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
-
-	pGrunt->Animator2D()->Create_Grunt_Animation();
-	pGrunt->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
-	//SpawnGameObject(pGrunt, Vec3(230.f, -671.f, 500.f), L"MonsterHitBox");
-
-	return pGrunt;
-}
-
-CGameObject* CreatePomp()
-{
-	// Pomp 크리에이트
-	CGameObject* pPomp = new CGameObject;
-	pPomp->SetName(L"Pomp");
-	pPomp->AddComponent(new CTransform);
-	pPomp->AddComponent(new CMeshRender);
-	pPomp->AddComponent(new CCollider2D);
-	pPomp->AddComponent(new CAnimator2D);
-	pPomp->AddComponent(new CPompScript);
-
-	pPomp->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	pPomp->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
-	pPomp->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"PompMtrl"));
-
-	pPomp->Collider2D()->SetAbsolute(true);
-	pPomp->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
-
-	pPomp->Animator2D()->Create_Pomp_Animation();
-	pPomp->Animator2D()->Play(L"texture\\pomp\\spr_pomp_idle", true);
-
-	return pPomp;
-}
-
-CGameObject* CreateGangster()
-{
-	// Gangster 크리에이트
-	CGameObject* pGangster = new CGameObject;
-	pGangster->SetName(L"Gangster");
-	pGangster->AddComponent(new CTransform);
-	pGangster->AddComponent(new CMeshRender);
-	pGangster->AddComponent(new CCollider2D);
-	pGangster->AddComponent(new CAnimator2D);
-	pGangster->AddComponent(new CGangsterScript);
-
-	pGangster->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	pGangster->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
-	pGangster->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GangsterMtrl"));
-
-	pGangster->Collider2D()->SetAbsolute(true);
-	pGangster->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
-
-	pGangster->Animator2D()->Create_Gangster_Animation();
-	pGangster->Animator2D()->Play(L"texture\\gangster\\spr_gangsteridle", true);
-
-	return pGangster;
-}

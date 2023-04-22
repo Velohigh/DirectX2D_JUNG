@@ -121,6 +121,21 @@ void CAnimator2D::CreateFolderAnimation(const wstring& _RelativePath, int _Frame
 	m_mapAnim.insert(make_pair(_RelativePath, pAnim));
 }
 
+void CAnimator2D::CreateFolderAnim_Rewinder(vector<Ptr<CTexture>>& _vecTex, vector<Ptr<CTexture>>& _vecTexReverse)
+{
+	CAnim2D* pAnim = new CAnim2D;
+	pAnim->CreateRewinderFolderTex(_vecTex);
+
+	CAnim2D* pAnimReverse = new CAnim2D;
+	pAnimReverse->CreateRewinderReverseFolderTex(_vecTex);
+
+
+	pAnim->m_pOwner = this;
+	pAnimReverse->m_pOwner = this;
+	m_mapAnim.insert(make_pair(L"RewinderAnimation", pAnim));
+	m_mapAnim.insert(make_pair(L"RewinderReverseAnimation", pAnimReverse));
+}
+
 void CAnimator2D::SaveToLevelFile(FILE* _File)
 {
 	fwrite(&m_bRepeat, sizeof(bool), 1, _File);

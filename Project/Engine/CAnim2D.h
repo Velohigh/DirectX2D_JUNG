@@ -28,6 +28,8 @@ public:
     void finaltick();
     void Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex, Vec2 _vLeftTop, Vec2 _vSlice, Vec2 _BackSize, int _FrameCount, int _FPS);
     void CreateFolderAnim(const wstring& _strAnimName, const wstring& _RelativePath, int _FrameCount, float _FPS);
+    void CreateRewinderFolderTex(vector<Ptr<CTexture>>& _vecTex);
+    void CreateRewinderReverseFolderTex(vector<Ptr<CTexture>>& _vecTexReverse);
 
 
     vector<Ptr<CTexture>>& GetvecFolderTex() { return m_vecFolderTex; }
@@ -45,6 +47,7 @@ public:
         m_fTime = 0.f;
         m_bFinish = false;
     }
+
 
     void SaveToLevelFile(FILE* _File);
     void LoadFromLevelFile(FILE* _File);

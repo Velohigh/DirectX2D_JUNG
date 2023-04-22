@@ -113,6 +113,36 @@ void CAnim2D::CreateFolderAnim(const wstring& _strAnimName, const wstring& _Rela
 
 
 }
+void CAnim2D::CreateRewinderFolderTex(vector<Ptr<CTexture>>& _vecTex)
+{
+	m_bFolderTex = true;
+	SetName(L"RewinderAnimation");
+
+	m_fDuration = 1.f / 60.f;
+
+	m_vecFolderTex.clear();
+	m_vecFolderTex = _vecTex;
+
+}
+
+void CAnim2D::CreateRewinderReverseFolderTex(vector<Ptr<CTexture>>& _vecTexReverse)
+{
+	m_bFolderTex = true;
+	SetName(L"RewinderReverseAnimation");
+
+	m_fDuration = 1.f / 60.f;
+
+	m_vecFolderTex.clear();
+
+	// vector 반대로 집어넣기
+	for (int i = (int)(_vecTexReverse.size()) - 1; i >= 0; --i)
+	{
+		m_vecFolderTex.push_back(_vecTexReverse[i]);
+	}
+
+}
+
+
 void CAnim2D::SaveToLevelFile(FILE* _File)  // 원본
 {
 	fwrite(&m_bFolderTex, sizeof(bool), 1, _File);

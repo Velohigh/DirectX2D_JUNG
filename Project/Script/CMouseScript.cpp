@@ -1,6 +1,15 @@
 #include "pch.h"
 #include "CMouseScript.h"
 
+CMouseScript::CMouseScript()
+	: CScript((UINT)SCRIPT_TYPE::MOUSESCRIPT)
+{
+}
+
+CMouseScript::~CMouseScript()
+{
+}
+
 void CMouseScript::tick()
 {
 	// 마우스 위치로 마우스 Obj 위치 이동
@@ -52,6 +61,8 @@ void CMouseScript::tick()
 
 	ComputeWorldMousePos(Vec2(CameraPos.x, CameraPos.y));
 
+
+
 }
 
 void CMouseScript::begin()
@@ -60,11 +71,4 @@ void CMouseScript::begin()
 	m_ShowCursor = false;
 }
 
-CMouseScript::CMouseScript()
-	: CScript((UINT)SCRIPT_TYPE::MOUSESCRIPT)
-{
-}
 
-CMouseScript::~CMouseScript()
-{
-}

@@ -22,6 +22,7 @@ CMouseScript
 CPlayerScript
 CPompScript
 CReflectScript
+CRewinderScript
 CSlashScript
 CTimerScript
 CUIScript

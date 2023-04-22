@@ -25,6 +25,7 @@
 #include "CPlayerScript.h"
 #include "CPompScript.h"
 #include "CReflectScript.h"
+#include "CRewinderScript.h"
 #include "CSlashScript.h"
 #include "CTimerScript.h"
 #include "CUIScript.h"
@@ -56,6 +57,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPompScript");
 	_vec.push_back(L"CReflectScript");
+	_vec.push_back(L"CRewinderScript");
 	_vec.push_back(L"CSlashScript");
 	_vec.push_back(L"CTimerScript");
 	_vec.push_back(L"CUIScript");
@@ -112,6 +114,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPompScript;
 	if (L"CReflectScript" == _strScriptName)
 		return new CReflectScript;
+	if (L"CRewinderScript" == _strScriptName)
+		return new CRewinderScript;
 	if (L"CSlashScript" == _strScriptName)
 		return new CSlashScript;
 	if (L"CTimerScript" == _strScriptName)
@@ -198,6 +202,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::REFLECTSCRIPT:
 		return new CReflectScript;
+		break;
+	case (UINT)SCRIPT_TYPE::REWINDERSCRIPT:
+		return new CRewinderScript;
 		break;
 	case (UINT)SCRIPT_TYPE::SLASHSCRIPT:
 		return new CSlashScript;
@@ -313,6 +320,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::REFLECTSCRIPT:
 		return L"CReflectScript";
+		break;
+
+	case SCRIPT_TYPE::REWINDERSCRIPT:
+		return L"CRewinderScript";
 		break;
 
 	case SCRIPT_TYPE::SLASHSCRIPT:

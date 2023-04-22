@@ -79,6 +79,9 @@
     <Filter Include="Script\UIScript\TimerScript">
       <UniqueIdentifier>{e8febf70-959a-4636-8f65-9c8bbeb2e58d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Rewinder">
+      <UniqueIdentifier>{d9a6e6f1-47ca-4c9a-b8fa-0bf22b28607c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -174,6 +177,9 @@
     <ClInclude Include="CTimerScript.h">
       <Filter>Script\UIScript\TimerScript</Filter>
     </ClInclude>
+    <ClInclude Include="CRewinderScript.h">
+      <Filter>Script\Rewinder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -268,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="CTimerScript.cpp">
       <Filter>Script\UIScript\TimerScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CRewinderScript.cpp">
+      <Filter>Script\Rewinder</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

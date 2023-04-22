@@ -3,6 +3,7 @@
 
 class CLayer;
 class CGameObject;
+class CSound;
 
 class CLevel :
     public CEntity
@@ -11,6 +12,9 @@ private:
     CLayer*         m_arrLayer[MAX_LAYER];
     LEVEL_STATE     m_State;
     HWND            m_hWnd;
+
+    CSound*         m_pBgm;
+    bool            m_bBgmON;
 
 public:
     void begin();
@@ -31,11 +35,19 @@ public:
     void ChangeState(LEVEL_STATE _State);
     LEVEL_STATE GetState() { return m_State; }
 
+
+    CSound* GetBgm() { return m_pBgm; }
     void SethWnd(HWND _handle) { m_hWnd = _handle; }
+    void SetBgmON(bool _bool) { m_bBgmON = _bool; }
+    void SetBgm(CSound* _pSound) { m_pBgm = _pSound; }
+
+    void DestroyAllObject();
 
 private:
-    // 등록된 GameObject 제거
+    // 등록된 GameObject 제거 LevelMgr::tick() 시작부분에서.
     void clear();
+
+
 
     CLONE(CLevel);
 public:

@@ -9,6 +9,7 @@
 CLevel::CLevel()
 	: m_arrLayer{}
 	, m_State(LEVEL_STATE::STOP)
+	, m_KillCount(0)
 {
 	for (UINT i = 0; i < MAX_LAYER; ++i)
 	{
@@ -29,6 +30,7 @@ void CLevel::begin()
 	{
 		m_arrLayer[i]->begin();
 	}
+	m_bBgmON = false;
 }
 
 void CLevel::tick()
@@ -87,6 +89,26 @@ void CLevel::ChangeState(LEVEL_STATE _State)
 	}
 }
 
+
+void CLevel::DestroyAllObject()
+{
+	for (int i = 0; i < MAX_LAYER; ++i)
+	{
+		const vector<CGameObject*>& vecParentObjects = m_arrLayer[i]->GetParentObject();
+		for (size_t j = 0; j < vecParentObjects.size(); ++j)
+		{
+			if (vecParentObjects[j]->GetName() == L"MainCamera" ||
+				vecParentObjects[j]->GetName() == L"UICamera" ||
+				vecParentObjects[j]->GetName() == L"Point Light" ||
+				vecParentObjects[j]->GetName() == L"Rewinder")
+			{
+				continue;
+			}
+
+			vecParentObjects[j]->SetLifeSpan(0.f);
+		}
+	}
+}
 
 void CLevel::clear()
 {

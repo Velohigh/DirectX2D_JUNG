@@ -29,7 +29,6 @@
 void CreateLevel_2()
 {
 	//return;
-	CreateGruntPrefab();
 
 	// 배경음 재생
 	Ptr<CSound> pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\bgm_bunker.mp3");
@@ -37,7 +36,9 @@ void CreateLevel_2()
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 	pCurLevel->SetName(L"Stage_2");
-	pCurLevel->ChangeState(LEVEL_STATE::STOP);
+	pCurLevel->ChangeState(LEVEL_STATE::PLAY);
+	pCurLevel->SetBgm(pBGM.Get());
+
 
 	// Layer 이름설정
 	pCurLevel->GetLayer(0)->SetName(L"Default");
@@ -51,52 +52,52 @@ void CreateLevel_2()
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
 
 
-	// Main Camera Object 생성
-	CGameObject* pMainCam = new CGameObject;
-	pMainCam->SetName(L"MainCamera");
+	//// Main Camera Object 생성
+	//CGameObject* pMainCam = new CGameObject;
+	//pMainCam->SetName(L"MainCamera");
 
-	pMainCam->AddComponent(new CTransform);
-	pMainCam->AddComponent(new CCamera);
-	pMainCam->AddComponent(new CMainCameraScript);
-	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(2176.f, 3500.f));
+	//pMainCam->AddComponent(new CTransform);
+	//pMainCam->AddComponent(new CCamera);
+	//pMainCam->AddComponent(new CMainCameraScript);
+	//pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(2176.f, 3500.f));
 
-	pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-	pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
-	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
-	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
+	//pMainCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	//pMainCam->Camera()->SetCameraIndex(0);		// MainCamera 로 설정
+	//pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	//pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
 
-	SpawnGameObject(pMainCam, Vec3(0.f, 0.f, 0.f), 0);
+	//SpawnGameObject(pMainCam, Vec3(0.f, 0.f, 0.f), 0);
 
-	// UI cameara
-	CGameObject* pUICam = new CGameObject;
-	pUICam->SetName(L"UICamera");
+	//// UI cameara
+	//CGameObject* pUICam = new CGameObject;
+	//pUICam->SetName(L"UICamera");
 
-	pUICam->AddComponent(new CTransform);
-	pUICam->AddComponent(new CCamera);
+	//pUICam->AddComponent(new CTransform);
+	//pUICam->AddComponent(new CCamera);
 
-	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-	pUICam->Camera()->SetCameraIndex(1);		// SubCamera 로 설정
-	pUICam->Camera()->SetLayerMask(31, true);	// 모든 레이어 체크
+	//pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	//pUICam->Camera()->SetCameraIndex(1);		// SubCamera 로 설정
+	//pUICam->Camera()->SetLayerMask(31, true);	// 모든 레이어 체크
 
-	SpawnGameObject(pUICam, Vec3(0.f, 0.f, 0.f), 0);
-
-
-	// 광원 추가
-	CGameObject* pLightObj = new CGameObject;
-	pLightObj->SetName(L"Point Light");
-
-	pLightObj->AddComponent(new CTransform);
-	pLightObj->AddComponent(new CLight2D);
-
-	pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
-
-	pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-	pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
-	pLightObj->Light2D()->SetRadius(20000.f);
+	//SpawnGameObject(pUICam, Vec3(0.f, 0.f, 0.f), 0);
 
 
-	SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
+	//// 광원 추가
+	//CGameObject* pLightObj = new CGameObject;
+	//pLightObj->SetName(L"Point Light");
+
+	//pLightObj->AddComponent(new CTransform);
+	//pLightObj->AddComponent(new CLight2D);
+
+	//pLightObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	//pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
+
+	//pLightObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	//pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
+	//pLightObj->Light2D()->SetRadius(20000.f);
+
+
+	//SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
 	// 오브젝트 생성
