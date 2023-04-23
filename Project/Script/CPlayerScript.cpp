@@ -85,7 +85,7 @@ void CPlayerScript::begin()
 	m_bRun1SoundOn = false;		// Run 사운드 재생여부
 	m_bRun2SoundOn = false;		// Run 사운드 재생여부
 	m_bHitOn = false;			// 공격 받았는지 여부
-
+	m_bReplayStage = false;
 }
 
 void CPlayerScript::tick()
@@ -178,15 +178,15 @@ void CPlayerScript::tick()
 	Vec2 m_Pos = Vec2(m_NewPos3.x, m_NewPos3.y);
 	Vec2 m_PosYReverse = Vec2(m_NewPos3.x, -m_NewPos3.y);
 	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
-
-
-	if (StageName == L"Stage_1")
+	if (StageName == L"Stage_1" &&
+		m_bReplayStage == false)
 	{
 		int Color = m_MapColTexture->GetPixelColor(m_PosYReverse);
 		int KillCount1 = CLevelMgr::GetInst()->GetCurLevel()->GetKillCount();
 		if (KillCount1 == 4 &&
 			Color == RGB(0, 0, 255))
 		{
+			m_bReplayStage = true;
 			// 배경음 정지
 			Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
 			pBGM->Stop();
@@ -232,13 +232,15 @@ void CPlayerScript::tick()
 
 		}
 	}
-	else if (StageName == L"Stage_2")
+	else if (StageName == L"Stage_2" &&
+		m_bReplayStage == false)
 	{
 		int Color = m_MapColTexture->GetPixelColor(m_PosYReverse);
 		int KillCount1 = CLevelMgr::GetInst()->GetCurLevel()->GetKillCount();
 		if (KillCount1 == 20 &&
 			Color == RGB(0, 0, 255))
 		{
+			m_bReplayStage = true;
 			// 배경음 정지
 			Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
 			pBGM->Stop();

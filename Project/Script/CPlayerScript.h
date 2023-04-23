@@ -67,6 +67,7 @@ private:
 	bool		m_bHitOn;				// 공격 받았는지 여부
 
 	bool		m_IsSlowMode;	// 슬로우 모드인지 여부
+	bool		m_bReplayStage;	// 클리어후 리플레이 재생여부
 
 public:
 	virtual void begin() override;
