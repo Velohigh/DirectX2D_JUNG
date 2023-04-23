@@ -25,5 +25,6 @@ CReflectScript
 CRewinderScript
 CSlashScript
 CTimerScript
+CTitleScript
 CUIScript
 CViewScript

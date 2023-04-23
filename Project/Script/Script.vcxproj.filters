@@ -82,6 +82,12 @@
     <Filter Include="Script\Rewinder">
       <UniqueIdentifier>{d9a6e6f1-47ca-4c9a-b8fa-0bf22b28607c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\TitleScript">
+      <UniqueIdentifier>{ba24c6fc-bd93-42ba-a366-c51ed2c95157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\LevelChangeScript">
+      <UniqueIdentifier>{bf967887-9830-454f-9090-a4fb39ec4cd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -180,6 +186,9 @@
     <ClInclude Include="CRewinderScript.h">
       <Filter>Script\Rewinder</Filter>
     </ClInclude>
+    <ClInclude Include="CTitleScript.h">
+      <Filter>Script\TitleScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -277,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="CRewinderScript.cpp">
       <Filter>Script\Rewinder</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleScript.cpp">
+      <Filter>Script\TitleScript</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

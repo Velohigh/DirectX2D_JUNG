@@ -23,10 +23,13 @@ void CViewScript::tick()
 {
 	//if (m_Owner->GetScript<CMonsterScript>()->GetState() == ObjState::HurtFly)
 	//	Destroy();
-
+	if (m_Level == nullptr ||
+		m_Owner == nullptr)
+		return;
 
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
 	Vec3 OwnerPos = m_Owner->Transform()->GetRelativePos();
+
 
 	Transform()->SetRelativePos(OwnerPos);
 

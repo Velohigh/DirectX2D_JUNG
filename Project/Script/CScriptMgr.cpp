@@ -28,6 +28,7 @@
 #include "CRewinderScript.h"
 #include "CSlashScript.h"
 #include "CTimerScript.h"
+#include "CTitleScript.h"
 #include "CUIScript.h"
 #include "CViewScript.h"
 
@@ -60,6 +61,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CRewinderScript");
 	_vec.push_back(L"CSlashScript");
 	_vec.push_back(L"CTimerScript");
+	_vec.push_back(L"CTitleScript");
 	_vec.push_back(L"CUIScript");
 	_vec.push_back(L"CViewScript");
 }
@@ -120,6 +122,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSlashScript;
 	if (L"CTimerScript" == _strScriptName)
 		return new CTimerScript;
+	if (L"CTitleScript" == _strScriptName)
+		return new CTitleScript;
 	if (L"CUIScript" == _strScriptName)
 		return new CUIScript;
 	if (L"CViewScript" == _strScriptName)
@@ -211,6 +215,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::TIMERSCRIPT:
 		return new CTimerScript;
+		break;
+	case (UINT)SCRIPT_TYPE::TITLESCRIPT:
+		return new CTitleScript;
 		break;
 	case (UINT)SCRIPT_TYPE::UISCRIPT:
 		return new CUIScript;
@@ -332,6 +339,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TIMERSCRIPT:
 		return L"CTimerScript";
+		break;
+
+	case SCRIPT_TYPE::TITLESCRIPT:
+		return L"CTitleScript";
 		break;
 
 	case SCRIPT_TYPE::UISCRIPT:

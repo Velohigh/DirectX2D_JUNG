@@ -7,6 +7,7 @@
 #include "CUIScript.h"
 #include "CBatteryScript.h"
 #include "CTimerScript.h"
+#include "CMainCameraScript.h"
 #include <random>
 
 #include <Engine\CMeshRender.h>
@@ -105,14 +106,11 @@ void CPlayerScript::tick()
 	Collider2D()->SetOffsetPos(Vec2(-CameraPos.x, -CameraPos.y + 35.f));
 
 	SlowModeIn();
-	//SlowModeOut();
 
 	// 제한시간 감소
 	if(m_Timer > 0.f)
 		m_Timer -= DT;
 
-
-	//Transform()->SetRelativePos(vCurPos);
 
 	//if (KEY_TAP(KEY::SPACE))
 	//{
@@ -145,6 +143,7 @@ void CPlayerScript::tick()
 		if (nullptr != pRewinder)
 		{
 			pRewinder->GetScript<CRewinderScript>()->SetAnimationSaveOn(false);
+			pRewinder->GetScript<CRewinderScript>()->SetReverseOn(true);
 			pRewinder->Transform()->SetRelativeScale(1280.f, 720.f, 1.f);
 			pRewinder->GetScript<CRewinderScript>()->CreateFolderAnim_Rewinder();
 			pRewinder->Animator2D()->Play(L"RewinderReverseAnimation", true);
@@ -171,6 +170,124 @@ void CPlayerScript::tick()
 			SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 		}
+	}
+
+	// 모든적을 잡고, 파랑 충돌맵에 닿으면, 다음 스테이지로 이동
+	wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
+	Vec3 m_NewPos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_NewPos3.x, m_NewPos3.y);
+	Vec2 m_PosYReverse = Vec2(m_NewPos3.x, -m_NewPos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	if (StageName == L"Stage_1")
+	{
+		int Color = m_MapColTexture->GetPixelColor(m_PosYReverse);
+		int KillCount1 = CLevelMgr::GetInst()->GetCurLevel()->GetKillCount();
+		if (KillCount1 == 4 &&
+			Color == RGB(0, 0, 255))
+		{
+			// 배경음 정지
+			Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
+			pBGM->Stop();
+
+			// 배경음 재생
+			pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_youwillneverknow.ogg");
+			pBGM->Play(999, 0.9f, true);
+			CLevelMgr::GetInst()->GetCurLevel()->SetBgm(pBGM.Get());
+
+
+			CGameObject* pRewinder = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Rewinder");
+
+			if (nullptr != pRewinder)
+			{
+				pRewinder->GetScript<CRewinderScript>()->SetAnimationSaveOn(false);
+				pRewinder->GetScript<CRewinderScript>()->SetReplayOn(true);
+				pRewinder->Transform()->SetRelativeScale(1280.f, 720.f, 1.f);
+				pRewinder->GetScript<CRewinderScript>()->CreateFolderAnim_Rewinder();
+				pRewinder->Animator2D()->Play(L"RewinderAnimation", true);
+
+				m_Level->FindParentObjectByName(L"MainCamera")->Camera()->SetLayerMaskAll(false);
+
+				CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
+
+				CGameObject* pPostProcess = new CGameObject;
+				pPostProcess->SetName(L"PostProcess");
+				pPostProcess->AddComponent(new CTransform);
+				pPostProcess->AddComponent(new CMeshRender);
+				pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+				SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
+
+				CGameObject* pDistortion = new CGameObject;
+				pDistortion->SetName(L"Distortion");
+				pDistortion->AddComponent(new CTransform);
+				pDistortion->AddComponent(new CMeshRender);
+				pDistortion->Transform()->SetRelativeScale(1280, 720.f, 1.f);
+				pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+				SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
+
+			}
+
+		}
+	}
+	else if (StageName == L"Stage_2")
+	{
+		int Color = m_MapColTexture->GetPixelColor(m_PosYReverse);
+		int KillCount1 = CLevelMgr::GetInst()->GetCurLevel()->GetKillCount();
+		if (KillCount1 == 20 &&
+			Color == RGB(0, 0, 255))
+		{
+			// 배경음 정지
+			Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
+			pBGM->Stop();
+
+			// 배경음 재생
+			pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\bgm_bunker.mp3");
+			pBGM->Play(999, 0.9f, true);
+			CLevelMgr::GetInst()->GetCurLevel()->SetBgm(pBGM.Get());
+
+
+			CGameObject* pRewinder = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Rewinder");
+
+			if (nullptr != pRewinder)
+			{
+				pRewinder->GetScript<CRewinderScript>()->SetAnimationSaveOn(false);
+				pRewinder->GetScript<CRewinderScript>()->SetReplayOn(true);
+				pRewinder->Transform()->SetRelativeScale(1280.f, 720.f, 1.f);
+				pRewinder->GetScript<CRewinderScript>()->CreateFolderAnim_Rewinder();
+				pRewinder->Animator2D()->Play(L"RewinderAnimation", true);
+
+				m_Level->FindParentObjectByName(L"MainCamera")->Camera()->SetLayerMaskAll(false);
+
+				CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
+
+				CGameObject* pPostProcess = new CGameObject;
+				pPostProcess->SetName(L"PostProcess");
+				pPostProcess->AddComponent(new CTransform);
+				pPostProcess->AddComponent(new CMeshRender);
+				pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+				SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
+
+				CGameObject* pDistortion = new CGameObject;
+				pDistortion->SetName(L"Distortion");
+				pDistortion->AddComponent(new CTransform);
+				pDistortion->AddComponent(new CMeshRender);
+				pDistortion->Transform()->SetRelativeScale(1280, 720.f, 1.f);
+				pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+				SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
+
+			}
+
+		}
+
+	}
+	else if (StageName == L"Stage_3")
+	{
+
 	}
 }
 
@@ -1420,7 +1537,7 @@ void CPlayerScript::FlipUpdate()
 	int LCColor = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ -20,-35 });
 	int RCColor = m_MapColTexture->GetPixelColor(m_PosyReverse + Vector2{ 20,-35 });
 
-	if (m_StateTime[(int)PlayerState::Flip] >= 0.1f)
+	if (m_StateTime[(int)PlayerState::Flip] >= 0.03f)
 	{
 		if (Color != RGB(0, 0, 0) &&
 			LCColor == RGB(255, 0, 255) ||
@@ -2030,9 +2147,14 @@ void CPlayerScript::MapCollisionCheckMoveAir()
 
 void ResetStage_1()
 {
+	// 킬 카운트 초기화
+	CLevelMgr::GetInst()->GetCurLevel()->SetKillCount(0);
+
 	// 배경음 정지
 	Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
-	pBGM->Stop();
+
+	if(pBGM != nullptr)
+		pBGM->Stop();
 
 	// 배경음 재생
 	pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_youwillneverknow.ogg");
@@ -2054,8 +2176,13 @@ void ResetStage_1()
 	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
 
-	// 카메라 visible mask 다시 all true
-	pCurLevel->FindParentObjectByName(L"MainCamera")->Camera()->SetLayerMaskAll(true);
+	// 카메라 visible mask 다시 all true, 맵 크기 적용
+	CGameObject* pMainCam = pCurLevel->FindParentObjectByName(L"MainCamera");
+	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(1800.f, 784.f));
+	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
+
+
 
 	// 오브젝트 생성
 	CGameObject* pParent = new CGameObject;
@@ -2240,6 +2367,10 @@ void ResetStage_1()
 
 void ResetStage_2()
 {
+	// 킬 카운트 초기화
+	CLevelMgr::GetInst()->GetCurLevel()->SetKillCount(0);
+
+
 	// 배경음 정지
 	Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
 	pBGM->Stop();
@@ -2264,8 +2395,11 @@ void ResetStage_2()
 	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
 
-	// 카메라 visible mask 다시 all true
-	pCurLevel->FindParentObjectByName(L"MainCamera")->Camera()->SetLayerMaskAll(true);
+	// 카메라 visible mask 다시 all true, 맵 크기 적용
+	CGameObject* pMainCam = pCurLevel->FindParentObjectByName(L"MainCamera");
+	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(2176.f, 3500.f));
+	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
 
 	// 오브젝트 생성
 	CGameObject* pParent = new CGameObject;
@@ -2571,6 +2705,9 @@ void ResetStage_2()
 
 void ResetStage_3()
 {
+	// 킬 카운트 초기화
+	CLevelMgr::GetInst()->GetCurLevel()->SetKillCount(0);
+
 	// 배경음 정지
 	Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
 	pBGM->Stop();
@@ -2595,8 +2732,15 @@ void ResetStage_3()
 	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
 	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
 
-	// 카메라 visible mask 다시 all true
-	pCurLevel->FindParentObjectByName(L"MainCamera")->Camera()->SetLayerMaskAll(true);
+	// 카메라 visible mask 다시 all true, 맵 크기 적용
+	CGameObject* pMainCam = pCurLevel->FindParentObjectByName(L"MainCamera");
+	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(4288, 1200));
+	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
+
+	CGameObject* pUICam = pCurLevel->FindParentObjectByName(L"UICamera");
+	pUICam->Transform()->SetRelativePos(0.f, 0.f, 0.f);
+
 
 	// 오브젝트 생성
 	CGameObject* pParent = new CGameObject;

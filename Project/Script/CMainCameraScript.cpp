@@ -27,6 +27,9 @@ void CMainCameraScript::tick()
 	CGameObject* vPlayer = pCurLevel->FindParentObjectByName(L"Player");
 	Vec3 vPlayerPos;
 
+	if (nullptr == vPlayer)
+		return;
+
 	if (nullptr != vPlayer)
 		vPlayerPos = vPlayer->Transform()->GetRelativePos();
 

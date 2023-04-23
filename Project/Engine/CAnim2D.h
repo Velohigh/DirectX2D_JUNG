@@ -35,6 +35,7 @@ public:
     vector<Ptr<CTexture>>& GetvecFolderTex() { return m_vecFolderTex; }
     const tAnim2DFrm& GetCurFrame() { return m_vecFrm[m_iCurFrm];}
     int GetCurFrmCount() { return m_iCurFrm; }
+    void SetCurFrmCount(int _Frm) { m_iCurFrm = _Frm; }
     Vec2 GetBackSize() { return m_vBackSize; }
     Ptr<CTexture> GetAtlasTex() { return m_AtlasTex; }
     vector<Ptr<CTexture>>&   GetFolderTex() { return m_vecFolderTex; }

@@ -181,11 +181,49 @@ void CBulletScript::BeginOverlap(CCollider2D* _Other)
 		pReflectSound->Play(1, 1.f, true);
 	}
 
+	// 플레이어의 총알과 몬스터 총알이 충돌할 경우
+	else if (_Other->GetOwner()->GetName() == L"Bullet")
+	{
+
+		// Reflect 이펙트
+		CGameObject* pReflect = new CGameObject;
+		pReflect->SetName(L"Reflect");
+		pReflect->AddComponent(new CTransform);
+		pReflect->AddComponent(new CMeshRender);
+		pReflect->AddComponent(new CAnimator2D);
+		pReflect->AddComponent(new CReflectScript);
+
+		pReflect->Transform()->SetRelativeScale(140.f, 128.f, 1.f);
+
+		pReflect->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pReflect->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"ReflectMtrl"));
+
+		pReflect->Animator2D()->Create_Effect_Animation();
+		pReflect->Animator2D()->Play(L"texture\\effect\\spr_reflect", false);
+		pReflect->GetScript<CReflectScript>()->SetOwner(GetOwner());
+		if (m_CurDir == ObjDir::Right)
+			pReflect->GetScript<CReflectScript>()->SetDir(ObjDir::Right);
+		else if (m_CurDir == ObjDir::Left)
+			pReflect->GetScript<CReflectScript>()->SetDir(ObjDir::Left);
+
+		Vec3 MyPos3 = Transform()->GetRelativePos();
+
+		SpawnGameObject(pReflect, MyPos3, L"Default");
+
+		// Reflect 사운드
+		Ptr<CSound> pReflectSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\reflect.wav");
+		pReflectSound->Play(1, 1.f, true);
+		
+		Destroy();
+	}
+
+
 	// 플레이어 총알이 몬스터와 충돌할 경우
 	else if (_Other->GetOwner()->GetScript<CMonsterScript>()->GetState() != ObjState::Dead &&
 		_Other->GetOwner()->GetScript<CMonsterScript>()->GetState() != ObjState::HurtFly &&
 		_Other->GetOwner()->GetScript<CMonsterScript>()->GetState() != ObjState::HurtGround &&
-		_Other->GetOwner()->GetName() != L"Player")
+		_Other->GetOwner()->GetName() != L"Player" &&
+		_Other->GetOwner()->GetName() != L"Bullet")
 	{
 		_Other->GetOwner()->GetScript<CMonsterScript>()->SetEnemyAttackDir(m_MoveDir * m_MoveSpeed + Vector2{ 0.f, -400.f });
 		_Other->GetOwner()->GetScript<CMonsterScript>()->StateChange(ObjState::HurtFly);
@@ -196,6 +234,8 @@ void CBulletScript::BeginOverlap(CCollider2D* _Other)
 		pDeathBulletSound->Play(1, 1.f, true);
 
 	}
+
+	
 
 }
 

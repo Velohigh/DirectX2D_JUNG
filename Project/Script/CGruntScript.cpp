@@ -182,6 +182,12 @@ void CGruntScript::HurtGroundStart()
 
 void CGruntScript::HurtFlyStart()
 {
+	// 킬 카운트 증가
+	int TempKillCount = CLevelMgr::GetInst()->GetCurLevel()->GetKillCount();
+	++TempKillCount;
+	CLevelMgr::GetInst()->GetCurLevel()->SetKillCount(TempKillCount);
+
+
 	// Blood Splat 사운드 재생
 	{
 		// 시드값을 얻기 위한 random_device 생성.

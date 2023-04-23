@@ -10,6 +10,8 @@ private:
 	float	m_Time;
 
 	bool	m_bSaveOn;
+	bool	m_bReverseOn;
+	bool	m_bReplayOn;
 
 public:
 	virtual void begin() override;
@@ -17,6 +19,8 @@ public:
 
 public:
 	void SetAnimationSaveOn(bool _bool) { m_bSaveOn = _bool; }
+	void SetReverseOn(bool _bool) { m_bReverseOn = _bool; }
+	void SetReplayOn(bool _bool) { m_bReplayOn = _bool; }
 	void CreateFolderAnim_Rewinder();
 
 private:

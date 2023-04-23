@@ -20,6 +20,8 @@ CRewinderScript::~CRewinderScript()
 void CRewinderScript::begin()
 {
 	m_bSaveOn = true;
+	m_bReverseOn = false;
+	m_bReplayOn = false;
 }
 
 void CRewinderScript::tick()
@@ -28,7 +30,9 @@ void CRewinderScript::tick()
 
 	// 1 / 60초를 지날때마다, 최종 렌더타겟 텍스쳐의 이미지를 복사하여 저장한다.
 	if (m_Time >= 1.f / 60.f &&
-		m_bSaveOn == true)
+		m_bSaveOn == true &&
+		m_bReverseOn == false &&
+		m_bReplayOn == false)
 	{
 		m_Time -= 1.f / 60.f;
 
@@ -57,7 +61,9 @@ void CRewinderScript::tick()
 		CEventMgr::GetInst()->AddEvent(evn);
 	}
 
+	// 역재생이 끝나면, 스테이지 처음 상태로.
 	if (m_bSaveOn == false &&
+		m_bReverseOn == true &&
 		Animator2D()->IsEndAnimation() == true)
 	{
 		//CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
@@ -67,13 +73,98 @@ void CRewinderScript::tick()
 
 		wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
 		
-		if(StageName == L"Stage_1")
-			ResetStage_1();
-		else if (StageName == L"Stage_2")
-			ResetStage_2();
-		else if (StageName == L"Stage_3")
-			ResetStage_3();
+		CTimeMgr::GetInst()->SetTimeScale(1.f);
 
+		// 리소스 매니저에서 삭제
+		tEvent evn;
+		evn.Type = EVENT_TYPE::DELETE_RESOURCE;
+		evn.wParam = (DWORD_PTR)RES_TYPE::TEXTURE;
+		evn.lParam = (DWORD_PTR)CResMgr::GetInst()->FindRes<CTexture>(L"NewCopyTex").Get();
+		if (evn.lParam != 0)
+			CEventMgr::GetInst()->AddEvent(evn);
+
+		if (StageName == L"Stage_1")
+		{
+			ResetStage_1();
+			return;
+		}
+		else if (StageName == L"Stage_2")
+		{
+			ResetStage_2();
+			return;
+		}
+		else if (StageName == L"Stage_3")
+		{
+			ResetStage_3();
+			return;
+		}
+
+
+
+	}
+
+	// 클리어후, 리플레이 재생이 끝나면, 다음 스테이지로.
+	else if (m_bSaveOn == false &&
+		m_bReplayOn == true &&
+		Animator2D()->IsEndAnimation() == true)
+	{
+		Destroy();
+		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess")->SetLifeSpan(0.f);
+		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Distortion")->SetLifeSpan(0.f);
+		wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
+
+		CTimeMgr::GetInst()->SetTimeScale(1.f);
+
+		// 리소스 매니저에서 삭제
+		tEvent evn;
+		evn.Type = EVENT_TYPE::DELETE_RESOURCE;
+		evn.wParam = (DWORD_PTR)RES_TYPE::TEXTURE;
+		evn.lParam = (DWORD_PTR)CResMgr::GetInst()->FindRes<CTexture>(L"NewCopyTex").Get();
+		if(evn.lParam != 0)
+			CEventMgr::GetInst()->AddEvent(evn);
+
+		if (StageName == L"Stage_1")
+		{
+			ResetStage_2();
+			return;
+		}
+		else if (StageName == L"Stage_2")
+		{
+			ResetStage_3();
+			return;
+		}
+		else if (StageName == L"Stage_3")
+		{
+			ResetStage_3();
+			return;
+		}
+
+
+	}
+
+	if (KEY_TAP(KEY::_1))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(1.f);
+	}
+
+	else if (KEY_TAP(KEY::_2))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(2.f);
+	}
+
+	else if (KEY_TAP(KEY::_3))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(3.f);
+	}
+
+	else if (KEY_TAP(KEY::_4))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(8.f);
+	}
+
+	else if (KEY_TAP(KEY::_0))
+	{
+		CTimeMgr::GetInst()->SetTimeScale(0.f);
 	}
 
 }

@@ -313,6 +313,10 @@ void CMonsterScript::MapCollisionCheckMoveGround()
 			CheckPos.y -= 1.0f;
 			Color = m_MapColTexture->GetPixelColor(CheckPos);
 			SetPos(Vector2{ m_Pos.x, m_Pos.y + 1.0f });
+			m_Pos3 = Transform()->GetRelativePos();
+			m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+			ForDownPos.y += 1.f;
+
 		}
 
 		if (RGB(0, 0, 0) != Color &&

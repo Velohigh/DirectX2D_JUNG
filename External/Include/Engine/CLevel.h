@@ -14,7 +14,9 @@ private:
     HWND            m_hWnd;
 
     CSound*         m_pBgm;
+    CSound*         m_pBgm2;
     bool            m_bBgmON;
+    int             m_KillCount;
 
 public:
     void begin();
@@ -37,11 +39,13 @@ public:
 
 
     CSound* GetBgm() { return m_pBgm; }
+    int GetKillCount() { return m_KillCount; }
     void SethWnd(HWND _handle) { m_hWnd = _handle; }
     void SetBgmON(bool _bool) { m_bBgmON = _bool; }
     void SetBgm(CSound* _pSound) { m_pBgm = _pSound; }
+    void SetKillCount(int _KillCount) { m_KillCount = _KillCount; }
 
-    void DestroyAllObject();
+    void DestroyAllObject();    // 레벨안의 오브젝트들 Destroy(), 카메라, 광원, Rewinder 제외, Rewinder는 알아서 재생후 파괴됌
 
 private:
     // 등록된 GameObject 제거 LevelMgr::tick() 시작부분에서.

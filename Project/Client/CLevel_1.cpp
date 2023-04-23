@@ -23,6 +23,7 @@
 #include <Script\CBatteryScript.h>
 #include <Script\CTimerScript.h>
 #include <Script\CRewinderScript.h>
+#include <Script\CTitleScript.h>
 
 #include "CLevelSaveLoad.h"
 #include "CLevel_2.h"
@@ -33,11 +34,15 @@ void CreateLevel_1()
 	//CreateGruntPrefab();
 
 	// 배경음 재생
-	Ptr<CSound> pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_youwillneverknow.ogg");
-	pBGM->Play(999, 0.9f, true);
+	Ptr<CSound> pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_rainonbrick.ogg");
+	pBGM->Play(9999, 1.f, true);
+
+	Ptr<CSound> pBGM2 = CResMgr::GetInst()->FindRes<CSound>(L"sound\\sound_ambience_rain_title_01.wav");
+	pBGM2->Play(9999, 0.4f, true);
+
 
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
-	pCurLevel->SetName(L"Stage_1");
+	pCurLevel->SetName(L"Title");
 	pCurLevel->ChangeState(LEVEL_STATE::PLAY);
 	pCurLevel->SetBgm(pBGM.Get());
 
@@ -102,212 +107,137 @@ void CreateLevel_1()
 	SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
 
 
-	// 오브젝트 생성
-	CGameObject* pParent = new CGameObject;
-	pParent->SetName(L"Player");
-	pParent->AddComponent(new CTransform);
-	pParent->AddComponent(new CMeshRender);
-	pParent->AddComponent(new CCollider2D);
-	pParent->AddComponent(new CAnimator2D);
-	pParent->AddComponent(new CPlayerScript);
-
-	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
-
-	pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
-	pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
-
-	Vec2 _Resolution = GlobalData.Resolution;
-	pParent->Collider2D()->SetAbsolute(true);
-	pParent->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
-	//pParent->Collider2D()->SetOffsetPos(Vec2( -_Resolution.x/2.f, _Resolution.y/2.f + 35.f));
-
-	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\link.png");
-	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
-	pParent->Animator2D()->Play(L"WalkDown", true);
-	pParent->Animator2D()->Create_Player_Animation();
-	SpawnGameObject(pParent, Vec3(230.f, -671.f, 500.f), L"PlayerHitBox");
-
-	// Mouse
-	CGameObject* pMouse = new CGameObject;
-	pMouse->SetName(L"Mouse");
-
-	pMouse->AddComponent(new CTransform);
-	pMouse->AddComponent(new CMeshRender);
-	pMouse->AddComponent(new CCollider2D);
-	pMouse->AddComponent(new CMouseScript);
-
-	pMouse->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
-	pMouse->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
-
-
-	pMouse->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pMouse->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"MouseDMtrl"));
-	pMouse->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\spr_cursor.png"));
-
-	pMouse->Collider2D()->SetAbsolute(true);
-	pMouse->Collider2D()->SetOffsetScale(Vec2(35.f, 35.f));
-
-	SpawnGameObject(pMouse, Vec3(0.f, 0.f, 100.f), L"ViewPort UI");
-
-	{
-		// Grunt_1	2층 정찰
-		CGameObject* pGrunt = CreateGrunt();
-		pGrunt->GetScript<CGruntScript>()->SetBeginDir(ObjDir::Right);
-		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Walk);
-		pGrunt->GetScript<CGruntScript>()->SetPatrol(true, 4.f);
-		SpawnGameObject(pGrunt, Vec3(1054, -383, 500.f), L"MonsterHitBox");
-
-		// Grunt_2	2층 방안
-		pGrunt = CreateGrunt();
-		pGrunt->GetScript<CGruntScript>()->SetBeginDir(ObjDir::Right);
-		pGrunt->GetScript<CGruntScript>()->SetBeginState(ObjState::Idle);
-		SpawnGameObject(pGrunt, Vec3(338, -383, 500.f), L"MonsterHitBox");
-
-	}
-
-	{
-		// 갱스터 2층 방안
-		CGameObject* pGangster = CreateGangster();
-		pGangster->GetScript<CGangsterScript>()->SetBeginDir(ObjDir::Left);
-		pGangster->GetScript<CGangsterScript>()->SetBeginState(ObjState::Idle);
-		SpawnGameObject(pGangster, Vec3(545, -383, 500.f), L"MonsterHitBox");
-
-		// 폼프 1층
-		CGameObject* pPomp = CreatePomp();
-		pPomp->GetScript<CPompScript>()->SetBeginDir(ObjDir::Right);
-		pPomp->GetScript<CPompScript>()->SetBeginState(ObjState::Idle);
-		SpawnGameObject(pPomp, Vec3(530, -671, 500.f), L"MonsterHitBox");
-
-	}
-
 	// BackGround Object
 	CGameObject* pBackGround = new CGameObject;
 	pBackGround->SetName(L"BackGround");
 
 	pBackGround->AddComponent(new CTransform);
 	pBackGround->AddComponent(new CMeshRender);
+	pBackGround->AddComponent(new CTitleScript);
 
-	pBackGround->Transform()->SetRelativeScale(Vec3(1800.f, 784.f, 1.f));
+	pBackGround->Transform()->SetRelativeScale(Vec3(1280, 1440.f, 1.f));
 
 	pBackGround->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pBackGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
-	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\room_factory_2.png"));
+	pBackGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BackGroundMtrl"));
+	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_title_background.png"));
 
-	SpawnGameObject(pBackGround, Vec3(900.f, -392.f, 1000.f), L"Default");	//스테이지1 생성위치
+	pBackGround->GetScript<CTitleScript>()->SetBgm(pBGM2.Get());
 
-	// UI
-	CGameObject* pUI = new CGameObject;
-	pUI->SetName(L"UI");
+	SpawnGameObject(pBackGround, Vec3(0.f, 360.f, 1000.f), L"ViewPort UI");	//스테이지1 생성위치
 
-	pUI->AddComponent(new CTransform);
-	pUI->AddComponent(new CMeshRender);
-	pUI->AddComponent(new CUIScript);
+	// title_fence Object
+	CGameObject* ptitlefence = new CGameObject;
+	ptitlefence->SetName(L"title_fence");
 
-	pUI->Transform()->SetRelativePos(Vec3(GlobalData.Resolution.x/2.f, GlobalData.Resolution.y/2.f, 100.f));
-	pUI->Transform()->SetRelativeScale(Vec3(1280.f, 46.f, 1.f));
+	ptitlefence->AddComponent(new CTransform);
+	ptitlefence->AddComponent(new CMeshRender);
 
-	pUI->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pUI->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"UIMtrl"));
-	pUI->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\hud_collapse.png"));
+	ptitlefence->Transform()->SetRelativeScale(Vec3(1280, 1440.f, 1.f));
 
-	SpawnGameObject(pUI, Vec3(0, 360.f -42.f, 200.f), L"ViewPort UI");
+	ptitlefence->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	ptitlefence->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_fenceMtrl"));
+	ptitlefence->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_title_fence.png"));
 
-	// UI_Battery
-	CGameObject* pBattery = new CGameObject;
-	pBattery->SetName(L"UI_Battery");
+	SpawnGameObject(ptitlefence, Vec3(0.f, 360.f, 900.f), L"ViewPort UI");	//스테이지1 생성위치
 
-	pBattery->AddComponent(new CTransform);
-	pBattery->AddComponent(new CMeshRender);
-	pBattery->AddComponent(new CBatteryScript);
+	// title_grass Object
+	CGameObject* ptitlegrass = new CGameObject;
+	ptitlegrass->SetName(L"title_grass");
 
-	pBattery->Transform()->SetRelativeScale(Vec3(110.f, 20.f, 1.f));
+	ptitlegrass->AddComponent(new CTransform);
+	ptitlegrass->AddComponent(new CMeshRender);
 
-	pBattery->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
-	pBattery->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BatteryMtrl"));
-	pBattery->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_battery.png"));
+	ptitlegrass->Transform()->SetRelativeScale(Vec3(1280, 240, 1.f));
 
-	SpawnGameObject(pBattery, Vec3(-617.f, 318.f, 100.f), L"ViewPort UI");
+	ptitlegrass->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	ptitlegrass->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_grassMtrl"));
+	ptitlegrass->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_title_grass.png"));
 
-	// UI_Timer
-	CGameObject* pTimer = new CGameObject;
-	pTimer->SetName(L"UI_Timer");
-
-	pTimer->AddComponent(new CTransform);
-	pTimer->AddComponent(new CMeshRender);
-	pTimer->AddComponent(new CTimerScript);
-
-	pTimer->Transform()->SetRelativeScale(Vec3(188.f, 22.f, 1.f));
-
-	pTimer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
-	pTimer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TimerMtrl"));
-	pTimer->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_timer.png"));
-
-	SpawnGameObject(pTimer, Vec3(-89.f, 324.f, 100.f), L"ViewPort UI");
-
-	// UI_Katana
-	CGameObject* pKatana = new CGameObject;
-	pKatana->SetName(L"UI_Katana");
-
-	pKatana->AddComponent(new CTransform);
-	pKatana->AddComponent(new CMeshRender);
-
-	pKatana->Transform()->SetRelativeScale(Vec3(40.f, 40.f, 1.f));
-
-	pKatana->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
-	pKatana->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"KatanaMtrl"));
-	pKatana->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\spr_katanaicons.png"));
-
-	SpawnGameObject(pKatana, Vec3(507.f, 318.f, 100.f), L"ViewPort UI");
-
-	//CreateLevel_2();
-	//return;
-
-	
-	//// Particle Object
-	//CGameObject* pParticleObj = new CGameObject;
-	//pParticleObj->SetName(L"ParticleObject");
-	//pParticleObj->AddComponent(new CTransform);
-	//pParticleObj->AddComponent(new CParticleSystem);
-
-	//SpawnGameObject(pParticleObj, Vec3(0.f, 0.f, 0.f), 0);
-
-
-	/*CGameObject* pPostProcess = new CGameObject;
-	pPostProcess->SetName(L"PostProcess");
-	pPostProcess->AddComponent(new CTransform);
-	pPostProcess->AddComponent(new CMeshRender);
-	pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
-	SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 0);*/
-
-	//CGameObject* pDistortion = new CGameObject;
-	//pDistortion->SetName(L"Distortion");
-	//pDistortion->AddComponent(new CTransform);
-	//pDistortion->AddComponent(new CMeshRender);
-	//pDistortion->Transform()->SetRelativeScale(200.f, 200.f, 1.f);
-	//pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
-	//SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 500.f), 0);
-
-	// 리와인더 애니메이션
-	CGameObject* pRewinder = new CGameObject;
-	pRewinder->SetName(L"Rewinder");
-	pRewinder->AddComponent(new CTransform);
-	pRewinder->AddComponent(new CMeshRender);
-	pRewinder->AddComponent(new CAnimator2D);
-	pRewinder->AddComponent(new CRewinderScript);
-
-	pRewinder->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pRewinder->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
-
-	// 임시로 재생
-	pRewinder->Animator2D()->Create_Grunt_Animation();
-	pRewinder->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
-
-	SpawnGameObject(pRewinder, Vec3(0.f, 0.f, 30.f), L"ViewPort UI");
+	SpawnGameObject(ptitlegrass, Vec3(0.f, -360.f, 800.f), L"ViewPort UI");	//스테이지1 생성위치
 
 
 
+	// title_plants Object
+	CGameObject* ptitleplants = new CGameObject;
+	ptitleplants->SetName(L"title_plants");
+
+	ptitleplants->AddComponent(new CTransform);
+	ptitleplants->AddComponent(new CMeshRender);
+	ptitleplants->AddComponent(new CAnimator2D);
+
+
+	ptitleplants->Transform()->SetRelativeScale(Vec3(1280, 360, 1.f));
+
+	ptitleplants->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	ptitleplants->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_PlantsMtrl"));
+	ptitleplants->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_title_grass.png"));
+
+	ptitleplants->Animator2D()->CreateFolderAnimation(L"texture\\title\\spr_title_plants", 12, 11.1f);
+	ptitleplants->Animator2D()->Play(L"texture\\title\\spr_title_plants", true);
+
+	SpawnGameObject(ptitleplants, Vec3(0.f, -360.f, 700.f), L"ViewPort UI");	//스테이지1 생성위치
+
+	// title_Big1 Object
+	CGameObject* ptitlebig1 = new CGameObject;
+	ptitlebig1->SetName(L"title_Big1");
+
+	ptitlebig1->AddComponent(new CTransform);
+	ptitlebig1->AddComponent(new CMeshRender);
+
+	ptitlebig1->Transform()->SetRelativeScale(Vec3(319, 180, 1.f));
+
+	ptitlebig1->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	ptitlebig1->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_Big1Mtrl"));
+	ptitlebig1->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_titlegraphic_big_0.png"));
+
+	SpawnGameObject(ptitlebig1, Vec3(0.f, 0.f, 500.f), L"ViewPort UI");	//스테이지1 생성위치
+
+	// title_Big1_ZER Object
+	CGameObject* ptitlebig1_ZER = new CGameObject;
+	ptitlebig1_ZER->SetName(L"title_Big1_ZER");
+
+	ptitlebig1_ZER->AddComponent(new CTransform);
+	ptitlebig1_ZER->AddComponent(new CMeshRender);
+
+	ptitlebig1_ZER->Transform()->SetRelativeScale(Vec3(251, 206, 1.f));
+
+	ptitlebig1_ZER->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	ptitlebig1_ZER->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_Big1ZERMtrl"));
+	ptitlebig1_ZER->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_titlegraphic_big_1.png"));
+
+	SpawnGameObject(ptitlebig1_ZER, Vec3(-44, -2.f, 400.f), L"ViewPort UI");	//스테이지1 생성위치
+
+
+	// title_Big1_G Object
+	CGameObject* ptitlebig1_G = new CGameObject;
+	ptitlebig1_G->SetName(L"title_Big1_G");
+
+	ptitlebig1_G->AddComponent(new CTransform);
+	ptitlebig1_G->AddComponent(new CMeshRender);
+
+	ptitlebig1_G->Transform()->SetRelativeScale(Vec3(103, 208, 1.f));
+
+	ptitlebig1_G->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	ptitlebig1_G->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_Big1GMtrl"));
+	ptitlebig1_G->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_titlegraphic_big_2.png"));
+
+	SpawnGameObject(ptitlebig1_G, Vec3(117.f, 0.f, 395.f), L"ViewPort UI");	//스테이지1 생성위치
+
+
+	// title_Big2 Object
+	CGameObject* ptitlebig2 = new CGameObject;
+	ptitlebig2->SetName(L"title_Big2");
+
+	ptitlebig2->AddComponent(new CTransform);
+	ptitlebig2->AddComponent(new CMeshRender);
+
+	ptitlebig2->Transform()->SetRelativeScale(Vec3(298, 210, 1.f));
+
+	ptitlebig2->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	ptitlebig2->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"title_Big2Mtrl"));
+	ptitlebig2->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\title\\spr_titlegraphic_big2.png"));
+
+	SpawnGameObject(ptitlebig2, Vec3(1.f, 66.f, 300.f), L"ViewPort UI");	//스테이지1 생성위치
 
 
 	// 충돌 시킬 레이어 짝 지정

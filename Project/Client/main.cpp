@@ -54,7 +54,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGuiMgr::GetInst()->init(g_hWnd);
 
     // 레벨 생성
-    CreateLevel_1();
+    CreateLevel_1();    // 타이틀 스테이지임.
     //CreateLevel_2();
     //CreateLevel_3();
     _G_HWND = g_hWnd;
