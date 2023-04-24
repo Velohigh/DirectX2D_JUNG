@@ -88,6 +88,9 @@
     <Filter Include="Script\LevelChangeScript">
       <UniqueIdentifier>{bf967887-9830-454f-9090-a4fb39ec4cd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\Monster\HeadHunter">
+      <UniqueIdentifier>{07cc1196-e392-4e32-a48e-05a154be2bc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h">
@@ -189,6 +192,9 @@
     <ClInclude Include="CTitleScript.h">
       <Filter>Script\TitleScript</Filter>
     </ClInclude>
+    <ClInclude Include="CHeadhunterScript.h">
+      <Filter>Script\Monster\HeadHunter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp">
@@ -289,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="CTitleScript.cpp">
       <Filter>Script\TitleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CHeadhunterScript.cpp">
+      <Filter>Script\Monster\HeadHunter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

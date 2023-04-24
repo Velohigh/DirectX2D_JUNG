@@ -16,6 +16,7 @@
 #include "CGravityScript.h"
 #include "CGruntScript.h"
 #include "CGruntSlashScript.h"
+#include "CHeadhunterScript.h"
 #include "CJumpCloudScript.h"
 #include "CLandCloudScript.h"
 #include "CMainCameraScript.h"
@@ -49,6 +50,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CGravityScript");
 	_vec.push_back(L"CGruntScript");
 	_vec.push_back(L"CGruntSlashScript");
+	_vec.push_back(L"CHeadhunterScript");
 	_vec.push_back(L"CJumpCloudScript");
 	_vec.push_back(L"CLandCloudScript");
 	_vec.push_back(L"CMainCameraScript");
@@ -98,6 +100,8 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CGruntScript;
 	if (L"CGruntSlashScript" == _strScriptName)
 		return new CGruntSlashScript;
+	if (L"CHeadhunterScript" == _strScriptName)
+		return new CHeadhunterScript;
 	if (L"CJumpCloudScript" == _strScriptName)
 		return new CJumpCloudScript;
 	if (L"CLandCloudScript" == _strScriptName)
@@ -179,6 +183,9 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 		break;
 	case (UINT)SCRIPT_TYPE::GRUNTSLASHSCRIPT:
 		return new CGruntSlashScript;
+		break;
+	case (UINT)SCRIPT_TYPE::HEADHUNTERSCRIPT:
+		return new CHeadhunterScript;
 		break;
 	case (UINT)SCRIPT_TYPE::JUMPCLOUDSCRIPT:
 		return new CJumpCloudScript;
@@ -291,6 +298,10 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::GRUNTSLASHSCRIPT:
 		return L"CGruntSlashScript";
+		break;
+
+	case SCRIPT_TYPE::HEADHUNTERSCRIPT:
+		return L"CHeadhunterScript";
 		break;
 
 	case SCRIPT_TYPE::JUMPCLOUDSCRIPT:

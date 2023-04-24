@@ -44,8 +44,8 @@ void CMonsterScript::begin()
 
 	if (m_BeginDir != ObjDir::End)
 	{
-		m_PreDir = ObjDir::End;
 		m_CurDir = m_BeginDir;
+		m_PreDir = ObjDir::End;
 		DirAnimationCheck();
 	}
 

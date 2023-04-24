@@ -193,6 +193,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CGravityScript.h" />
     <ClInclude Include="CGruntScript.h" />
     <ClInclude Include="CGruntSlashScript.h" />
+    <ClInclude Include="CHeadhunterScript.h" />
     <ClInclude Include="CJumpCloudScript.h" />
     <ClInclude Include="CLandCloudScript.h" />
     <ClInclude Include="CMainCameraScript.h" />
@@ -228,6 +229,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CGravityScript.cpp" />
     <ClCompile Include="CGruntScript.cpp" />
     <ClCompile Include="CGruntSlashScript.cpp" />
+    <ClCompile Include="CHeadhunterScript.cpp" />
     <ClCompile Include="CJumpCloudScript.cpp" />
     <ClCompile Include="CLandCloudScript.cpp" />
     <ClCompile Include="CMainCameraScript.cpp" />

@@ -44,9 +44,9 @@ public:
     virtual void tick() override;
 
 public:
-	void DirAnimationCheck();
-	void StateChange(ObjState _State);
-	void StateUpdate();
+	virtual void DirAnimationCheck();
+	virtual void StateChange(ObjState _State);
+	virtual void StateUpdate();
 
 
 public:

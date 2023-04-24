@@ -45,6 +45,7 @@ public:
     void Create_Pomp_Animation();
     void Create_Gangster_Animation();
     void Create_Effect_Animation();
+    void Create_Headhunter_Animation();
 
     CLONE(CAnimator2D);
 public:

@@ -288,3 +288,46 @@ enum class ObjState
 	Dead,
 	END
 };
+
+enum class BossState
+{
+	Idle,			// 대기
+	Takeoutgun,		// 권총 꺼내는 모션
+	Putbackgun,		// 권총 넣는 모션
+	Shoot,			// 권총 쏘는 모션
+
+	Takeoutrifle,	// 라이플 꺼내는 모션
+	Putbackrifle,	// 라이플 넣는 모션
+	Aim_rifle,		// 라이플 조준하는 모션
+	
+	Hurt,		// 한대맞고 한바퀴 돌면서 날아가는 모션
+	Recover,	// 한대맞고나서 그로기상태에서, 사라지는 모습.
+	
+	Wallidle,	// 벽에 매달려서 대기
+	Walljump,	// 벽에서 점프하여 지상으로 착지하는 모션
+	Walljump_land,	// 착지모션
+
+	Predash,				// 칼 꺼내서 대쉬하기직전 모션
+	Dash,					// 칼꺼내고 대쉬하는 모션
+	Dash_end_ground,		// 대쉬 끝나고 베는 모션
+
+	Prejump,				// 점프 진입모션
+	Jump,					// 점프
+
+	Teleport_in,			// 라이플 아래향한채로, 나타나는 모션
+	Teleport_out,			// 라이플 아래향한채로, 사라지는 모션
+	Teleport_in_ground,		// 땅에서 라이플 앞 향한채로, 나타나는 모션
+	Teleport_out_ground,	// 땅에서 라이플 앞 향한채로, 사라지는 모션
+
+	Teleport_in_sweep,		// sweep 하기전에 공중에 나타나는 모션
+	Sweep,					// 공중에서 총을 한바퀴 회전하면서, 총알을 흩뿌리는 모션
+	Teleport_out_sweep,		// sweep 후, 공중에서 사라지는 모션
+
+	Dodgeroll,				// 굴러서 회피 모션
+
+	Hurtfly,				// 막타 맞았을때 날아가는 모션
+	Hurtground,				// 막타 맞고 날아가다 땅에 닿았을때 모션
+
+
+	End,
+};

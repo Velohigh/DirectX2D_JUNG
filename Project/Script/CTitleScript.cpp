@@ -56,9 +56,9 @@ void CTitleScript::tick()
 
 			// 모든 오브젝트 파괴후, 스테이지 1로 전환.
 			CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
-			//Destroy();
 			UICam->Transform()->SetRelativePos(0.f, 0.f, 0.f);
-			ResetStage_1();
+			//ResetStage_1();
+			ResetStage_Last();
 			return;
 		}
 	}

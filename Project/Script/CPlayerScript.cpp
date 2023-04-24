@@ -3,6 +3,7 @@
 #include "CGruntScript.h"
 #include "CGangsterScript.h"
 #include "CPompScript.h"
+#include "CHeadhunterScript.h"
 #include "CMouseScript.h"
 #include "CUIScript.h"
 #include "CBatteryScript.h"
@@ -61,6 +62,11 @@ void CPlayerScript::begin()
 	else if (LevelName == L"Stage_3")
 	{
 		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\stage3_bg_collision.png");
+		GetOwner()->SetColMapTexture(Colmap.Get());
+	}
+	else if (LevelName == L"Stage_Last")
+	{
+		Ptr<CTexture> Colmap = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\LastStage_collision.png");
 		GetOwner()->SetColMapTexture(Colmap.Get());
 	}
 
@@ -3184,6 +3190,222 @@ void ResetStage_Ending()
 	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\BackGround_Ending.png"));
 
 	SpawnGameObject(pBackGround, Vec3(0, 0.f, 1000.f), 31);	//스테이지1 생성위치
+}
+
+void ResetStage_Last()
+{
+	// 킬 카운트 초기화
+	CLevelMgr::GetInst()->GetCurLevel()->SetKillCount(0);
+
+	// 배경음 정지
+	Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
+
+	if (pBGM != nullptr)
+		pBGM->Stop();
+
+	// 배경음 재생
+	pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_bossbattle.ogg");
+	pBGM->Play(999, 0.1f, true);
+
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
+	pCurLevel->SetName(L"Stage_Last");
+	pCurLevel->ChangeState(LEVEL_STATE::PLAY);
+	pCurLevel->SetBgm(pBGM.Get());
+
+	// Layer 이름설정
+	pCurLevel->GetLayer(0)->SetName(L"Default");
+	pCurLevel->GetLayer(1)->SetName(L"Tile");
+	pCurLevel->GetLayer(2)->SetName(L"PlayerHitBox");
+	pCurLevel->GetLayer(3)->SetName(L"MonsterHitBox");
+	pCurLevel->GetLayer(4)->SetName(L"PlayerProjectile");
+	pCurLevel->GetLayer(5)->SetName(L"MonsterProjectile");
+	pCurLevel->GetLayer(6)->SetName(L"MonsterView");
+	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
+	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
+
+	// 카메라 visible mask 다시 all true, 맵 크기 적용
+	CGameObject* pMainCam = pCurLevel->FindParentObjectByName(L"MainCamera");
+	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(1280.f, 720.f));
+	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
+
+
+	// 오브젝트 생성
+	CGameObject* pParent = new CGameObject;
+	pParent->SetName(L"Player");
+	pParent->AddComponent(new CTransform);
+	pParent->AddComponent(new CMeshRender);
+	pParent->AddComponent(new CCollider2D);
+	pParent->AddComponent(new CAnimator2D);
+	pParent->AddComponent(new CPlayerScript);
+
+	pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+
+	pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+	pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
+
+	Vec2 _Resolution = GlobalData.Resolution;
+	pParent->Collider2D()->SetAbsolute(true);
+	pParent->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+	//pParent->Collider2D()->SetOffsetPos(Vec2( -_Resolution.x/2.f, _Resolution.y/2.f + 35.f));
+
+	Ptr<CTexture> pAnimAtlas = CResMgr::GetInst()->FindRes<CTexture>(L"texture\\link.png");
+	pParent->Animator2D()->CreateAnimation(L"WalkDown", pAnimAtlas, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(300.f, 300.f), 10, 16);
+	pParent->Animator2D()->Play(L"WalkDown", true);
+	pParent->Animator2D()->Create_Player_Animation();
+	SpawnGameObject(pParent, Vec3(300.f, -622.f, 500.f), L"PlayerHitBox");
+
+	// Mouse
+	CGameObject* pMouse = new CGameObject;
+	pMouse->SetName(L"Mouse");
+
+	pMouse->AddComponent(new CTransform);
+	pMouse->AddComponent(new CMeshRender);
+	pMouse->AddComponent(new CCollider2D);
+	pMouse->AddComponent(new CMouseScript);
+
+	pMouse->Transform()->SetRelativePos(Vec3(0.f, 250.f, 100.f));
+	pMouse->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
+
+
+	pMouse->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pMouse->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"MouseDMtrl"));
+	pMouse->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\spr_cursor.png"));
+
+	pMouse->Collider2D()->SetAbsolute(true);
+	pMouse->Collider2D()->SetOffsetScale(Vec2(35.f, 35.f));
+
+	SpawnGameObject(pMouse, Vec3(0.f, 0.f, 100.f), L"ViewPort UI");
+	{
+		// Headhunter	보스
+		CGameObject* pHeadhunter = new CGameObject;
+		pHeadhunter->SetName(L"Headhunter");
+		pHeadhunter->AddComponent(new CTransform);
+		pHeadhunter->AddComponent(new CMeshRender);
+		pHeadhunter->AddComponent(new CCollider2D);
+		pHeadhunter->AddComponent(new CAnimator2D);
+		pHeadhunter->AddComponent(new CHeadhunterScript);
+
+		pHeadhunter->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+		pHeadhunter->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_Pivot"));
+		pHeadhunter->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"HeadhunterMtrl"));
+
+		pHeadhunter->Collider2D()->SetAbsolute(true);
+		pHeadhunter->Collider2D()->SetOffsetScale(Vec2(36.f, 70.f));
+
+		pHeadhunter->Animator2D()->Create_Headhunter_Animation();
+		pHeadhunter->Animator2D()->Play(L"texture\\headhunter\\spr_headhunter_idle", true);
+		pHeadhunter->GetScript<CHeadhunterScript>()->SetBeginState(BossState::Idle);
+		pHeadhunter->GetScript<CHeadhunterScript>()->SetBeginDir(ObjDir::Left);
+
+		SpawnGameObject(pHeadhunter, Vec3(970, -623, 500.f), L"MonsterHitBox");
+	}
+
+	// BackGround Object
+	CGameObject* pBackGround = new CGameObject;
+	pBackGround->SetName(L"BackGround");
+
+	pBackGround->AddComponent(new CTransform);
+	pBackGround->AddComponent(new CMeshRender);
+
+	pBackGround->Transform()->SetRelativeScale(Vec3(1280, 720.f, 1.f));
+
+	pBackGround->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pBackGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DMtrl"));
+	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\map\\LastStage_render.png"));
+
+	SpawnGameObject(pBackGround, Vec3(640, -360.f, 1000.f), L"Default");	//스테이지1 생성위치
+
+	// UI
+	CGameObject* pUI = new CGameObject;
+	pUI->SetName(L"UI");
+
+	pUI->AddComponent(new CTransform);
+	pUI->AddComponent(new CMeshRender);
+	pUI->AddComponent(new CUIScript);
+
+	pUI->Transform()->SetRelativePos(Vec3(GlobalData.Resolution.x / 2.f, GlobalData.Resolution.y / 2.f, 100.f));
+	pUI->Transform()->SetRelativeScale(Vec3(1280.f, 46.f, 1.f));
+
+	pUI->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pUI->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"UIMtrl"));
+	pUI->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\hud_collapse.png"));
+
+	SpawnGameObject(pUI, Vec3(0, 360.f - 42.f, 200.f), L"ViewPort UI");
+
+	// UI_Battery
+	CGameObject* pBattery = new CGameObject;
+	pBattery->SetName(L"UI_Battery");
+
+	pBattery->AddComponent(new CTransform);
+	pBattery->AddComponent(new CMeshRender);
+	pBattery->AddComponent(new CBatteryScript);
+
+	pBattery->Transform()->SetRelativeScale(Vec3(110.f, 20.f, 1.f));
+
+	pBattery->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
+	pBattery->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"BatteryMtrl"));
+	pBattery->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_battery.png"));
+
+	SpawnGameObject(pBattery, Vec3(-617.f, 318.f, 100.f), L"ViewPort UI");
+
+	// UI_Timer
+	CGameObject* pTimer = new CGameObject;
+	pTimer->SetName(L"UI_Timer");
+
+	pTimer->AddComponent(new CTransform);
+	pTimer->AddComponent(new CMeshRender);
+	pTimer->AddComponent(new CTimerScript);
+
+	pTimer->Transform()->SetRelativeScale(Vec3(188.f, 22.f, 1.f));
+
+	pTimer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
+	pTimer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TimerMtrl"));
+	pTimer->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\effect_timer.png"));
+
+	SpawnGameObject(pTimer, Vec3(-89.f, 324.f, 100.f), L"ViewPort UI");
+
+	// UI_Katana
+	CGameObject* pKatana = new CGameObject;
+	pKatana->SetName(L"UI_Katana");
+
+	pKatana->AddComponent(new CTransform);
+	pKatana->AddComponent(new CMeshRender);
+
+	pKatana->Transform()->SetRelativeScale(Vec3(40.f, 40.f, 1.f));
+
+	pKatana->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh_PivotRight"));
+	pKatana->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"KatanaMtrl"));
+	pKatana->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\UI\\spr_katanaicons.png"));
+
+	SpawnGameObject(pKatana, Vec3(507.f, 318.f, 100.f), L"ViewPort UI");
+
+
+	// 리와인더 애니메이션
+	CGameObject* pRewinder = new CGameObject;
+	pRewinder->SetName(L"Rewinder");
+	pRewinder->AddComponent(new CTransform);
+	pRewinder->AddComponent(new CMeshRender);
+	pRewinder->AddComponent(new CAnimator2D);
+	pRewinder->AddComponent(new CRewinderScript);
+
+	pRewinder->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pRewinder->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std2DAnimLightMtrl"));
+
+	// 임시로 재생
+	pRewinder->Animator2D()->Create_Grunt_Animation();
+	pRewinder->Animator2D()->Play(L"texture\\grunt\\spr_grunt_idle", true);
+
+	SpawnGameObject(pRewinder, Vec3(0.f, 0.f, 30.f), L"ViewPort UI");
+
+
+	// 충돌 시킬 레이어 짝 지정
+	CCollisionMgr::GetInst()->LayerCheck(L"PlayerProjectile", L"MonsterHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterProjectile", L"PlayerProjectile");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"PlayerHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"MonsterHitBox");
+	CCollisionMgr::GetInst()->LayerCheck(L"MonsterAttackRange", L"PlayerHitBox");
 }
 
 

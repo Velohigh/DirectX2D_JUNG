@@ -254,3 +254,8 @@ void CAnimator2D::Create_Effect_Animation()
 
 
 }
+
+void CAnimator2D::Create_Headhunter_Animation()
+{
+	Animator2D()->CreateFolderAnimation(L"texture\\headhunter\\spr_headhunter_idle", 7, 11.1f);
+}

@@ -48,7 +48,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // Editor 초기화
-    //CEditorObjMgr::GetInst()->init();
+    CEditorObjMgr::GetInst()->init();
 
     // ImGui 초기화
     ImGuiMgr::GetInst()->init(g_hWnd);
@@ -103,9 +103,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
             CEngine::GetInst()->progress();
 
-            //CEditorObjMgr::GetInst()->progress();
+            CEditorObjMgr::GetInst()->progress();
 
-            //ImGuiMgr::GetInst()->progress();
+            ImGuiMgr::GetInst()->progress();
 
             // 렌더 종료
             CDevice::GetInst()->Present();

@@ -160,6 +160,7 @@ void ResetStage_1();
 void ResetStage_2();
 void ResetStage_3();
 void ResetStage_Ending();
+void ResetStage_Last();
 
 CGameObject* CreateGrunt();
 CGameObject* CreatePomp();

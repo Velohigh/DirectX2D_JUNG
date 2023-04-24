@@ -13,6 +13,7 @@ CGangsterScript
 CGravityScript
 CGruntScript
 CGruntSlashScript
+CHeadhunterScript
 CJumpCloudScript
 CLandCloudScript
 CMainCameraScript
