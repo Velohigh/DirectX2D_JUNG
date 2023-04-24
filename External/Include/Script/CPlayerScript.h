@@ -87,15 +87,12 @@ public:
 	void SetHitOn(bool _bool) { m_bHitOn = _bool; }
 
 
-
-
-
+	void StateChange(PlayerState _State);
 
 private:
 	void Shoot();
 
 	void DirAnimationCheck();
-	void StateChange(PlayerState _State);
 	void StateUpdate();
 
 	bool IsMoveKey();

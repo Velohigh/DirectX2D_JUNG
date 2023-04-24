@@ -64,7 +64,7 @@ void CRewinderScript::tick()
 		Animator2D()->IsEndAnimation() == true)
 	{
 		Destroy();
-		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess")->SetLifeSpan(0.f);
+		//CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess")->SetLifeSpan(0.f);
 		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"VCRDistortion")->SetLifeSpan(0.f);
 		wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
 		CTimeMgr::GetInst()->SetTimeScale(1.f);
@@ -92,7 +92,10 @@ void CRewinderScript::tick()
 		Animator2D()->IsEndAnimation() == true)
 	{
 		Destroy();
-		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess")->SetLifeSpan(0.f);
+		CGameObject* pPostProcess = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess");
+		if (pPostProcess)
+			pPostProcess->SetLifeSpan(0.f);
+
 		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"VCRDistortion")->SetLifeSpan(0.f);
 		wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
 		CTimeMgr::GetInst()->SetTimeScale(1.f);

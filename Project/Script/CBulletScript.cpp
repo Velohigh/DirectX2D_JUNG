@@ -109,10 +109,25 @@ void CBulletScript::BeginOverlap(CCollider2D* _Other)
 	// 플레이어와 충돌할 경우
 	if (_Other->GetOwner()->GetName() == L"Player")
 	{
-		// 플레이어가 Dodge 상태가 아닐경우, 총알 파괴
-		if (_Other->GetOwner()->GetScript<CPlayerScript>()->GetState() != PlayerState::Dodge)
+		// 플레이어가 사망 상태가 아니고 , 구르기 판정이 아닐떄 히트판정
+		PlayerState m_PState = _Other->GetOwner()->GetScript<CPlayerScript>()->GetState();
+		if (m_PState != PlayerState::HurtFlyLoop &&
+			m_PState != PlayerState::HurtGround &&
+			m_PState != PlayerState::Dead &&
+			m_PState != PlayerState::Dodge)
 		{
 			Destroy();
+			if (m_CurDir == ObjDir::Right)
+			{
+				_Other->GetOwner()->GetScript<CPlayerScript>()->SetEnemyAttackDir(Vector2{ 1.f , 0.5f } *800);
+			}
+			else if (m_CurDir == ObjDir::Left)
+			{
+				_Other->GetOwner()->GetScript<CPlayerScript>()->SetEnemyAttackDir(Vector2{ -1.f , 0.5f } *800);
+			}
+
+			_Other->GetOwner()->GetScript<CPlayerScript>()->StateChange(PlayerState::HurtFlyLoop);
+			return;
 		}
 
 

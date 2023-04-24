@@ -152,13 +152,13 @@ void CPlayerScript::tick()
 
 			CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
 
-			CGameObject* pPostProcess = new CGameObject;
-			pPostProcess->SetName(L"PostProcess");
-			pPostProcess->AddComponent(new CTransform);
-			pPostProcess->AddComponent(new CMeshRender);
-			pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-			pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
-			SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
+			//CGameObject* pPostProcess = new CGameObject;
+			//pPostProcess->SetName(L"PostProcess");
+			//pPostProcess->AddComponent(new CTransform);
+			//pPostProcess->AddComponent(new CMeshRender);
+			//pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			//pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+			//SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
 
 			CGameObject* pDistortion = new CGameObject;
 			pDistortion->SetName(L"VCRDistortion");
@@ -169,7 +169,6 @@ void CPlayerScript::tick()
 			pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
 			pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
 
-			GlobalData.tShaderTime = 0.f;
 			SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 		}
@@ -214,13 +213,13 @@ void CPlayerScript::tick()
 
 				CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
 
-				CGameObject* pPostProcess = new CGameObject;
-				pPostProcess->SetName(L"PostProcess");
-				pPostProcess->AddComponent(new CTransform);
-				pPostProcess->AddComponent(new CMeshRender);
-				pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-				pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
-				SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
+				//CGameObject* pPostProcess = new CGameObject;
+				//pPostProcess->SetName(L"PostProcess");
+				//pPostProcess->AddComponent(new CTransform);
+				//pPostProcess->AddComponent(new CMeshRender);
+				//pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				//pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+				//SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
 
 				CGameObject* pDistortion = new CGameObject;
 				pDistortion->SetName(L"VCRDistortion");
@@ -231,7 +230,6 @@ void CPlayerScript::tick()
 				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
 				pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
 
-				GlobalData.tShaderTime = 0.f;
 				SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 			}
@@ -288,7 +286,6 @@ void CPlayerScript::tick()
 				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
 				pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
 
-				GlobalData.tShaderTime = 0.f;
 				SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 			}
@@ -628,18 +625,18 @@ void CPlayerScript::SlowModeOut()
 void CPlayerScript::BeginOverlap(CCollider2D* _Other)
 {
 
-	if (m_bHitOn == true)
-	{
-		// 플레이어가 사망 상태가 아니고 , 구르기 판정이 아닐떄 히트판정
-		if (m_CurState != PlayerState::HurtFlyLoop &&
-			m_CurState != PlayerState::HurtGround &&
-			m_CurState != PlayerState::Dead &&
-			m_CurState != PlayerState::Dodge)
-		{
-			StateChange(PlayerState::HurtFlyLoop);
-			return;
-		}
-	}
+	//if (m_bHitOn == true)
+	//{
+	//	// 플레이어가 사망 상태가 아니고 , 구르기 판정이 아닐떄 히트판정
+	//	if (m_CurState != PlayerState::HurtFlyLoop &&
+	//		m_CurState != PlayerState::HurtGround &&
+	//		m_CurState != PlayerState::Dead &&
+	//		m_CurState != PlayerState::Dodge)
+	//	{
+	//		StateChange(PlayerState::HurtFlyLoop);
+	//		return;
+	//	}
+	//}
 
 }
 
@@ -1417,10 +1414,42 @@ void CPlayerScript::PlaySongUpdate()
 
 void CPlayerScript::HurtFlyLoopUpdate()
 {
+	Vec3 m_Pos3 = Transform()->GetRelativePos();
+	Vec2 m_Pos = Vec2(m_Pos3.x, m_Pos3.y);
+	Vec2 m_PosYReverse = Vec2(m_Pos3.x, -m_Pos3.y);
+	CTexture* m_MapColTexture = GetOwner()->GetColMapTexture();
+
+
+	// 공중에 뜬 상태일경우 중력영향을 받는다.
+	// 중력 가속도에 따른 낙하 속도.
+	{
+		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+		int Color = m_MapColTexture->GetPixelColor(m_PosYReverse + Vector2{ 0.f,1.f });
+		m_Gravity += m_GravityAccel * DT;
+		if (RGB(0, 0, 0) == Color || RGB(255, 0, 0) == Color)	// 땅에 닿을 경우 
+		{
+			m_Gravity = 10.0f;
+			m_MoveDir.Normalize();
+
+
+			StateChange(PlayerState::HurtGround);
+			return;
+		}
+		MoveValue(Vector2{ 0.f, -1.f } *m_Gravity * DT);
+	}
+
+	MapCollisionCheckMoveAir();
+
 }
 
 void CPlayerScript::HurtGroundUpdate()
 {
+	if (true == Animator2D()->IsEndAnimation())
+	{
+		StateChange(PlayerState::Dead);
+		return;
+	}
+
 }
 
 
@@ -1908,18 +1937,21 @@ void CPlayerScript::HurtFlyLoopStart()
 	// 공격 판정이 남아있으면 사망시 삭제 (SlashScript 에 구현)
 
 	// 히트시 화면 흔들림
+	CGameObject* MainCam = m_Level->FindParentObjectByName(L"MainCamera");
+	MainCam->GetScript<CMainCameraScript>()->SetCameraShakeOn(true);
+
 
 	// 사망 소리
 	Ptr<CSound> pDeadSound = CResMgr::GetInst()->FindRes<CSound>(L"sound\\dead.wav");
-	pDeadSound->Play(1, 1.f, true);
+	pDeadSound->Play(1, 0.9f, true);
 
-	Animator2D()->Play(L"texture\\player\\spr_hurtfly_begin", true);
+	Animator2D()->Play(L"texture\\player\\spr_hurtfly_begin", false);
 	SetSize2x();
 }
 
 void CPlayerScript::HurtGroundStart()
 {
-	Animator2D()->Play(L"texture\\player\\spr_hurtground", true);
+	Animator2D()->Play(L"texture\\player\\spr_hurtground", false);
 	SetSize2x();
 
 	m_MoveSpeed = 0.f;

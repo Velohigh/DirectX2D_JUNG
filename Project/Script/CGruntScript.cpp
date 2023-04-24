@@ -528,7 +528,7 @@ void CGruntScript::AttackUpdate()
 	}
 
 	if (m_bAttackOn == false
-		&& Animator2D()->GetCurAnim()->GetCurFrmCount() == 2)
+		&& Animator2D()->GetCurAnim()->GetCurFrmCount() == 3)
 	{
 		// GruntSlash 이펙트 추가
 		CGameObject* pGruntSlash = new CGameObject;

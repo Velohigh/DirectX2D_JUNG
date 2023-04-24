@@ -47,7 +47,6 @@ void CSlashScript::begin()
 
 	Collider2D()->SetAbsolute(true);
 	Collider2D()->SetOffsetScale(Vec2(76.f, 76.f));
-	//Collider2D()->SetOffsetPos(AttackPos);
 	Vec3 CameraPos = m_Level->FindParentObjectByName(L"MainCamera")->Transform()->GetRelativePos();
 	Collider2D()->SetOffsetPos(Vec2(AttackPos.x-CameraPos.x, AttackPos.y-CameraPos.y + 35.f));
 
