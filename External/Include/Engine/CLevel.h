@@ -14,7 +14,6 @@ private:
     HWND            m_hWnd;
 
     CSound*         m_pBgm;
-    CSound*         m_pBgm2;
     bool            m_bBgmON;
     int             m_KillCount;
 

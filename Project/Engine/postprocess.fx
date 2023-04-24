@@ -98,10 +98,4 @@ float4 PS_Distortion(VS_OUT _in) : SV_Target
 
 
 
-
-
-
-
-
-
 #endif

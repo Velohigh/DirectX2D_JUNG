@@ -57,7 +57,8 @@ cbuffer GLOBAL : register(b2)
     float g_AccTime;
     uint g_Light2DCount;
     uint g_Light3DCount;
-    int2 g_globalpadding;
+    float g_ShaderTime;
+    int g_globalpadding;
 }
 
 Texture2D g_tex_0 : register(t0);

@@ -195,7 +195,8 @@ struct tGlobal
 	float tAccTime;
 	UINT  Light2DCount;
 	UINT  Light3DCount;
-	int	  globalpadding[2];
+	float tShaderTime;
+	int	  globalpadding;
 };
 
 extern tGlobal GlobalData;

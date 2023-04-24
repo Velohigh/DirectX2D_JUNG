@@ -161,12 +161,15 @@ void CPlayerScript::tick()
 			SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
 
 			CGameObject* pDistortion = new CGameObject;
-			pDistortion->SetName(L"Distortion");
+			pDistortion->SetName(L"VCRDistortion");
 			pDistortion->AddComponent(new CTransform);
 			pDistortion->AddComponent(new CMeshRender);
 			pDistortion->Transform()->SetRelativeScale(1280, 720.f, 1.f);
 			pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-			pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+			pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
+			pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
+
+			GlobalData.tShaderTime = 0.f;
 			SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 		}
@@ -220,12 +223,15 @@ void CPlayerScript::tick()
 				SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
 
 				CGameObject* pDistortion = new CGameObject;
-				pDistortion->SetName(L"Distortion");
+				pDistortion->SetName(L"VCRDistortion");
 				pDistortion->AddComponent(new CTransform);
 				pDistortion->AddComponent(new CMeshRender);
 				pDistortion->Transform()->SetRelativeScale(1280, 720.f, 1.f);
 				pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
+				pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
+
+				GlobalData.tShaderTime = 0.f;
 				SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 			}
@@ -274,12 +280,15 @@ void CPlayerScript::tick()
 				SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
 
 				CGameObject* pDistortion = new CGameObject;
-				pDistortion->SetName(L"Distortion");
+				pDistortion->SetName(L"VCRDistortion");
 				pDistortion->AddComponent(new CTransform);
 				pDistortion->AddComponent(new CMeshRender);
 				pDistortion->Transform()->SetRelativeScale(1280, 720.f, 1.f);
 				pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl"));
+				pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
+				pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
+
+				GlobalData.tShaderTime = 0.f;
 				SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
 
 			}

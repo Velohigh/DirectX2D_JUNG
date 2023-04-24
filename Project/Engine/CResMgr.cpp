@@ -491,6 +491,27 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_1, "Noise Texture");
 
 	AddRes(pShader->GetKey(), pShader);
+
+	// ============================
+	// VCRDistortion Shader
+	// RS_TYPE : CULL_NONE
+	// DS_TYPE : NO_TEST_NO_WRITE
+	// BS_TYPE : DEFAULT	 
+	// Domain : POSTPROCESS
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"VCRDistortionShader");
+	pShader->CreateVertexShader(L"shader\\DistortedTV.fx", "VS_VCRDistortion");
+	pShader->CreatePixelShader(L"shader\\DistortedTV.fx", "PS_VCRDistortion");
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+	// Parameter
+	pShader->AddTexParam(TEX_1, "Noise Texture");
+
+	AddRes(pShader->GetKey(), pShader);
+
 }
 
 
@@ -579,6 +600,12 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DistortionShader"));
 	AddRes(L"DistortionMtrl", pMtrl);
+
+	// VCRDistortionShader(PostProcess)
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"VCRDistortionShader"));
+	AddRes(L"VCRDistortionMtrl", pMtrl);
+
 
 	// MouseMaterial
 	pMtrl = new CMaterial(true);

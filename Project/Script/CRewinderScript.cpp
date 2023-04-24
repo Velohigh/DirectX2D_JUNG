@@ -65,7 +65,7 @@ void CRewinderScript::tick()
 	{
 		Destroy();
 		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess")->SetLifeSpan(0.f);
-		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Distortion")->SetLifeSpan(0.f);
+		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"VCRDistortion")->SetLifeSpan(0.f);
 		wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
 		CTimeMgr::GetInst()->SetTimeScale(1.f);
 
@@ -93,7 +93,7 @@ void CRewinderScript::tick()
 	{
 		Destroy();
 		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"PostProcess")->SetLifeSpan(0.f);
-		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Distortion")->SetLifeSpan(0.f);
+		CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"VCRDistortion")->SetLifeSpan(0.f);
 		wstring StageName = CLevelMgr::GetInst()->GetCurLevel()->GetName();
 		CTimeMgr::GetInst()->SetTimeScale(1.f);
 
