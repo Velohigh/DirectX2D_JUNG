@@ -48,7 +48,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // Editor 초기화
-    CEditorObjMgr::GetInst()->init();
+    //CEditorObjMgr::GetInst()->init();
 
     // ImGui 초기화
     ImGuiMgr::GetInst()->init(g_hWnd);
