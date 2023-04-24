@@ -102,8 +102,8 @@ void CRewinderScript::tick()
 
 		if (StageName == L"Stage_1")
 		{
-			//ResetStage_2();
-			ResetStage_Ending();
+			ResetStage_2();
+			//ResetStage_Ending();
 			return;
 		}
 		else if (StageName == L"Stage_2")
