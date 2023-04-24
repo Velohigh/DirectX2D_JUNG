@@ -195,8 +195,7 @@ struct tGlobal
 	float tAccTime;
 	UINT  Light2DCount;
 	UINT  Light3DCount;
-	float tShaderTime;
-	int	  globalpadding;
+	Vec2  tMousePos;
 };
 
 extern tGlobal GlobalData;

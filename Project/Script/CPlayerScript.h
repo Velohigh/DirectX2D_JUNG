@@ -155,10 +155,11 @@ private:
 	void MapCollisionCheckMoveAir();
 };
 
-// 리셋 스테이지
+// 리셋 스테이지, 엔딩
 void ResetStage_1();
 void ResetStage_2();
 void ResetStage_3();
+void ResetStage_Ending();
 
 CGameObject* CreateGrunt();
 CGameObject* CreatePomp();

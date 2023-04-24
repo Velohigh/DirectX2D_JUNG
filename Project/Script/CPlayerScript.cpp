@@ -269,13 +269,13 @@ void CPlayerScript::tick()
 
 				CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
 
-				CGameObject* pPostProcess = new CGameObject;
-				pPostProcess->SetName(L"PostProcess");
-				pPostProcess->AddComponent(new CTransform);
-				pPostProcess->AddComponent(new CMeshRender);
-				pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-				pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
-				SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
+				//CGameObject* pPostProcess = new CGameObject;
+				//pPostProcess->SetName(L"PostProcess");
+				//pPostProcess->AddComponent(new CTransform);
+				//pPostProcess->AddComponent(new CMeshRender);
+				//pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				//pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+				//SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
 
 				CGameObject* pDistortion = new CGameObject;
 				pDistortion->SetName(L"VCRDistortion");
@@ -293,8 +293,61 @@ void CPlayerScript::tick()
 		}
 
 	}
-	else if (StageName == L"Stage_3")
+	else if (StageName == L"Stage_3" &&
+			m_bReplayStage == false)
 	{
+	int Color = m_MapColTexture->GetPixelColor(m_PosYReverse);
+	int KillCount1 = CLevelMgr::GetInst()->GetCurLevel()->GetKillCount();
+	if (KillCount1 == 19 &&
+		Color == RGB(0, 0, 255))
+	{
+		m_bReplayStage = true;
+		// 배경음 정지
+		Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
+		pBGM->Stop();
+
+		// 배경음 재생
+		pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_sneaky_driver.ogg");
+		pBGM->Play(999, 0.9f, true);
+		CLevelMgr::GetInst()->GetCurLevel()->SetBgm(pBGM.Get());
+
+
+		CGameObject* pRewinder = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Rewinder");
+
+		if (nullptr != pRewinder)
+		{
+			pRewinder->GetScript<CRewinderScript>()->SetAnimationSaveOn(false);
+			pRewinder->GetScript<CRewinderScript>()->SetReplayOn(true);
+			pRewinder->Transform()->SetRelativeScale(1280.f, 720.f, 1.f);
+			pRewinder->GetScript<CRewinderScript>()->CreateFolderAnim_Rewinder();
+			pRewinder->Animator2D()->Play(L"RewinderAnimation", true);
+
+			m_Level->FindParentObjectByName(L"MainCamera")->Camera()->SetLayerMaskAll(false);
+
+			CLevelMgr::GetInst()->GetCurLevel()->DestroyAllObject();
+
+			//CGameObject* pPostProcess = new CGameObject;
+			//pPostProcess->SetName(L"PostProcess");
+			//pPostProcess->AddComponent(new CTransform);
+			//pPostProcess->AddComponent(new CMeshRender);
+			//pPostProcess->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			//pPostProcess->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"GrayMtrl"));
+			//SpawnGameObject(pPostProcess, Vec3(0.f, 0.f, 0.f), 31);
+
+			CGameObject* pDistortion = new CGameObject;
+			pDistortion->SetName(L"VCRDistortion");
+			pDistortion->AddComponent(new CTransform);
+			pDistortion->AddComponent(new CMeshRender);
+			pDistortion->Transform()->SetRelativeScale(1280, 720.f, 1.f);
+			pDistortion->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pDistortion->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"VCRDistortionMtrl"));
+			pDistortion->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\noise\\noise_01.png"));
+
+			SpawnGameObject(pDistortion, Vec3(0.f, 0.f, 20.f), 31);
+
+		}
+
+	}
 
 	}
 }
@@ -3076,6 +3129,61 @@ void ResetStage_3()
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"PlayerHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterView", L"MonsterHitBox");
 	CCollisionMgr::GetInst()->LayerCheck(L"MonsterAttackRange", L"PlayerHitBox");
+}
+
+void ResetStage_Ending()
+{
+	// 킬 카운트 초기화
+	CLevelMgr::GetInst()->GetCurLevel()->SetKillCount(0);
+
+	// 배경음 정지
+	Ptr<CSound> pBGM = CLevelMgr::GetInst()->GetCurLevel()->GetBgm();
+	pBGM->Stop();
+
+	// 배경음 재생
+	pBGM = CResMgr::GetInst()->FindRes<CSound>(L"sound\\song_ending.ogg");
+	pBGM->Play(999, 0.9f, true);
+
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
+	pCurLevel->SetName(L"Stage_Ending");
+	pCurLevel->ChangeState(LEVEL_STATE::PLAY);
+	pCurLevel->SetBgm(pBGM.Get());
+
+	// Layer 이름설정
+	pCurLevel->GetLayer(0)->SetName(L"Default");
+	pCurLevel->GetLayer(1)->SetName(L"Tile");
+	pCurLevel->GetLayer(2)->SetName(L"PlayerHitBox");
+	pCurLevel->GetLayer(3)->SetName(L"MonsterHitBox");
+	pCurLevel->GetLayer(4)->SetName(L"PlayerProjectile");
+	pCurLevel->GetLayer(5)->SetName(L"MonsterProjectile");
+	pCurLevel->GetLayer(6)->SetName(L"MonsterView");
+	pCurLevel->GetLayer(7)->SetName(L"MonsterAttackRange");
+	pCurLevel->GetLayer(31)->SetName(L"ViewPort UI");
+
+	// 카메라 visible mask 다시 all true, 맵 크기 적용
+	CGameObject* pMainCam = pCurLevel->FindParentObjectByName(L"MainCamera");
+	pMainCam->GetScript<CMainCameraScript>()->SetMapsize(Vec2(4288, 1200));
+	pMainCam->Camera()->SetLayerMaskAll(true);	// 모든 레이어 체크
+	pMainCam->Camera()->SetLayerMask(31, false);// UI Layer 는 렌더링하지 않는다.
+
+	CGameObject* pUICam = pCurLevel->FindParentObjectByName(L"UICamera");
+	pUICam->Transform()->SetRelativePos(0.f, 0.f, 0.f);
+
+
+	// BackGround Object
+	CGameObject* pBackGround = new CGameObject;
+	pBackGround->SetName(L"BackGround_Ending");
+
+	pBackGround->AddComponent(new CTransform);
+	pBackGround->AddComponent(new CMeshRender);
+
+	pBackGround->Transform()->SetRelativeScale(Vec3(1280, 720.f, 1.f));
+
+	pBackGround->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pBackGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TexTwisteryMtrl"));
+	pBackGround->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\BackGround_Ending.png"));
+
+	SpawnGameObject(pBackGround, Vec3(0, 0.f, 1000.f), 31);	//스테이지1 생성위치
 }
 
 

@@ -102,6 +102,56 @@ float4 PS_VCRDistortion(VS_OUT _in) : SV_Target
     return Color;
 }
 
+
+// ============================
+// Texture twistery Shader
+// mesh : RectMesh
+// Domain : DOMAIN_POSTPROCESS
+// g_tex_0 : RederTarget Copy Texture
+// g_tex_1 : Noise Texture
+// ============================
+
+float2 getDistortion(float2 uv, float d, float t)
+{
+    uv.x += cos(d) + t * 0.9;
+    uv.y += sin(d + t * 0.75);
+    return uv;
+}
+
+float4 getDistortedTexture(Texture2D iChannel, float2 uv)
+{
+    float4 rgb = iChannel.Sample(g_sam_1, uv);
+    return rgb;
+}
+
+VS_OUT VS_TexTwistery(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f;
+
+    output.vPosition = mul(float4(_in.vLocalPos, 1.f), g_matWVP);
+    output.vUV = _in.vUV;
+
+    return output;
+}
+
+
+float4 PS_TexTwistery(VS_OUT _in) : SV_Target
+{
+    float2 uv = _in.vPosition.xy / g_Resolution.xy;
+    float t = iTime;
+    float2 mid = float2(0.5, 0.5);
+    float2 focus = g_MousePos.xy / g_Resolution.xy;
+    float d1 = distance(focus + sin(t * 0.25) * 0.5, uv);
+    float d2 = distance(focus + cos(t), uv);
+    
+    float4 rgb = (getDistortedTexture(g_tex_0, getDistortion(uv, d1, t)) + getDistortedTexture(g_tex_1, getDistortion(uv, -d2, t))) * 0.5;
+    rgb.r /= d2;
+    rgb.g += -0.5 + d1;
+    rgb.b = -0.5 + (d1 + d2) / 2.0;
+    float4 Color = rgb;
+    return Color;
+}
+
 //    float2 vUV = _in.vPosition.xy / g_Resolution;
 	
 //	// Noise Texture 가 세팅이 되어 있다면

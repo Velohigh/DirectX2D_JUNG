@@ -54,7 +54,6 @@ void CTimeMgr::tick()
 	// GlobalData °»½Å
 	GlobalData.tDT = m_fDeltaTime;
 	GlobalData.tAccTime += m_fDeltaTime;
-	GlobalData.tShaderTime += m_fDeltaTime;
 }
 
 void CTimeMgr::render()

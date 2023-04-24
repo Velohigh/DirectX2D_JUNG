@@ -102,7 +102,8 @@ void CRewinderScript::tick()
 
 		if (StageName == L"Stage_1")
 		{
-			ResetStage_2();
+			//ResetStage_2();
+			ResetStage_Ending();
 			return;
 		}
 		else if (StageName == L"Stage_2")
@@ -112,13 +113,14 @@ void CRewinderScript::tick()
 		}
 		else if (StageName == L"Stage_3")
 		{
-			ResetStage_3();
+			ResetStage_Ending();
 			return;
 		}
 
 
 	}
 
+	// 재생중 배속 설정. 0 번 누르면 일시정지
 	if (KEY_TAP(KEY::_1))
 	{
 		CTimeMgr::GetInst()->SetTimeScale(1.f);
@@ -126,22 +128,31 @@ void CRewinderScript::tick()
 
 	else if (KEY_TAP(KEY::_2))
 	{
-		CTimeMgr::GetInst()->SetTimeScale(2.f);
+		CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Player");
+		if (pPlayer == nullptr)
+			CTimeMgr::GetInst()->SetTimeScale(2.f);
 	}
 
 	else if (KEY_TAP(KEY::_3))
 	{
-		CTimeMgr::GetInst()->SetTimeScale(3.f);
+		CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Player");
+		if (pPlayer == nullptr)
+			CTimeMgr::GetInst()->SetTimeScale(3.f);
 	}
 
 	else if (KEY_TAP(KEY::_4))
 	{
-		CTimeMgr::GetInst()->SetTimeScale(8.f);
+		CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurLevel()->FindParentObjectByName(L"Player");
+		if (pPlayer == nullptr)
+			CTimeMgr::GetInst()->SetTimeScale(8.f);
 	}
 
 	else if (KEY_TAP(KEY::_0))
 	{
 		CTimeMgr::GetInst()->SetTimeScale(0.f);
+		Ptr<CSound> pPause = CResMgr::GetInst()->FindRes<CSound>(L"sound\\pause.wav");
+		pPause->Play(1, 1.f, true);
+
 	}
 
 }

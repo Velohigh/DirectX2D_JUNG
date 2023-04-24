@@ -124,6 +124,7 @@ void CKeyMgr::tick()
 		GetCursorPos(&ptMousePos);		
 		ScreenToClient(CEngine::GetInst()->GetMainWnd(), &ptMousePos);
 		m_vMousePos = Vec2((float)ptMousePos.x, (float)ptMousePos.y);
+		GlobalData.tMousePos = m_vMousePos;
 
 		m_vMouseDir = m_vMousePos - m_vPrevMousePos;
 		m_vMouseDir.y *= -1;
