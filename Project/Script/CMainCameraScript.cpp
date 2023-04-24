@@ -67,14 +67,14 @@ void CMainCameraScript::tick()
 		//m_bFollowPlayer = false;
 	}
 
-	if (m_fCameraShakeTime < 0.13f)
+	if (m_fCameraShakeTime < 0.12f)
 	{
 		// 시드값을 얻기 위한 random_device 생성.
 		std::random_device rd;
 		// random_device 를 통해 난수 생성 엔진을 초기화 한다.
 		std::mt19937 gen(rd());
 		// 0 부터 99 까지 균등하게 나타나는 난수열을 생성하기 위해 균등 분포 정의.
-		std::uniform_int_distribution<int> IntRange(-5, 5);
+		std::uniform_int_distribution<int> IntRange(-4, 4);
 		int ValueX = IntRange(gen);
 		int ValueY = IntRange(gen);
 
@@ -123,7 +123,7 @@ void CMainCameraScript::tick()
 		}
 	}
 	// 화면 흔들림 해제
-	else if (m_fCameraShakeTime >= 0.13f)
+	else if (m_fCameraShakeTime >= 0.12f)
 	{
 		m_bCameraShakeOn = false;
 		//m_bFollowPlayer = true;

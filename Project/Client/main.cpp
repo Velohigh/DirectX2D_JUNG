@@ -63,28 +63,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
     MSG msg;
 
-    //const float targetFrameTime = 1.0f / 120.0f;
-    //float lastFrameTime = 0.0f;
-    //float accumulatedTime = 0.0f;
+    const float targetFrameTime = 1.f / 300.f;
+    float lastFrameTime = 0.0f;
+    float accumulatedTime = 0.0f;
 
     while (true)
     {
-        //// 시간 측정 시작
-        //float currentFrameTime = (float)GetTickCount64() / 1000.0f;
-        //float deltaTime = currentFrameTime - lastFrameTime;
-        //lastFrameTime = currentFrameTime;
+        // 시간 측정 시작
+        float currentFrameTime = (float)GetTickCount64() / 1000.0f;
+        float deltaTime = currentFrameTime - lastFrameTime;
+        lastFrameTime = currentFrameTime;
 
-        //// 누적 시간 업데이트
-        //accumulatedTime += deltaTime;
+        // 누적 시간 업데이트
+        accumulatedTime += deltaTime;
 
-        //// 프레임 제한 로직
-        //if (accumulatedTime < targetFrameTime)
-        //{
-        //    continue; // 다음 프레임까지 대기
-        //}
+        // 프레임 제한 로직
+        if (accumulatedTime < targetFrameTime)
+        {
+            continue; // 다음 프레임까지 대기
+        }
 
-        //// 누적 시간 갱신
-        //accumulatedTime -= targetFrameTime;
+        // 누적 시간 갱신
+        accumulatedTime -= targetFrameTime;
 
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
@@ -103,9 +103,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
             CEngine::GetInst()->progress();
 
-            CEditorObjMgr::GetInst()->progress();
+            //CEditorObjMgr::GetInst()->progress();
 
-            ImGuiMgr::GetInst()->progress();
+            //ImGuiMgr::GetInst()->progress();
 
             // 렌더 종료
             CDevice::GetInst()->Present();

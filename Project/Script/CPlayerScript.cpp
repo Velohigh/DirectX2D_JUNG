@@ -1555,7 +1555,7 @@ void CPlayerScript::WallGrabUpdate()
 	// 월그랩 구름 이펙트 생성
 	m_StateTime[static_cast<int>(PlayerState::WallGrab)] += DT;
 	if (0.02f <= m_StateTime[static_cast<int>(PlayerState::WallGrab)] &&
-		m_Move.Length() >= 0.48f)
+		m_Move.Length() >= 0.12f)
 	{
 		CGameObject* pDustCloud = new CGameObject;
 		pDustCloud->SetName(L"DustCloud");
