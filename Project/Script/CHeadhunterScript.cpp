@@ -89,6 +89,15 @@ void CHeadhunterScript::StateChange(BossState _State)
 		case BossState::Idle:
 			IdleS();
 			break;
+		case BossState::Teleport_in_sweep:
+			Teleport_in_sweepS();
+			break;
+		case BossState::Sweep:
+			SweepS();
+			break;
+		case BossState::Teleport_out_sweep:
+			Teleport_out_sweepS();
+			break;
 
 
 		}
@@ -104,6 +113,17 @@ void CHeadhunterScript::StateUpdate()
 	case BossState::Idle:
 		IdleU();
 		break;
+
+	case BossState::Teleport_in_sweep:
+		Teleport_in_sweepU();
+		break;
+	case BossState::Sweep:
+		SweepU();
+		break;
+	case BossState::Teleport_out_sweep:
+		Teleport_out_sweepU();
+		break;
+
 
 	}
 
